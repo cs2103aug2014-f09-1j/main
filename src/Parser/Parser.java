@@ -18,6 +18,7 @@ public class Parser {
 	
 	private String input;
 	private Task task;
+	private int taskID;
 	
 	public Parser(String input){
 		this.input = input;
@@ -45,6 +46,9 @@ public class Parser {
 		case DELETE:
 			ex.extractorDelete();
 			break;
+		case UPDATE:
+			ex.extractorUpdate();
+			taskID = ex.gettaskID();
 		case EXIT:
 			System.exit(0);
 		default:

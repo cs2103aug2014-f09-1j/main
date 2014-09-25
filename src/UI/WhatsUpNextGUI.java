@@ -1,61 +1,28 @@
 package UI;
-import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JSplitPane;
-
-import java.awt.BorderLayout;
-
-import javax.swing.JInternalFrame;
-
-import java.awt.GridLayout;
-
-import javax.swing.JDesktopPane;
-
-import java.awt.Color;
-
-import javax.swing.UIManager;
-
-import java.awt.Font;
-
-import javax.swing.JTextField;
-
-import java.awt.Window.Type;
-
-import javax.swing.JList;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JTextArea;
-import javax.swing.BoxLayout;
-import javax.swing.JTextPane;
-
-import java.awt.TextArea;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import javax.swing.JButton;
-import javax.swing.JEditorPane;
-import javax.swing.text.JTextComponent;
-
-import java.awt.ScrollPane;
-import java.awt.Point;
+import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Window.Type;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.TextField;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.Panel;
-import java.awt.Button;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import Parser.Parser;
@@ -71,11 +38,11 @@ public class WhatsUpNextGUI {
     
 	private JFrame frameMain;
 	private JLabel labelWelcome;
-	private TextArea textDisplayMain;
-	private TextField textInput;
-	private Panel panelUpcoming;
-	private Button buttomUpcoming;
-	private TextArea textDisplayToday;
+	private JTextArea textDisplayMain;
+	private JTextField textInput;
+	private JPanel panelUpcoming;
+	private JButton buttomUpcoming;
+	private JTextArea textDisplayToday;
 	
 	private Parser parser;
 	/**
@@ -89,6 +56,13 @@ public class WhatsUpNextGUI {
 	 * set window visibility and size
 	 */
 	public static void main(String[] args) {
+		try {
+		    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		    System.out.println(UIManager.getLookAndFeel().toString());
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -129,29 +103,31 @@ public class WhatsUpNextGUI {
 	 */
 	private void intializeUpcoming() {
 		// display area for upcoming tasks
-		textDisplayToday = new TextArea();
+		textDisplayToday = new JTextArea();
+		textDisplayToday.setFont(new Font("Courier New", Font.BOLD, 12));
+		textDisplayToday.setForeground(new Color(25, 25, 112));
 		textDisplayToday.setEditable(false);
-		textDisplayToday.setBackground(SystemColor.inactiveCaptionBorder);
-		textDisplayToday.setBounds(356, 42, 119, 164);
+		textDisplayToday.setBackground(new Color(240, 255, 255));
+		textDisplayToday.setBounds(356, 31, 124, 184);
 		frameMain.getContentPane().add(textDisplayToday);
 		
 		// Panel to hold the upcoming task button 
-		panelUpcoming = new Panel();
-		panelUpcoming.setBackground(Color.LIGHT_GRAY);
-		panelUpcoming.setBounds(349, 10, 138, 205);
+		panelUpcoming = new JPanel();
+		panelUpcoming.setBackground(new Color(204, 224, 250));
+		panelUpcoming.setBounds(349, 0, 138, 215);
 		frameMain.getContentPane().add(panelUpcoming);
 				
 		// This is the button for upcoming task
-		buttomUpcoming = new Button("Upcoming Tasks");
+		buttomUpcoming = new JButton("Upcoming Tasks");
 		buttomUpcoming.setFont(new Font("Cambria", Font.BOLD, 12));
-		buttomUpcoming.setForeground(SystemColor.window);
+		buttomUpcoming.setForeground(new Color(224, 255, 255));
 		buttomUpcoming.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 		    // Insert here the response of pressing button
 				clickUpcoming();
 			}
 		});
-		buttomUpcoming.setBackground(SystemColor.activeCaption);
+		buttomUpcoming.setBackground(new Color(100, 149, 237));
 		panelUpcoming.add(buttomUpcoming);
 	}
 
@@ -162,15 +138,18 @@ public class WhatsUpNextGUI {
 	private void intializeMainPart() {
 
 		// main display area for feedback
-		textDisplayMain = new TextArea();
-		textDisplayMain.setText("---- Please enter command from editPane below ----\r\n");
+		textDisplayMain = new JTextArea();
+		textDisplayMain.setFont(new Font("Courier New", Font.BOLD, 12));
+		textDisplayMain.setForeground(new Color(25, 25, 112));
+		textDisplayMain.setText("---Please enter command into editPane below:\r\n");
 		textDisplayMain.setEditable(false);
-		textDisplayMain.setBackground(UIManager.getColor("InternalFrame.inactiveBorderColor"));
+		textDisplayMain.setBackground(new Color(240, 255, 255));
 		textDisplayMain.setBounds(10, 31, 328, 184);
 		frameMain.getContentPane().add(textDisplayMain);
 
         // This is the textFiled that user can edit, for entering command
-		textInput = new TextField();
+		textInput = new JTextField();
+		textInput.setBackground(new Color(240, 255, 255));
 		textInput.setFont(new Font("Dialog", Font.PLAIN, 13));
 		textInput.setBounds(10, 230, 366, 23);
 		frameMain.getContentPane().add(textInput);
@@ -191,6 +170,9 @@ public class WhatsUpNextGUI {
 		
 		// This is the button that user press to execute command
 		JButton buttonEnter = new JButton(" Enter ");
+		buttonEnter.setForeground(new Color(224, 255, 255));
+		buttonEnter.setFont(new Font("Cambria", Font.BOLD, 12));
+		buttonEnter.setBackground(new Color(70, 130, 180));
 		buttonEnter.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -212,7 +194,7 @@ public class WhatsUpNextGUI {
 
 		// label for welcome message
 		labelWelcome = new JLabel(STRING_WELCOME);
-		labelWelcome.setForeground(Color.DARK_GRAY);
+		labelWelcome.setForeground(new Color(0, 0, 128));
 		labelWelcome.setBounds(10, 10, 328, 15);
 		labelWelcome.setFont(new Font("Cambria", Font.BOLD, 12));
 		frameMain.getContentPane().add(labelWelcome);
@@ -228,10 +210,10 @@ public class WhatsUpNextGUI {
 		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/UI/iconGUI.png")));
 		frameMain.setType(Type.POPUP);
 		frameMain.setForeground(SystemColor.controlShadow);
-		frameMain.setFont(new Font("Cambria", Font.BOLD, 6));
+		frameMain.setFont(new Font("Cambria", Font.BOLD, 12));
 		frameMain.setTitle("WhatsUpNext");
-		frameMain.setBackground(Color.LIGHT_GRAY);
-		frameMain.getContentPane().setBackground(SystemColor.activeCaptionBorder);
+		frameMain.setBackground(Color.GRAY);
+		frameMain.getContentPane().setBackground(new Color(204, 224, 250));
 		frameMain.getContentPane().setLayout(null);
 	}
 	

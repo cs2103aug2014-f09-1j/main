@@ -1,7 +1,5 @@
 
 
-
-
 import java.util.ArrayList;
 
 /*
@@ -16,12 +14,12 @@ public class logic {
 	public static String DELETED_Message = "Task successfully added";
 	public static String UPDATED_Message = "Task successfully added";
 	public static String SEARCH_Message = "Task successfully added";
-	public static String LABELED_Message Task successfully added;
-	public static String UNDO_Message Task successfully added;
+	public static String LABELED_Message = "Task successfully added";
+	public static String UNDO_Message = "Task successfully added";
 	
 	
 	public static void main(String[] args) {
-		String 
+		 
 
 	}
 	
@@ -29,19 +27,19 @@ public class logic {
 		
 	}
 	
-	public static String addTask() {
-		return 
-	}
-	
-	public static String viewTask() {
+	public static void addTask() {
 		
 	}
 	
-	public static String updateTask() {
+	public static void viewTask() {
 		
 	}
 	
-	public static String deleteTask() {
+	public static void updateTask() {
+		
+	}
+	
+	public static void deleteTask() {
 		
 	}
 }

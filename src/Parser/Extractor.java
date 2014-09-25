@@ -22,7 +22,7 @@ public class Extractor {
 	 */
 	public void extractorAdd(){
 		
-		// first word is assumed to be action type
+		// first word is assumed to be action type: add
 		String taskDetail = removeFirstWord(input); 
 
 		// determine case: add by deadline or timeframe
@@ -41,9 +41,68 @@ public class Extractor {
         }
 		
 	}
+	
+
+	public void extractorDelete(){
+		// first word is assumed to be action type :delete
+		String deleteDetail = removeFirstWord(input); 
+		
+		if (countWords(deleteDetail)==1 ){
+			if (deleteDetail.equalsIgnoreCase("deadline")){
+				// case deadline
+				deleteCaseDeadline();
+			    return;
+			} else if(isDate(deleteDetail)){
+			    // case Date
+				deleteCaseDate(deleteDetail);
+				return;
+			} else {
+			    // case ID
+				deleteCaseID(deleteDetail);
+				return;
+			}
+		} else {
+	        Pattern fromPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
+	        Matcher fromMatcher = fromPattern.matcher(deleteDetail);
+	        if (fromMatcher.find()){
+	        	// case timeframe
+	        	deleteCaseTimeFrame(deleteDetail);
+	        	return;
+	        } else {
+	        	// case Date
+	        	deleteCaseDate(deleteDetail);
+	        	return;
+	        }
+		}				
+	}
+
+
+	
+
+	private void deleteCaseTimeFrame(String deleteDetail) {
+		task.setDeleteType("TIMEFRAME");
+		splitTo(deleteDetail);
+	}
+
+	private void deleteCaseID(String deleteDetail) {
+		task.setDeleteType("ID");
+		task.setDescription(deleteDetail);
+	}
+
+	private void deleteCaseDate(String deleteDetail) {
+		task.setDeleteType("DATE");
+		task.setEndTime(deleteDetail);
+	}
+
+	private void deleteCaseDeadline() {
+		task.setDeleteType("DEADLINE");
+		task.setEndTime("NOW");		
+	}
+	
 
 	/**
-	 * * this method splits input based on keyword "from" and "to"
+	 * * For Add
+	 * this method splits input based on keyword "from" and "to"
 	 * @param operand_string
 	 * @param task_detail
 	 * @return outputString
@@ -58,8 +117,8 @@ public class Extractor {
 	}
 
 	/**
+	 * For Add
 	 *  this method splits input based on keyword "by"
-	 * @param operand_string
 	 * @param task_detail
 	 * @return
 	 */
@@ -69,6 +128,19 @@ public class Extractor {
 		task.setEndTime(details[1]);
 	}
 	
+	/**
+	 * For Delete
+	 *  this method splits input based on keyword "to"
+	 * @param delete_detail
+	 * @return
+	 */
+	private void splitTo(String delete_detail) {
+		// remove "from"
+		delete_detail=removeFirstWord(delete_detail);
+		String[] details = delete_detail.split("\\s+(T|t)(O|o)\\s+");	
+		task.setStartTime(details[0]);
+		task.setEndTime(details[1]);
+	}
 	
 	// this method returns the first word of an input string
     private static String getFirstWord(String userCommand) {
@@ -81,4 +153,21 @@ public class Extractor {
 		return userCommand.replace(getFirstWord(userCommand), "").trim();
 	}
 	
+	// this method counts number of words in a string
+	private int countWords (String input) {
+		String trim = input.trim();
+		if (trim.isEmpty()) return 0;
+		return trim.split("\\s+").length; //separate string around spaces
+	}
+	
+	private boolean isDate(String input){
+        Pattern DatePatternSix = Pattern.compile("\\d\\d\\d\\d\\d\\d");
+        Pattern DatePatternEight = Pattern.compile("\\d\\d\\d\\d\\d\\d\\d\\d");
+        Matcher DateMatcherSix = DatePatternSix.matcher(input);
+        Matcher DateMatcherEight = DatePatternEight.matcher(input);
+		if (DateMatcherSix.find() || DateMatcherEight.find()){
+			return true;
+		}
+		return false;
+	}
 }

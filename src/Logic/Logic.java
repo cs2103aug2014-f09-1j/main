@@ -1,7 +1,6 @@
 /*
  * This is the Logic class.
  */
-
 package Logic;
 
 import Structure.Task;
@@ -42,9 +41,11 @@ public class Logic {
 	
 	public static String addTask(Task task) {
 		int task_ID = numberOfTasks + 1;
+		numberOfTasks++;
 		
 		list.add(task_ID, task);
 		
+		sort();
 		return MESSAGE_ADDED;
 	}
 	
@@ -92,9 +93,7 @@ public class Logic {
 		for (int i = 0; i < numberOfTasks; i++) {
 			Task temp = new Task();
 			list.add(i+1, temp);
-			/*
-			 * Reading in every element and creating the list.
-			 */
+			// TODO: Reading in every element as a Task.
 		}
 	}	
 	
@@ -105,6 +104,7 @@ public class Logic {
 	
 	public static void deleteById(int id) {
 		list.remove(id);
+		numberOfTasks--;
 	}
 	
 	public static void deleteByDeadline(int time) {
@@ -121,6 +121,9 @@ public class Logic {
 		
 	public static void viewAll() {		
 	}	
+	
+	public static void sort() {
+	}
 }
 
 

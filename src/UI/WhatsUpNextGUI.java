@@ -3,7 +3,6 @@ package UI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import java.awt.EventQueue;
 import java.awt.Color;
 import java.awt.Font;
@@ -24,8 +23,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.UnsupportedLookAndFeelException;
 
+import Logic.Logic;
 import Parser.Parser;
+import Structure.Task;
 
 /*
  * This class is used for GUI testing of software WhatsUpNext
@@ -45,22 +47,23 @@ public class WhatsUpNextGUI {
 	private JTextArea textDisplayToday;
 	
 	private Parser parser;
-	/**
-	 * @wbp.nonvisual location=274,-3
-	 */
-
 
 	
 	/**
 	 * Launch the application.
-	 * set window visibility and size
+	 * Sets window visibility and size.
 	 */
 	public static void main(String[] args) {
 		try {
 		    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		    System.out.println(UIManager.getLookAndFeel().toString());
-		} catch (Exception e) {
-		    e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
 		}
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -88,21 +91,78 @@ public class WhatsUpNextGUI {
 	 */
 	private void initialize() {
 		
-		initializeFrame();
+		initializeApplicationFrame();
 	
 		intializeWelcomeMessage();		
 
-		intializeMainPart();
-
-		intializeUpcoming();
+		intializeUpcomingTasks();
 		
+		initializeMain();
+		
+	}
+	
+	/**
+	 * Initialize frame of the application
+	 */
+	private void initializeApplicationFrame() {	
+		frameMain = new JFrame();
+		frameMain.setResizable(false);
+		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/UI/iconGUI.png")));
+		frameMain.setType(Type.POPUP);
+		frameMain.setForeground(SystemColor.controlShadow);
+		frameMain.setFont(new Font("Cambria", Font.BOLD, 12));
+		frameMain.setTitle("WhatsUpNext");
+		frameMain.setBackground(Color.GRAY);
+		frameMain.getContentPane().setBackground(new Color(204, 224, 250));
+		frameMain.getContentPane().setLayout(null);
+	}
+	
+	/**
+	 * Initialize welcome message
+	 */
+	private void intializeWelcomeMessage() {
+		
+		appendDateToWelcomeMessage();
+
+		initializeWelcomeMessageLabel();
+		
+	}
+
+	/**
+	 * Gets the current date and completes the welcome message
+	 */
+	private void appendDateToWelcomeMessage() {
+		DateFormat dateFormat = new SimpleDateFormat("EEE, yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance();
+		STRING_WELCOME = STRING_WELCOME + dateFormat.format(cal.getTime());
+	}
+
+	/**
+	 * Creates the label for welcome message
+	 */
+	private void initializeWelcomeMessageLabel() {
+		labelWelcome = new JLabel(STRING_WELCOME);
+		labelWelcome.setForeground(new Color(0, 0, 128));
+		labelWelcome.setBounds(10, 10, 328, 15);
+		labelWelcome.setFont(new Font("Cambria", Font.BOLD, 12));
+		frameMain.getContentPane().add(labelWelcome);
 	}
 	
 	/**
 	 * Initialize upcoming tasks part
 	 */
-	private void intializeUpcoming() {
-		// display area for upcoming tasks
+	private void intializeUpcomingTasks() {
+		
+		initializeUpcomingTasksTextDisplay();
+		
+		initializeUpcomingTasksButton();
+	
+	}
+
+	/**
+	 *  Display area for upcoming tasks
+	 */
+	private void initializeUpcomingTasksTextDisplay() {
 		textDisplayToday = new JTextArea();
 		textDisplayToday.setFont(new Font("Courier New", Font.BOLD, 12));
 		textDisplayToday.setForeground(new Color(25, 25, 112));
@@ -110,20 +170,24 @@ public class WhatsUpNextGUI {
 		textDisplayToday.setBackground(new Color(240, 255, 255));
 		textDisplayToday.setBounds(356, 31, 124, 184);
 		frameMain.getContentPane().add(textDisplayToday);
-		
+	}
+	
+	/**
+	 * Initializes the button panel container and the clickable button
+	 */
+	private void initializeUpcomingTasksButton() {
 		// Panel to hold the upcoming task button 
 		panelUpcoming = new JPanel();
 		panelUpcoming.setBackground(new Color(204, 224, 250));
 		panelUpcoming.setBounds(349, 0, 138, 215);
 		frameMain.getContentPane().add(panelUpcoming);
 				
-		// This is the button for upcoming task
+		// Button for upcoming task
 		buttomUpcoming = new JButton("Upcoming Tasks");
 		buttomUpcoming.setFont(new Font("Cambria", Font.BOLD, 12));
 		buttomUpcoming.setForeground(new Color(224, 255, 255));
 		buttomUpcoming.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		    // Insert here the response of pressing button
 				clickUpcoming();
 			}
 		});
@@ -135,40 +199,20 @@ public class WhatsUpNextGUI {
 	/**
 	 * Initialize main part: button, input area, mainDisplay
 	 */
-	private void intializeMainPart() {
+	private void initializeMain() {
 
-		// main display area for feedback
-		textDisplayMain = new JTextArea();
-		textDisplayMain.setFont(new Font("Courier New", Font.BOLD, 12));
-		textDisplayMain.setForeground(new Color(25, 25, 112));
-		textDisplayMain.setText("---Please enter command into editPane below:\r\n");
-		textDisplayMain.setEditable(false);
-		textDisplayMain.setBackground(new Color(240, 255, 255));
-		textDisplayMain.setBounds(10, 31, 328, 184);
-		frameMain.getContentPane().add(textDisplayMain);
-
-        // This is the textFiled that user can edit, for entering command
-		textInput = new JTextField();
-		textInput.setBackground(new Color(240, 255, 255));
-		textInput.setFont(new Font("Dialog", Font.PLAIN, 13));
-		textInput.setBounds(10, 230, 366, 23);
-		frameMain.getContentPane().add(textInput);
-		// Add listening for 'enter' 
-		// So by pressing key, the command is to be executed
-		textInput.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				int key = e.getKeyCode();
-			    if (key == KeyEvent.VK_ENTER) {
-			         Toolkit.getDefaultToolkit().beep(); 
-			         clickEnter();
-			         textInput.setText(""); // clean input area
-			    }
-			}	
-		 }
-		);		
+		initializeMainEnterButton();
 		
-		// This is the button that user press to execute command
+		initializeMainUserCLI();
+		
+		initializeMainTextDisplay();
+		
+	}
+
+	/**
+	 * Creates the button that users press to execute command
+	 */
+	private void initializeMainEnterButton() {
 		JButton buttonEnter = new JButton(" Enter ");
 		buttonEnter.setForeground(new Color(224, 255, 255));
 		buttonEnter.setFont(new Font("Cambria", Font.BOLD, 12));
@@ -184,50 +228,53 @@ public class WhatsUpNextGUI {
 	}
 
 	/**
-	 * Initialize welcome message
+	 * Creates the text field that user can edit, for entering command
 	 */
-	private void intializeWelcomeMessage() {
-		// get current date and complete welcome message
-		DateFormat dateFormat = new SimpleDateFormat("EEE, yyyy-MM-dd");
-		Calendar cal = Calendar.getInstance();
-		STRING_WELCOME = STRING_WELCOME + dateFormat.format(cal.getTime());
-
-		// label for welcome message
-		labelWelcome = new JLabel(STRING_WELCOME);
-		labelWelcome.setForeground(new Color(0, 0, 128));
-		labelWelcome.setBounds(10, 10, 328, 15);
-		labelWelcome.setFont(new Font("Cambria", Font.BOLD, 12));
-		frameMain.getContentPane().add(labelWelcome);
+	private void initializeMainUserCLI() {
+		textInput = new JTextField();
+		textInput.setBackground(new Color(240, 255, 255));
+		textInput.setFont(new Font("Dialog", Font.PLAIN, 13));
+		textInput.setBounds(10, 230, 366, 23);
+		frameMain.getContentPane().add(textInput);
+		// Pressing 'enter' key causes the command to be executed
+		textInput.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int key = e.getKeyCode();
+			    if (key == KeyEvent.VK_ENTER) {
+			         Toolkit.getDefaultToolkit().beep(); 
+			         clickEnter();
+			         textInput.setText(""); // clean input area
+			    }
+			}	
+		 }
+		);
 	}
 
-	
 	/**
-	 * Initialize frame
+	 * Creates the main display area for program feedback
 	 */
-	private void initializeFrame() {	
-		frameMain = new JFrame();
-		frameMain.setResizable(false);
-		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/UI/iconGUI.png")));
-		frameMain.setType(Type.POPUP);
-		frameMain.setForeground(SystemColor.controlShadow);
-		frameMain.setFont(new Font("Cambria", Font.BOLD, 12));
-		frameMain.setTitle("WhatsUpNext");
-		frameMain.setBackground(Color.GRAY);
-		frameMain.getContentPane().setBackground(new Color(204, 224, 250));
-		frameMain.getContentPane().setLayout(null);
+	private void initializeMainTextDisplay() {
+		textDisplayMain = new JTextArea();
+		textDisplayMain.setFont(new Font("Courier New", Font.BOLD, 12));
+		textDisplayMain.setForeground(new Color(25, 25, 112));
+		textDisplayMain.setText("---Please enter command into editPane below:\r\n");
+		textDisplayMain.setEditable(false);
+		textDisplayMain.setBackground(new Color(240, 255, 255));
+		textDisplayMain.setBounds(10, 31, 328, 184);
+		frameMain.getContentPane().add(textDisplayMain);
 	}
 	
 	
 	/**
-	 * This method is activated as "input command"
-	 * It is called whenever user click input button, or press enter key
+	 * This method is activated as 'input command'
+	 * It is called whenever user clicks the input button or presses the enter key
 	 * */
 	public void clickEnter(){
 		commandInput = textInput.getText();
-		// TODO parse command
 		parser = new Parser(commandInput);
-		parser.parseInput();
-		String feedback = "dummy";
+		Task currentTask = parser.parseInput();
+		String feedback = "Logic.execute(task)";//Logic.execute(currentTask);
 		displayFeedback(feedback);
 		clickUpcoming();
 	}
@@ -240,7 +287,7 @@ public class WhatsUpNextGUI {
 	}
 	
 	/**
-	 * called when user click Upcoming Tasks button
+	 * Callback function for when the user clicks the Upcoming Tasks button
 	 * or when new execution has been activated
 	 * */
 	private void clickUpcoming() {

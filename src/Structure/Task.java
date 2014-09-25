@@ -4,11 +4,12 @@ import Structure.Operation.OPCODE;
 
 public class Task {
 
-	private static final int OPERAND_SIZE = 4;
+	private static final int OPERAND_SIZE = 5;
 	private static final int INDEX_FOR_DESCRIPTION = 0;
 	private static final int INDEX_FOR_STARTTIME = 1;
 	private static final int INDEX_FOR_ENDTIME = 2;
 	private static final int INDEX_FOR_DELETETYPE = 3;
+	private static final int INDEX_FOR_UPDATETYPE = 4;
 	
 	private OPCODE opcode;
 	private String[] operand;
@@ -54,10 +55,17 @@ public class Task {
 		return operand[INDEX_FOR_DELETETYPE];
 	}
 	
+	public String getUpdateType(){
+		return operand[INDEX_FOR_UPDATETYPE];
+	}
+	
+	
 	public void setDeleteType(String deleteType){
 		operand[INDEX_FOR_DELETETYPE] = deleteType;
 	}
 	
-	
+	public void setUpdateType(String updateType){
+		operand[INDEX_FOR_UPDATETYPE] = updateType;
+	}
 	
 }

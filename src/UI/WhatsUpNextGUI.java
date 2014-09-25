@@ -188,7 +188,7 @@ public class WhatsUpNextGUI {
 	 */
 	private void intializeWelcomeMessage() {
 		// get current date and complete welcome message
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd, EEE");
+		DateFormat dateFormat = new SimpleDateFormat("EEE, yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
 		STRING_WELCOME = STRING_WELCOME + dateFormat.format(cal.getTime());
 

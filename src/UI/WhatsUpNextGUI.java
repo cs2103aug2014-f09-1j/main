@@ -104,7 +104,7 @@ public class WhatsUpNextGUI {
 	private void intializeUpcoming() {
 		// display area for upcoming tasks
 		textDisplayToday = new JTextArea();
-		textDisplayToday.setFont(new Font("Cordia New", Font.BOLD, 12));
+		textDisplayToday.setFont(new Font("Courier New", Font.BOLD, 12));
 		textDisplayToday.setForeground(new Color(25, 25, 112));
 		textDisplayToday.setEditable(false);
 		textDisplayToday.setBackground(new Color(240, 255, 255));
@@ -113,7 +113,7 @@ public class WhatsUpNextGUI {
 		
 		// Panel to hold the upcoming task button 
 		panelUpcoming = new JPanel();
-		panelUpcoming.setBackground(new Color(176, 196, 222));
+		panelUpcoming.setBackground(new Color(204, 224, 250));
 		panelUpcoming.setBounds(349, 0, 138, 215);
 		frameMain.getContentPane().add(panelUpcoming);
 				
@@ -213,7 +213,7 @@ public class WhatsUpNextGUI {
 		frameMain.setFont(new Font("Cambria", Font.BOLD, 12));
 		frameMain.setTitle("WhatsUpNext");
 		frameMain.setBackground(Color.GRAY);
-		frameMain.getContentPane().setBackground(new Color(176, 196, 222));
+		frameMain.getContentPane().setBackground(new Color(204, 224, 250));
 		frameMain.getContentPane().setLayout(null);
 	}
 	

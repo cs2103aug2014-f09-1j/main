@@ -17,8 +17,8 @@ public class Extractor {
 	}
 	
 	/**
-	 *  This method extracts information from String input
-	 * @return String vector containing info
+	 *  This method extracts ADD information from String input
+	 *  Add modify the Task object accordingly
 	 */
 	public void extractorAdd(){
 		
@@ -42,8 +42,12 @@ public class Extractor {
 		
 	}
 	
-
+	/**
+	 *  This method extracts delete information from String input
+	 *  Add modify the Task object accordingly
+    */
 	public void extractorDelete(){
+		// TODO  the rule for judging delete type may change
 		// first word is assumed to be action type :delete
 		String deleteDetail = removeFirstWord(input); 
 		
@@ -161,6 +165,7 @@ public class Extractor {
 	}
 	
 	private boolean isDate(String input){
+		// TODO the rule for judging date may change
         Pattern DatePatternSix = Pattern.compile("\\d\\d\\d\\d\\d\\d");
         Pattern DatePatternEight = Pattern.compile("\\d\\d\\d\\d\\d\\d\\d\\d");
         Matcher DateMatcherSix = DatePatternSix.matcher(input);

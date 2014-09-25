@@ -1,7 +1,9 @@
 /*
  *  This is the Parser class for WhatsUpNext
  */
+package Parser;
 
+import Structure.Operation.OPCODE;
 import java.util.StringTokenizer;
 
 public class Parser {
@@ -12,11 +14,6 @@ public class Parser {
 	private final String[] ALIASES_DELETE = {"delete", "del", "d"};
 	private final String[] ALIASES_HELP = {"help", "h", "?"};
 	private final String[] ALIASES_EXIT = {"exit", "e", "quit", "q"};
-	
-	enum OPCODE {
-		ADD, VIEW, UPDATE, DELETE, HELP, INVALID, EXIT   
-	};
-	
 	
 	private static final int INDEX_FOR_TASK = 0;
 	private static final int INDEX_FOR_TASKID = 0;

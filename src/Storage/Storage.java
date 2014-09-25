@@ -1,4 +1,4 @@
-package storage;
+package Storage;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

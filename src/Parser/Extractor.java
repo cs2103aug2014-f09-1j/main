@@ -36,48 +36,56 @@ public class Extractor {
 	 *  This method extracts information from String input
 	 * @return String vector containing info
 	 */
-	public String[] extractor(){
+	public String[] extractorAdd(){
 		String[] operand_string = new String[INDEX_FOR_ENDTIME+1];
-		String[] strList = new String[MAX_COMPONENT_ALLOWED];
 		
 		// first word is assumed to be action type
-		// String action = getFirstWord(string_full);
 		String task_detail = removeFirstWord(string_full); 
 
-		// parsing
-        int caseID = -1;
+		// determine case: add by deadline or timeframe
+		// define keyword
         Pattern byPattern = Pattern.compile("\\s+(B|b)(Y|y)\\s+");
         Pattern fromPattern = Pattern.compile("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
         Matcher byMatcher = byPattern.matcher(task_detail);
         Matcher fromMatcher = fromPattern.matcher(task_detail);
+        
         if (byMatcher.find()){
-        	caseID = 1;
+        	return splitBy(operand_string, task_detail);
         }else if (fromMatcher.find()){
-        	caseID = 2;
+        	return splitFromTo(operand_string, task_detail);
         }else{
         	throw new Error("no keyword");
         }
-        
-        switch (caseID){
-        	case 1:{
-        	String[] details = task_detail.split("\\s+(B|b)(Y|y)\\s+");	
-        	operand_string[INDEX_FOR_TASK] = details[0];
-        	operand_string[INDEX_FOR_ENDTIME] = details[1];
-        	break;
-        	}
-        	case 2:{
-        	String[] details = task_detail.split("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
-        	operand_string[INDEX_FOR_TASK] = details[0];
-        	String details_time = details[1];
-        	String[] details_time_splitted = details_time.split("\\s+(T|t)(O|o)\\s+");
-        	operand_string[INDEX_FOR_STARTTIME] = details_time_splitted[0];
-        	operand_string[INDEX_FOR_ENDTIME] = details_time_splitted[1];
-        	break;
-        	}
-        }
 		
+	}
+
+	/**
+	 * * this method splits input based on keyword "from" and "to"
+	 * @param operand_string
+	 * @param task_detail
+	 * @return outputString
+	 */
+	private String[] splitFromTo(String[] operand_string, String task_detail) {
+		String[] details = task_detail.split("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
+		operand_string[INDEX_FOR_TASK] = details[0];
+		String details_time = details[1];
+		String[] details_time_splitted = details_time.split("\\s+(T|t)(O|o)\\s+");
+		operand_string[INDEX_FOR_STARTTIME] = details_time_splitted[0];
+		operand_string[INDEX_FOR_ENDTIME] = details_time_splitted[1];
 		return operand_string;
-		
+	}
+
+	/**
+	 *  this method splits input based on keyword "by"
+	 * @param operand_string
+	 * @param task_detail
+	 * @return
+	 */
+	private String[] splitBy(String[] operand_string, String task_detail) {
+		String[] details = task_detail.split("\\s+(B|b)(Y|y)\\s+");	
+		operand_string[INDEX_FOR_TASK] = details[0];
+		operand_string[INDEX_FOR_ENDTIME] = details[1];
+		return operand_string;
 	}
 	
 	

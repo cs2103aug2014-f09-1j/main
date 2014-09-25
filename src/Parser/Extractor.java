@@ -10,10 +10,14 @@ public class Extractor {
 
 	private String input;
 	private Task task;
+	private int taskID;
 	
 	public Extractor(Task task, String input){
 		this.input = input;
 		this.task = task;
+	}
+	public int gettaskID(){
+		return taskID;
 	}
 	
 	/**
@@ -80,6 +84,34 @@ public class Extractor {
 		}				
 	}
 
+	
+	public void extractorUpdate(){
+		// first word is action type: update
+		String updateDetail = removeFirstWord(input);
+		// get task ID, remove from detail string
+		taskID = Integer.parseInt(getFirstWord(updateDetail));
+		updateDetail = removeFirstWord(updateDetail);
+		
+		Pattern byPattern = Pattern.compile("(B|b)(Y|y)\\s+");
+        Pattern fromPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
+        Matcher byMatcher = byPattern.matcher(updateDetail);
+        Matcher fromMatcher = fromPattern.matcher(updateDetail);
+        
+        if (byMatcher.find()){
+        	// removing by
+        	task.setEndTime(removeFirstWord(updateDetail));
+        	task.setUpdateType("DATE");
+        } else if (fromMatcher.find()){
+        	// remove from
+        	splitTo(updateDetail);
+        	task.setUpdateType("TIMEFRAME");
+        	return;
+        } else {
+        	task.setDescription(updateDetail);
+        	task.setUpdateType("DESCRIPTION");
+        }
+		
+	}
 
 	
 

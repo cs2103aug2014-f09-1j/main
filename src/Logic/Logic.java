@@ -13,9 +13,9 @@ public class Logic {
 	public static ArrayList<Task> list = new ArrayList<Task>();
 	public static ArrayList<String> output = new ArrayList<String>();
 	
-	public static String MESSAGE_ADDED = "Task successfully added";
-	public static String MESSAGE_DELETED = "Task successfully deleted";
-	public static String MESSAGE_UPDATED = "Task successfully updated";
+	public static String MESSAGE_ADDED = "A task is successfully added";
+	public static String MESSAGE_DELETED = "A task is successfully deleted";
+	public static String MESSAGE_UPDATED = "A task is successfully updated";
 	
 	static int numberOfTasks = 0;
 	
@@ -74,6 +74,7 @@ public class Logic {
 	
 	public static void viewTask() {
 		
+		getOutput();
 	}
 	
 	
@@ -109,6 +110,11 @@ public class Logic {
 	public static void deleteByDeadline(int time) {
 	}
 	
+	public static void updateByDeadline(int time) {
+	}
+	
+	public static void updateByInfo(String task_info) {
+	}
 	
 	public static void viewNext(Task task) {
 	}

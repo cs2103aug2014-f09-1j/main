@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.Scanner;
+
 import Parser.*;
 public class ParserTest {
 
@@ -19,8 +20,9 @@ public class ParserTest {
 		input = scanner.nextLine();
 		Parser parser = new Parser(input);
 		parser.parseInput();
-		String output = parser.getOpcode();
+		String output = parser.getTask().getOpcode().toString();
 		assertEquals(description, expected, output);
+		
 	}
 
 }

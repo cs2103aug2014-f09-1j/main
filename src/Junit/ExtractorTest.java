@@ -3,24 +3,30 @@ package Junit;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
 import Parser.Extractor;
+import Structure.Task;
 
 public class ExtractorTest {
 
 	@Test
 	public void testAdd() {
-		Extractor ex = new Extractor("add dine from 2am tmr to 9");
-		String[] output = ex.extractorAdd();
-		String[] expected = {"dine", "2am tmr","9"};
-		assertArrayEquals(output,expected);
+		Task task = new Task();
+		Extractor ex = new Extractor(task,"add dine from 2am tmr to 9");
+		ex.extractorAdd();
+		assertEquals("Test Add 1 - description", "dine", task.getDescription());
+		assertEquals("Test Add 1 - startTime", "2am tmr", task.getStartTime());
+		assertEquals("Test Add 1 - endTime", "9", task.getEndTime());
 	}
 	
 	@Test
 	public void testAdd2() {
-		Extractor ex = new Extractor("add dine By 1pm");
-		String[] output = ex.extractorAdd();
-		String[] expected = {"dine", null,"1pm"};
-		assertArrayEquals(output,expected);
+		Task task = new Task();
+		Extractor ex = new Extractor(task,"add dine By 1pm");
+		ex.extractorAdd();
+		assertEquals("Test Add 2 - description", "dine", task.getDescription());
+		assertEquals("Test Add 2 - startTime", null, task.getStartTime());
+		assertEquals("Test Add 2 - endTime", "1pm", task.getEndTime());
 	}
 	
 

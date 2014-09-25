@@ -4,6 +4,7 @@
 package Parser;
 
 import Structure.Operation.OPCODE;
+import Structure.Task;
 import java.util.StringTokenizer;
 
 public class Parser {
@@ -15,35 +16,30 @@ public class Parser {
 	private final String[] ALIASES_HELP = {"help", "h", "?"};
 	private final String[] ALIASES_EXIT = {"exit", "e", "quit", "q"};
 	
-	private static final int INDEX_FOR_TASK = 0;
-	private static final int INDEX_FOR_TASKID = 0;
-	private static final int INDEX_FOR_STARTTIME = 1;
-	private static final int INDEX_FOR_ENDTIME = 2;
-	
 	private String input;
-	private OPCODE opcode;
-	private String[] operand;
+	private Task task;
 	
 	public Parser(String input){
 		this.input = input;
-		this.setOpcode(null);
-		this.operand = null;
+		this.setTask(new Task());
 	}
 	
 	public void parseInput(){
 		StringTokenizer st = new StringTokenizer(input);
 		if(st.hasMoreTokens()){
 			String operation = st.nextToken();
-			this.setOpcode(determineOperation(operation));
+			task.setOpcode(determineOperation(operation));
+			parseTask();
 		} else {
-			this.setOpcode(OPCODE.INVALID);
+			task.setOpcode(OPCODE.INVALID);
 		}
 	}
 	
-	public void parseOperand(OPCODE opcode, String operand){
-		
-		switch (opcode) {
+	public void parseTask(){
+		Extractor ex = new Extractor(task, input);
+		switch (task.getOpcode()) {
 		case ADD:
+			ex.extractorAdd();
 			break;
 		case EXIT:
 			System.exit(0);
@@ -126,12 +122,12 @@ public class Parser {
 		return false;
 	}
 
-	public String getOpcode() {
-		return opcode.toString();
+	public Task getTask() {
+		return task;
 	}
 
-	public void setOpcode(OPCODE opcode) {
-		this.opcode = opcode;
+	public void setTask(Task task) {
+		this.task = task;
 	}
 
 	

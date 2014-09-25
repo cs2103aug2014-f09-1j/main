@@ -24,7 +24,7 @@ public class Parser {
 		this.setTask(new Task());
 	}
 	
-	public void parseInput(){
+	public Task parseInput(){
 		StringTokenizer st = new StringTokenizer(input);
 		if(st.hasMoreTokens()){
 			String operation = st.nextToken();
@@ -33,6 +33,7 @@ public class Parser {
 		} else {
 			task.setOpcode(OPCODE.INVALID);
 		}
+		return task;
 	}
 	
 	public void parseTask(){
@@ -40,6 +41,9 @@ public class Parser {
 		switch (task.getOpcode()) {
 		case ADD:
 			ex.extractorAdd();
+			break;
+		case DELETE:
+			ex.extractorDelete();
 			break;
 		case EXIT:
 			System.exit(0);

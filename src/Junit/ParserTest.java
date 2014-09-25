@@ -1,9 +1,10 @@
+package Junit;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import java.util.Scanner;
-
+import Parser.*;
 public class ParserTest {
 
 	private Scanner scanner = new Scanner(System.in);

@@ -3,7 +3,7 @@
  */
 package Parser;
 
-import Structure.Operation.OPCODE;
+import Structure.OPCODE;
 import Structure.Task;
 import java.util.StringTokenizer;
 
@@ -136,6 +136,10 @@ public class Parser {
 
 	public void setTask(Task task) {
 		this.task = task;
+	}
+	
+	public int getTaskID(){
+		return taskID;
 	}
 
 	

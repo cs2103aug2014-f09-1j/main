@@ -59,15 +59,12 @@ public class Extractor {
 			if (deleteDetail.equalsIgnoreCase("deadline")){
 				// case deadline
 				deleteCaseDeadline();
-			    return;
 			} else if(isDate(deleteDetail)){
 			    // case Date
 				deleteCaseDate(deleteDetail);
-				return;
 			} else {
 			    // case ID
 				deleteCaseID(deleteDetail);
-				return;
 			}
 		} else {
 	        Pattern fromPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
@@ -75,11 +72,9 @@ public class Extractor {
 	        if (fromMatcher.find()){
 	        	// case timeframe
 	        	deleteCaseTimeFrame(deleteDetail);
-	        	return;
 	        } else {
 	        	// case Date
 	        	deleteCaseDate(deleteDetail);
-	        	return;
 	        }
 		}				
 	}

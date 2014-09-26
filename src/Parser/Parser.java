@@ -3,7 +3,7 @@
  */
 package Parser;
 
-import Structure.Operation.OPCODE;
+import Structure.OPCODE;
 import Structure.Task;
 import java.util.StringTokenizer;
 

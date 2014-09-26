@@ -5,7 +5,7 @@
 package Logic;
 
 import Structure.Task;
-import Structure.Operation.OPCODE;
+import Structure.OPCODE;
 import java.util.ArrayList;
 
 public class Logic {

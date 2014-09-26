@@ -137,6 +137,10 @@ public class Parser {
 	public void setTask(Task task) {
 		this.task = task;
 	}
+	
+	public int getTaskID(){
+		return taskID;
+	}
 
 	
 }

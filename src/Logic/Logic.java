@@ -1,7 +1,6 @@
 /*
  * This is the Logic class.
  */
-
 package Logic;
 
 import Structure.Task;
@@ -42,17 +41,22 @@ public class Logic {
 	
 	public static String addTask(Task task) {
 		int task_ID = numberOfTasks + 1;
+		numberOfTasks++;
 		
 		list.add(task_ID, task);
 		
+		sort();
 		return MESSAGE_ADDED;
 	}
 	
 	public static String deleteTask(Task temp) {
 		String deleteType = temp.getDeleteType();
-		
+		int id = 0;
+		// id = temp.getTaskID;
+				
 		switch (deleteType) {
 		case "ID":
+			deleteById(id);
 			break;
 		case "DEADLINE":
 			break;
@@ -67,7 +71,22 @@ public class Logic {
 		return MESSAGE_DELETED;
 	}	
 	
-	public static String updateTask(Task task) {
+	public static String updateTask(Task temp) {
+		String updateType = temp.getUpdateType();
+		int id = 0;
+		String info = temp.getDescription();
+		// id = temp.getTaskID;
+		
+		switch (updateType) {
+		case "DESCRIPTION":
+			updateInfo(id, info);
+			break;
+		case "DEADLINE":
+			
+			break;
+		case "TIMEFRAME":
+			break;
+		}
 		
 		return MESSAGE_UPDATED;
 	}	
@@ -86,34 +105,54 @@ public class Logic {
 	
 	
 	
-	
+	// This function needs to be changed.
 	public static void storeIntoList() {
 
 		for (int i = 0; i < numberOfTasks; i++) {
 			Task temp = new Task();
 			list.add(i+1, temp);
-			/*
-			 * Reading in every element and creating the list.
-			 */
+			// TODO: Reading in every element as a Task.
 		}
 	}	
 	
 	public static void getOutput() {
-		
+		//TODO: Return results.
 	}
 	
 	
 	public static void deleteById(int id) {
 		list.remove(id);
+		numberOfTasks--;
 	}
 	
-	public static void deleteByDeadline(int time) {
+	public static void deleteByDate(String time) {
+		
 	}
 	
-	public static void updateByDeadline(int time) {
+	public static void deleteByDeadline(String time) {
+		int id = 0;	
+		id = searchByDeadline(time);	
+		
+		list.remove(id);
+		numberOfTasks--;
 	}
 	
-	public static void updateByInfo(String task_info) {
+	public static void deleteByTimeFrame() {
+	}
+	
+	
+	
+	public static void updateInfo(int id, String info) {
+		Task temp = list.get(id);
+		temp.setDescription(info);
+	}
+	
+	public static void updateDeadline(int id, String time) {
+		Task temp = list.get(id);
+		temp.setEndTime(time);
+	}
+	
+	public static void updateByTimeFrame() {
 	}
 	
 	public static void viewNext(Task task) {
@@ -121,6 +160,36 @@ public class Logic {
 		
 	public static void viewAll() {		
 	}	
+	
+	public static int searchByDescription(String task_Info) {
+		int index = 0;
+		Task temp = list.get(0);
+		
+		while (!temp.getDescription().equalsIgnoreCase(task_Info)) {
+			index++;
+			temp = list.get(index);
+		}
+		
+		return index;
+	}
+	
+	public static int searchByDeadline(String time) {
+		int index = 0;
+		Task temp = list.get(0);
+		
+		while (!temp.getEndTime().equalsIgnoreCase(time)) {
+			index++;
+			temp = list.get(index);
+		}
+		
+		return index;
+	}
+	
+	public static void searchByDate() {
+	}
+	
+	public static void sort() {
+	}
 }
 
 

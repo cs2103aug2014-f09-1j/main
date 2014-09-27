@@ -30,10 +30,9 @@ import Parser.Parser;
 import Structure.Task;
 
 /*
- * This class is used for GUI testing of software WhatsUpNext
+ * This class is used for GUI of software WhatsUpNext
  */
 public class WhatsUpNextGUI {
-
 	
     private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";    
     private String commandInput;
@@ -42,9 +41,10 @@ public class WhatsUpNextGUI {
 	private JLabel labelWelcome;
 	private JTextArea textDisplayMain;
 	private JTextField textInput;
+	private JButton buttonEnter;
 	private JPanel panelUpcoming;
-	private JButton buttomUpcoming;
-	private JTextArea textDisplayToday;
+	private JButton buttonUpcoming;
+	private JTextArea textDisplayUpcoming;
 	
 	private Parser parser;
 
@@ -84,6 +84,28 @@ public class WhatsUpNextGUI {
 	 */
 	public WhatsUpNextGUI() {
 		initialize();
+		setComponentsNames();
+	}
+	
+	/**
+	 * Returns the main frame used in the GUI
+	 */
+	public JFrame getMainFrame() {
+		return frameMain;
+	}
+	
+	/**
+	 * Names every component used in the GUI
+	 */
+	private void setComponentsNames() {
+		frameMain.setName("frameMain");
+		labelWelcome.setName("labelWelcome");
+		textDisplayMain.setName("textDisplayMain");
+		textInput.setName("textInput");
+		buttonEnter.setName("buttonEnter");
+		panelUpcoming.setName("panelUpcoming");
+		buttonUpcoming.setName("buttonUpcoming");
+		textDisplayUpcoming.setName("textDisplayUpcoming");
 	}
 
 	/**
@@ -163,13 +185,13 @@ public class WhatsUpNextGUI {
 	 *  Display area for upcoming tasks
 	 */
 	private void initializeUpcomingTasksTextDisplay() {
-		textDisplayToday = new JTextArea();
-		textDisplayToday.setFont(new Font("Courier New", Font.BOLD, 12));
-		textDisplayToday.setForeground(new Color(25, 25, 112));
-		textDisplayToday.setEditable(false);
-		textDisplayToday.setBackground(new Color(240, 255, 255));
-		textDisplayToday.setBounds(356, 31, 124, 184);
-		frameMain.getContentPane().add(textDisplayToday);
+		textDisplayUpcoming = new JTextArea();
+		textDisplayUpcoming.setFont(new Font("Courier New", Font.BOLD, 12));
+		textDisplayUpcoming.setForeground(new Color(25, 25, 112));
+		textDisplayUpcoming.setEditable(false);
+		textDisplayUpcoming.setBackground(new Color(240, 255, 255));
+		textDisplayUpcoming.setBounds(356, 31, 124, 184);
+		frameMain.getContentPane().add(textDisplayUpcoming);
 	}
 	
 	/**
@@ -183,16 +205,16 @@ public class WhatsUpNextGUI {
 		frameMain.getContentPane().add(panelUpcoming);
 				
 		// Button for upcoming task
-		buttomUpcoming = new JButton("Upcoming Tasks");
-		buttomUpcoming.setFont(new Font("Cambria", Font.BOLD, 12));
-		buttomUpcoming.setForeground(new Color(224, 255, 255));
-		buttomUpcoming.addActionListener(new ActionListener() {
+		buttonUpcoming = new JButton("Upcoming Tasks");
+		buttonUpcoming.setFont(new Font("Cambria", Font.BOLD, 12));
+		buttonUpcoming.setForeground(new Color(224, 255, 255));
+		buttonUpcoming.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clickUpcoming();
 			}
 		});
-		buttomUpcoming.setBackground(new Color(100, 149, 237));
-		panelUpcoming.add(buttomUpcoming);
+		buttonUpcoming.setBackground(new Color(100, 149, 237));
+		panelUpcoming.add(buttonUpcoming);
 	}
 
 	
@@ -213,7 +235,7 @@ public class WhatsUpNextGUI {
 	 * Creates the button that users press to execute command
 	 */
 	private void initializeMainEnterButton() {
-		JButton buttonEnter = new JButton(" Enter ");
+		buttonEnter = new JButton(" Enter ");
 		buttonEnter.setForeground(new Color(224, 255, 255));
 		buttonEnter.setFont(new Font("Cambria", Font.BOLD, 12));
 		buttonEnter.setBackground(new Color(70, 130, 180));
@@ -233,7 +255,7 @@ public class WhatsUpNextGUI {
 	private void initializeMainUserCLI() {
 		textInput = new JTextField();
 		textInput.setBackground(new Color(240, 255, 255));
-		textInput.setFont(new Font("Dialog", Font.PLAIN, 13));
+		textInput.setFont(new Font("Courier New", Font.PLAIN, 12));
 		textInput.setBounds(10, 230, 366, 23);
 		frameMain.getContentPane().add(textInput);
 		// Pressing 'enter' key causes the command to be executed
@@ -293,6 +315,6 @@ public class WhatsUpNextGUI {
 	private void clickUpcoming() {
 		// TODO response for click upcoming
 		// get a list of most recent tasks and display
-		textDisplayToday.setText("No saved tasks!");		
+		textDisplayUpcoming.setText("No saved tasks!");		
 	}
 }

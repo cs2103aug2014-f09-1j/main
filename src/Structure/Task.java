@@ -1,6 +1,6 @@
 package Structure;
 
-import Structure.Operation.OPCODE;
+import Structure.OPCODE;
 
 public class Task {
 

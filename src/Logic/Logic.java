@@ -51,9 +51,12 @@ public class Logic {
 	
 	public static String deleteTask(Task temp) {
 		String deleteType = temp.getDeleteType();
-		
+		int id = 0;
+		// id = temp.getTaskID;
+				
 		switch (deleteType) {
 		case "ID":
+			deleteById(id);
 			break;
 		case "DEADLINE":
 			break;
@@ -70,12 +73,16 @@ public class Logic {
 	
 	public static String updateTask(Task temp) {
 		String updateType = temp.getUpdateType();
+		int id = 0;
+		String info = temp.getDescription();
+		// id = temp.getTaskID;
 		
 		switch (updateType) {
 		case "DESCRIPTION":
-			updateByInfo(temp.getDescription());
+			updateInfo(id, info);
 			break;
-		case "DATE":
+		case "DEADLINE":
+			
 			break;
 		case "TIMEFRAME":
 			break;
@@ -119,9 +126,15 @@ public class Logic {
 	}
 	
 	public static void deleteByDate(String time) {
+		
 	}
 	
 	public static void deleteByDeadline(String time) {
+		int id = 0;	
+		id = searchByDeadline(time);	
+		
+		list.remove(id);
+		numberOfTasks--;
 	}
 	
 	public static void deleteByTimeFrame() {
@@ -129,11 +142,14 @@ public class Logic {
 	
 	
 	
-	public static void updateByInfo(String task_Info) {
-		//TODO: 
+	public static void updateInfo(int id, String info) {
+		Task temp = list.get(id);
+		temp.setDescription(info);
 	}
 	
-	public static void updateByDeadline(String time) {
+	public static void updateDeadline(int id, String time) {
+		Task temp = list.get(id);
+		temp.setEndTime(time);
 	}
 	
 	public static void updateByTimeFrame() {

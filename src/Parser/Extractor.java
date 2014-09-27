@@ -117,20 +117,18 @@ public class Extractor {
 		String viewDetail = removeFirstWord(input); 
 		
 		if (countWords(viewDetail) == 1) {
-			if (viewDetail.equalsIgnoreCase("deadline")) {
-				deleteCaseDeadline();
-			} else if (isDate(viewDetail)) {
-				deleteCaseDate(viewDetail);
+			if (viewDetail.equalsIgnoreCase("all")) {
+				viewCaseAll();
+			} else if (viewDetail.equalsIgnoreCase("next")) {
+				viewCaseNext();
 			} else {
-				deleteCaseID(viewDetail);
+				viewCaseDate(viewDetail);
 			}
 		} else {
 	        Pattern fromKeywordPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
 	        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(viewDetail);
 	        if (fromKeywordMatcher.find()) {
-	        	deleteCaseTimeFrame(viewDetail);
-	        } else {
-	        	deleteCaseDate(viewDetail);
+	        	viewCaseTimeFrame(viewDetail);
 	        }
 		}
 	}
@@ -154,6 +152,24 @@ public class Extractor {
 	private void deleteCaseDeadline() {
 		task.setDeleteType("DEADLINE");
 		task.setEndTime("NOW");		
+	}
+	
+	private void viewCaseTimeFrame(String deleteDetail) {
+		task.setViewType("TIMEFRAME");
+		splitOnToKeyword(deleteDetail);
+	}
+
+	private void viewCaseDate(String deleteDetail) {
+		task.setViewType("DATE");
+		task.setEndTime(deleteDetail);
+	}
+
+	private void viewCaseNext() {
+		task.setViewType("NEXT");
+	}
+
+	private void viewCaseAll() {
+		task.setViewType("ALL");
 	}
 	
 

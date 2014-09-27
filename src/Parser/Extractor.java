@@ -16,103 +16,129 @@ public class Extractor {
 		this.input = input;
 		this.task = task;
 	}
-	public int gettaskID(){
+	
+	public int getTaskID(){
 		return taskID;
 	}
 	
 	/**
-	 *  This method extracts ADD information from String input
-	 *  Add modify the Task object accordingly
+	 *  Extracts ADD information from String input and
+	 *  modifies the Task object accordingly
 	 */
-	public void extractorAdd(){
-		
-		// first word is assumed to be action type: add
+	public void extractForAddTask(){
+		// First word is assumed to be action type: add
 		String taskDetail = removeFirstWord(input); 
 
-		// determine case: add by deadline or timeframe
-		// define keyword
-        Pattern byPattern = Pattern.compile("\\s+(B|b)(Y|y)\\s+");
-        Pattern fromPattern = Pattern.compile("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
-        Matcher byMatcher = byPattern.matcher(taskDetail);
-        Matcher fromMatcher = fromPattern.matcher(taskDetail);
+		// Determine 'add' case: add by deadline or time frame
+        Pattern byKeywordPattern = Pattern.compile("\\s+(B|b)(Y|y)\\s+");
+        Pattern fromKeywordPattern = Pattern.compile("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
+        Matcher byKeywordMatcher = byKeywordPattern.matcher(taskDetail);
+        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(taskDetail);
         
-        if (byMatcher.find()){
-        	splitBy(taskDetail);
-        }else if (fromMatcher.find()){
-        	splitFromTo(taskDetail);
-        }else{
-        	throw new Error("no keyword");
+        if (byKeywordMatcher.find()) {
+        	splitOnByKeyword(taskDetail);
+        } else if (fromKeywordMatcher.find()) {
+        	splitOnFromToKeyword(taskDetail);
+        } else {
+        	throw new IllegalArgumentException("'add' task must have an argument");
         }
 		
 	}
 	
 	/**
-	 *  This method extracts delete information from String input
-	 *  Add modify the Task object accordingly
+	 *  Extracts DELETE information from String input and
+	 *  modifies the Task object accordingly
     */
-	public void extractorDelete(){
-		// TODO  the rule for judging delete type may change
-		// first word is assumed to be action type :delete
+	public void extractForDeleteTask(){
+		// TODO: The rule for judging delete type may change
+		// First word is assumed to be 'delete'
 		String deleteDetail = removeFirstWord(input); 
 		
-		if (countWords(deleteDetail)==1 ){
-			if (deleteDetail.equalsIgnoreCase("deadline")){
-				// case deadline
+		if (countWords(deleteDetail) == 1) {
+			if (deleteDetail.equalsIgnoreCase("deadline")) {
 				deleteCaseDeadline();
-			} else if(isDate(deleteDetail)){
-			    // case Date
+			} else if (isDate(deleteDetail)) {
 				deleteCaseDate(deleteDetail);
 			} else {
-			    // case ID
 				deleteCaseID(deleteDetail);
 			}
 		} else {
-	        Pattern fromPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
-	        Matcher fromMatcher = fromPattern.matcher(deleteDetail);
-	        if (fromMatcher.find()){
-	        	// case timeframe
+	        Pattern fromKeywordPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
+	        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(deleteDetail);
+	        if (fromKeywordMatcher.find()) {
 	        	deleteCaseTimeFrame(deleteDetail);
 	        } else {
-	        	// case Date
 	        	deleteCaseDate(deleteDetail);
 	        }
-		}				
+		}
 	}
 
-	
-	public void extractorUpdate(){
-		// first word is action type: update
+	/**
+	 *  Extracts UPDATE information from String input and
+	 *  modifies the Task object accordingly
+    */
+	public void extractForUpdateTask(){
+		// First word is assumed to be 'update'
 		String updateDetail = removeFirstWord(input);
-		// get task ID, remove from detail string
-		taskID = Integer.parseInt(getFirstWord(updateDetail));
+		
+		// Get the task ID and remove it from the remaining details
+		try {
+			taskID = Integer.parseInt(getFirstWord(updateDetail));
+		} catch (NumberFormatException e) {
+			throw new NumberFormatException("Update task requires a valid integer id");
+		}
 		updateDetail = removeFirstWord(updateDetail);
 		
-		Pattern byPattern = Pattern.compile("(B|b)(Y|y)\\s+");
-        Pattern fromPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
-        Matcher byMatcher = byPattern.matcher(updateDetail);
-        Matcher fromMatcher = fromPattern.matcher(updateDetail);
+		Pattern byKeywordPattern = Pattern.compile("(B|b)(Y|y)\\s+");
+        Pattern fromKeywordPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
+        Matcher byKeywordMatcher = byKeywordPattern.matcher(updateDetail);
+        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(updateDetail);
         
-        if (byMatcher.find()){
-        	// removing by
+        if (byKeywordMatcher.find()){
+        	// Remove 'by'
         	task.setEndTime(removeFirstWord(updateDetail));
         	task.setUpdateType("DATE");
-        } else if (fromMatcher.find()){
-        	// remove from
-        	splitTo(updateDetail);
+        } else if (fromKeywordMatcher.find()){
+        	// Remove 'from'
+        	splitOnToKeyword(updateDetail);
         	task.setUpdateType("TIMEFRAME");
-        	return;
         } else {
         	task.setDescription(updateDetail);
         	task.setUpdateType("DESCRIPTION");
         }
-		
 	}
 
+	/**
+	 *  Extracts VIEW information from String input and
+	 *  modifies the Task object accordingly
+    */
+	public void extractForViewTask(){
+		// First word is assumed to be 'view'
+		String viewDetail = removeFirstWord(input); 
+		
+		if (countWords(viewDetail) == 1) {
+			if (viewDetail.equalsIgnoreCase("deadline")) {
+				deleteCaseDeadline();
+			} else if (isDate(viewDetail)) {
+				deleteCaseDate(viewDetail);
+			} else {
+				deleteCaseID(viewDetail);
+			}
+		} else {
+	        Pattern fromKeywordPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
+	        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(viewDetail);
+	        if (fromKeywordMatcher.find()) {
+	        	deleteCaseTimeFrame(viewDetail);
+	        } else {
+	        	deleteCaseDate(viewDetail);
+	        }
+		}
+	}
 	
 
 	private void deleteCaseTimeFrame(String deleteDetail) {
 		task.setDeleteType("TIMEFRAME");
-		splitTo(deleteDetail);
+		splitOnToKeyword(deleteDetail);
 	}
 
 	private void deleteCaseID(String deleteDetail) {
@@ -132,67 +158,82 @@ public class Extractor {
 	
 
 	/**
-	 * * For Add
-	 * this method splits input based on keyword "from" and "to"
-	 * @param operand_string
-	 * @param task_detail
-	 * @return outputString
+	 * For Add:
+	 * Splits the input based on keyword "from" and "to"
+	 * 
+	 * @param taskDetail
 	 */
-	private void splitFromTo(String task_detail) {
-		String[] details = task_detail.split("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
+	private void splitOnFromToKeyword(String taskDetail) {
+		String[] details = taskDetail.split("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
 		task.setDescription(details[0]);
-		String details_time = details[1];
-		String[] details_time_splitted = details_time.split("\\s+(T|t)(O|o)\\s+");
-		task.setStartTime(details_time_splitted[0]);
-		task.setEndTime(details_time_splitted[1]);
+		
+		String detailsTime = details[1];
+		String[] detailsTimeStartAndEnd = detailsTime.split("\\s+(T|t)(O|o)\\s+");
+		task.setStartTime(detailsTimeStartAndEnd[0]);
+		task.setEndTime(detailsTimeStartAndEnd[1]);
 	}
 
 	/**
-	 * For Add
-	 *  this method splits input based on keyword "by"
-	 * @param task_detail
+	 * For Add:
+	 * Splits input based on keyword "by"
+	 * @param taskDetails
 	 * @return
 	 */
-	private void splitBy(String task_detail) {
-		String[] details = task_detail.split("\\s+(B|b)(Y|y)\\s+");	
+	private void splitOnByKeyword(String taskDetails) {
+		String[] details = taskDetails.split("\\s+(B|b)(Y|y)\\s+");	
 		task.setDescription(details[0]);
 		task.setEndTime(details[1]);
 	}
 	
 	/**
-	 * For Delete
-	 *  this method splits input based on keyword "to"
-	 * @param delete_detail
+	 * For Delete and Update:
+	 * Splits input based on keyword "to"
+	 * @param taskDetails
 	 * @return
 	 */
-	private void splitTo(String delete_detail) {
-		// remove "from"
-		delete_detail=removeFirstWord(delete_detail);
-		String[] details = delete_detail.split("\\s+(T|t)(O|o)\\s+");	
+	private void splitOnToKeyword(String taskDetails) {
+		// Remove "from"
+		taskDetails = removeFirstWord(taskDetails);
+		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");	
 		task.setStartTime(details[0]);
 		task.setEndTime(details[1]);
 	}
 	
-	// this method returns the first word of an input string
+	/**
+	 * Returns the first word of an input string
+	 * @param userCommand
+	 * @return
+	 */
     private static String getFirstWord(String userCommand) {
 		String commandTypeString = userCommand.trim().split("\\s+")[0];
 		return commandTypeString;
 	}
     
-	// this method will remove the first word of a string
+	/**
+	 * Removes the first word of a string
+	 * @param userCommand
+	 * @return
+	 */
 	private static String removeFirstWord(String userCommand) {
 		return userCommand.replace(getFirstWord(userCommand), "").trim();
 	}
 	
-	// this method counts number of words in a string
+	/**
+	 * Counts the number of words in a string
+	 * @param input
+	 * @return
+	 */
 	private int countWords (String input) {
 		String trim = input.trim();
-		if (trim.isEmpty()) return 0;
-		return trim.split("\\s+").length; //separate string around spaces
+		if (trim.isEmpty()) {
+			return 0;
+		}
+		// Separate string around 1 or more spaces
+		return trim.split("\\s+").length;
 	}
 	
 	private boolean isDate(String input){
-		// TODO the rule for judging date may change
+		// TODO: the rule for judging date may change
         Pattern DatePatternSix = Pattern.compile("\\d\\d\\d\\d\\d\\d");
         Pattern DatePatternEight = Pattern.compile("\\d\\d\\d\\d\\d\\d\\d\\d");
         Matcher DateMatcherSix = DatePatternSix.matcher(input);

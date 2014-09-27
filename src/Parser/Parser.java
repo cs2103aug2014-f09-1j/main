@@ -5,13 +5,14 @@ package Parser;
 
 import Structure.OPCODE;
 import Structure.Task;
+
 import java.util.StringTokenizer;
 
 public class Parser {
 
 	private final String[] ALIASES_ADD = {"add", "a"};
 	private final String[] ALIASES_VIEW = {"view", "v", "list", "ls", "l"};
-	private final String[] ALIASES_UPDATE = {"edit", "e", "modify", "m"};
+	private final String[] ALIASES_UPDATE = {"update", "u", "edit", "e", "modify", "m"};
 	private final String[] ALIASES_DELETE = {"delete", "del", "d"};
 	private final String[] ALIASES_HELP = {"help", "h", "?"};
 	private final String[] ALIASES_EXIT = {"exit", "e", "quit", "q"};
@@ -20,127 +21,129 @@ public class Parser {
 	private Task task;
 	private int taskID;
 	
-	public Parser(String input){
-		this.input = input;
-		this.setTask(new Task());
+	public Parser(String inputCommand){
+		input = inputCommand;
+		setTask(new Task());
 	}
 	
 	public Task parseInput(){
-		StringTokenizer st = new StringTokenizer(input);
-		if(st.hasMoreTokens()){
-			String operation = st.nextToken();
+		StringTokenizer tokenizedInput = new StringTokenizer(input);
+		if (tokenizedInput.hasMoreTokens()){
+			String operation = tokenizedInput.nextToken();
 			task.setOpcode(determineOperation(operation));
-			parseTask();
+			parseTaskArguments();
 		} else {
 			task.setOpcode(OPCODE.INVALID);
 		}
 		return task;
 	}
 	
-	public void parseTask(){
+	public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task t) {
+		task = t;
+	}
+	
+	public int getTaskID(){
+		return taskID;
+	}
+	
+	
+	private void parseTaskArguments(){
 		Extractor ex = new Extractor(task, input);
-		switch (task.getOpcode()) {
-		case ADD:
-			ex.extractorAdd();
-			break;
-		case DELETE:
-			ex.extractorDelete();
-			break;
-		case UPDATE:
-			ex.extractorUpdate();
-			taskID = ex.gettaskID();
-		case EXIT:
-			System.exit(0);
-		default:
-			//throw an error if the command is not recognized
-			throw new Error("Unrecognized command type");
+		switch (task.getOpCode()) {
+			case ADD:
+				ex.extractForAddTask();
+				break;
+			case DELETE:
+				ex.extractForDeleteTask();
+				break;
+			case UPDATE:
+				ex.extractForUpdateTask();
+				taskID = ex.getTaskID();
+				break;
+			case VIEW:
+				ex.extractForViewTask();
+				taskID = ex.getTaskID();
+				break;
+			case EXIT:
+				System.exit(0);
+			default:
+				throw new IllegalArgumentException("Unrecognized command type");
 		}
 	}
 
 	private OPCODE determineOperation(String operation) {
-		
-		if (determineIsAddOperation(operation)) {
+		if (isAddOperation(operation)) {
 			return OPCODE.ADD;
-		} else if (determineIsViewOperation(operation)) {
+		} else if (isViewOperation(operation)) {
 			return OPCODE.VIEW;
-		} else if (determineIsUpdateOperation(operation)) {
+		} else if (isUpdateOperation(operation)) {
 			return OPCODE.UPDATE;
-		} else if (determineIsDeleteOperation(operation)) {
+		} else if (isDeleteOperation(operation)) {
 			return OPCODE.DELETE;
-		} else if (determineIsHelpOperation(operation)) {
+		} else if (isHelpOperation(operation)) {
 			return OPCODE.HELP;
-		} else if (determineIsExitOperation(operation)) {
+		} else if (isExitOperation(operation)) {
 			return OPCODE.EXIT;
 		} else {
 			return OPCODE.INVALID;
 		}
 	}
 
-	private boolean determineIsAddOperation(String operation) {
-		for(String alias : ALIASES_ADD ){
-			if(operation.equalsIgnoreCase(alias)){
+	private boolean isAddOperation(String operation) {
+		for (String alias : ALIASES_ADD){
+			if (operation.equalsIgnoreCase(alias)){
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	private boolean determineIsViewOperation(String operation) {
-		for(String alias : ALIASES_VIEW ){
-			if(operation.equalsIgnoreCase(alias)){
+	private boolean isViewOperation(String operation) {
+		for (String alias : ALIASES_VIEW){
+			if (operation.equalsIgnoreCase(alias)){
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	private boolean determineIsUpdateOperation(String operation) {
-		for(String alias : ALIASES_UPDATE ){
-			if(operation.equalsIgnoreCase(alias)){
+	private boolean isUpdateOperation(String operation) {
+		for (String alias : ALIASES_UPDATE){
+			if (operation.equalsIgnoreCase(alias)){
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	private boolean determineIsDeleteOperation(String operation) {
-		for(String alias : ALIASES_DELETE ){
-			if(operation.equalsIgnoreCase(alias)){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean determineIsHelpOperation(String operation) {
-		for(String alias : ALIASES_HELP ){
-			if(operation.equalsIgnoreCase(alias)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean determineIsExitOperation(String operation) {
-		for(String alias : ALIASES_EXIT ){
-			if(operation.equalsIgnoreCase(alias)){
+	private boolean isDeleteOperation(String operation) {
+		for (String alias : ALIASES_DELETE){
+			if (operation.equalsIgnoreCase(alias)){
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public Task getTask() {
-		return task;
-	}
-
-	public void setTask(Task task) {
-		this.task = task;
+	private boolean isHelpOperation(String operation) {
+		for (String alias : ALIASES_HELP){
+			if (operation.equalsIgnoreCase(alias)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
-	public int getTaskID(){
-		return taskID;
+	private boolean isExitOperation(String operation) {
+		for (String alias : ALIASES_EXIT){
+			if (operation.equalsIgnoreCase(alias)){
+				return true;
+			}
+		}
+		return false;
 	}
-
-	
 }

@@ -20,7 +20,7 @@ public class ParserTest {
 		input = scanner.nextLine();
 		Parser parser = new Parser(input);
 		parser.parseInput();
-		String output = parser.getTask().getOpcode().toString();
+		String output = parser.getTask().getOpCode().toString();
 		assertEquals(description, expected, output);
 		
 	}

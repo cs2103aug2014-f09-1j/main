@@ -251,7 +251,6 @@ public class WhatsUpNextGUI {
 			public void actionPerformed(ActionEvent e) {
 				Toolkit.getDefaultToolkit().beep(); 
 				clickEnter();
-				textInput.setText(""); // clean input area
 			}	
 		});
 		
@@ -297,14 +296,27 @@ public class WhatsUpNextGUI {
 		if (commandInput.trim().isEmpty()) {
 			feedback = "Empty command";
 		} else {
-			parser = new Parser(commandInput);
-			Task currentTask = parser.parseInput();
-			feedback = "No working Logic.execute yet: " + currentTask.getDescription();//Logic.execute(currentTask);
+			try {
+				parser = new Parser(commandInput);
+				Task currentTask = parser.parseInput();
+				feedback = "No working Logic.execute yet: " + currentTask.getDescription();//Logic.execute(currentTask);
+			} catch (Exception e) {
+				feedback = e.getMessage();
+			}
 		}
 		
 		displayFeedback(feedback);
+		clearTextInput();
 		clickUpcoming();
 	}
+
+	/**
+	 * Clears the user command prompt
+	 */
+	private void clearTextInput() {
+		textInput.setText("");
+	}
+
 
 	/** 
 	 * This method would display feedback message in main display area

@@ -13,7 +13,7 @@ public class ExtractorTest {
 	public void testAdd() {
 		Task task = new Task();
 		Extractor ex = new Extractor(task,"add dine from 2am tmr to 9");
-		ex.extractorAdd();
+		ex.extractForAddTask();
 		assertEquals("Test Add 1 - description", "dine", task.getDescription());
 		assertEquals("Test Add 1 - startTime", "2am tmr", task.getStartTime());
 		assertEquals("Test Add 1 - endTime", "9", task.getEndTime());
@@ -23,7 +23,7 @@ public class ExtractorTest {
 	public void testAdd2() {
 		Task task = new Task();
 		Extractor ex = new Extractor(task,"add dine By 1pm");
-		ex.extractorAdd();
+		ex.extractForAddTask();
 		assertEquals("Test Add 2 - description", "dine", task.getDescription());
 		assertEquals("Test Add 2 - startTime", null, task.getStartTime());
 		assertEquals("Test Add 2 - endTime", "1pm", task.getEndTime());
@@ -33,7 +33,7 @@ public class ExtractorTest {
 	public void testDelete1() {
 		Task task = new Task();
 		Extractor ex = new Extractor(task,"delete 190");
-		ex.extractorDelete();
+		ex.extractForDeleteTask();
 		assertEquals("Test Delete 1  - description/ID", "190", task.getDescription());
 		assertEquals("Test Delete 1  - startTime", null, task.getStartTime());
 		assertEquals("Test Delete 1  - endTime", null, task.getEndTime());
@@ -44,7 +44,7 @@ public class ExtractorTest {
 	public void testDelete2() {
 		Task task = new Task();
 		Extractor ex = new Extractor(task,"delete 101014");
-		ex.extractorDelete();
+		ex.extractForDeleteTask();
 		assertEquals("Test Delete 2  - description", null, task.getDescription());
 		assertEquals("Test Delete 2  - startTime", null, task.getStartTime());
 		assertEquals("Test Delete 2  - endTime", "101014", task.getEndTime());
@@ -55,7 +55,7 @@ public class ExtractorTest {
 	public void testDelete3() {
 		Task task = new Task();
 		Extractor ex = new Extractor(task,"delete Deadline");
-		ex.extractorDelete();
+		ex.extractForDeleteTask();
 		assertEquals("Test Delete 3  - description", null, task.getDescription());
 		assertEquals("Test Delete 3  - startTime", null, task.getStartTime());
 		assertEquals("Test Delete 3  - endTime", "NOW", task.getEndTime());
@@ -66,7 +66,7 @@ public class ExtractorTest {
 	public void testDelete4() {
 		Task task = new Task();
 		Extractor ex = new Extractor(task,"delete from mondayf fd to friday");
-		ex.extractorDelete();
+		ex.extractForDeleteTask();
 		assertEquals("Test Delete 4  - description", null, task.getDescription());
 		assertEquals("Test Delete 4  - startTime", "mondayf fd", task.getStartTime());
 		assertEquals("Test Delete 4  - endTime", "friday", task.getEndTime());
@@ -77,36 +77,36 @@ public class ExtractorTest {
 	public void testUpdate1() {
 		Task task = new Task();
 		Extractor ex = new Extractor(task,"update 10 new description");
-		ex.extractorUpdate();
+		ex.extractForUpdateTask();
 		assertEquals("Test Update 1  - description", "new description", task.getDescription());
 		assertEquals("Test Update 1  - startTime", null, task.getStartTime());
 		assertEquals("Test Update 1  - endTime", null, task.getEndTime());
 		assertEquals("Test Update 1  - updateType", "DESCRIPTION", task.getUpdateType());
-		assertEquals("Test Update 1  - taskID", 10, ex.gettaskID());
+		assertEquals("Test Update 1  - taskID", 10, ex.getTaskID());
 	}
 	
 	@Test
 	public void testUpdate2() {
 		Task task = new Task();
 		Extractor ex = new Extractor(task,"update 10 by friday");
-		ex.extractorUpdate();
+		ex.extractForUpdateTask();
 		assertEquals("Test Update 2  - description", null, task.getDescription());
 		assertEquals("Test Update 2  - startTime", null, task.getStartTime());
 		assertEquals("Test Update 2  - endTime", "friday", task.getEndTime());
 		assertEquals("Test Update 2  - updateType", "DATE", task.getUpdateType());
-		assertEquals("Test Update 2  - taskID", 10, ex.gettaskID());
+		assertEquals("Test Update 2  - taskID", 10, ex.getTaskID());
 	}
 	
 	@Test
 	public void testUpdate3() {
 		Task task = new Task();
 		Extractor ex = new Extractor(task,"update 10 from mondayf fd to friday");
-		ex.extractorUpdate();
+		ex.extractForUpdateTask();
 		assertEquals("Test Update 3  - description", null, task.getDescription());
 		assertEquals("Test Update 3  - startTime", "mondayf fd", task.getStartTime());
 		assertEquals("Test Update 3  - endTime", "friday", task.getEndTime());
 		assertEquals("Test Update 3  - updateType", "TIMEFRAME", task.getUpdateType());
-		assertEquals("Test Update 3  - taskID", 10, ex.gettaskID());
+		assertEquals("Test Update 3  - taskID", 10, ex.getTaskID());
 	}
 	
 	

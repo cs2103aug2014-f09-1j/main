@@ -19,7 +19,7 @@ public class Task {
 		operand = new String[OPERAND_SIZE];
 	}
 
-	public OPCODE getOpcode() {
+	public OPCODE getOpCode() {
 		return opcode;
 	}
 

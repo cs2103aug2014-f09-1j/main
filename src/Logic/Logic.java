@@ -68,7 +68,18 @@ public class Logic {
 		return MESSAGE_DELETED;
 	}	
 	
-	public static String updateTask(Task task) {
+	public static String updateTask(Task temp) {
+		String updateType = temp.getUpdateType();
+		
+		switch (updateType) {
+		case "DESCRIPTION":
+			updateByInfo(temp.getDescription());
+			break;
+		case "DATE":
+			break;
+		case "TIMEFRAME":
+			break;
+		}
 		
 		return MESSAGE_UPDATED;
 	}	
@@ -87,7 +98,7 @@ public class Logic {
 	
 	
 	
-	
+	// This function needs to be changed.
 	public static void storeIntoList() {
 
 		for (int i = 0; i < numberOfTasks; i++) {
@@ -98,7 +109,7 @@ public class Logic {
 	}	
 	
 	public static void getOutput() {
-		
+		//TODO: Return results.
 	}
 	
 	
@@ -107,13 +118,25 @@ public class Logic {
 		numberOfTasks--;
 	}
 	
+	public static void deleteByDate(int time) {
+	}
+	
 	public static void deleteByDeadline(int time) {
+	}
+	
+	public static void deleteByTimeFrame() {
+	}
+	
+	
+	
+	public static void updateByInfo(String task_Info) {
+		//TODO: 
 	}
 	
 	public static void updateByDeadline(int time) {
 	}
 	
-	public static void updateByInfo(String task_info) {
+	public static void updateByTimeFrame() {
 	}
 	
 	public static void viewNext(Task task) {
@@ -121,6 +144,27 @@ public class Logic {
 		
 	public static void viewAll() {		
 	}	
+	
+	public static int searchByDescription(String task_Info) {
+		int index = 0;
+		Task temp = list.get(0);
+		
+		while (!temp.getDescription().equalsIgnoreCase(task_Info)) {
+			index++;
+			temp = list.get(index);
+		}
+		
+		return index;
+	}
+	
+	public static int searchByDeadline(String time) {
+		int index = 0;
+		
+		return index;
+	}
+	
+	public static void searchByDate() {
+	}
 	
 	public static void sort() {
 	}

@@ -75,6 +75,7 @@ public class WhatsUpNextGUI {
 		});
 	}
 
+	
 	/**
 	 * Create the application.
 	 */
@@ -85,10 +86,13 @@ public class WhatsUpNextGUI {
 	
 	/**
 	 * Returns the main frame used in the GUI
+	 * 
+	 * @return The JFrame for the main application
 	 */
 	public JFrame getMainFrame() {
 		return frameMain;
 	}
+	
 	
 	/**
 	 * Names every component used in the GUI
@@ -104,19 +108,15 @@ public class WhatsUpNextGUI {
 		textDisplayUpcoming.setName("textDisplayUpcoming");
 	}
 
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
 		initializeApplicationFrame();
-	
 		intializeWelcomeMessage();		
-
 		intializeUpcomingTasks();
-		
 		initializeMain();
-		
 	}
 	
 	/**
@@ -135,15 +135,13 @@ public class WhatsUpNextGUI {
 		frameMain.getContentPane().setLayout(null);
 	}
 	
+	
 	/**
 	 * Initialize welcome message
 	 */
 	private void intializeWelcomeMessage() {
-		
 		appendDateToWelcomeMessage();
-
 		initializeWelcomeMessageLabel();
-		
 	}
 
 	/**
@@ -166,15 +164,13 @@ public class WhatsUpNextGUI {
 		frameMain.getContentPane().add(labelWelcome);
 	}
 	
+	
 	/**
 	 * Initialize upcoming tasks part
 	 */
 	private void intializeUpcomingTasks() {
-		
 		initializeUpcomingTasksTextDisplay();
-		
 		initializeUpcomingTasksButton();
-	
 	}
 
 	/**
@@ -218,13 +214,9 @@ public class WhatsUpNextGUI {
 	 * Initialize main part: button, input area, mainDisplay
 	 */
 	private void initializeMain() {
-
 		initializeMainEnterButton();
-		
 		initializeMainUserCLI();
-		
 		initializeMainTextDisplay();
-		
 	}
 
 	/**
@@ -262,8 +254,10 @@ public class WhatsUpNextGUI {
 				textInput.setText(""); // clean input area
 			}	
 		});
+		
 		// NOT THE SLIGHTEST CLUE WHY THIS CANNOT BE PROPERLY TESTED
-		// DISPATCHED KEYEVENT FROM TEST SUITE WILL NOT BE CAUGHT BY KEYLISTENER HERE
+		// DISPATCHED KEYEVENT FROM THE TEST SUITE REFUSES TO BE CAUGHT BY KEYLISTENER HERE
+		//
 		//		textInput.addKeyListener(new KeyAdapter() {
 		//			@Override
 		//			public void keyPressed(KeyEvent e) {
@@ -295,7 +289,7 @@ public class WhatsUpNextGUI {
 	/**
 	 * This method is activated as 'input command'
 	 * It is called whenever user clicks the input button or presses the enter key
-	 * */
+	 */
 	private void clickEnter(){
 		commandInput = textInput.getText();
 		String feedback;
@@ -314,7 +308,7 @@ public class WhatsUpNextGUI {
 
 	/** 
 	 * This method would display feedback message in main display area
-	 * */
+	 */
 	private void displayFeedback(String feedback) {
 		textDisplayMain.append("\n"+feedback);
 	}
@@ -322,10 +316,10 @@ public class WhatsUpNextGUI {
 	/**
 	 * Callback function for when the user clicks the Upcoming Tasks button
 	 * or when new execution has been activated
-	 * */
+	 */
 	private void clickUpcoming() {
-		// TODO response for click upcoming
-		// get a list of most recent tasks and display
+		// TODO: Implement response for click upcoming
+		// Get a list of most recent tasks and display
 		textDisplayUpcoming.setText("No saved tasks!");		
 	}
 }

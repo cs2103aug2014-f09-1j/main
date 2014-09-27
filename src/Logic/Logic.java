@@ -118,10 +118,10 @@ public class Logic {
 		numberOfTasks--;
 	}
 	
-	public static void deleteByDate(int time) {
+	public static void deleteByDate(String time) {
 	}
 	
-	public static void deleteByDeadline(int time) {
+	public static void deleteByDeadline(String time) {
 	}
 	
 	public static void deleteByTimeFrame() {
@@ -133,7 +133,7 @@ public class Logic {
 		//TODO: 
 	}
 	
-	public static void updateByDeadline(int time) {
+	public static void updateByDeadline(String time) {
 	}
 	
 	public static void updateByTimeFrame() {
@@ -159,6 +159,12 @@ public class Logic {
 	
 	public static int searchByDeadline(String time) {
 		int index = 0;
+		Task temp = list.get(0);
+		
+		while (!temp.getEndTime().equalsIgnoreCase(time)) {
+			index++;
+			temp = list.get(index);
+		}
 		
 		return index;
 	}

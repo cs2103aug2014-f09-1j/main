@@ -8,10 +8,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Window.Type;
 import java.awt.Toolkit;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -25,7 +21,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import Logic.Logic;
 import Parser.Parser;
 import Structure.Task;
 
@@ -72,6 +67,7 @@ public class WhatsUpNextGUI {
 					WhatsUpNextGUI window = new WhatsUpNextGUI();
 					window.frameMain.setVisible(true);
 					window.frameMain.setBounds(0, 0, 505, 295);
+					window.frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -239,9 +235,8 @@ public class WhatsUpNextGUI {
 		buttonEnter.setForeground(new Color(224, 255, 255));
 		buttonEnter.setFont(new Font("Cambria", Font.BOLD, 12));
 		buttonEnter.setBackground(new Color(70, 130, 180));
-		buttonEnter.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		buttonEnter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				clickEnter();
 			}
 		});
@@ -259,18 +254,27 @@ public class WhatsUpNextGUI {
 		textInput.setBounds(10, 230, 366, 23);
 		frameMain.getContentPane().add(textInput);
 		// Pressing 'enter' key causes the command to be executed
-		textInput.addKeyListener(new KeyAdapter() {
+		textInput.addActionListener(new ActionListener() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				int key = e.getKeyCode();
-			    if (key == KeyEvent.VK_ENTER) {
-			         Toolkit.getDefaultToolkit().beep(); 
-			         clickEnter();
-			         textInput.setText(""); // clean input area
-			    }
+			public void actionPerformed(ActionEvent e) {
+				Toolkit.getDefaultToolkit().beep(); 
+				clickEnter();
+				textInput.setText(""); // clean input area
 			}	
-		 }
-		);
+		});
+		// NOT THE SLIGHTEST CLUE WHY THIS CANNOT BE PROPERLY TESTED
+		// DISPATCHED KEYEVENT FROM TEST SUITE WILL NOT BE CAUGHT BY KEYLISTENER HERE
+		//		textInput.addKeyListener(new KeyAdapter() {
+		//			@Override
+		//			public void keyPressed(KeyEvent e) {
+		//				int key = e.getKeyCode();
+		//				if (key == KeyEvent.VK_ENTER) {
+		//					Toolkit.getDefaultToolkit().beep(); 
+		//					clickEnter();
+		//					textInput.setText(""); // clean input area
+		//				}
+		//			}	
+		//		});
 	}
 
 	/**
@@ -280,7 +284,7 @@ public class WhatsUpNextGUI {
 		textDisplayMain = new JTextArea();
 		textDisplayMain.setFont(new Font("Courier New", Font.BOLD, 12));
 		textDisplayMain.setForeground(new Color(25, 25, 112));
-		textDisplayMain.setText("---Please enter command into editPane below:\r\n");
+		textDisplayMain.setText("---Please enter command below:\r\n");
 		textDisplayMain.setEditable(false);
 		textDisplayMain.setBackground(new Color(240, 255, 255));
 		textDisplayMain.setBounds(10, 31, 328, 184);
@@ -292,11 +296,18 @@ public class WhatsUpNextGUI {
 	 * This method is activated as 'input command'
 	 * It is called whenever user clicks the input button or presses the enter key
 	 * */
-	public void clickEnter(){
+	private void clickEnter(){
 		commandInput = textInput.getText();
-		parser = new Parser(commandInput);
-		Task currentTask = parser.parseInput();
-		String feedback = "Logic.execute(task)";//Logic.execute(currentTask);
+		String feedback;
+		
+		if (commandInput.trim().isEmpty()) {
+			feedback = "Empty command";
+		} else {
+			parser = new Parser(commandInput);
+			Task currentTask = parser.parseInput();
+			feedback = "No working Logic.execute yet: " + currentTask.getDescription();//Logic.execute(currentTask);
+		}
+		
 		displayFeedback(feedback);
 		clickUpcoming();
 	}

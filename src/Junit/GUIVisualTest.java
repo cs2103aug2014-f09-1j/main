@@ -2,7 +2,6 @@ package Junit;
 
 import static org.junit.Assert.*;
 
-import java.awt.Rectangle;
 import java.awt.Window.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -152,6 +151,6 @@ public class GUIVisualTest {
 		assertTrue(textDisplayMain.getFont().isBold());
 		assertEquals(12, textDisplayMain.getFont().getSize());
 		
-		assertEquals("---Please enter command into editPane below:\r\n", textDisplayMain.getText());
+		assertEquals("---Please enter command below:\r\n", textDisplayMain.getText());
 	}
 }

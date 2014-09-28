@@ -5,6 +5,7 @@ package Logic;
 
 import Structure.Task;
 import Structure.OPCODE;
+
 import java.util.ArrayList;
 
 public class Logic {
@@ -32,7 +33,7 @@ public class Logic {
 			updateTask(temp);
 			break;
 		case VIEW:
-			viewTask();
+			viewTask(temp);
 			break;
 		default:
 			break;		
@@ -91,19 +92,22 @@ public class Logic {
 		return MESSAGE_UPDATED;
 	}	
 	
-	public static void viewTask() {
+	public static ArrayList<String> viewTask(Task temp) {
+		String viewType = temp.getViewType();
 		
-		getOutput();
+		switch (viewType) {
+		case "ALL":
+			viewAll();
+			break;
+		case "Next":
+			break;
+		default:
+			break;
+		}
+		
+		return output;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 	// This function needs to be changed.
 	public static void storeIntoList() {
@@ -115,8 +119,11 @@ public class Logic {
 		}
 	}	
 	
-	public static void getOutput() {
-		//TODO: Return results.
+	public static String getOutput(int id) {
+		Task task = list.get(id);
+		String temp = id + task.getDescription();
+		
+		return temp;
 	}
 	
 	
@@ -158,7 +165,13 @@ public class Logic {
 	public static void viewNext(Task task) {
 	}
 		
-	public static void viewAll() {		
+	public static void viewAll() {	
+		
+		for (int i = 0; i < numberOfTasks; i++) {
+			String task_Info = getOutput(i);
+			
+			output.add(i, task_Info);
+		}
 	}	
 	
 	public static int searchByDescription(String task_Info) {
@@ -191,6 +204,3 @@ public class Logic {
 	public static void sort() {
 	}
 }
-
-
-

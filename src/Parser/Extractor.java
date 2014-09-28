@@ -27,22 +27,23 @@ public class Extractor {
 	 */
 	public void extractForAddTask(){
 		// First word is assumed to be action type: add
-		String taskDetail = removeFirstWord(input); 
+		String addDetail = removeFirstWord(input); 
 
 		// Determine 'add' case: add by deadline or time frame
-        Pattern byKeywordPattern = Pattern.compile("\\s+(B|b)(Y|y)\\s+");
-        Pattern fromKeywordPattern = Pattern.compile("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
-        Matcher byKeywordMatcher = byKeywordPattern.matcher(taskDetail);
-        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(taskDetail);
-        
-        if (byKeywordMatcher.find()) {
-        	splitOnByKeyword(taskDetail);
-        } else if (fromKeywordMatcher.find()) {
-        	splitOnFromToKeyword(taskDetail);
-        } else {
-        	throw new IllegalArgumentException("'add' task must have an argument");
-        }
-		
+		Pattern byKeywordPattern = Pattern.compile("\\s+(B|b)(Y|y)\\s+");
+		Pattern fromKeywordPattern = Pattern.compile("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
+		Matcher byKeywordMatcher = byKeywordPattern.matcher(addDetail);
+		Matcher fromKeywordMatcher = fromKeywordPattern.matcher(addDetail);
+
+		if (byKeywordMatcher.find()) {
+			splitOnByKeyword(addDetail);
+		} else if (fromKeywordMatcher.find()) {
+			splitOnFromToKeyword(addDetail);
+		} else {
+			// Not sure if this is where it's supposed to go...
+			task.setDescription(addDetail);
+			// throw new IllegalArgumentException("'add' task must have an argument");
+		}		
 	}
 	
 	/**

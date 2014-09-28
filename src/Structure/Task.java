@@ -15,7 +15,7 @@ public class Task {
 	private OPCODE opcode;
 	private String[] operand;
 
-	public Task(){
+	public Task() {
 		setOpcode(null);
 		operand = new String[OPERAND_SIZE];
 	}
@@ -28,52 +28,52 @@ public class Task {
 		this.opcode = opcode;
 	}
 	
-	public String getDescription(){
+	public String getDescription() {
 		return operand[INDEX_FOR_DESCRIPTION];
 	}
 	
-	public void setDescription(String description){
+	public void setDescription(String description) {
 		operand[INDEX_FOR_DESCRIPTION] = description;
 	}
 	
-	public String getStartTime(){
+	public String getStartTime() {
 		return operand[INDEX_FOR_START_TIME];
 	}
 	
-	public void setStartTime(String startTime){
+	public void setStartTime(String startTime) {
 		operand[INDEX_FOR_START_TIME] = startTime;
 	}
 	
-	public String getEndTime(){
+	public String getEndTime() {
 		return operand[INDEX_FOR_END_TIME];
 	}
 	
-	public void setEndTime(String endTime){
+	public void setEndTime(String endTime) {
 		operand[INDEX_FOR_END_TIME] = endTime;
 	}
 	
-	public String getDeleteType(){
+	public String getDeleteType() {
 		return operand[INDEX_FOR_DELETE_TYPE];
 	}
 	
-	public String getUpdateType(){
+	public String getUpdateType() {
 		return operand[INDEX_FOR_UPDATE_TYPE];
 	}
 	
-	public String getViewType(){
+	public String getViewType() {
 		return operand[INDEX_FOR_VIEW_TYPE];
 	}
 	
 	
-	public void setDeleteType(String deleteType){
+	public void setDeleteType(String deleteType) {
 		operand[INDEX_FOR_DELETE_TYPE] = deleteType;
 	}
 	
-	public void setUpdateType(String updateType){
+	public void setUpdateType(String updateType) {
 		operand[INDEX_FOR_UPDATE_TYPE] = updateType;
 	}
 	
-	public void setViewType(String viewType){
+	public void setViewType(String viewType) {
 		operand[INDEX_FOR_VIEW_TYPE] = viewType;
 	}
 }

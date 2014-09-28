@@ -21,12 +21,12 @@ public class Parser {
 	private Task task;
 	private int taskID;
 	
-	public Parser(String inputCommand){
+	public Parser(String inputCommand) {
 		input = inputCommand;
 		setTask(new Task());
 	}
 	
-	public Task parseInput(){
+	public Task parseInput() {
 		StringTokenizer tokenizedInput = new StringTokenizer(input);
 		if (tokenizedInput.hasMoreTokens()){
 			String operation = tokenizedInput.nextToken();
@@ -46,12 +46,12 @@ public class Parser {
 		task = t;
 	}
 	
-	public int getTaskID(){
+	public int getTaskID() {
 		return taskID;
 	}
 	
 	
-	private void parseTaskArguments(){
+	private void parseTaskArguments() {
 		Extractor ex = new Extractor(task, input);
 		switch (task.getOpCode()) {
 			case ADD:
@@ -66,7 +66,6 @@ public class Parser {
 				break;
 			case VIEW:
 				ex.extractForViewTask();
-				taskID = ex.getTaskID();
 				break;
 			case EXIT:
 				System.exit(0);
@@ -94,8 +93,8 @@ public class Parser {
 	}
 
 	private boolean isAddOperation(String operation) {
-		for (String alias : ALIASES_ADD){
-			if (operation.equalsIgnoreCase(alias)){
+		for (String alias : ALIASES_ADD) {
+			if (operation.equalsIgnoreCase(alias)) {
 				return true;
 			}
 		}
@@ -103,8 +102,8 @@ public class Parser {
 	}
 	
 	private boolean isViewOperation(String operation) {
-		for (String alias : ALIASES_VIEW){
-			if (operation.equalsIgnoreCase(alias)){
+		for (String alias : ALIASES_VIEW) {
+			if (operation.equalsIgnoreCase(alias)) {
 				return true;
 			}
 		}
@@ -112,8 +111,8 @@ public class Parser {
 	}
 	
 	private boolean isUpdateOperation(String operation) {
-		for (String alias : ALIASES_UPDATE){
-			if (operation.equalsIgnoreCase(alias)){
+		for (String alias : ALIASES_UPDATE) {
+			if (operation.equalsIgnoreCase(alias)) {
 				return true;
 			}
 		}
@@ -121,8 +120,8 @@ public class Parser {
 	}
 	
 	private boolean isDeleteOperation(String operation) {
-		for (String alias : ALIASES_DELETE){
-			if (operation.equalsIgnoreCase(alias)){
+		for (String alias : ALIASES_DELETE) {
+			if (operation.equalsIgnoreCase(alias)) {
 				return true;
 			}
 		}
@@ -130,8 +129,8 @@ public class Parser {
 	}
 
 	private boolean isHelpOperation(String operation) {
-		for (String alias : ALIASES_HELP){
-			if (operation.equalsIgnoreCase(alias)){
+		for (String alias : ALIASES_HELP) {
+			if (operation.equalsIgnoreCase(alias)) {
 				return true;
 			}
 		}
@@ -139,8 +138,8 @@ public class Parser {
 	}
 	
 	private boolean isExitOperation(String operation) {
-		for (String alias : ALIASES_EXIT){
-			if (operation.equalsIgnoreCase(alias)){
+		for (String alias : ALIASES_EXIT) {
+			if (operation.equalsIgnoreCase(alias)) {
 				return true;
 			}
 		}

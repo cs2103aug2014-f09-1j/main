@@ -154,14 +154,14 @@ public class Extractor {
 		task.setEndTime("NOW");		
 	}
 	
-	private void viewCaseTimeFrame(String deleteDetail) {
+	private void viewCaseTimeFrame(String viewDetail) {
 		task.setViewType("TIMEFRAME");
-		splitOnToKeyword(deleteDetail);
+		splitOnToKeyword(viewDetail);
 	}
 
-	private void viewCaseDate(String deleteDetail) {
+	private void viewCaseDate(String viewDetail) {
 		task.setViewType("DATE");
-		task.setEndTime(deleteDetail);
+		task.setEndTime(viewDetail);
 	}
 
 	private void viewCaseNext() {

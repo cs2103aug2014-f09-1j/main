@@ -52,16 +52,16 @@ public class ParseDateTest {
 		assertEquals("Test HH:mm dd-MM-yyyy", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("11:59 PM 010414");
-		assertEquals("Test HHmm a ddMMyy", "201404012359", formattedDate);
+		assertEquals("Test h:mm a ddMMyy", "201404012359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("9:09 am 03-04-2014");
-		assertEquals("Test HHmm a dd-MM-yyyy", "201404030909", formattedDate);
+		assertEquals("Test h:mm a dd-MM-yyyy", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("1 am 04012014");
-		assertEquals("Test HH:mm ddMMyyyy", "201401040100", formattedDate);
+		assertEquals("Test h a ddMMyyyy", "201401040100", formattedDate);
 		
 		formattedDate = parseDate.parseInput("1 pm 25/12/14");
-		assertEquals("Test HH:mm dd/MM/yy", "201412251300", formattedDate);
+		assertEquals("Test h a dd/MM/yy", "201412251300", formattedDate);
 	}
 	
 	@Test
@@ -106,16 +106,17 @@ public class ParseDateTest {
 		assertEquals("Test dd-MM-yyyy HH:mm", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("010414 23:59 pm");
-		assertEquals("Test ddMMyy HH:mm a", "201404012359", formattedDate);
+		assertEquals("Test ddMMyy h:mm a", "201404012359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("03-04-2014 09:09 AM");
-		assertEquals("Test dd-MM-yyyy HH:mm a", "201404030909", formattedDate);
+		assertEquals("Test dd-MM-yyyy h:mm a", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("04012014 1 AM");
-		assertEquals("Test ddMMyyyy HH:mm", "201401040100", formattedDate);
+		assertEquals("Test ddMMyyyy h a", "201401040100", formattedDate);
 		
 		formattedDate = parseDate.parseInput("25/12/14 1 PM");
-		assertEquals("Test dd/MM/yy HH:mm", "201412251300", formattedDate);
+		assertEquals("Test dd/MM/yy h a", "201412251300", formattedDate);
+		
 	}
 	
 	@Test
@@ -130,19 +131,19 @@ public class ParseDateTest {
 		assertEquals("Test HH:mm", getToday()+"1234", formattedDate);
 		
 		formattedDate = parseDate.parseInput("12:34 pm");
-		assertEquals("Test HHmm a", getToday()+"1234", formattedDate);
+		assertEquals("Test h:mm a", getToday()+"1234", formattedDate);
 		
 		formattedDate = parseDate.parseInput("12:43 am");
-		assertEquals("Test HHmm a", getToday()+"0043", formattedDate);
+		assertEquals("Test h:mm a", getToday()+"0043", formattedDate);
 		
 		formattedDate = parseDate.parseInput("1:59 PM");
-		assertEquals("Test HHmm a", getToday()+"1359", formattedDate);
+		assertEquals("Test h:mm a", getToday()+"1359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("11 PM");
-		assertEquals("Test HHmm a", getToday()+"2300", formattedDate);
+		assertEquals("Test h a", getToday()+"2300", formattedDate);
 		
 		formattedDate = parseDate.parseInput("5 AM");
-		assertEquals("Test HHmm a", getToday()+"0500", formattedDate);
+		assertEquals("Test h a", getToday()+"0500", formattedDate);
 	}
 	
 	@Test

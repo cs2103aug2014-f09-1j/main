@@ -8,6 +8,7 @@ import Structure.Task;
 
 public class Extractor {
 
+	private ParseDate parseDate = new ParseDate();
 	private String input;
 	private Task task;
 	private int taskID;
@@ -96,8 +97,9 @@ public class Extractor {
         Matcher fromKeywordMatcher = fromKeywordPattern.matcher(updateDetail);
         
         if (byKeywordMatcher.find()){
+        	task.setStartTime("");
         	// Remove 'by'
-        	task.setEndTime(removeFirstWord(updateDetail));
+        	task.setEndTime(parseDate.parseInput(removeFirstWord(updateDetail)));
         	task.setUpdateType("DATE");
         } else if (fromKeywordMatcher.find()){
         	// Remove 'from'
@@ -186,8 +188,8 @@ public class Extractor {
 		
 		String detailsTime = details[1];
 		String[] detailsTimeStartAndEnd = detailsTime.split("\\s+(T|t)(O|o)\\s+");
-		task.setStartTime(detailsTimeStartAndEnd[0]);
-		task.setEndTime(detailsTimeStartAndEnd[1]);
+		task.setStartTime(parseDate.parseInput(detailsTimeStartAndEnd[0]));
+		task.setEndTime(parseDate.parseInput(detailsTimeStartAndEnd[1]));
 	}
 
 	/**
@@ -199,7 +201,8 @@ public class Extractor {
 	private void splitOnByKeyword(String taskDetails) {
 		String[] details = taskDetails.split("\\s+(B|b)(Y|y)\\s+");	
 		task.setDescription(details[0]);
-		task.setEndTime(details[1]);
+		task.setStartTime("");
+		task.setEndTime(parseDate.parseInput(details[1]));
 	}
 	
 	/**
@@ -212,8 +215,8 @@ public class Extractor {
 		// Remove "from"
 		taskDetails = removeFirstWord(taskDetails);
 		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");	
-		task.setStartTime(details[0]);
-		task.setEndTime(details[1]);
+		task.setStartTime(parseDate.parseInput(details[0]));
+		task.setEndTime(parseDate.parseInput(details[1]));
 	}
 	
 	/**

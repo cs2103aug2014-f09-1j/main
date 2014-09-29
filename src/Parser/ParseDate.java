@@ -10,7 +10,10 @@ public class ParseDate {
 	
 	private final String FORMAT_LAST_MINUTE = "HHmm";
 	private final String FORMAT_TODAY = "ddMMyyyy";
-	private final ArrayList<String> FORMATS_TIME = new ArrayList<String>(Arrays.asList("HHmm"));
+	private final ArrayList<String> FORMATS_TIME = new ArrayList<String>(Arrays.asList("HHmm",
+																						"HH:mm",
+																						"h:mm a",
+																						"h a"));
 	private final ArrayList<String> FORMATS_DATE = new ArrayList<String>(Arrays.asList("ddMMyy", 
 																						"ddMMyyyy", 
 																						"dd/MM/yy", 
@@ -97,7 +100,6 @@ public class ParseDate {
 	}
 
 	private String formatDate(Calendar cal) {
-		
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH)+1;
 		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);

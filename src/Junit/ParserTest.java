@@ -4,10 +4,9 @@ import Structure.OPCODE;
 
 import org.junit.Test;
 
-import java.util.Scanner;
-
 import Parser.*;
 import Structure.Task;
+
 public class ParserTest {
 	
 	@Test

@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -31,13 +33,15 @@ import Structure.Task;
 public class WhatsUpNextGUI {
 	
     private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";    
-    private String commandInput;
     
 	private JFrame frameMain;
 	private JLabel labelWelcome;
+	
+	private JScrollPane textDisplayScrollingPane;
 	private JTextArea textDisplayMain;
 	private JTextField textInput;
 	private JButton buttonEnter;
+	
 	private JPanel panelUpcoming;
 	private JButton buttonUpcoming;
 	private JTextArea textDisplayUpcoming;
@@ -99,9 +103,12 @@ public class WhatsUpNextGUI {
 	private void setComponentsNames() {
 		frameMain.setName("frameMain");
 		labelWelcome.setName("labelWelcome");
+		
 		textDisplayMain.setName("textDisplayMain");
+		textDisplayScrollingPane.setName("textDisplayScrollingPane");
 		textInput.setName("textInput");
 		buttonEnter.setName("buttonEnter");
+		
 		panelUpcoming.setName("panelUpcoming");
 		buttonUpcoming.setName("buttonUpcoming");
 		textDisplayUpcoming.setName("textDisplayUpcoming");
@@ -279,8 +286,12 @@ public class WhatsUpNextGUI {
 		textDisplayMain.setText("---Please enter command below:\r\n");
 		textDisplayMain.setEditable(false);
 		textDisplayMain.setBackground(new Color(240, 255, 255));
-		textDisplayMain.setBounds(10, 31, 328, 184);
-		frameMain.getContentPane().add(textDisplayMain);
+		textDisplayMain.setBounds(0, 0, 328, 184);
+		
+		textDisplayScrollingPane = new JScrollPane(textDisplayMain);
+		textDisplayScrollingPane.setBounds(10, 31, 328, 184);
+		textDisplayScrollingPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		frameMain.getContentPane().add(textDisplayScrollingPane);
 	}
 	
 	
@@ -289,7 +300,7 @@ public class WhatsUpNextGUI {
 	 * It is called whenever user clicks the input button or presses the enter key
 	 */
 	private void clickEnter(){
-		commandInput = textInput.getText();
+		String commandInput = textInput.getText();
 		String feedback;
 		
 		if (commandInput.trim().isEmpty()) {

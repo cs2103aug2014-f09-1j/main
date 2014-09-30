@@ -108,7 +108,10 @@ public class Logic {
 			break;
 		}
 		
-		return formatArrayAsString(output);
+		String feedbackView = formatArrayAsString(output);
+		output.clear();
+		
+		return feedbackView;
 	}
 	
 	private static String formatArrayAsString(ArrayList<String> taskNumberedArray) {

@@ -11,8 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -137,13 +139,23 @@ public class GUIVisualTest {
 	
 	@Test
 	public void MainTextDisplayTest() {
+		JScrollPane textDisplayScrollingPane = (JScrollPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayScrollingPane");
+		assertNotNull("Can't acess the main text display scrolling pane JScrollPane", textDisplayScrollingPane);
+		
+		assertEquals(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, textDisplayScrollingPane.getVerticalScrollBarPolicy());
+		
+		assertEquals(10, textDisplayScrollingPane.getBounds().x);
+		assertEquals(31, textDisplayScrollingPane.getBounds().y);
+		assertEquals(328, textDisplayScrollingPane.getBounds().width);
+		assertEquals(184, textDisplayScrollingPane.getBounds().height);
+		
 		JTextArea textDisplayMain = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
 		assertNotNull("Can't acess the main text display JTextField", textDisplayMain);
 		
 		assertFalse(textDisplayMain.isEditable());
 		
-		assertEquals(10, textDisplayMain.getBounds().x);
-		assertEquals(31, textDisplayMain.getBounds().y);
+		assertEquals(0, textDisplayMain.getBounds().x);
+		assertEquals(0, textDisplayMain.getBounds().y);
 		assertEquals(328, textDisplayMain.getBounds().width);
 		assertEquals(184, textDisplayMain.getBounds().height);
 		

@@ -67,9 +67,8 @@ public class WhatsUpNextGUI {
 			public void run() {
 				try {
 					WhatsUpNextGUI window = new WhatsUpNextGUI();
+					window.frameMain.setLocationByPlatform(true);
 					window.frameMain.setVisible(true);
-					window.frameMain.setBounds(0, 0, 555, 295);
-					window.frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -133,11 +132,13 @@ public class WhatsUpNextGUI {
 		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/UI/iconGUI.png")));
 		frameMain.setType(Type.POPUP);
 		frameMain.setForeground(SystemColor.controlShadow);
+		frameMain.setBackground(Color.GRAY);
 		frameMain.setFont(new Font("Cambria", Font.BOLD, 12));
 		frameMain.setTitle("WhatsUpNext");
-		frameMain.setBackground(Color.GRAY);
 		frameMain.getContentPane().setBackground(new Color(204, 224, 250));
 		frameMain.getContentPane().setLayout(null);
+		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameMain.setBounds(0, 0, 555, 295);
 	}
 	
 	

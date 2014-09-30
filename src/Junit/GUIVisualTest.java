@@ -34,8 +34,10 @@ public class GUIVisualTest {
 		assertNotNull("Can't acess the main frame JFrame", frameMain);
 		
 		assertFalse(frameMain.isResizable());
-		
-		assertEquals(Type.POPUP, frameMain.getType());
+		assertEquals(0, frameMain.getBounds().x);
+		assertEquals(0, frameMain.getBounds().y);
+		assertEquals(555, frameMain.getBounds().width);
+		assertEquals(295, frameMain.getBounds().height);
 		
 		assertEquals("Cambria", frameMain.getFont().getName());
 		assertTrue(frameMain.getFont().isBold());
@@ -44,6 +46,7 @@ public class GUIVisualTest {
 		assertEquals("WhatsUpNext", frameMain.getTitle());
 		
 		assertNull(frameMain.getContentPane().getLayout());
+		assertEquals(Type.POPUP, frameMain.getType());
 	}
 
 	@Test

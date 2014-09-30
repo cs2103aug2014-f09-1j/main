@@ -10,7 +10,6 @@ import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -59,7 +58,7 @@ public class GUIVisualTest {
 		assertTrue(labelWelcome.getFont().isBold());
 		assertEquals(12, labelWelcome.getFont().getSize());
 		
-		assertEquals(10, labelWelcome.getBounds().x);
+		assertEquals(13, labelWelcome.getBounds().x);
 		assertEquals(10, labelWelcome.getBounds().y);
 		assertEquals(328, labelWelcome.getBounds().width);
 		assertEquals(15, labelWelcome.getBounds().height);
@@ -69,6 +68,16 @@ public class GUIVisualTest {
 	
 	@Test
 	public void UpcomingTasksTextDisplayTest() {
+		JScrollPane textDisplayUpcomingScrollPane = (JScrollPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcomingScrollPane");
+		assertNotNull("Can't acess the upcoming task text display scrolling pane JScrollPane", textDisplayUpcomingScrollPane);
+		
+		assertEquals(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, textDisplayUpcomingScrollPane.getVerticalScrollBarPolicy());
+		
+		assertEquals(356, textDisplayUpcomingScrollPane.getBounds().x);
+		assertEquals(35, textDisplayUpcomingScrollPane.getBounds().y);
+		assertEquals(174, textDisplayUpcomingScrollPane.getBounds().width);
+		assertEquals(184, textDisplayUpcomingScrollPane.getBounds().height);
+		
 		JTextArea textDisplayUpcoming = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
 		assertNotNull("Can't acess the upcoming task text area JTextArea", textDisplayUpcoming);
 		
@@ -78,23 +87,21 @@ public class GUIVisualTest {
 		
 		assertFalse(textDisplayUpcoming.isEditable());
 		
-		assertEquals(356, textDisplayUpcoming.getBounds().x);
-		assertEquals(31, textDisplayUpcoming.getBounds().y);
-		assertEquals(124, textDisplayUpcoming.getBounds().width);
+		assertEquals(0, textDisplayUpcoming.getBounds().x);
+		assertEquals(0, textDisplayUpcoming.getBounds().y);
+		assertEquals(174, textDisplayUpcoming.getBounds().width);
 		assertEquals(184, textDisplayUpcoming.getBounds().height);
 	}
 	
 	@Test
 	public void UpcomingTasksButtonTest() {
-		JPanel panelUpcoming = (JPanel)GUITestUtils.getChildNamed(gui.getMainFrame(), "panelUpcoming");
 		JButton buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonUpcoming");
-		assertNotNull("Can't acess the upcoming task button panel JPanel", panelUpcoming);
 		assertNotNull("Can't acess the upcoming task button JButton", buttonUpcoming);
 		
-		assertEquals(349, panelUpcoming.getBounds().x);
-		assertEquals(0, panelUpcoming.getBounds().y);
-		assertEquals(138, panelUpcoming.getBounds().width);
-		assertEquals(215, panelUpcoming.getBounds().height);
+		assertEquals(356, buttonUpcoming.getBounds().x);
+		assertEquals(5, buttonUpcoming.getBounds().y);
+		assertEquals(174, buttonUpcoming.getBounds().width);
+		assertEquals(28, buttonUpcoming.getBounds().height);
 		
 		assertEquals("Cambria", buttonUpcoming.getFont().getName());
 		assertTrue(buttonUpcoming.getFont().isBold());
@@ -108,7 +115,7 @@ public class GUIVisualTest {
 		JButton buttonEnter = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonEnter");
 		assertNotNull("Can't acess the main enter button JButton", buttonEnter);
 		
-		assertEquals(394, buttonEnter.getBounds().x);
+		assertEquals(451, buttonEnter.getBounds().x);
 		assertEquals(230, buttonEnter.getBounds().y);
 		assertEquals(79, buttonEnter.getBounds().width);
 		assertEquals(23, buttonEnter.getBounds().height);
@@ -127,7 +134,7 @@ public class GUIVisualTest {
 		
 		assertEquals(10, textInput.getBounds().x);
 		assertEquals(230, textInput.getBounds().y);
-		assertEquals(366, textInput.getBounds().width);
+		assertEquals(423, textInput.getBounds().width);
 		assertEquals(23, textInput.getBounds().height);
 		
 		assertEquals("Courier New", textInput.getFont().getName());
@@ -139,15 +146,15 @@ public class GUIVisualTest {
 	
 	@Test
 	public void MainTextDisplayTest() {
-		JScrollPane textDisplayScrollingPane = (JScrollPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayScrollingPane");
-		assertNotNull("Can't acess the main text display scrolling pane JScrollPane", textDisplayScrollingPane);
+		JScrollPane textDisplayMainScrollPane = (JScrollPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMainScrollPane");
+		assertNotNull("Can't acess the main text display scrolling pane JScrollPane", textDisplayMainScrollPane);
 		
-		assertEquals(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, textDisplayScrollingPane.getVerticalScrollBarPolicy());
+		assertEquals(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, textDisplayMainScrollPane.getVerticalScrollBarPolicy());
 		
-		assertEquals(10, textDisplayScrollingPane.getBounds().x);
-		assertEquals(31, textDisplayScrollingPane.getBounds().y);
-		assertEquals(328, textDisplayScrollingPane.getBounds().width);
-		assertEquals(184, textDisplayScrollingPane.getBounds().height);
+		assertEquals(10, textDisplayMainScrollPane.getBounds().x);
+		assertEquals(35, textDisplayMainScrollPane.getBounds().y);
+		assertEquals(328, textDisplayMainScrollPane.getBounds().width);
+		assertEquals(184, textDisplayMainScrollPane.getBounds().height);
 		
 		JTextArea textDisplayMain = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
 		assertNotNull("Can't acess the main text display JTextField", textDisplayMain);

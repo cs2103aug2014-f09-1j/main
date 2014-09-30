@@ -20,7 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import Logic.Logic;
@@ -37,13 +36,13 @@ public class WhatsUpNextGUI {
 	private JFrame frameMain;
 	private JLabel labelWelcome;
 	
-	private JScrollPane textDisplayScrollingPane;
+	private JScrollPane textDisplayMainScrollPane;
 	private JTextArea textDisplayMain;
 	private JTextField textInput;
 	private JButton buttonEnter;
 	
-	private JPanel panelUpcoming;
 	private JButton buttonUpcoming;
+	private JScrollPane textDisplayUpcomingScrollPane;
 	private JTextArea textDisplayUpcoming;
 
 	
@@ -69,7 +68,7 @@ public class WhatsUpNextGUI {
 				try {
 					WhatsUpNextGUI window = new WhatsUpNextGUI();
 					window.frameMain.setVisible(true);
-					window.frameMain.setBounds(0, 0, 505, 295);
+					window.frameMain.setBounds(0, 0, 555, 295);
 					window.frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -105,12 +104,12 @@ public class WhatsUpNextGUI {
 		labelWelcome.setName("labelWelcome");
 		
 		textDisplayMain.setName("textDisplayMain");
-		textDisplayScrollingPane.setName("textDisplayScrollingPane");
+		textDisplayMainScrollPane.setName("textDisplayMainScrollPane");
 		textInput.setName("textInput");
 		buttonEnter.setName("buttonEnter");
 		
-		panelUpcoming.setName("panelUpcoming");
 		buttonUpcoming.setName("buttonUpcoming");
+		textDisplayUpcomingScrollPane.setName("textDisplayUpcomingScrollPane");
 		textDisplayUpcoming.setName("textDisplayUpcoming");
 	}
 
@@ -165,7 +164,7 @@ public class WhatsUpNextGUI {
 	private void initializeWelcomeMessageLabel() {
 		labelWelcome = new JLabel(STRING_WELCOME);
 		labelWelcome.setForeground(new Color(0, 0, 128));
-		labelWelcome.setBounds(10, 10, 328, 15);
+		labelWelcome.setBounds(13, 10, 328, 15);
 		labelWelcome.setFont(new Font("Cambria", Font.BOLD, 12));
 		frameMain.getContentPane().add(labelWelcome);
 	}
@@ -188,31 +187,29 @@ public class WhatsUpNextGUI {
 		textDisplayUpcoming.setForeground(new Color(25, 25, 112));
 		textDisplayUpcoming.setEditable(false);
 		textDisplayUpcoming.setBackground(new Color(240, 255, 255));
-		textDisplayUpcoming.setBounds(356, 31, 124, 184);
-		frameMain.getContentPane().add(textDisplayUpcoming);
+		textDisplayUpcoming.setBounds(0, 0, 174, 184);
+		
+		textDisplayUpcomingScrollPane = new JScrollPane(textDisplayUpcoming);
+		textDisplayUpcomingScrollPane.setBounds(356, 35, 174, 184);
+		textDisplayUpcomingScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		frameMain.getContentPane().add(textDisplayUpcomingScrollPane);
 	}
 	
 	/**
 	 * Initializes the button panel container and the clickable button
 	 */
-	private void initializeUpcomingTasksButton() {
-		// Panel to hold the upcoming task button 
-		panelUpcoming = new JPanel();
-		panelUpcoming.setBackground(new Color(204, 224, 250));
-		panelUpcoming.setBounds(349, 0, 138, 215);
-		frameMain.getContentPane().add(panelUpcoming);
-				
-		// Button for upcoming task
+	private void initializeUpcomingTasksButton() {		
 		buttonUpcoming = new JButton("Upcoming Tasks");
 		buttonUpcoming.setFont(new Font("Cambria", Font.BOLD, 12));
 		buttonUpcoming.setForeground(new Color(224, 255, 255));
+		buttonUpcoming.setBackground(new Color(70, 130, 180));
 		buttonUpcoming.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clickUpcoming();
 			}
 		});
-		buttonUpcoming.setBackground(new Color(100, 149, 237));
-		panelUpcoming.add(buttonUpcoming);
+		buttonUpcoming.setBounds(356, 5, 174, 28);
+		frameMain.getContentPane().add(buttonUpcoming);
 	}
 
 	
@@ -230,15 +227,15 @@ public class WhatsUpNextGUI {
 	 */
 	private void initializeMainEnterButton() {
 		buttonEnter = new JButton(" Enter ");
-		buttonEnter.setForeground(new Color(224, 255, 255));
 		buttonEnter.setFont(new Font("Cambria", Font.BOLD, 12));
+		buttonEnter.setForeground(new Color(224, 255, 255));
 		buttonEnter.setBackground(new Color(70, 130, 180));
 		buttonEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clickEnter();
 			}
 		});
-		buttonEnter.setBounds(394, 230, 79, 23);
+		buttonEnter.setBounds(451, 230, 79, 23);
 		frameMain.getContentPane().add(buttonEnter);
 	}
 
@@ -249,7 +246,7 @@ public class WhatsUpNextGUI {
 		textInput = new JTextField();
 		textInput.setBackground(new Color(240, 255, 255));
 		textInput.setFont(new Font("Courier New", Font.PLAIN, 12));
-		textInput.setBounds(10, 230, 366, 23);
+		textInput.setBounds(10, 230, 423, 23);
 		frameMain.getContentPane().add(textInput);
 		// Pressing 'enter' key causes the command to be executed
 		textInput.addActionListener(new ActionListener() {
@@ -288,10 +285,10 @@ public class WhatsUpNextGUI {
 		textDisplayMain.setBackground(new Color(240, 255, 255));
 		textDisplayMain.setBounds(0, 0, 328, 184);
 		
-		textDisplayScrollingPane = new JScrollPane(textDisplayMain);
-		textDisplayScrollingPane.setBounds(10, 31, 328, 184);
-		textDisplayScrollingPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		frameMain.getContentPane().add(textDisplayScrollingPane);
+		textDisplayMainScrollPane = new JScrollPane(textDisplayMain);
+		textDisplayMainScrollPane.setBounds(10, 35, 328, 184);
+		textDisplayMainScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		frameMain.getContentPane().add(textDisplayMainScrollPane);
 	}
 	
 	

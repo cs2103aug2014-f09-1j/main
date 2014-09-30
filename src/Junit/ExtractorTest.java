@@ -2,6 +2,8 @@ package Junit;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+
 import org.junit.Test;
 
 import Parser.Extractor;
@@ -9,24 +11,45 @@ import Structure.Task;
 
 public class ExtractorTest {
 
+	private String getToday() {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH)+1;
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        String twoDigitMonth = "";
+		String twoDigitDayOfMonth = ""; 
+        if (month < 10) {
+        	twoDigitMonth = "0" + month;
+ 		} else {
+ 			twoDigitMonth = "" + month;
+ 		}
+ 		if (dayOfMonth < 10) {
+ 			twoDigitDayOfMonth = "0" + dayOfMonth;
+ 		} else {
+ 			twoDigitDayOfMonth = "" + dayOfMonth;
+ 		}
+        
+		return year + twoDigitMonth + twoDigitDayOfMonth;
+	}
+	
 	@Test
 	public void testAdd() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "add dine from 2am tmr to 9");
+		Extractor ex = new Extractor(task, "add dine from 0200 301014 to 21:00 301014");
 		ex.extractForAddTask();
 		assertEquals("Test Add 1 - description", "dine", task.getDescription());
-		assertEquals("Test Add 1 - startTime", "2am tmr", task.getStartTime());
-		assertEquals("Test Add 1 - endTime", "9", task.getEndTime());
+		assertEquals("Test Add 1 - startTime", "201410300200", task.getStartTime());
+		assertEquals("Test Add 1 - endTime", "201410302100", task.getEndTime());
 	}
 	
 	@Test
 	public void testAdd2() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "add dine By 1pm");
+		Extractor ex = new Extractor(task, "add dine By 1 pm");
 		ex.extractForAddTask();
 		assertEquals("Test Add 2 - description", "dine", task.getDescription());
-		assertEquals("Test Add 2 - startTime", null, task.getStartTime());
-		assertEquals("Test Add 2 - endTime", "1pm", task.getEndTime());
+		assertEquals("Test Add 2 - startTime", "", task.getStartTime());
+		assertEquals("Test Add 2 - endTime", getToday() + "1300", task.getEndTime());
 	}
 	
 	@Test
@@ -65,11 +88,11 @@ public class ExtractorTest {
 	@Test
 	public void testDelete4() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "delete from mondayf fd to friday");
+		Extractor ex = new Extractor(task, "delete from 12 am 06102014 to 101014");
 		ex.extractForDeleteTask();
 		assertEquals("Test Delete 4  - description", null, task.getDescription());
-		assertEquals("Test Delete 4  - startTime", "mondayf fd", task.getStartTime());
-		assertEquals("Test Delete 4  - endTime", "friday", task.getEndTime());
+		assertEquals("Test Delete 4  - startTime", "201410060000", task.getStartTime());
+		assertEquals("Test Delete 4  - endTime", "201410102359", task.getEndTime());
 		assertEquals("Test Delete 4  - deleteType", "TIMEFRAME", task.getDeleteType());
 	}
 	
@@ -88,11 +111,11 @@ public class ExtractorTest {
 	@Test
 	public void testUpdate2() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "update 10 by friday");
+		Extractor ex = new Extractor(task, "update 10 by 1400 061014");
 		ex.extractForUpdateTask();
 		assertEquals("Test Update 2  - description", null, task.getDescription());
-		assertEquals("Test Update 2  - startTime", null, task.getStartTime());
-		assertEquals("Test Update 2  - endTime", "friday", task.getEndTime());
+		assertEquals("Test Update 2  - startTime", "", task.getStartTime());
+		assertEquals("Test Update 2  - endTime", "201410061400", task.getEndTime());
 		assertEquals("Test Update 2  - updateType", "DATE", task.getUpdateType());
 		assertEquals("Test Update 2  - taskID", 10, ex.getTaskID());
 	}
@@ -100,11 +123,11 @@ public class ExtractorTest {
 	@Test
 	public void testUpdate3() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "update 10 from mondayf fd to friday");
+		Extractor ex = new Extractor(task, "update 10 from 12 am 06102014 to 101014");
 		ex.extractForUpdateTask();
 		assertEquals("Test Update 3  - description", null, task.getDescription());
-		assertEquals("Test Update 3  - startTime", "mondayf fd", task.getStartTime());
-		assertEquals("Test Update 3  - endTime", "friday", task.getEndTime());
+		assertEquals("Test Update 3  - startTime", "201410060000", task.getStartTime());
+		assertEquals("Test Update 3  - endTime", "201410102359", task.getEndTime());
 		assertEquals("Test Update 3  - updateType", "TIMEFRAME", task.getUpdateType());
 		assertEquals("Test Update 3  - taskID", 10, ex.getTaskID());
 	}
@@ -145,11 +168,11 @@ public class ExtractorTest {
 	@Test
 	public void testViewTimeFrame() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "view from monday to friday");
+		Extractor ex = new Extractor(task, "view from 05102014 to 8 pm 101014");
 		ex.extractForViewTask();
 		assertEquals("Test View 4  - description", null, task.getDescription());
-		assertEquals("Test View 4  - startTime", "monday", task.getStartTime());
-		assertEquals("Test View 4  - endTime", "friday", task.getEndTime());
+		assertEquals("Test View 4  - startTime", "201410052359", task.getStartTime());
+		assertEquals("Test View 4  - endTime", "201410102000", task.getEndTime());
 		assertEquals("Test View 4  - viewType", "TIMEFRAME", task.getViewType());
 	}
 }

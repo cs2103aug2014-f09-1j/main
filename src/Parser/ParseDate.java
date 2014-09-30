@@ -57,11 +57,11 @@ public class ParseDate {
 			try {
 				formattedInput = input;
 				SimpleDateFormat formatter = new SimpleDateFormat(format);
-				if(FORMATS_TIME.contains(format)){
+				if (FORMATS_TIME.contains(format)) {
 					formatter = new SimpleDateFormat(format+" "+FORMAT_TODAY);
 					formattedInput = formattedInput + " " + getToday();
 				}
-				if(FORMATS_DATE.contains(format)){
+				if (FORMATS_DATE.contains(format)) {
 					formatter = new SimpleDateFormat(format+" "+FORMAT_LAST_MINUTE);
 					formattedInput = formattedInput + " " + LAST_MINUTE;
 				}

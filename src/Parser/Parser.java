@@ -75,70 +75,25 @@ public class Parser {
 	}
 
 	private OPCODE determineOperation(String operation) {
-		if (isAddOperation(operation)) {
+		if (isInOperationAliases(operation, ALIASES_ADD)) {
 			return OPCODE.ADD;
-		} else if (isViewOperation(operation)) {
+		} else if (isInOperationAliases(operation, ALIASES_VIEW)) {
 			return OPCODE.VIEW;
-		} else if (isUpdateOperation(operation)) {
+		} else if (isInOperationAliases(operation, ALIASES_UPDATE)) {
 			return OPCODE.UPDATE;
-		} else if (isDeleteOperation(operation)) {
+		} else if (isInOperationAliases(operation, ALIASES_DELETE)) {
 			return OPCODE.DELETE;
-		} else if (isHelpOperation(operation)) {
+		} else if (isInOperationAliases(operation, ALIASES_HELP)) {
 			return OPCODE.HELP;
-		} else if (isExitOperation(operation)) {
+		} else if (isInOperationAliases(operation, ALIASES_EXIT)) {
 			return OPCODE.EXIT;
 		} else {
 			return OPCODE.INVALID;
 		}
 	}
 
-	private boolean isAddOperation(String operation) {
-		for (String alias : ALIASES_ADD) {
-			if (operation.equalsIgnoreCase(alias)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean isViewOperation(String operation) {
-		for (String alias : ALIASES_VIEW) {
-			if (operation.equalsIgnoreCase(alias)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean isUpdateOperation(String operation) {
-		for (String alias : ALIASES_UPDATE) {
-			if (operation.equalsIgnoreCase(alias)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean isDeleteOperation(String operation) {
-		for (String alias : ALIASES_DELETE) {
-			if (operation.equalsIgnoreCase(alias)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean isHelpOperation(String operation) {
-		for (String alias : ALIASES_HELP) {
-			if (operation.equalsIgnoreCase(alias)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean isExitOperation(String operation) {
-		for (String alias : ALIASES_EXIT) {
+	private boolean isInOperationAliases(String operation, String[] aliases) {
+		for (String alias : aliases) {
 			if (operation.equalsIgnoreCase(alias)) {
 				return true;
 			}

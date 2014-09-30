@@ -235,7 +235,13 @@ public class Extractor {
 	 * @return
 	 */
 	private static String removeFirstWord(String userCommand) {
-		return userCommand.replace(getFirstWord(userCommand), "").trim();
+		String commandString;
+		try {
+			commandString = userCommand.trim().split("\\s+", 2)[1];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			commandString = "";
+		}
+		return commandString;
 	}
 	
 	/**
@@ -254,13 +260,10 @@ public class Extractor {
 	
 	private boolean isDate(String input){
 		// TODO: the rule for judging date may change
-        Pattern DatePatternSix = Pattern.compile("\\d\\d\\d\\d\\d\\d");
-        Pattern DatePatternEight = Pattern.compile("\\d\\d\\d\\d\\d\\d\\d\\d");
-        Matcher DateMatcherSix = DatePatternSix.matcher(input);
-        Matcher DateMatcherEight = DatePatternEight.matcher(input);
-		if (DateMatcherSix.find() || DateMatcherEight.find()){
-			return true;
-		}
-		return false;
+        Pattern datePatternSix = Pattern.compile("\\d\\d\\d\\d\\d\\d");
+        Pattern datePatternEight = Pattern.compile("\\d\\d\\d\\d\\d\\d\\d\\d");
+        Matcher dateMatcherSix = datePatternSix.matcher(input);
+        Matcher dateMatcherEight = datePatternEight.matcher(input);
+		return (dateMatcherSix.find() || dateMatcherEight.find());
 	}
 }

@@ -47,8 +47,8 @@ public class Logic {
 		int task_ID = numberOfTasks + 1;
 		numberOfTasks++;
 		
-		list.add(task_ID, task);
-		
+		list.add(task_ID - 1, task);
+
 		sort();
 		return MESSAGE_ADDED;
 	}
@@ -108,25 +108,16 @@ public class Logic {
 			break;
 		}
 		
-		return formatArrayAsNumberedList(output);
+		return formatArrayAsString(output);
 	}
 	
-	private static String formatArrayAsNumberedList(ArrayList<String> taskArray) {
-		String textsAsNumberedList = new String();
-		for (int i = 0; i < taskArray.size(); i++) {
-			String formattedText = (i + 1) + ". " + taskArray.get(i);
-			textsAsNumberedList = appendToNumberedListString(textsAsNumberedList, formattedText);
+	private static String formatArrayAsString(ArrayList<String> taskNumberedArray) {
+		String textsAsNumberedList = taskNumberedArray.get(0);
+		for (int i = 1; i < taskNumberedArray.size(); i++) {
+			textsAsNumberedList = textsAsNumberedList.concat("\n" + taskNumberedArray.get(i));
 		}
 		return textsAsNumberedList;
 	}
-	
-	private static String appendToNumberedListString(String numberedListString, String formattedText) {
-		if (numberedListString.equals("")) {
-			return formattedText;
-		} else {
-			return numberedListString + "\n" + formattedText;
-		}
-	}	
 	
 	// This function needs to be changed.
 	public static void storeIntoList() {
@@ -140,7 +131,7 @@ public class Logic {
 	
 	public static String getOutput(int id) {
 		Task task = list.get(id);
-		String temp = id + task.getDescription();
+		String temp = (id + 1) + ". " + task.getDescription();
 		
 		return temp;
 	}

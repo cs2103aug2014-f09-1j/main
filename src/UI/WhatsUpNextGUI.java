@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import Logic.Logic;
 import Parser.Parser;
 import Structure.Task;
 
@@ -40,8 +41,6 @@ public class WhatsUpNextGUI {
 	private JPanel panelUpcoming;
 	private JButton buttonUpcoming;
 	private JTextArea textDisplayUpcoming;
-	
-	private Parser parser;
 
 	
 	/**
@@ -297,9 +296,9 @@ public class WhatsUpNextGUI {
 			feedback = "Empty command";
 		} else {
 			try {
-				parser = new Parser(commandInput);
+				Parser parser = new Parser(commandInput);
 				Task currentTask = parser.parseInput();
-				feedback = "No working Logic.execute yet: " + currentTask.getDescription();//Logic.execute(currentTask);
+				feedback = Logic.execute(currentTask);
 			} catch (Exception e) {
 				feedback = e.getMessage();
 			}

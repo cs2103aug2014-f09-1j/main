@@ -19,25 +19,29 @@ public class Logic {
 	
 	static int numberOfTasks = 0;
 	
-	public static void execute(OPCODE command, Task task) {
+	public static String execute(Task task) {
 		Task temp = (Task) task;
+		String feedback;
 		
-		switch (command) {
-		case ADD:
-			addTask(temp);
-			break;
-		case DELETE:
-			deleteTask(temp);
-			break;
-		case UPDATE:
-			updateTask(temp);
-			break;
-		case VIEW:
-			viewTask(temp);
-			break;
-		default:
-			break;		
+		switch (task.getOpCode()) {
+			case ADD:
+				feedback = addTask(temp);
+				break;
+			case DELETE:
+				feedback = deleteTask(temp);
+				break;
+			case UPDATE:
+				feedback = updateTask(temp);
+				break;
+			case VIEW:
+				feedback = viewTask(temp);
+				break;
+			default:
+				feedback = "Unable to execute the command";
+				break;
 		}
+		
+		return feedback;
 	}
 	
 	public static String addTask(Task task) {
@@ -92,22 +96,38 @@ public class Logic {
 		return MESSAGE_UPDATED;
 	}	
 	
-	public static ArrayList<String> viewTask(Task temp) {
+	public static String viewTask(Task temp) {
 		String viewType = temp.getViewType();
 		
 		switch (viewType) {
 		case "ALL":
 			viewAll();
 			break;
-		case "Next":
+		case "NEXT":
 			break;
 		default:
 			break;
 		}
 		
-		return output;
+		return formatArrayAsNumberedList(output);
 	}
-		
+	
+	private static String formatArrayAsNumberedList(ArrayList<String> taskArray) {
+		String textsAsNumberedList = new String();
+		for (int i = 0; i < taskArray.size(); i++) {
+			String formattedText = (i + 1) + ". " + taskArray.get(i);
+			textsAsNumberedList = appendToNumberedListString(textsAsNumberedList, formattedText);
+		}
+		return textsAsNumberedList;
+	}
+	
+	private static String appendToNumberedListString(String numberedListString, String formattedText) {
+		if (numberedListString.equals("")) {
+			return formattedText;
+		} else {
+			return numberedListString + "\n" + formattedText;
+		}
+	}	
 	
 	// This function needs to be changed.
 	public static void storeIntoList() {

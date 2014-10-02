@@ -22,6 +22,7 @@ public class ParseDate {
 																						"dd-MM-yyyy"));
 	private final String LAST_MINUTE = "2359";
 	
+	
 	public String parseInput(String input) {
 		ArrayList<String> allFormats = getAllFormats();
 		String formattedDate = getFormattedDate(input, allFormats);
@@ -133,4 +134,22 @@ public class ParseDate {
 		
 		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
 	}
+
+	
+	/**
+	 * This function judges if an input string is a qualified date
+	 * @param input 
+	 * @return boolean
+	 */
+	public boolean isDate(String input){
+		String parsedDate=parseInput(input);
+		if (parsedDate==""){
+			return false;
+		} else{
+			return true;
+		}
+	}
+
 }
+
+

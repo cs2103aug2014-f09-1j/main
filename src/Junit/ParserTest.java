@@ -74,7 +74,9 @@ public class ParserTest {
         assertEquals("Test Add 1 - OPCODE", OPCODE.ADD, task.getOpCode());
 	}
 	
+	
 	@Test
+	// Parser Testing: update by timeframe
 	public void testParserUpdate1() {
 		String input = "update 19 from 6 PM 29/09/2014 to 8 pm 29/09/2014";
 		Parser parser = new Parser(input);
@@ -89,8 +91,9 @@ public class ParserTest {
 	}
 	
 	@Test
+	// Parser Testing: update by end time(deadline)
 	public void testParserUpdate2() {
-		String input = "update 19 by 6 pm 29/09/2014";
+		String input = "update 19 by 18:00 29/09/2014";
 		Parser parser = new Parser(input);
 		parser.parseInput();
         Task task = parser.getTask();
@@ -102,13 +105,29 @@ public class ParserTest {
         assertEquals("Test update 1 - updateType", "DATE", task.getUpdateType());
 	}
 	
+	@Test
+	// Parser Testing: update by description
+	public void testParserUpdate3() {
+		String input = "update 19 new descripitions1234";
+		Parser parser = new Parser(input);
+		parser.parseInput();
+        Task task = parser.getTask();
+		assertEquals("Test update 1 - description", "new descripitions1234", task.getDescription());
+		assertEquals("Test update 1 - startTime", null, task.getStartTime());
+		assertEquals("Test update 1 - endTime", null, task.getEndTime());		
+        assertEquals("Test update 1 - OPCODE", OPCODE.UPDATE, task.getOpCode());
+        assertEquals("Test update 1 - taskID", 19, parser.getTaskID());
+        assertEquals("Test update 1 - updateType", "DESCRIPTION", task.getUpdateType());
+	}
+	
 	
 	@Test
+	// TODO: not working 
 	public void testParseDate() {
 		ParseDate parseDate = new ParseDate();
 		String input1 = "6:09 29/09/2014";
-		String input2 = "18 AM 29/09/2014";
-		String input3 = "18 pm 29-09-2014";
+		String input2 = "11 AM 29/09/2014";
+		String input3 = "8 pm 29-09-2014";
 		Boolean result1 = parseDate.isDate(input1);
 		Boolean result2 = parseDate.isDate(input2);
 		Boolean result3 = parseDate.isDate(input3);

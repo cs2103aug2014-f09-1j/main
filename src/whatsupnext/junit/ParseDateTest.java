@@ -1,4 +1,4 @@
-package Junit;
+package whatsupnext.junit;
 
 import static org.junit.Assert.*;
 
@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import Parser.ParseDate;
+import whatsupnext.parser.ParseDate;
 
 public class ParseDateTest {
 

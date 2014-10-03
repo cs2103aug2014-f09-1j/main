@@ -1,4 +1,4 @@
-package Storage;
+package whatsupnext.storage;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import Structure.Task;
+import whatsupnext.structure.Task;
 
 
 public class Storage {

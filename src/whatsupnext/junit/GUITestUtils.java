@@ -1,4 +1,4 @@
-package Junit;
+package whatsupnext.junit;
 
 import java.awt.*;
 

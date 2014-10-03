@@ -1,14 +1,14 @@
-package Junit;
+package whatsupnext.junit;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import whatsupnext.storage.Storage;
+import whatsupnext.structure.Task;
+
 import java.io.IOException;
 import java.util.ArrayList;
-
-import Structure.Task;
-import Storage.Storage;
 
 public class StorageTest {
 

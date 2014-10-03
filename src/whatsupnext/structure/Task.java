@@ -1,9 +1,9 @@
-package Structure;
+package whatsupnext.structure;
 
-import Structure.OPCODE;
-import Structure.VIEWTYPE;
-import Structure.UPDATETYPE;
-import Structure.DELETETYPE;
+import whatsupnext.structure.DELETETYPE;
+import whatsupnext.structure.OPCODE;
+import whatsupnext.structure.UPDATETYPE;
+import whatsupnext.structure.VIEWTYPE;
 
 public class Task {
 

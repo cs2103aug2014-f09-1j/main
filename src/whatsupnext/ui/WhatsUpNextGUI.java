@@ -1,4 +1,4 @@
-package UI;
+package whatsupnext.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,9 +22,9 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import Logic.Logic;
-import Parser.Parser;
-import Structure.Task;
+import whatsupnext.logic.Logic;
+import whatsupnext.parser.Parser;
+import whatsupnext.structure.Task;
 
 /*
  * This class is used for GUI of software WhatsUpNext
@@ -129,7 +129,7 @@ public class WhatsUpNextGUI {
 	private void initializeApplicationFrame() {	
 		frameMain = new JFrame();
 		frameMain.setResizable(false);
-		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/UI/iconGUI.png")));
+		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/whatsupnext/ui/iconGUI.png")));
 		frameMain.setType(Type.POPUP);
 		frameMain.setForeground(SystemColor.controlShadow);
 		frameMain.setBackground(Color.GRAY);

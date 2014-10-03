@@ -1,4 +1,4 @@
-package Junit;
+package whatsupnext.junit;
 
 import static org.junit.Assert.*;
 
@@ -6,11 +6,11 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import Parser.Extractor;
-import Structure.DELETETYPE;
-import Structure.Task;
-import Structure.UPDATETYPE;
-import Structure.VIEWTYPE;
+import whatsupnext.parser.Extractor;
+import whatsupnext.structure.DELETETYPE;
+import whatsupnext.structure.Task;
+import whatsupnext.structure.UPDATETYPE;
+import whatsupnext.structure.VIEWTYPE;
 
 public class ExtractorTest {
 

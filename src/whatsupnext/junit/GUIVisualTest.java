@@ -1,4 +1,4 @@
-package Junit;
+package whatsupnext.junit;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +18,7 @@ import javax.swing.ScrollPaneConstants;
 import org.junit.Before;
 import org.junit.Test;
 
-import UI.WhatsUpNextGUI;
+import whatsupnext.ui.WhatsUpNextGUI;
 
 public class GUIVisualTest {
 	private WhatsUpNextGUI gui;

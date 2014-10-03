@@ -1,12 +1,12 @@
 /*
  *  This is the Parser class for WhatsUpNext
  */
-package Parser;
-
-import Structure.OPCODE;
-import Structure.Task;
+package whatsupnext.parser;
 
 import java.util.StringTokenizer;
+
+import whatsupnext.structure.OPCODE;
+import whatsupnext.structure.Task;
 
 public class Parser {
 

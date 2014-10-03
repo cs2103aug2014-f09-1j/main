@@ -1,8 +1,9 @@
-package Junit;
+package whatsupnext.junit;
 
 import static org.junit.Assert.*;
 
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -10,7 +11,7 @@ import javax.swing.JTextField;
 import org.junit.Before;
 import org.junit.Test;
 
-import UI.WhatsUpNextGUI;
+import whatsupnext.ui.WhatsUpNextGUI;
 
 public class GUIBehaviorTest {
 	private WhatsUpNextGUI gui;

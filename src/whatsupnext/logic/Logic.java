@@ -1,14 +1,14 @@
 /*
  * This is the Logic class.
  */
-package Logic;
-
-import Structure.DELETETYPE;
-import Structure.Task;
-import Structure.UPDATETYPE;
-import Structure.VIEWTYPE;
+package whatsupnext.logic;
 
 import java.util.ArrayList;
+
+import whatsupnext.structure.DELETETYPE;
+import whatsupnext.structure.Task;
+import whatsupnext.structure.UPDATETYPE;
+import whatsupnext.structure.VIEWTYPE;
 
 public class Logic {
 	

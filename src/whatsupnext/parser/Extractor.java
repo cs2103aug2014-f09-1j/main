@@ -1,13 +1,13 @@
-package Parser;
+package whatsupnext.parser;
 
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import Structure.DELETETYPE;
-import Structure.Task;
-import Structure.UPDATETYPE;
-import Structure.VIEWTYPE;
+import whatsupnext.structure.DELETETYPE;
+import whatsupnext.structure.Task;
+import whatsupnext.structure.UPDATETYPE;
+import whatsupnext.structure.VIEWTYPE;
 
 public class Extractor {
 

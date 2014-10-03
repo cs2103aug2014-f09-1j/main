@@ -1,14 +1,14 @@
-package Junit;
+package whatsupnext.junit;
 import static org.junit.Assert.*;
-import Structure.DELETETYPE;
-import Structure.OPCODE;
-import Structure.UPDATETYPE;
-import Structure.VIEWTYPE;
 
 import org.junit.Test;
 
-import Parser.*;
-import Structure.Task;
+import whatsupnext.parser.*;
+import whatsupnext.structure.DELETETYPE;
+import whatsupnext.structure.OPCODE;
+import whatsupnext.structure.Task;
+import whatsupnext.structure.UPDATETYPE;
+import whatsupnext.structure.VIEWTYPE;
 
 public class ParserTest {
 	

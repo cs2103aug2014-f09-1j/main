@@ -90,7 +90,7 @@ public class ParserTest {
 		assertEquals("Test update 1 - startTime", "201409291800", task.getStartTime());
 		assertEquals("Test update 1 - endTime", "201409292000", task.getEndTime());		
         assertEquals("Test update 1 - OPCODE", OPCODE.UPDATE, task.getOpCode());
-        assertEquals("Test update 1 - taskID", 19, parser.getTaskID());
+        assertEquals("Test update 1 - taskID", "19", task.getTaskID());
         
 	}
 	
@@ -105,7 +105,7 @@ public class ParserTest {
 		assertEquals("Test update 1 - startTime", "", task.getStartTime());
 		assertEquals("Test update 1 - endTime", "201409291800", task.getEndTime());		
         assertEquals("Test update 1 - OPCODE", OPCODE.UPDATE, task.getOpCode());
-        assertEquals("Test update 1 - taskID", 19, parser.getTaskID());
+        assertEquals("Test update 1 - taskID", "19", task.getTaskID());
         assertEquals("Test update 1 - updateType", UPDATETYPE.DEADLINE, task.getUpdateType());
 	}
 	
@@ -120,7 +120,7 @@ public class ParserTest {
 		assertEquals("Test update 1 - startTime", null, task.getStartTime());
 		assertEquals("Test update 1 - endTime", null, task.getEndTime());		
         assertEquals("Test update 1 - OPCODE", OPCODE.UPDATE, task.getOpCode());
-        assertEquals("Test update 1 - taskID", 19, parser.getTaskID());
+        assertEquals("Test update 1 - taskID", "19", task.getTaskID());
         assertEquals("Test update 1 - updateType", UPDATETYPE.DESCRIPTION, task.getUpdateType());
 	}
 	
@@ -153,7 +153,7 @@ public class ParserTest {
 	@Test
 	// Parser Testing: update by description
 	public void testParserView3() {
-		String input = "view by 1900 29092014";
+		String input = "view 1900 29092014";
 		Parser parser = new Parser(input);
 		parser.parseInput();
         Task task = parser.getTask();

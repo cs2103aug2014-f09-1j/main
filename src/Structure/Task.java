@@ -7,22 +7,23 @@ import Structure.DELETETYPE;
 
 public class Task {
 
-	private static final int OPERAND_SIZE = 6;
-	private static final int INDEX_FOR_DESCRIPTION = 0;
-	private static final int INDEX_FOR_START_TIME = 1;
-	private static final int INDEX_FOR_END_TIME = 2;
-/*	private static final int INDEX_FOR_DELETE_TYPE = 3;
-	private static final int INDEX_FOR_UPDATE_TYPE = 4;
-	private static final int INDEX_FOR_VIEW_TYPE = 5;*/
+	private static final int OPERAND_SIZE = 4;
+	private static final int INDEX_FOR_TASK_ID = 0;
+	private static final int INDEX_FOR_DESCRIPTION = 1;
+	private static final int INDEX_FOR_START_TIME = 2;
+	private static final int INDEX_FOR_END_TIME = 3;
 	
 	private OPCODE opcode;
-	private VIEWTYPE viewtype;
-	private UPDATETYPE updatetype;
-	private DELETETYPE deletetype;
+	private VIEWTYPE viewType;
+	private UPDATETYPE updateType;
+	private DELETETYPE deleteType;
 	private String[] operand;
 
 	public Task() {
 		setOpcode(null);
+		setViewType(null);
+		setUpdateType(null);
+		setDeleteType(null);
 		operand = new String[OPERAND_SIZE];
 	}
 
@@ -32,6 +33,38 @@ public class Task {
 
 	public void setOpcode(OPCODE opcode) {
 		this.opcode = opcode;
+	}
+	
+	public VIEWTYPE getViewType() {
+		return viewType;
+	}
+	
+	public void setViewType(VIEWTYPE viewType) {
+		this.viewType = viewType;
+	}
+	
+	public UPDATETYPE getUpdateType() {
+		return updateType;
+	}
+	
+	public void setUpdateType(UPDATETYPE updateType) {
+		this.updateType = updateType;
+	}
+	
+	public DELETETYPE getDeleteType() {
+		return deleteType;
+	}
+	
+	public void setDeleteType(DELETETYPE deleteType) {
+		this.deleteType = deleteType;
+	}
+	
+	public String getTaskID() {
+		return operand[INDEX_FOR_TASK_ID];
+	}
+	
+	public void setTaskID(String taskID) {
+		operand[INDEX_FOR_TASK_ID] = taskID;
 	}
 	
 	public String getDescription() {
@@ -57,38 +90,5 @@ public class Task {
 	public void setEndTime(String endTime) {
 		operand[INDEX_FOR_END_TIME] = endTime;
 	}
-	
-	
-	
-	
-	public DELETETYPE getDeleteType() {
-	//	return operand[INDEX_FOR_DELETE_TYPE];
-		return deletetype;
-	}
-	
-	public UPDATETYPE getUpdateType() {
-	//	return operand[INDEX_FOR_UPDATE_TYPE];
-		return updatetype;
-	}
-	
-	public VIEWTYPE getViewType() {
-	//	return operand[INDEX_FOR_VIEW_TYPE];
-		return viewtype;
-	}
-	
-	
-	public void setDeleteType(DELETETYPE newdeletetype) {
-	//	operand[INDEX_FOR_DELETE_TYPE] = deleteType;
-		deletetype = newdeletetype;
-	}
-	
-	public void setUpdateType(UPDATETYPE newupdatetype) {
-	//	operand[INDEX_FOR_UPDATE_TYPE] = updateType;
-		updatetype = newupdatetype;
-	}
-	
-	public void setViewType(VIEWTYPE newviewtype) {
-	//	operand[INDEX_FOR_VIEW_TYPE] = viewType;
-	    viewtype = newviewtype;
-	}
+
 }

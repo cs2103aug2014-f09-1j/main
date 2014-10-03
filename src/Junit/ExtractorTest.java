@@ -7,7 +7,10 @@ import java.util.Calendar;
 import org.junit.Test;
 
 import Parser.Extractor;
+import Structure.DELETETYPE;
 import Structure.Task;
+import Structure.UPDATETYPE;
+import Structure.VIEWTYPE;
 
 public class ExtractorTest {
 
@@ -57,10 +60,10 @@ public class ExtractorTest {
 		Task task = new Task();
 		Extractor ex = new Extractor(task, "delete 190");
 		ex.extractForDeleteTask();
-		assertEquals("Test Delete 1  - description/ID", "190", task.getDescription());
+		assertEquals("Test Delete 1  - ID", "190", task.getTaskID());
 		assertEquals("Test Delete 1  - startTime", null, task.getStartTime());
 		assertEquals("Test Delete 1  - endTime", null, task.getEndTime());
-		assertEquals("Test Delete 1  - deleteType", "ID", task.getDeleteType());
+		assertEquals("Test Delete 1  - deleteType", DELETETYPE.ID, task.getDeleteType());
 	}
 	
 	@Test
@@ -70,8 +73,8 @@ public class ExtractorTest {
 		ex.extractForDeleteTask();
 		assertEquals("Test Delete 2  - description", null, task.getDescription());
 		assertEquals("Test Delete 2  - startTime", null, task.getStartTime());
-		assertEquals("Test Delete 2  - endTime", "101014", task.getEndTime());
-		assertEquals("Test Delete 2  - deleteType", "DATE", task.getDeleteType());
+		assertEquals("Test Delete 2  - endTime", "201410102359", task.getEndTime());
+		assertEquals("Test Delete 2  - deleteType", DELETETYPE.DATE, task.getDeleteType());
 	}
 	
 	@Test
@@ -82,7 +85,7 @@ public class ExtractorTest {
 		assertEquals("Test Delete 3  - description", null, task.getDescription());
 		assertEquals("Test Delete 3  - startTime", null, task.getStartTime());
 		assertEquals("Test Delete 3  - endTime", "NOW", task.getEndTime());
-		assertEquals("Test Delete 3  - deleteType", "DEADLINE", task.getDeleteType());
+		assertEquals("Test Delete 3  - deleteType", DELETETYPE.DEADLINE, task.getDeleteType());
 	}
 	
 	@Test
@@ -93,7 +96,7 @@ public class ExtractorTest {
 		assertEquals("Test Delete 4  - description", null, task.getDescription());
 		assertEquals("Test Delete 4  - startTime", "201410060000", task.getStartTime());
 		assertEquals("Test Delete 4  - endTime", "201410102359", task.getEndTime());
-		assertEquals("Test Delete 4  - deleteType", "TIMEFRAME", task.getDeleteType());
+		assertEquals("Test Delete 4  - deleteType", DELETETYPE.TIMEFRAME, task.getDeleteType());
 	}
 	
 	@Test
@@ -104,8 +107,8 @@ public class ExtractorTest {
 		assertEquals("Test Update 1  - description", "new description", task.getDescription());
 		assertEquals("Test Update 1  - startTime", null, task.getStartTime());
 		assertEquals("Test Update 1  - endTime", null, task.getEndTime());
-		assertEquals("Test Update 1  - updateType", "DESCRIPTION", task.getUpdateType());
-		assertEquals("Test Update 1  - taskID", 10, ex.getTaskID());
+		assertEquals("Test Update 1  - updateType", UPDATETYPE.DESCRIPTION, task.getUpdateType());
+		assertEquals("Test Update 1  - taskID", "10", task.getTaskID());
 	}
 	
 	@Test
@@ -116,8 +119,8 @@ public class ExtractorTest {
 		assertEquals("Test Update 2  - description", null, task.getDescription());
 		assertEquals("Test Update 2  - startTime", "", task.getStartTime());
 		assertEquals("Test Update 2  - endTime", "201410061400", task.getEndTime());
-		assertEquals("Test Update 2  - updateType", "DATE", task.getUpdateType());
-		assertEquals("Test Update 2  - taskID", 10, ex.getTaskID());
+		assertEquals("Test Update 2  - updateType", UPDATETYPE.DEADLINE, task.getUpdateType());
+		assertEquals("Test Update 2  - taskID", "10", task.getTaskID());
 	}
 	
 	@Test
@@ -128,8 +131,8 @@ public class ExtractorTest {
 		assertEquals("Test Update 3  - description", null, task.getDescription());
 		assertEquals("Test Update 3  - startTime", "201410060000", task.getStartTime());
 		assertEquals("Test Update 3  - endTime", "201410102359", task.getEndTime());
-		assertEquals("Test Update 3  - updateType", "TIMEFRAME", task.getUpdateType());
-		assertEquals("Test Update 3  - taskID", 10, ex.getTaskID());
+		assertEquals("Test Update 3  - updateType", UPDATETYPE.TIMEFRAME, task.getUpdateType());
+		assertEquals("Test Update 3  - taskID", "10", task.getTaskID());
 	}
 	
 	@Test
@@ -140,7 +143,7 @@ public class ExtractorTest {
 		assertEquals("Test View 1  - description", null, task.getDescription());
 		assertEquals("Test View 1  - startTime", null, task.getStartTime());
 		assertEquals("Test View 1  - endTime", null, task.getEndTime());
-		assertEquals("Test View 1  - viewType", "ALL", task.getViewType());
+		assertEquals("Test View 1  - viewType", VIEWTYPE.ALL, task.getViewType());
 	}
 	
 	@Test
@@ -151,18 +154,18 @@ public class ExtractorTest {
 		assertEquals("Test View 2  - description", null, task.getDescription());
 		assertEquals("Test View 2  - startTime", null, task.getStartTime());
 		assertEquals("Test View 2  - endTime", null, task.getEndTime());
-		assertEquals("Test View 2  - viewType", "NEXT", task.getViewType());
+		assertEquals("Test View 2  - viewType", VIEWTYPE.NEXT, task.getViewType());
 	}
 	
 	@Test
 	public void testViewDate() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "view Monday");
+		Extractor ex = new Extractor(task, "view 101014");
 		ex.extractForViewTask();
 		assertEquals("Test View 3  - description", null, task.getDescription());
 		assertEquals("Test View 3  - startTime", null, task.getStartTime());
-		assertEquals("Test View 3  - endTime", "Monday", task.getEndTime());
-		assertEquals("Test View 3  - viewType", "DATE", task.getViewType());
+		assertEquals("Test View 3  - endTime", "201410102359", task.getEndTime());
+		assertEquals("Test View 3  - viewType", VIEWTYPE.DATE, task.getViewType());
 	}
 	
 	@Test
@@ -173,6 +176,6 @@ public class ExtractorTest {
 		assertEquals("Test View 4  - description", null, task.getDescription());
 		assertEquals("Test View 4  - startTime", "201410052359", task.getStartTime());
 		assertEquals("Test View 4  - endTime", "201410102000", task.getEndTime());
-		assertEquals("Test View 4  - viewType", "TIMEFRAME", task.getViewType());
+		assertEquals("Test View 4  - viewType", VIEWTYPE.TIMEFRAME, task.getViewType());
 	}
 }

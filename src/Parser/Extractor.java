@@ -11,18 +11,14 @@ import Structure.VIEWTYPE;
 
 public class Extractor {
 
-	private ParseDate parseDate = new ParseDate();
+	private ParseDate parseDate;
 	private String input;
 	private Task task;
-	private int taskID;
-	
+
 	public Extractor(Task task, String input){
+		this.parseDate = new ParseDate();
 		this.input = input;
 		this.task = task;
-	}
-	
-	public int getTaskID(){
-		return taskID;
 	}
 	
 	/**
@@ -88,7 +84,9 @@ public class Extractor {
 		
 		// Get the task ID and remove it from the remaining details
 		try {
-			taskID = Integer.parseInt(getFirstWord(updateDetail));
+			String taskID = getFirstWord(updateDetail);
+			Integer.parseInt(taskID);
+			task.setTaskID(taskID);
 		} catch (NumberFormatException e) {
 			throw new NumberFormatException("Update task requires a valid integer id");
 		}
@@ -149,7 +147,12 @@ public class Extractor {
 
 	private void deleteCaseID(String deleteDetail) {
 		task.setDeleteType(DELETETYPE.ID);
-		task.setDescription(deleteDetail);
+		try {
+			Integer.parseInt(deleteDetail);
+			task.setTaskID(deleteDetail);
+		} catch (NumberFormatException e) {
+			throw new NumberFormatException("Delete task requires a valid integer id");
+		}
 	}
 
 	private void deleteCaseDate(String deleteDetail) {
@@ -170,7 +173,6 @@ public class Extractor {
 
 	private void viewCaseDate(String viewDetail) {
 		task.setViewType(VIEWTYPE.DATE);
-		viewDetail = removeFirstWord(viewDetail);
 		task.setEndTime(parseDate.parseInput(viewDetail));
 	}
 

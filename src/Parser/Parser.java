@@ -19,11 +19,10 @@ public class Parser {
 	
 	private String input;
 	private Task task;
-	private int taskID;
 	
 	public Parser(String inputCommand) {
 		input = inputCommand;
-		setTask(new Task());
+		task = new Task();
 	}
 	
 	public Task parseInput() {
@@ -42,15 +41,6 @@ public class Parser {
 		return task;
 	}
 
-	public void setTask(Task t) {
-		task = t;
-	}
-	
-	public int getTaskID() {
-		return taskID;
-	}
-	
-	
 	private void parseTaskArguments() {
 		Extractor ex = new Extractor(task, input);
 		switch (task.getOpCode()) {
@@ -62,7 +52,6 @@ public class Parser {
 				break;
 			case UPDATE:
 				ex.extractForUpdateTask();
-				taskID = ex.getTaskID();
 				break;
 			case VIEW:
 				ex.extractForViewTask();

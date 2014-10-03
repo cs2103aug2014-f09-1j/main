@@ -37,9 +37,13 @@ public class StorageTest {
 		
 		ArrayList<Task> tasksToCompare = obj.readTasks();
 		
-		assertEquals(tasks.get(0), tasksToCompare.get(0));
-		assertEquals(tasks.get(1), tasksToCompare.get(1));
-		assertEquals(tasks.get(2), tasksToCompare.get(2));
+		assertEquals(taskToString(tasks.get(0)), taskToString(tasksToCompare.get(0)));
+		assertEquals(taskToString(tasks.get(1)), taskToString(tasksToCompare.get(1)));
+		assertEquals(taskToString(tasks.get(2)), taskToString(tasksToCompare.get(2)));
+	}
+	
+	public String taskToString(Task t) {
+		return (t.getDescription() + "," + t.getStartTime() + "," + t.getEndTime());
 	}
 
 }

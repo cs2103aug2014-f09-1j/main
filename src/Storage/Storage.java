@@ -38,7 +38,7 @@ public class Storage {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true));
 		for (int x = 0; x < tasks.size(); x++) {
 			Task taskToBeWritten = tasks.get(x);
-			writer.write(taskToBeWritten.getDescription() + " " + taskToBeWritten.getStartTime() + " " + taskToBeWritten.getEndTime());
+			writer.write(taskToBeWritten.getDescription() + "," + taskToBeWritten.getStartTime() + "," + taskToBeWritten.getEndTime());
 			writer.newLine();
 		}		
 		writer.close();
@@ -76,6 +76,8 @@ public class Storage {
 	
 	public Task StringToTask(String taskInString) {
 		Scanner extractFromString = new Scanner(taskInString);
+		extractFromString.useDelimiter(",");
+		
 		String description = extractFromString.next();
 		String startTime = extractFromString.next();
 		String endTime = extractFromString.next();

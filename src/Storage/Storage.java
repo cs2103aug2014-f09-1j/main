@@ -5,7 +5,10 @@ import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
+import Structure.Task;
 
 
 public class Storage {
@@ -16,28 +19,29 @@ public class Storage {
 	
 	private static int numberOfTasks = 0;
 	
-	public boolean inputTask(String[] input) throws IOException {
-		if (isValidInput(input)) {
+	public boolean inputTask(ArrayList<Task> tasks) throws IOException {
+		if (isValidInput(tasks)) {
 			incrementTaskNumber();
-			writeTaskToFile(input);
+			writeTaskToFile(tasks);
 			return SUCCESS;
 		}
 		else {
 			return FAILURE;
 		}		
-	}
+	}	
 	
-	private void writeTaskToFile(String[] taskDetails) throws IOException {		
+	private void writeTaskToFile(ArrayList<Task> tasks) throws IOException {		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true));
-		for (int x = 0; x < taskDetails.length; x++) {
-			writer.write(taskDetails[x] + " ");
-		}
-		writer.newLine();
+		for (int x = 0; x < tasks.size(); x++) {
+			Task taskToBeWritten = tasks.get(x);
+			writer.write(taskToBeWritten.getDescription() + " " + taskToBeWritten.getStartTime() + " " + taskToBeWritten.getEndTime());
+			writer.newLine();
+		}		
 		writer.close();
 	}
 	
-	private boolean isValidInput(String[] input) {
-		if (input == null || input.length == 0) {
+	private boolean isValidInput(ArrayList<Task> tasks) {
+		if (tasks == null || tasks.size() == 0) {
 			return false;
 		}
 		else {
@@ -45,9 +49,9 @@ public class Storage {
 		}
 	}
 	
-	public String[] readTasks() throws IOException {
-		String[] arrayOfTasks = readFromFile();
-		if (arrayOfTasks.length > 0) {
+	public ArrayList<Task> readTasks() throws IOException {
+		ArrayList<Task> arrayOfTasks = readFromFile();
+		if (arrayOfTasks.size() > 0) {
 			return arrayOfTasks;
 		}
 		else {
@@ -55,14 +59,31 @@ public class Storage {
 		}
 	}
 	
-	private String[] readFromFile() throws IOException {
+	private ArrayList<Task> readFromFile() throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME));		
-		String[] tasks = new String[numberOfTasks];
+		ArrayList<Task> tasks = new ArrayList<Task>(numberOfTasks);
 		for (int x = 0; x < numberOfTasks; x++) {			
-			tasks[x] = reader.readLine();;
+			String taskInString = reader.readLine();
+			tasks.add(x, StringToTask(taskInString));			
 		}
 		reader.close();
 		return tasks;
+	}
+	
+	private Task StringToTask(String taskInString) {
+		Scanner extractFromString = new Scanner(taskInString);
+		String description = extractFromString.next();
+		String startTime = extractFromString.next();
+		String endTime = extractFromString.next();
+		
+		Task taskFromString = new Task();
+		taskFromString.setDescription(description);
+		taskFromString.setStartTime(startTime);
+		taskFromString.setEndTime(endTime);
+		
+		extractFromString.close();
+		
+		return taskFromString;
 	}
 	
 	private void incrementTaskNumber() {

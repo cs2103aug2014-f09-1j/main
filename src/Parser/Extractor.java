@@ -103,7 +103,7 @@ public class Extractor {
         	task.setStartTime("");
         	// Remove 'by'
         	task.setEndTime(parseDate.parseInput(removeFirstWord(updateDetail)));
-        	task.setUpdateType(UPDATETYPE.DATE);
+        	task.setUpdateType(UPDATETYPE.DEADLINE);
         } else if (fromKeywordMatcher.find()){
         	// Remove 'from'
         	splitOnToKeyword(updateDetail);

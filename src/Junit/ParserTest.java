@@ -106,7 +106,7 @@ public class ParserTest {
 		assertEquals("Test update 1 - endTime", "201409291800", task.getEndTime());		
         assertEquals("Test update 1 - OPCODE", OPCODE.UPDATE, task.getOpCode());
         assertEquals("Test update 1 - taskID", 19, parser.getTaskID());
-        assertEquals("Test update 1 - updateType", UPDATETYPE.DATE, task.getUpdateType());
+        assertEquals("Test update 1 - updateType", UPDATETYPE.DEADLINE, task.getUpdateType());
 	}
 	
 	@Test

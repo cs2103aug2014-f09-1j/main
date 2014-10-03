@@ -3,7 +3,10 @@
  */
 package Logic;
 
+import Structure.DELETETYPE;
 import Structure.Task;
+import Structure.UPDATETYPE;
+import Structure.VIEWTYPE;
 
 import java.util.ArrayList;
 
@@ -54,19 +57,19 @@ public class Logic {
 	}
 	
 	public static String deleteTask(Task temp) {
-		String deleteType = temp.getDeleteType();
+		DELETETYPE deleteType = temp.getDeleteType();
 		int id = 0;
 		// id = temp.getTaskID;
 				
 		switch (deleteType) {
-		case "ID":
+		case ID:
 			deleteById(id);
 			break;
-		case "DEADLINE":
+		case DEADLINE:
 			break;
-		case "DATE":
+		case DATE:
 			break;
-		case "TIMEFRAME":
+		case TIMEFRAME:
 			break;
 		default:
 			break;	
@@ -76,19 +79,19 @@ public class Logic {
 	}	
 	
 	public static String updateTask(Task temp) {
-		String updateType = temp.getUpdateType();
+		UPDATETYPE updateType = temp.getUpdateType();
 		int id = 0;
 		String info = temp.getDescription();
 		// id = temp.getTaskID;
 		
 		switch (updateType) {
-		case "DESCRIPTION":
+		case DESCRIPTION:
 			updateInfo(id, info);
 			break;
-		case "DEADLINE":
+		case DEADLINE:
 			
 			break;
-		case "TIMEFRAME":
+		case TIMEFRAME:
 			break;
 		}
 		
@@ -96,13 +99,13 @@ public class Logic {
 	}	
 	
 	public static String viewTask(Task temp) {
-		String viewType = temp.getViewType();
+		VIEWTYPE viewType = temp.getViewType();
 		
 		switch (viewType) {
-		case "ALL":
+		case ALL:
 			viewAll();
 			break;
-		case "NEXT":
+		case NEXT:
 			break;
 		default:
 			break;

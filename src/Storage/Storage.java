@@ -19,6 +19,10 @@ public class Storage {
 	
 	private static int numberOfTasks = 0;
 	
+	public Storage() {
+		
+	}
+	
 	public boolean inputTasks(ArrayList<Task> tasks) throws IOException {
 		if (isValidInput(tasks)) {
 			incrementTaskNumber(tasks.size());
@@ -70,7 +74,7 @@ public class Storage {
 		return tasks;
 	}
 	
-	private Task StringToTask(String taskInString) {
+	public Task StringToTask(String taskInString) {
 		Scanner extractFromString = new Scanner(taskInString);
 		String description = extractFromString.next();
 		String startTime = extractFromString.next();

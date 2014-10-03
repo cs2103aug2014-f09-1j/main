@@ -1,6 +1,9 @@
 package Structure;
 
 import Structure.OPCODE;
+import Structure.VIEWTYPE;
+import Structure.UPDATETYPE;
+import Structure.DELETETYPE;
 
 public class Task {
 
@@ -8,11 +11,14 @@ public class Task {
 	private static final int INDEX_FOR_DESCRIPTION = 0;
 	private static final int INDEX_FOR_START_TIME = 1;
 	private static final int INDEX_FOR_END_TIME = 2;
-	private static final int INDEX_FOR_DELETE_TYPE = 3;
+/*	private static final int INDEX_FOR_DELETE_TYPE = 3;
 	private static final int INDEX_FOR_UPDATE_TYPE = 4;
-	private static final int INDEX_FOR_VIEW_TYPE = 5;
+	private static final int INDEX_FOR_VIEW_TYPE = 5;*/
 	
 	private OPCODE opcode;
+	private VIEWTYPE viewtype;
+	private UPDATETYPE updatetype;
+	private DELETETYPE deletetype;
 	private String[] operand;
 
 	public Task() {
@@ -52,28 +58,37 @@ public class Task {
 		operand[INDEX_FOR_END_TIME] = endTime;
 	}
 	
-	public String getDeleteType() {
-		return operand[INDEX_FOR_DELETE_TYPE];
+	
+	
+	
+	public DELETETYPE getDeleteType() {
+	//	return operand[INDEX_FOR_DELETE_TYPE];
+		return deletetype;
 	}
 	
-	public String getUpdateType() {
-		return operand[INDEX_FOR_UPDATE_TYPE];
+	public UPDATETYPE getUpdateType() {
+	//	return operand[INDEX_FOR_UPDATE_TYPE];
+		return updatetype;
 	}
 	
-	public String getViewType() {
-		return operand[INDEX_FOR_VIEW_TYPE];
+	public VIEWTYPE getViewType() {
+	//	return operand[INDEX_FOR_VIEW_TYPE];
+		return viewtype;
 	}
 	
 	
-	public void setDeleteType(String deleteType) {
-		operand[INDEX_FOR_DELETE_TYPE] = deleteType;
+	public void setDeleteType(DELETETYPE newdeletetype) {
+	//	operand[INDEX_FOR_DELETE_TYPE] = deleteType;
+		deletetype = newdeletetype;
 	}
 	
-	public void setUpdateType(String updateType) {
-		operand[INDEX_FOR_UPDATE_TYPE] = updateType;
+	public void setUpdateType(UPDATETYPE newupdatetype) {
+	//	operand[INDEX_FOR_UPDATE_TYPE] = updateType;
+		updatetype = newupdatetype;
 	}
 	
-	public void setViewType(String viewType) {
-		operand[INDEX_FOR_VIEW_TYPE] = viewType;
+	public void setViewType(VIEWTYPE newviewtype) {
+	//	operand[INDEX_FOR_VIEW_TYPE] = viewType;
+	    viewtype = newviewtype;
 	}
 }

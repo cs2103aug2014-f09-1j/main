@@ -4,7 +4,10 @@ package Parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Structure.DELETETYPE;
 import Structure.Task;
+import Structure.UPDATETYPE;
+import Structure.VIEWTYPE;
 
 public class Extractor {
 
@@ -100,14 +103,14 @@ public class Extractor {
         	task.setStartTime("");
         	// Remove 'by'
         	task.setEndTime(parseDate.parseInput(removeFirstWord(updateDetail)));
-        	task.setUpdateType("DATE");
+        	task.setUpdateType(UPDATETYPE.DATE);
         } else if (fromKeywordMatcher.find()){
         	// Remove 'from'
         	splitOnToKeyword(updateDetail);
-        	task.setUpdateType("TIMEFRAME");
+        	task.setUpdateType(UPDATETYPE.TIMEFRAME);
         } else {
         	task.setDescription(updateDetail);
-        	task.setUpdateType("DESCRIPTION");
+        	task.setUpdateType(UPDATETYPE.DESCRIPTION);
         }
 	}
 
@@ -132,47 +135,51 @@ public class Extractor {
 	        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(viewDetail);
 	        if (fromKeywordMatcher.find()) {
 	        	viewCaseTimeFrame(viewDetail);
+	        } else {
+	        	viewCaseDate(viewDetail);
 	        }
 		}
 	}
 	
 
 	private void deleteCaseTimeFrame(String deleteDetail) {
-		task.setDeleteType("TIMEFRAME");
+		task.setDeleteType(DELETETYPE.TIMEFRAME);
 		splitOnToKeyword(deleteDetail);
 	}
 
 	private void deleteCaseID(String deleteDetail) {
-		task.setDeleteType("ID");
+		task.setDeleteType(DELETETYPE.ID);
 		task.setDescription(deleteDetail);
 	}
 
 	private void deleteCaseDate(String deleteDetail) {
-		task.setDeleteType("DATE");
-		task.setEndTime(deleteDetail);
+		task.setDeleteType(DELETETYPE.DATE);
+		task.setEndTime(parseDate.parseInput(deleteDetail));
 	}
 
 	private void deleteCaseDeadline() {
-		task.setDeleteType("DEADLINE");
+		task.setDeleteType(DELETETYPE.DEADLINE);
+		// TODO get current date and time
 		task.setEndTime("NOW");		
 	}
 	
 	private void viewCaseTimeFrame(String viewDetail) {
-		task.setViewType("TIMEFRAME");
+		task.setViewType(VIEWTYPE.TIMEFRAME);
 		splitOnToKeyword(viewDetail);
 	}
 
 	private void viewCaseDate(String viewDetail) {
-		task.setViewType("DATE");
-		task.setEndTime(viewDetail);
+		task.setViewType(VIEWTYPE.DATE);
+		viewDetail = removeFirstWord(viewDetail);
+		task.setEndTime(parseDate.parseInput(viewDetail));
 	}
 
 	private void viewCaseNext() {
-		task.setViewType("NEXT");
+		task.setViewType(VIEWTYPE.NEXT);
 	}
 
 	private void viewCaseAll() {
-		task.setViewType("ALL");
+		task.setViewType(VIEWTYPE.ALL);
 	}
 	
 

@@ -202,7 +202,7 @@ public class ParseDateTest {
 		formattedDate = parseDate.parseInput("13 AM 040114");
 		assertEquals("Test invalid time", "", formattedDate);
 		
-		formattedDate = parseDate.parseInput("12 Am 040114");
+		formattedDate = parseDate.parseInput("12 AM 040114");
 		assertEquals("Test invalid time", "201401040000", formattedDate);
 		
 		formattedDate = parseDate.parseInput("12 pM 040114");

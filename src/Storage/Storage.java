@@ -19,10 +19,10 @@ public class Storage {
 	
 	private static int numberOfTasks = 0;
 	
-	public boolean inputTask(ArrayList<Task> tasks) throws IOException {
+	public boolean inputTasks(ArrayList<Task> tasks) throws IOException {
 		if (isValidInput(tasks)) {
-			incrementTaskNumber();
-			writeTaskToFile(tasks);
+			incrementTaskNumber(tasks.size());
+			writeTasksToFile(tasks);
 			return SUCCESS;
 		}
 		else {
@@ -30,7 +30,7 @@ public class Storage {
 		}		
 	}	
 	
-	private void writeTaskToFile(ArrayList<Task> tasks) throws IOException {		
+	private void writeTasksToFile(ArrayList<Task> tasks) throws IOException {		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true));
 		for (int x = 0; x < tasks.size(); x++) {
 			Task taskToBeWritten = tasks.get(x);
@@ -86,8 +86,8 @@ public class Storage {
 		return taskFromString;
 	}
 	
-	private void incrementTaskNumber() {
-		numberOfTasks = numberOfTasks + 1;
+	private void incrementTaskNumber(int increase) {
+		numberOfTasks = numberOfTasks + increase;
 	}
 	
 	private void decrementTaskNumber() {

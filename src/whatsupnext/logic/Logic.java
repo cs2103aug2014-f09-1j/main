@@ -81,21 +81,16 @@ public class Logic {
 		return MESSAGE_DELETED;
 	}	
 	
-	public static String updateTask(Task temp) {
-		String info = temp.getDescription();
-		String id = temp.getTaskID();
-		String StartTime = temp.getStartTime();
-		String EndTime = temp.getEndTime();
-		
+	public static String updateTask(Task temp) {	
 		switch (temp.getUpdateType()) {
 		case DESCRIPTION:
 			updateInfo(temp);
 			break;
 		case DEADLINE:
-			updateDeadline(id, EndTime);
+			updateDeadline(temp);
 			break;
 		case TIMEFRAME:
-			updateByTimeFrame(id, StartTime, EndTime);
+			updateByTimeFrame(temp);
 			break;
 		default:
 			break;	
@@ -157,21 +152,29 @@ public class Logic {
 		String id = temp.getTaskID();
 		int index = getTaskByID(id);
 		String info = temp.getDescription();
+		
 		Task task = list.get(index);
 		task.setDescription(info);
 	}
 	
-	private static void updateDeadline(String id, String time) {
+	private static void updateDeadline(Task temp) {
+		String id = temp.getTaskID();
 		int index = getTaskByID(id);
-		Task temp = list.get(index);
-		temp.setEndTime(time);
+		String EndTime = temp.getEndTime();
+		
+		Task task = list.get(index);
+		task.setEndTime(EndTime);
 	}
 	
-	private static void updateByTimeFrame(String id, String stime, String etime) {
+	private static void updateByTimeFrame(Task temp) {
+		String id = temp.getTaskID();
 		int index = getTaskByID(id);
-		Task temp = list.get(index);
-		temp.setStartTime(stime);
-		temp.setEndTime(etime);
+		String StartTime = temp.getStartTime();
+		String EndTime = temp.getEndTime();
+		
+		Task task = list.get(index);
+		task.setStartTime(StartTime);
+		task.setEndTime(EndTime);
 	}
 	
 	/*

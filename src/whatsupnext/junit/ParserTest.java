@@ -93,8 +93,8 @@ public class ParserTest {
         assertEquals("Test Add - OPCODE", OPCODE.ADD, task.getOpCode());
         assertEquals("Test Add - addType",ADDTYPE.FLOATING,task.getAddType());
 		assertEquals("Test Add - description", "submit report", task.getDescription());
-		assertEquals("Test Add - startTime", null, task.getStartTime());
-		assertEquals("Test Add - endTime", null, task.getEndTime());
+		assertEquals("Test Add - startTime", "", task.getStartTime());
+		assertEquals("Test Add - endTime", "", task.getEndTime());
 	}
 	
 	@Test
@@ -106,8 +106,8 @@ public class ParserTest {
         Task task = parser.getTask();
         assertEquals("Test Add - OPCODE", OPCODE.ADD, task.getOpCode());
 		assertEquals("Test Add - description", "", task.getDescription());
-		assertEquals("Test Add - startTime", null, task.getStartTime());
-		assertEquals("Test Add - endTime", null, task.getEndTime());
+		assertEquals("Test Add - startTime", "", task.getStartTime());
+		assertEquals("Test Add - endTime", "", task.getEndTime());
 	}
 	
 	@Test
@@ -120,7 +120,7 @@ public class ParserTest {
         assertEquals("Test update - OPCODE", OPCODE.UPDATE, task.getOpCode());
 		assertEquals("Test update - updateType", UPDATETYPE.TIMEFRAME, task.getUpdateType());
         assertEquals("Test update - taskID", "19", task.getTaskID());
-		assertEquals("Test update - description", null, task.getDescription());
+		assertEquals("Test update - description", "", task.getDescription());
 		assertEquals("Test update - startTime", "201409291800", task.getStartTime());
 		assertEquals("Test update - endTime", "201409292000", task.getEndTime());		
 	}
@@ -135,7 +135,7 @@ public class ParserTest {
         assertEquals("Test update - OPCODE", OPCODE.UPDATE, task.getOpCode());
         assertEquals("Test update - updateType", UPDATETYPE.DEADLINE, task.getUpdateType());
         assertEquals("Test update - taskID", "19", task.getTaskID());
-		assertEquals("Test update - description", null, task.getDescription());
+		assertEquals("Test update - description", "", task.getDescription());
 		assertEquals("Test update - startTime", "", task.getStartTime());
 		assertEquals("Test update - endTime", "201409291800", task.getEndTime());		
 	}
@@ -151,8 +151,8 @@ public class ParserTest {
         assertEquals("Test update - updateType", UPDATETYPE.DESCRIPTION, task.getUpdateType());
         assertEquals("Test update - taskID", "19", task.getTaskID());
 		assertEquals("Test update - description", "new descripitions1234", task.getDescription());
-		assertEquals("Test update - startTime", null, task.getStartTime());
-		assertEquals("Test update - endTime", null, task.getEndTime());		
+		assertEquals("Test update - startTime", "", task.getStartTime());
+		assertEquals("Test update - endTime", "", task.getEndTime());		
 	}
 	
 	@Test
@@ -175,7 +175,7 @@ public class ParserTest {
         Task task = parser.getTask();
         assertEquals("Test view - OPCODE", OPCODE.VIEW, task.getOpCode());
         assertEquals("Test view - viewType", VIEWTYPE.TIMEFRAME, task.getViewType());
-		assertEquals("Test view - description", null, task.getDescription());
+		assertEquals("Test view - description", "", task.getDescription());
 		assertEquals("Test view - startTime", "201409291900", task.getStartTime());
 		assertEquals("Test view - endTime", "201409292030", task.getEndTime());
 	}
@@ -189,8 +189,8 @@ public class ParserTest {
         Task task = parser.getTask();
         assertEquals("Test view - OPCODE", OPCODE.VIEW, task.getOpCode());
         assertEquals("Test view - viewType", VIEWTYPE.DATE, task.getViewType());
-        assertEquals("Test view - description", null, task.getDescription());
-		assertEquals("Test view - startTime", null, task.getStartTime());
+        assertEquals("Test view - description", "", task.getDescription());
+		assertEquals("Test view - startTime", "", task.getStartTime());
 		assertEquals("Test view - endTime", "201409291900", task.getEndTime());		
 	}
 	
@@ -203,7 +203,7 @@ public class ParserTest {
         Task task = parser.getTask();
         assertEquals("Test delete - OPCODE", OPCODE.DELETE, task.getOpCode());
         assertEquals("Test delete - deleteType", DELETETYPE.TIMEFRAME, task.getDeleteType());
-        assertEquals("Test delete - description", null, task.getDescription());
+        assertEquals("Test delete - description", "", task.getDescription());
 		assertEquals("Test delete - startTime", "201409291900", task.getStartTime());
 		assertEquals("Test update - endTime", "201409292030", task.getEndTime());		
 	}

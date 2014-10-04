@@ -101,7 +101,6 @@ public class Extractor {
         Matcher fromKeywordMatcher = fromKeywordPattern.matcher(updateDetail);
         
         if (byKeywordMatcher.find()){
-        	task.setStartTime("");
         	// Remove 'by'
         	task.setEndTime(parseDate.parseInput(removeFirstWord(updateDetail)));
         	task.setUpdateType(UPDATETYPE.DEADLINE);
@@ -213,7 +212,6 @@ public class Extractor {
 	private void splitOnByKeyword(String taskDetails) {
 		String[] details = taskDetails.split("\\s+(B|b)(Y|y)\\s+");	
 		task.setDescription(details[0]);
-		task.setStartTime("");
 		task.setEndTime(parseDate.parseInput(details[1]));
 	}
 	

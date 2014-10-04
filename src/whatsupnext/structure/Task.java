@@ -1,5 +1,7 @@
 package whatsupnext.structure;
 
+import java.util.Arrays;
+
 import whatsupnext.structure.DELETETYPE;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.UPDATETYPE;
@@ -27,6 +29,7 @@ public class Task {
 		setUpdateType(null);
 		setDeleteType(null);
 		operand = new String[OPERAND_SIZE];
+		Arrays.fill(operand, "");
 	}
 
 	public OPCODE getOpCode() {

@@ -14,6 +14,7 @@ public class Task {
 	private static final int INDEX_FOR_END_TIME = 3;
 	
 	private OPCODE opcode;
+	private ADDTYPE addType;
 	private VIEWTYPE viewType;
 	private UPDATETYPE updateType;
 	private DELETETYPE deleteType;
@@ -21,6 +22,7 @@ public class Task {
 
 	public Task() {
 		setOpcode(null);
+		setAddType(null);
 		setViewType(null);
 		setUpdateType(null);
 		setDeleteType(null);
@@ -33,6 +35,14 @@ public class Task {
 
 	public void setOpcode(OPCODE opcode) {
 		this.opcode = opcode;
+	}
+	
+	public ADDTYPE getAddType() {
+		return addType;
+	}
+	
+	public void setAddType(ADDTYPE addType) {
+		this.addType = addType;
 	}
 	
 	public VIEWTYPE getViewType() {

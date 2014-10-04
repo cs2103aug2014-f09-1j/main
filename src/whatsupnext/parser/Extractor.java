@@ -4,6 +4,7 @@ package whatsupnext.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import whatsupnext.structure.ADDTYPE;
 import whatsupnext.structure.DELETETYPE;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.UPDATETYPE;
@@ -36,11 +37,13 @@ public class Extractor {
 		Matcher fromKeywordMatcher = fromKeywordPattern.matcher(addDetail);
 
 		if (byKeywordMatcher.find()) {
+			task.setAddType(ADDTYPE.DEADLINE);
 			splitOnByKeyword(addDetail);
 		} else if (fromKeywordMatcher.find()) {
+			task.setAddType(ADDTYPE.TIMEFRAME);
 			splitOnFromToKeyword(addDetail);
 		} else {
-			// Not sure if this is where it's supposed to go...
+			task.setAddType(ADDTYPE.FLOATING);
 			task.setDescription(addDetail);
 			// throw new IllegalArgumentException("'add' task must have an argument");
 		}		

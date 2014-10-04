@@ -84,18 +84,8 @@ public class ParseDate {
 		int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH)+1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = "";
-		String twoDigitDayOfMonth = ""; 
-        if (month < 10) {
-        	twoDigitMonth = "0" + month;
- 		} else {
- 			twoDigitMonth = "" + month;
- 		}
- 		if (dayOfMonth < 10) {
- 			twoDigitDayOfMonth = "0" + dayOfMonth;
- 		} else {
- 			twoDigitDayOfMonth = "" + dayOfMonth;
- 		}
+        String twoDigitMonth = convertToTwoDigitMonth(month);
+		String twoDigitDayOfMonth = convertToTwoDigitDayOfMonth(dayOfMonth); 
          
 		return twoDigitDayOfMonth + twoDigitMonth + year;
 	}
@@ -106,47 +96,43 @@ public class ParseDate {
 		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
 		int minute = cal.get(Calendar.MINUTE);
-		String twoDigitMonth = "";
-		String twoDigitDayOfMonth = "";
-		String twoDigitHour = "";
-		String twoDigitMinute = "";
-		
-		if (month < 10) {
-			twoDigitMonth = "0" + month;
-		} else {
-			twoDigitMonth = "" + month;
-		}
-		if (dayOfMonth < 10) {
-			twoDigitDayOfMonth = "0" + dayOfMonth;
-		} else {
-			twoDigitDayOfMonth = "" + dayOfMonth;
-		}
-		if (hour < 10) {
-			twoDigitHour = "0" + hour;
-		} else {
-			twoDigitHour = "" + hour;
-		}
-		if (minute < 10) {
-			twoDigitMinute = "0" + minute;
-		} else {
-			twoDigitMinute = "" + minute;
-		}
-		
+		String twoDigitMonth = convertToTwoDigitMonth(month);
+		String twoDigitDayOfMonth = convertToTwoDigitDayOfMonth(dayOfMonth);
+		String twoDigitHour = convertToTwoDigitHour(hour);
+		String twoDigitMinute = convertToTwoDigitMinute(minute);
+
 		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
 	}
-
 	
-	/**
-	 * This function judges if an input string is a qualified date
-	 * @param input 
-	 * @return boolean
-	 */
-	public boolean isDate(String input){
-		String parsedDate=parseInput(input);
-		if (parsedDate==""){
-			return false;
-		} else{
-			return true;
+	private String convertToTwoDigitMonth(int month){
+		if (month < 10) {
+			return "0" + month;
+		} else {
+			return "" + month;
+		}
+	}
+	
+	private String convertToTwoDigitDayOfMonth(int dayOfMonth){
+		if (dayOfMonth < 10) {
+			return "0" + dayOfMonth;
+		} else {
+			return "" + dayOfMonth;
+		}
+	}
+	
+	private String convertToTwoDigitHour(int hour){
+		if (hour < 10) {
+			return "0" + hour;
+		} else {
+			return "" + hour;
+		}
+	}
+	
+	private String convertToTwoDigitMinute(int minute){
+		if (minute < 10) {
+			return "0" + minute;
+		} else {
+			return "" + minute;
 		}
 	}
 

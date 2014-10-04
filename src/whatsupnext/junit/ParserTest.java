@@ -178,21 +178,4 @@ public class ParserTest {
         assertEquals("Test update 1 - OPCODE", OPCODE.DELETE, task.getOpCode());
 	}
 	
-	@Test
-	// TODO: not working 
-	public void testParseDate() {
-		ParseDate parseDate = new ParseDate();
-		String input1 = "6:09 29/09/2014";
-		String input2 = "11 AM 29/09/2014";
-		String input3 = "8 pm 29-09-2014";
-		Boolean result1 = parseDate.isDate(input1);
-		Boolean result2 = parseDate.isDate(input2);
-		Boolean result3 = parseDate.isDate(input3);
-		assertEquals("Test parseDate 1", true, result1);
-		assertEquals("Test parseDate 2", true, result2);
-		assertEquals("Test parseDate 3", true, result3);
-	}
-	
-	
-
 }

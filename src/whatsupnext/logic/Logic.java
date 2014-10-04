@@ -3,8 +3,10 @@
  */
 package whatsupnext.logic;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import whatsupnext.storage.Storage;
 import whatsupnext.structure.DELETETYPE;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.UPDATETYPE;
@@ -21,22 +23,27 @@ public class Logic {
 	
 	static int numberOfTasks = 0;
 	
+	public Logic() throws IOException {
+		Storage storage = new Storage();
+		list = storage.readTasks();
+		numberOfTasks = list.size();
+	}
+	
 	public static String execute(Task task) {
-		Task temp = (Task) task;
 		String feedback;
 		
 		switch (task.getOpCode()) {
 			case ADD:
-				feedback = addTask(temp);
+				feedback = addTask(task);
 				break;
 			case DELETE:
-				feedback = deleteTask(temp);
+				feedback = deleteTask(task);
 				break;
 			case UPDATE:
-				feedback = updateTask(temp);
+				feedback = updateTask(task);
 				break;
 			case VIEW:
-				feedback = viewTask(temp);
+				feedback = viewTask(task);
 				break;
 			default:
 				feedback = "Unable to execute the command";
@@ -47,21 +54,16 @@ public class Logic {
 	}
 	
 	public static String addTask(Task task) {
-		int task_ID = numberOfTasks + 1;
+		list.add(task);
 		numberOfTasks++;
 		
-		list.add(task_ID - 1, task);
-
-		sort();
 		return MESSAGE_ADDED;
 	}
 	
 	public static String deleteTask(Task temp) {
-		DELETETYPE deleteType = temp.getDeleteType();
-		int id = 0;
-		// id = temp.getTaskID;
+		String id = temp.getTaskID();
 				
-		switch (deleteType) {
+		switch (temp.getDeleteType()) {
 		case ID:
 			deleteById(id);
 			break;
@@ -79,19 +81,20 @@ public class Logic {
 	}	
 	
 	public static String updateTask(Task temp) {
-		UPDATETYPE updateType = temp.getUpdateType();
-		int id = 0;
 		String info = temp.getDescription();
-		// id = temp.getTaskID;
+		String id = temp.getTaskID();
+		String StartTime = temp.getStartTime();
+		String EndTime = temp.getEndTime();
 		
-		switch (updateType) {
+		switch (temp.getUpdateType()) {
 		case DESCRIPTION:
 			updateInfo(id, info);
 			break;
 		case DEADLINE:
-			
+			updateDeadline(id, EndTime);
 			break;
 		case TIMEFRAME:
+			updateByTimeFrame(id, StartTime, EndTime);
 			break;
 		}
 		
@@ -125,34 +128,27 @@ public class Logic {
 		return textsAsNumberedList;
 	}
 	
-	// This function needs to be changed.
-	public static void storeIntoList() {
-
-		for (int i = 0; i < numberOfTasks; i++) {
-			Task temp = new Task();
-			list.add(i+1, temp);
-			// TODO: Reading in every element as a Task.
-		}
-	}	
-	
-	public static String getOutput(int id) {
+	private static String getOutput(int id) {
 		Task task = list.get(id);
 		String temp = (id + 1) + ". " + task.getDescription();
 		
 		return temp;
 	}
 	
-	
-	public static void deleteById(int id) {
-		list.remove(id);
+	/*
+	 * Four types of DELETE functions.
+	 */
+	private static void deleteById(String id) {
+		int index = getTaskByID(id);		
+		list.remove(index);
 		numberOfTasks--;
 	}
 	
-	public static void deleteByDate(String time) {
+	private static void deleteByDate(String time) {
 		
 	}
 	
-	public static void deleteByDeadline(String time) {
+	private static void deleteByDeadline(String time) {
 		int id = 0;	
 		id = searchByDeadline(time);	
 		
@@ -160,28 +156,38 @@ public class Logic {
 		numberOfTasks--;
 	}
 	
-	public static void deleteByTimeFrame() {
+	private static void deleteByTimeFrame() {
 	}
 	
-	
-	
-	public static void updateInfo(int id, String info) {
-		Task temp = list.get(id);
+	/*
+	 * Three types of UPDATE functions.
+	 */
+	private static void updateInfo(String id, String info) {
+		int index = getTaskByID(id);
+		Task temp = list.get(index);
 		temp.setDescription(info);
 	}
 	
-	public static void updateDeadline(int id, String time) {
-		Task temp = list.get(id);
+	private static void updateDeadline(String id, String time) {
+		int index = getTaskByID(id);
+		Task temp = list.get(index);
 		temp.setEndTime(time);
 	}
 	
-	public static void updateByTimeFrame() {
+	private static void updateByTimeFrame(String id, String stime, String etime) {
+		int index = getTaskByID(id);
+		Task temp = list.get(index);
+		temp.setStartTime(stime);
+		temp.setEndTime(etime);
 	}
 	
-	public static void viewNext(Task task) {
+	/*
+	 * Two types of VIEW functions.
+	 */
+	private static void viewNext(Task task) {
 	}
 		
-	public static void viewAll() {	
+	private static void viewAll() {	
 		
 		for (int i = 0; i < numberOfTasks; i++) {
 			String task_Info = getOutput(i);
@@ -190,7 +196,10 @@ public class Logic {
 		}
 	}	
 	
-	public static int searchByDescription(String task_Info) {
+	/*
+	 * Three types of SEARCH functions.
+	 */
+	private static int searchByDescription(String task_Info) {
 		int index = 0;
 		Task temp = list.get(0);
 		
@@ -202,7 +211,7 @@ public class Logic {
 		return index;
 	}
 	
-	public static int searchByDeadline(String time) {
+	private static int searchByDeadline(String time) {
 		int index = 0;
 		Task temp = list.get(0);
 		
@@ -214,9 +223,18 @@ public class Logic {
 		return index;
 	}
 	
-	public static void searchByDate() {
+	private static void searchByDate() {
 	}
 	
-	public static void sort() {
+	private static int getTaskByID(String id) {
+		int index = 0;
+		Task temp = list.get(0);
+		
+		while ((!temp.getTaskID().equalsIgnoreCase(id)) && (index < numberOfTasks)) {
+			index++;
+			temp = list.get(index);
+		}
+		
+		return index;
 	}
 }

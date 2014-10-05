@@ -99,4 +99,9 @@ public class Storage {
 	private void decrementTaskNumber() {
 		numberOfTasks = numberOfTasks - 1;
 	}
+	
+	public void clearFile() throws IOException {
+		BufferedWriter clearingWriter = new BufferedWriter(new FileWriter(FILE_NAME, false));
+		clearingWriter.close();
+	}
 }

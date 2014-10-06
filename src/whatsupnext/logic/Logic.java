@@ -105,6 +105,7 @@ public class Logic {
 			viewAll();
 			break;
 		case NEXT:
+			viewNext(temp);
 			break;
 		default:
 			break;
@@ -139,10 +140,30 @@ public class Logic {
 	}
 	
 	private static void deleteByDeadline(Task temp) {
-		numberOfTasks--;
+		int index = numberOfTasks - 1;
+		String endtime = temp.getEndTime();
+		
+		while (index >= 0) {
+			if (checkTime(index, endtime)) {
+				list.remove(index);
+				numberOfTasks--;
+			}
+			index--;
+		}
 	}
 	
 	private static void deleteByTimeFrame(Task temp) {
+		int index = numberOfTasks - 1;
+		String stime = temp.getStartTime();
+		String etime = temp.getEndTime();
+		
+		while (index >= 0) {
+			if (!checkTime(index, stime) && checkTime(index,etime)) {
+				list.remove(index);
+				numberOfTasks--;
+			}
+			index--;
+		}
 	}
 	
 	/*
@@ -181,6 +202,19 @@ public class Logic {
 	 * Two types of VIEW functions.
 	 */
 	private static void viewNext(Task task) {
+		int next = 0;
+		String etime = task.getEndTime();
+		Task temp = new Task();
+		
+		for (int i = 1; i < numberOfTasks; i++) {
+			temp = list.get(next);
+			if (!checkTime(i, etime) && checkTime(i, temp.getEndTime()))
+				next = i;
+		}
+		
+		temp = list.get(next);		
+		String task_Info = temp.getTaskID() + "." + temp.getDescription();
+		output.add(task_Info);
 	}
 		
 	private static void viewAll() {			
@@ -194,28 +228,10 @@ public class Logic {
 	/*
 	 * Three types of SEARCH functions.
 	 */
-	private static int searchByDescription(String task_Info) {
-		int index = 0;
-		Task temp = list.get(0);
-		
-		while (!temp.getDescription().equalsIgnoreCase(task_Info)) {
-			index++;
-			temp = list.get(index);
-		}
-		
-		return index;
+	private static void searchByDescription(String task_Info) {
 	}
 	
-	private static int searchByDeadline(String time) {
-		int index = 0;
-		Task temp = list.get(0);
-		
-		while (!temp.getEndTime().equalsIgnoreCase(time)) {
-			index++;
-			temp = list.get(index);
-		}
-		
-		return index;
+	private static void searchByDeadline(String time) {
 	}
 	
 	private static void searchByDate() {
@@ -234,5 +250,17 @@ public class Logic {
 		}
 		
 		return index;
+	}
+	
+	/*
+	 * This check function is to check whether the end time of task(i) is before a given time.
+	 */
+	private static boolean checkTime(int index, String time) {
+		Task task = list.get(index);
+		int etime = Integer.parseInt(task.getEndTime());
+		int gtime = Integer.parseInt(time);
+		
+		if (etime < gtime) return true;
+		    else return false;
 	}
 }

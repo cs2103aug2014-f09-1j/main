@@ -103,5 +103,16 @@ public class Task {
 	public void setEndTime(String endTime) {
 		operand[INDEX_FOR_END_TIME] = endTime;
 	}
+	
+	// Function to check the equality of any two task objects on the basis of taskID, description, startTime, endTime
+	public boolean equals(Object o) {
+		if (o instanceof Task && ((Task)o).getTaskID().equals(getTaskID()) 
+				&& ((Task)o).getDescription().equals(getDescription())
+				&& ((Task) o).getStartTime().equals(getStartTime())
+				&& ((Task) o).getEndTime().equals(getEndTime())) {
+			return true;
+		}
+		return false;
+	}
 
 }

@@ -79,7 +79,7 @@ public class Logic {
 		}
 		
 		return MESSAGE_DELETED;
-	}	
+	}
 	
 	public static String updateTask(Task temp) {	
 		switch (temp.getUpdateType()) {
@@ -136,7 +136,16 @@ public class Logic {
 	}
 	
 	private static void deleteByDate(Task temp) {
+		int index = numberOfTasks - 1;
+		String endtime = temp.getEndTime();
 		
+		while (index >= 0) {
+			if (endsOnGivenDate(index, endtime)) {
+				list.remove(index);
+				numberOfTasks--;
+			}
+			index--;
+		}
 	}
 	
 	private static void deleteByDeadline(Task temp) {
@@ -144,7 +153,7 @@ public class Logic {
 		String endtime = temp.getEndTime();
 		
 		while (index >= 0) {
-			if (checkTime(index, endtime)) {
+			if (endsBeforeGivenTime(index, endtime)) {
 				list.remove(index);
 				numberOfTasks--;
 			}
@@ -158,7 +167,7 @@ public class Logic {
 		String etime = temp.getEndTime();
 		
 		while (index >= 0) {
-			if (!checkTime(index, stime) && checkTime(index,etime)) {
+			if (!endsBeforeGivenTime(index, stime) && endsBeforeGivenTime(index,etime)) {
 				list.remove(index);
 				numberOfTasks--;
 			}
@@ -208,7 +217,7 @@ public class Logic {
 		
 		for (int i = 1; i < numberOfTasks; i++) {
 			temp = list.get(next);
-			if (!checkTime(i, etime) && checkTime(i, temp.getEndTime()))
+			if (!endsBeforeGivenTime(i, etime) && endsBeforeGivenTime(i, temp.getEndTime()))
 				next = i;
 		}
 		
@@ -228,15 +237,30 @@ public class Logic {
 	/*
 	 * Three types of SEARCH functions.
 	 */
-	private static void searchByDescription(String task_Info) {
+	private static void searchByDescription(String taskInfo) {
+		
 	}
 	
-	private static void searchByDeadline(String time) {
+	private static ArrayList<Task> searchByDeadline(String deadline) {
+		ArrayList<Task> taskResults = new ArrayList<Task>();
+		for (int i = 0; i < list.size(); i++) {
+			if (endsBeforeGivenTime(i, deadline)) {
+				taskResults.add(list.get(i));
+			}
+		}
+		return taskResults;
 	}
-	
-	private static void searchByDate() {
+
+	private static ArrayList<Task> searchByDate(String date) {
+		ArrayList<Task> taskResults = new ArrayList<Task>();
+		for (int i = 0; i < list.size(); i++) {
+			if (endsOnGivenDate(i, date)) {
+				taskResults.add(list.get(i));
+			}
+		}
+		return taskResults;
 	}
-	
+
 	/*
 	 * Return the index of a task in the list.
 	 */
@@ -255,12 +279,23 @@ public class Logic {
 	/*
 	 * This check function is to check whether the end time of task(i) is before a given time.
 	 */
-	private static boolean checkTime(int index, String time) {
+	private static boolean endsBeforeGivenTime(int index, String time) {
 		Task task = list.get(index);
 		int etime = Integer.parseInt(task.getEndTime());
 		int gtime = Integer.parseInt(time);
 		
-		if (etime < gtime) return true;
-		    else return false;
+		return etime < gtime;
+	}
+	
+	private static boolean endsOnGivenDate(int index, String date) {
+		Task task = list.get(index);
+		int etime = Integer.parseInt(task.getEndTime());
+		int gdate = Integer.parseInt(date);
+		
+		int etimeDay = etime / 10000;
+		int gdateDay = gdate / 10000;
+		int etimeTime = etime % 10000;
+		
+		return (etimeDay == gdateDay) && (etimeTime >= 0000) && (etimeTime <= 2359);
 	}
 }

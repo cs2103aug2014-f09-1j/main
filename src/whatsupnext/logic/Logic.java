@@ -61,6 +61,8 @@ public class Logic {
 	}
 	
 	private String addTask(Task task) throws IOException {
+		String taskID = "" + (numberOfTasks + 1);
+		task.setTaskID(taskID);
 		list.add(task);
 		numberOfTasks++;
 		storage.inputTasks(list);

@@ -21,7 +21,14 @@ public class Storage {
 	private static int numberOfTasks = 0;
 	
 	public Storage() {
-		
+		File textFile = new File(FILE_NAME);
+		if (!textFile.exists()) {
+			try {
+				textFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**

@@ -30,7 +30,7 @@ public class StorageTest {
 	}
 	
 	@Test
-	public void testStringToTask() {	
+	public void testStringToTask() {
 		obj = new Storage();
 		Task dummyTask1 = obj.StringToTask("DummyTaskID,DummyDescription,DummyStartTime,DummyEndTime");
 		assertEquals(dummyTask1.getTaskID(), "DummyTaskID");

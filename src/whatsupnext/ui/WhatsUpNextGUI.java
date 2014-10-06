@@ -310,7 +310,8 @@ public class WhatsUpNextGUI {
 			try {
 				Parser parser = new Parser(commandInput);
 				Task currentTask = parser.parseInput();
-				feedback = Logic.execute(currentTask);
+				Logic logic = new Logic();
+				feedback = logic.execute(currentTask);
 			} catch (Exception e) {
 				feedback = e.getMessage();
 			}
@@ -357,7 +358,8 @@ public class WhatsUpNextGUI {
 		
 		String feedback;
 		try {
-			feedback = Logic.execute(task);
+			Logic logic = new Logic();
+			feedback = logic.execute(task);
 		} catch (Exception e) {
 			feedback = e.getMessage();
 		}

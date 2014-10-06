@@ -17,9 +17,10 @@ public class Logic {
 	public ArrayList<Task> list = new ArrayList<Task>();
 	public ArrayList<String> output = new ArrayList<String>();
 	
-	public String MESSAGE_ADDED = "A task is successfully added";
-	public String MESSAGE_DELETED = "A task is successfully deleted";
-	public String MESSAGE_UPDATED = "A task is successfully updated";
+	public String MESSAGE_ADDED = "A task is successfully added.";
+	public String MESSAGE_DELETED = "Tasks are successfully deleted.";
+	public String MESSAGE_UPDATED = "A task is successfully updated.";
+	public String MESSAGE_NOTFOUND = "No tasks are found.";
 	
 	private int numberOfTasks = 0;
 	
@@ -234,21 +235,27 @@ public class Logic {
 	 */
 	private void viewNext(Task task) {
 		int next = 0;
+		boolean found = false;
 		String etime = task.getEndTime();
 		Task temp = new Task();
 		
 		for (int i = 1; i < numberOfTasks; i++) {
 			temp = list.get(next);
-			if (!endsBeforeGivenTime(i, etime) && endsBeforeGivenTime(i, temp.getEndTime()))
+			if (!endsBeforeGivenTime(i, etime) && endsBeforeGivenTime(i, temp.getEndTime())) {
+				found = true;
 				next = i;
+			}				
 		}
 		
-		temp = list.get(next);		
-		String task_Info = "Task ID: " + temp.getTaskID() + 
+		if (found) {
+			temp = list.get(next);		
+		    String task_Info = "Task ID: " + temp.getTaskID() + 
 							"\n\t" + temp.getDescription() +
 							"\n\tStart Time: " + temp.getStartTime() +
 							"\n\tEnd Time: " + temp.getEndTime();
-		output.add(task_Info);
+		    output.add(task_Info);
+		} else 
+			output.add(MESSAGE_NOTFOUND);
 	}
 		
 	private void viewAll() {			
@@ -314,8 +321,8 @@ public class Logic {
 			return false;
 		}
 		
-		int etime = Integer.parseInt(task.getEndTime());
-		int gtime = Integer.parseInt(time);
+		long etime = Long.parseLong(task.getEndTime());
+		long gtime = Long.parseLong(time);
 		
 		return etime <= gtime;
 	}

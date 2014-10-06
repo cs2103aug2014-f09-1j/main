@@ -2,6 +2,8 @@ package whatsupnext.junit;
 
 import static org.junit.Assert.*;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import whatsupnext.storage.Storage;
@@ -11,10 +13,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class StorageTest {
+	Storage obj;
+	
+	@Before
+	public void initialize() {
+		obj = new Storage();
+	}
 
+	@After
+	public void clearFile() {
+		try {
+			obj.clearFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Test
 	public void testStringToTask() {	
-		Storage obj = new Storage();
+		obj = new Storage();
 		Task dummyTask1 = obj.StringToTask("DummyTaskID,DummyDescription,DummyStartTime,DummyEndTime");
 		assertEquals(dummyTask1.getTaskID(), "DummyTaskID");
 		assertEquals(dummyTask1.getDescription(), "DummyDescription");
@@ -24,7 +41,7 @@ public class StorageTest {
 	
 	@Test
 	public void testInputAndReadTasks() throws IOException {
-		Storage obj = new Storage();
+		obj = new Storage();
 		obj.clearFile();
 		
 		Task dummyTask1 = obj.StringToTask("DummyTaskID1,DummyDescription1,DummyStartTime1,DummyEndTime1");

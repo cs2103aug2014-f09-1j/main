@@ -88,6 +88,12 @@ public class Logic {
 			break;	
 		}
 		
+		try {
+			storage.inputTasks(list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return MESSAGE_DELETED;
 	}
 	
@@ -104,6 +110,12 @@ public class Logic {
 			break;
 		default:
 			break;	
+		}
+		
+		try {
+			storage.inputTasks(list);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
 		return MESSAGE_UPDATED;
@@ -232,14 +244,20 @@ public class Logic {
 		}
 		
 		temp = list.get(next);		
-		String task_Info = temp.getTaskID() + "." + temp.getDescription();
+		String task_Info = "Task ID: " + temp.getTaskID() + 
+							"\n\t" + temp.getDescription() +
+							"\n\tStart Time: " + temp.getStartTime() +
+							"\n\tEnd Time: " + temp.getEndTime();
 		output.add(task_Info);
 	}
 		
 	private void viewAll() {			
 		for (int i = 0; i < numberOfTasks; i++) {
 			Task temp = list.get(i);
-			String task_Info = temp.getTaskID() + "." + temp.getDescription();
+			String task_Info = "Task ID: " + temp.getTaskID() + 
+								"\n\t" + temp.getDescription() +
+								"\n\tStart Time: " + temp.getStartTime() +
+								"\n\tEnd Time: " + temp.getEndTime();
 			output.add(task_Info);
 		}
 	}	
@@ -291,20 +309,30 @@ public class Logic {
 	 */
 	private boolean endsBeforeGivenTime(int index, String time) {
 		Task task = list.get(index);
+		
+		if (task.getEndTime().isEmpty()) {
+			return false;
+		}
+		
 		int etime = Integer.parseInt(task.getEndTime());
 		int gtime = Integer.parseInt(time);
 		
-		return etime < gtime;
+		return etime <= gtime;
 	}
 	
 	private boolean endsOnGivenDate(int index, String date) {
 		Task task = list.get(index);
-		int etime = Integer.parseInt(task.getEndTime());
-		int gdate = Integer.parseInt(date);
 		
-		int etimeDay = etime / 10000;
-		int gdateDay = gdate / 10000;
-		int etimeTime = etime % 10000;
+		if (task.getEndTime().isEmpty()) {
+			return false;
+		}
+		
+		long etime = Long.parseLong(task.getEndTime());
+		long gdate = Long.parseLong(date);
+		
+		long etimeDay = etime / 10000;
+		long gdateDay = gdate / 10000;
+		long etimeTime = etime % 10000;
 		
 		return (etimeDay == gdateDay) && (etimeTime >= 0000) && (etimeTime <= 2359);
 	}

@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -47,6 +48,8 @@ public class WhatsUpNextGUI {
 	private JButton buttonUpcoming;
 	private JScrollPane textDisplayUpcomingScrollPane;
 	private JTextArea textDisplayUpcoming;
+	
+	private Logic logicHandler;
 
 	
 	/**
@@ -84,6 +87,11 @@ public class WhatsUpNextGUI {
 	 * Create the application.
 	 */
 	public WhatsUpNextGUI() {
+		try {
+			logicHandler = new Logic();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		initialize();
 		setComponentsNames();
 	}
@@ -310,8 +318,7 @@ public class WhatsUpNextGUI {
 			try {
 				Parser parser = new Parser(commandInput);
 				Task currentTask = parser.parseInput();
-				Logic logic = new Logic();
-				feedback = logic.execute(currentTask);
+				feedback = logicHandler.execute(currentTask);
 			} catch (Exception e) {
 				feedback = e.getMessage();
 			}
@@ -358,8 +365,7 @@ public class WhatsUpNextGUI {
 		
 		String feedback;
 		try {
-			Logic logic = new Logic();
-			feedback = logic.execute(task);
+			feedback = logicHandler.execute(task);
 		} catch (Exception e) {
 			feedback = e.getMessage();
 		}

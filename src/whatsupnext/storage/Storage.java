@@ -1,6 +1,7 @@
 package whatsupnext.storage;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -46,12 +47,13 @@ public class Storage {
 	 * @param tasks
 	 * @throws IOException
 	 */
-	private void writeTasksToFile(ArrayList<Task> tasks) throws IOException {		
+	private void writeTasksToFile(ArrayList<Task> tasks) throws IOException {
+		clearFile();
 		BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true));
 		for (int x = 0; x < tasks.size(); x++) {
 			Task taskToBeWritten = tasks.get(x);
 			writer.write(taskToBeWritten.getTaskID() + "," + taskToBeWritten.getDescription() + "," + 
-					taskToBeWritten.getStartTime() + "," + taskToBeWritten.getEndTime());
+					taskToBeWritten.getStartTime() + "," + taskToBeWritten.getEndTime() + ",");
 			writer.newLine();
 		}		
 		writer.close();
@@ -93,12 +95,18 @@ public class Storage {
 	 * @throws IOException
 	 */
 	private ArrayList<Task> readFromFile() throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME));		
-		ArrayList<Task> tasks = new ArrayList<Task>(numberOfTasks);
-		for (int x = 0; x < numberOfTasks; x++) {			
-			String taskInString = reader.readLine();
-			tasks.add(x, StringToTask(taskInString));			
+		//BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME));
+		Scanner reader = new Scanner(new File(FILE_NAME));
+		ArrayList<Task> tasks = new ArrayList<Task>();
+		while (reader.hasNextLine()) {
+			String taskInString = reader.nextLine();
+			tasks.add(StringToTask(taskInString));	
 		}
+		numberOfTasks = tasks.size();
+//		for (int x = 0; x < numberOfTasks; x++) {			
+//			String taskInString = reader.readLine();
+//			tasks.add(x, StringToTask(taskInString));			
+//		}
 		reader.close();
 		return tasks;
 	}

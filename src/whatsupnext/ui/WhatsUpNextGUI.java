@@ -23,8 +23,11 @@ import javax.swing.JButton;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import whatsupnext.logic.Logic;
+import whatsupnext.parser.ParseDate;
 import whatsupnext.parser.Parser;
+import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
+import whatsupnext.structure.VIEWTYPE;
 
 /*
  * This class is used for GUI of software WhatsUpNext
@@ -333,6 +336,15 @@ public class WhatsUpNextGUI {
 		textDisplayMain.append("\n"+feedback);
 	}
 	
+	/** 
+	 * This method would display feedback message in main display area
+	 */
+	private void displayUpcomingFeedback(String feedback) {
+		textDisplayUpcoming.setText(feedback);
+	}
+	
+	
+	
 	/**
 	 * Callback function for when the user clicks the Upcoming Tasks button
 	 * or when new execution has been activated
@@ -340,6 +352,29 @@ public class WhatsUpNextGUI {
 	private void clickUpcoming() {
 		// TODO: Implement response for click upcoming
 		// Get a list of most recent tasks and display
-		textDisplayUpcoming.setText("No saved tasks!");		
+		displayUpcomingFeedback("No saved tasks!");
+		Task task = generateTaskForUpcoming();
+		
+		String feedback;
+		try {
+			feedback = Logic.execute(task);
+		} catch (Exception e) {
+			feedback = e.getMessage();
+		}
+		
+		displayUpcomingFeedback(feedback);
+		
+	}
+
+    // generate task for upcoming:
+	// view all tasks within today
+	private Task generateTaskForUpcoming() {
+		ParseDate parseDate = new ParseDate();
+		Task task = new Task();
+		task.setOpcode(OPCODE.VIEW);
+		task.setStartTime(parseDate.getTodayDateString()+"0000");
+		task.setStartTime(parseDate.getTodayDateString()+"2300");
+		task.setViewType(VIEWTYPE.TIMEFRAME);
+		return task;
 	}
 }

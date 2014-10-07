@@ -92,7 +92,7 @@ public class WhatsUpNextGUI {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		initialize();
+		initGUIComponents();
 		setComponentsNames();
 	}
 	
@@ -127,7 +127,7 @@ public class WhatsUpNextGUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initGUIComponents() {
 		initializeApplicationFrame();
 		intializeWelcomeMessage();		
 		intializeUpcomingTasks();
@@ -260,6 +260,7 @@ public class WhatsUpNextGUI {
 		textInput.setFont(new Font("Courier New", Font.PLAIN, 12));
 		textInput.setBounds(10, 230, 423, 23);
 		frameMain.getContentPane().add(textInput);
+		
 		// Pressing 'enter' key causes the command to be executed
 		textInput.addActionListener(new ActionListener() {
 			@Override
@@ -268,21 +269,6 @@ public class WhatsUpNextGUI {
 				clickEnter();
 			}	
 		});
-		
-		// NOT THE SLIGHTEST CLUE WHY THIS CANNOT BE PROPERLY TESTED
-		// DISPATCHED KEYEVENT FROM THE TEST SUITE REFUSES TO BE CAUGHT BY KEYLISTENER HERE
-		//
-		//		textInput.addKeyListener(new KeyAdapter() {
-		//			@Override
-		//			public void keyPressed(KeyEvent e) {
-		//				int key = e.getKeyCode();
-		//				if (key == KeyEvent.VK_ENTER) {
-		//					Toolkit.getDefaultToolkit().beep(); 
-		//					clickEnter();
-		//					textInput.setText(""); // clean input area
-		//				}
-		//			}	
-		//		});
 	}
 
 	/**

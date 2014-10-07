@@ -43,8 +43,10 @@ public class Storage {
 			incrementTaskNumber(tasks.size());
 			writeTasksToFile(tasks);
 			return SUCCESS;
-		}
-		else {
+		} else if (tasks.size() == 0) {
+			clearFile();
+			return SUCCESS;
+		} else {
 			return FAILURE;
 		}		
 	}	

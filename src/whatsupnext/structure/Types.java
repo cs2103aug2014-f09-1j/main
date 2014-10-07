@@ -7,7 +7,7 @@ public class Types {
 	}
 	
 	public enum DELETETYPE {
-		ID, DATE, DEADLINE, TIMEFRAME
+		ALL, ID, DATE, DEADLINE, TIMEFRAME
 	}
 	
 	public enum UPDATETYPE {

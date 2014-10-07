@@ -74,6 +74,9 @@ public class Logic {
 	
 	private String deleteTask(Task temp) {
 		switch (temp.getDeleteType()) {
+		case ALL:
+			deleteAll();
+			break;
 		case ID:
 			deleteById(temp);
 			break;
@@ -197,6 +200,10 @@ public class Logic {
 			}
 			index--;
 		}
+	}
+	
+	private void deleteAll() {
+		list.clear();
 	}
 	
 	/*

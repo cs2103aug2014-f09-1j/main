@@ -28,7 +28,7 @@ import whatsupnext.parser.ParseDate;
 import whatsupnext.parser.Parser;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
-import whatsupnext.structure.VIEWTYPE;
+import whatsupnext.structure.Types.VIEWTYPE;
 
 /*
  * This class is used for GUI of software WhatsUpNext
@@ -87,11 +87,7 @@ public class WhatsUpNextGUI {
 	 * Create the application.
 	 */
 	public WhatsUpNextGUI() {
-		try {
-			logicHandler = new Logic();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		logicHandler = new Logic();
 		initGUIComponents();
 		setComponentsNames();
 	}

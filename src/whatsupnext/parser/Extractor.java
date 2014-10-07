@@ -4,11 +4,11 @@ package whatsupnext.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import whatsupnext.structure.ADDTYPE;
-import whatsupnext.structure.DELETETYPE;
 import whatsupnext.structure.Task;
-import whatsupnext.structure.UPDATETYPE;
-import whatsupnext.structure.VIEWTYPE;
+import whatsupnext.structure.Types.ADDTYPE;
+import whatsupnext.structure.Types.DELETETYPE;
+import whatsupnext.structure.Types.UPDATETYPE;
+import whatsupnext.structure.Types.VIEWTYPE;
 
 public class Extractor {
 

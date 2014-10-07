@@ -6,38 +6,34 @@ package whatsupnext.logic;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import whatsupnext.storage.Storage;
-import whatsupnext.structure.DELETETYPE;
 import whatsupnext.structure.Task;
-import whatsupnext.structure.UPDATETYPE;
-import whatsupnext.structure.VIEWTYPE;
+import whatsupnext.storage.Storage;
 
 public class Logic {
 	
-	public ArrayList<Task> list = new ArrayList<Task>();
-	public ArrayList<String> output = new ArrayList<String>();
+	private ArrayList<Task> list = new ArrayList<Task>();
+	private ArrayList<String> output = new ArrayList<String>();
 	
-	public String MESSAGE_ADDED = "A task is successfully added.";
-	public String MESSAGE_DELETED = "Tasks are successfully deleted.";
-	public String MESSAGE_UPDATED = "A task is successfully updated.";
-	public String MESSAGE_NOTFOUND = "No tasks are found.";
+	private String MESSAGE_ADDED = "A task is successfully added.";
+	private String MESSAGE_DELETED = "Tasks are successfully deleted.";
+	private String MESSAGE_UPDATED = "A task is successfully updated.";
+	private String MESSAGE_NOTFOUND = "No tasks are found.";
 	
 	private int numberOfTasks = 0;
 	
 	private Storage storage;
 	
-	public Logic() throws IOException {
+	public Logic() {
 		storage = new Storage();
-		list = storage.readTasks();
-		if(list == null){
-			list = new ArrayList<Task>();
-			numberOfTasks = 0;
-		} else {
-			numberOfTasks = list.size();	
+		try {
+			list = storage.readTasks();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		numberOfTasks = list.size();	
 	}
 	
-	public String execute(Task task) throws IOException {
+	public String execute(Task task) {
 		String feedback;
 		
 		switch (task.getOpCode()) {
@@ -61,12 +57,17 @@ public class Logic {
 		return feedback;
 	}
 	
-	private String addTask(Task task) throws IOException {
+	private String addTask(Task task) {
 		String taskID = "" + (numberOfTasks + 1);
 		task.setTaskID(taskID);
 		list.add(task);
 		numberOfTasks++;
-		storage.inputTasks(list);
+		try {
+			storage.inputTasks(list);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return MESSAGE_ADDED;
 	}

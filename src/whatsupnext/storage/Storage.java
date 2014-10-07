@@ -91,7 +91,7 @@ public class Storage {
 			return arrayOfTasks;
 		}
 		else {
-			return null;
+			return new ArrayList<Task>();
 		}
 	}
 	

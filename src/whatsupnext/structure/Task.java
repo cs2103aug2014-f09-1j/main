@@ -2,10 +2,11 @@ package whatsupnext.structure;
 
 import java.util.Arrays;
 
-import whatsupnext.structure.DELETETYPE;
 import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.UPDATETYPE;
-import whatsupnext.structure.VIEWTYPE;
+import whatsupnext.structure.Types.ADDTYPE;
+import whatsupnext.structure.Types.DELETETYPE;
+import whatsupnext.structure.Types.UPDATETYPE;
+import whatsupnext.structure.Types.VIEWTYPE;
 
 public class Task {
 

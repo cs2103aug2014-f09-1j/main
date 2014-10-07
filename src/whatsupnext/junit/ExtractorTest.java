@@ -7,11 +7,11 @@ import java.util.Calendar;
 import org.junit.Test;
 
 import whatsupnext.parser.Extractor;
-import whatsupnext.structure.ADDTYPE;
-import whatsupnext.structure.DELETETYPE;
 import whatsupnext.structure.Task;
-import whatsupnext.structure.UPDATETYPE;
-import whatsupnext.structure.VIEWTYPE;
+import whatsupnext.structure.Types.ADDTYPE;
+import whatsupnext.structure.Types.DELETETYPE;
+import whatsupnext.structure.Types.UPDATETYPE;
+import whatsupnext.structure.Types.VIEWTYPE;
 
 public class ExtractorTest {
 

@@ -323,12 +323,58 @@ public class LogicTest {
 	
 	@Test
 	public void testViewDateTask() {
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.DEADLINE);
+		task.setDescription("testing");
+		task.setEndTime("201410101200");
+		logic.execute(task);
 		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410111000");
+		task.setEndTime("201410111200");
+		logic.execute(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.VIEW);
+		task.setViewType(VIEWTYPE.DATE);
+		task.setEndTime("201410102359");
+		
+		String feedback = logic.execute(task);
+		assertEquals(feedback,
+				"Task ID: 1\n\ttesting\n\tStart Time: \n\tEnd Time: 201410101200\n"
+		);
 	}
 	
 	@Test
 	public void testViewTimeFrameTask() {
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410101100");
+		task.setEndTime("201410101200");
+		logic.execute(task);
 		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410111000");
+		task.setEndTime("201410111200");
+		logic.execute(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.VIEW);
+		task.setViewType(VIEWTYPE.TIMEFRAME);
+		task.setStartTime("201410110900");
+		task.setEndTime("201410112359");
+		
+		String feedback = logic.execute(task);
+		assertEquals(feedback,
+				"Task ID: 1\n\ttesting\n\tStart Time: 201410111000\n\tEnd Time: 201410111200\n"
+		);
 	}
 
 }

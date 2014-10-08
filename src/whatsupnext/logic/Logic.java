@@ -5,6 +5,8 @@ package whatsupnext.logic;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.PriorityQueue;
 
 import whatsupnext.structure.Task;
 import whatsupnext.storage.Storage;
@@ -19,20 +21,37 @@ public class Logic {
 	private String MESSAGE_UPDATED = "A task is successfully updated.";
 	private String MESSAGE_NOTFOUND = "No tasks are found.";
 	
-	private int numberOfTasks = 0;
-	
 	private Storage storage;
+	private PriorityQueue<Integer> availableIDs;
+	private int maxTasks = 1000000;
+	
 	
 	public Logic() {
 		storage = new Storage();
 		try {
 			list = storage.readTasks();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		numberOfTasks = list.size();	
+		setupAvailableIDs();
 	}
 	
+	private void setupAvailableIDs() {
+		availableIDs = new PriorityQueue<Integer>(maxTasks);
+		
+		// Populate the available ID list
+		for (int i = 1; i < maxTasks; i++) {
+			availableIDs.add(i);
+		}
+		
+		// Remove the IDs that are already in use
+		for (int i = 0; i < list.size(); i++) {
+			int usedID = Integer.parseInt(list.get(i).getTaskID());
+			availableIDs.remove(usedID);
+		}
+	}
+
 	public String execute(Task task) {
 		String feedback;
 		
@@ -58,84 +77,89 @@ public class Logic {
 	}
 	
 	private String addTask(Task task) {
-		String taskID = "" + (numberOfTasks + 1);
+		String taskID = Integer.toString(availableIDs.remove());
 		task.setTaskID(taskID);
 		list.add(task);
-		numberOfTasks++;
+		
+		String feedbackAdd;
 		try {
 			storage.inputTasks(list);
+			feedbackAdd = MESSAGE_ADDED;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			feedbackAdd = e.getMessage();
 		}
 		
-		return MESSAGE_ADDED;
+		return feedbackAdd;
 	}
 	
-	private String deleteTask(Task temp) {
-		switch (temp.getDeleteType()) {
-		case ALL:
-			deleteAll();
-			break;
-		case ID:
-			deleteById(temp);
-			break;
-		case DEADLINE:
-			deleteByDeadline(temp);
-			break;
-		case DATE:
-			deleteByDate(temp);
-			break;
-		case TIMEFRAME:
-			deleteByTimeFrame(temp);
-			break;
-		default:
-			break;	
+	private String deleteTask(Task task) {
+		switch (task.getDeleteType()) {
+			case ALL:
+				deleteAll();
+				break;
+			case ID:
+				deleteById(task);
+				break;
+			case DEADLINE:
+				deleteByDeadline(task);
+				break;
+			case DATE:
+				deleteByDate(task);
+				break;
+			case TIMEFRAME:
+				deleteByTimeFrame(task);
+				break;
+			default:
+				break;
 		}
 		
+		String feedbackDelete;
 		try {
 			storage.inputTasks(list);
+			feedbackDelete = MESSAGE_DELETED;
 		} catch (IOException e) {
-			e.printStackTrace();
+			feedbackDelete = e.getMessage();
 		}
 		
-		return MESSAGE_DELETED;
+		return feedbackDelete;
 	}
 	
-	private String updateTask(Task temp) {	
-		switch (temp.getUpdateType()) {
-		case DESCRIPTION:
-			updateInfo(temp);
-			break;
-		case DEADLINE:
-			updateDeadline(temp);
-			break;
-		case TIMEFRAME:
-			updateByTimeFrame(temp);
-			break;
-		default:
-			break;	
+	private String updateTask(Task task) {	
+		switch (task.getUpdateType()) {
+			case DESCRIPTION:
+				updateInfo(task);
+				break;
+			case DEADLINE:
+				updateDeadline(task);
+				break;
+			case TIMEFRAME:
+				updateByTimeFrame(task);
+				break;
+			default:
+				break;
 		}
 		
+		String feedbackUpdate;
 		try {
 			storage.inputTasks(list);
+			feedbackUpdate = MESSAGE_UPDATED;
 		} catch (IOException e) {
-			e.printStackTrace();
+			feedbackUpdate = e.getMessage();
 		}
 		
-		return MESSAGE_UPDATED;
+		return feedbackUpdate;
 	}	
 	
-	private String viewTask(Task temp) {	
-		switch (temp.getViewType()) {
-		case ALL:
-			viewAll();
-			break;
-		case NEXT:
-			viewNext(temp);
-			break;
-		default:
-			break;
+	private String viewTask(Task task) {	
+		switch (task.getViewType()) {
+			case ALL:
+				viewAll();
+				break;
+			case NEXT:
+				viewNext(task);
+				break;
+			default:
+				break;
 		}
 		
 		String feedbackView = formatArrayAsString(output);
@@ -145,60 +169,55 @@ public class Logic {
 	}
 	
 	private String formatArrayAsString(ArrayList<String> taskNumberedArray) {
-		String textsAsNumberedList = taskNumberedArray.get(0);
+		String arrayAsString = taskNumberedArray.get(0);
 		for (int i = 1; i < taskNumberedArray.size(); i++) {
-			textsAsNumberedList = textsAsNumberedList.concat("\n" + taskNumberedArray.get(i));
+			arrayAsString = arrayAsString.concat("\n" + taskNumberedArray.get(i));
 		}
-		return textsAsNumberedList;
+		return arrayAsString;
 	}
 	
 	/*
 	 * Four types of DELETE functions.
 	 */
 	private void deleteById(Task temp) {
-		String id = temp.getTaskID();
-		int index = getTaskByID(id);		
+		int index = getTaskIndexInArray(temp.getTaskID());		
 		list.remove(index);
-		numberOfTasks--;
 	}
 	
 	private void deleteByDate(Task temp) {
-		int index = numberOfTasks - 1;
-		String endtime = temp.getEndTime();
+		String endTime = temp.getEndTime();
+		Iterator<Task> taskIterator = list.iterator();
 		
-		while (index >= 0) {
-			if (endsOnGivenDate(index, endtime)) {
-				list.remove(index);
-				numberOfTasks--;
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (endsOnGivenDate(task, endTime)) {
+				taskIterator.remove();
 			}
-			index--;
 		}
 	}
 	
 	private void deleteByDeadline(Task temp) {
-		int index = numberOfTasks - 1;
-		String endtime = temp.getEndTime();
+		String endTime = temp.getEndTime();
+		Iterator<Task> taskIterator = list.iterator();
 		
-		while (index >= 0) {
-			if (endsBeforeGivenTime(index, endtime)) {
-				list.remove(index);
-				numberOfTasks--;
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (endsBeforeDeadline(task, endTime)) {
+				taskIterator.remove();
 			}
-			index--;
 		}
 	}
 	
 	private void deleteByTimeFrame(Task temp) {
-		int index = numberOfTasks - 1;
-		String stime = temp.getStartTime();
-		String etime = temp.getEndTime();
+		String startTime = temp.getStartTime();
+		String endTime = temp.getEndTime();
+		Iterator<Task> taskIterator = list.iterator();
 		
-		while (index >= 0) {
-			if (!endsBeforeGivenTime(index, stime) && endsBeforeGivenTime(index,etime)) {
-				list.remove(index);
-				numberOfTasks--;
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (!endsBeforeDeadline(task, startTime) && endsBeforeDeadline(task, endTime)) {
+				taskIterator.remove();
 			}
-			index--;
 		}
 	}
 	
@@ -210,8 +229,7 @@ public class Logic {
 	 * Three types of UPDATE functions.
 	 */
 	private void updateInfo(Task temp) {
-		String id = temp.getTaskID();
-		int index = getTaskByID(id);
+		int index = getTaskIndexInArray(temp.getTaskID());
 		String info = temp.getDescription();
 		
 		Task task = list.get(index);
@@ -219,44 +237,43 @@ public class Logic {
 	}
 	
 	private void updateDeadline(Task temp) {
-		String id = temp.getTaskID();
-		int index = getTaskByID(id);
-		String EndTime = temp.getEndTime();
+		int index = getTaskIndexInArray(temp.getTaskID());
+		String endTime = temp.getEndTime();
 		
 		Task task = list.get(index);
-		task.setEndTime(EndTime);
+		task.setEndTime(endTime);
 	}
 	
 	private void updateByTimeFrame(Task temp) {
-		String id = temp.getTaskID();
-		int index = getTaskByID(id);
-		String StartTime = temp.getStartTime();
-		String EndTime = temp.getEndTime();
+		int index = getTaskIndexInArray(temp.getTaskID());
+		String startTime = temp.getStartTime();
+		String endTime = temp.getEndTime();
 		
 		Task task = list.get(index);
-		task.setStartTime(StartTime);
-		task.setEndTime(EndTime);
+		task.setStartTime(startTime);
+		task.setEndTime(endTime);
 	}
 	
 	/*
 	 * Two types of VIEW functions.
 	 */
 	private void viewNext(Task task) {
-		int next = 0;
 		boolean found = false;
-		String etime = task.getEndTime();
+		String endTime = task.getEndTime();
 		Task temp = new Task();
+		Task currentTask = new Task();
+		Iterator<Task> taskIterator = list.iterator();
 		
-		for (int i = 1; i < numberOfTasks; i++) {
-			temp = list.get(next);
-			if (!endsBeforeGivenTime(i, etime) && endsBeforeGivenTime(i, temp.getEndTime())) {
+		while (taskIterator.hasNext()) {
+			currentTask = taskIterator.next();
+			if (!endsBeforeDeadline(currentTask, endTime) && endsBeforeDeadline(currentTask, temp.getEndTime())) {
 				found = true;
-				next = i;
+				temp = currentTask;
 			}				
 		}
 		
 		if (found) {
-			temp = list.get(next);		
+			temp = currentTask;		
 		    String task_Info = "Task ID: " + temp.getTaskID() + 
 							"\n\t" + temp.getDescription() +
 							"\n\tStart Time: " + temp.getStartTime() +
@@ -267,7 +284,7 @@ public class Logic {
 	}
 		
 	private void viewAll() {			
-		for (int i = 0; i < numberOfTasks; i++) {
+		for (int i = 0; i < list.size(); i++) {
 			Task temp = list.get(i);
 			String task_Info = "Task ID: " + temp.getTaskID() + 
 								"\n\t" + temp.getDescription() +
@@ -286,9 +303,12 @@ public class Logic {
 	
 	private ArrayList<Task> searchByDeadline(String deadline) {
 		ArrayList<Task> taskResults = new ArrayList<Task>();
-		for (int i = 0; i < list.size(); i++) {
-			if (endsBeforeGivenTime(i, deadline)) {
-				taskResults.add(list.get(i));
+		Iterator<Task> taskIterator = list.iterator();
+		
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (endsBeforeDeadline(task, deadline)) {
+				taskResults.add(task);
 			}
 		}
 		return taskResults;
@@ -296,59 +316,57 @@ public class Logic {
 
 	private ArrayList<Task> searchByDate(String date) {
 		ArrayList<Task> taskResults = new ArrayList<Task>();
-		for (int i = 0; i < list.size(); i++) {
-			if (endsOnGivenDate(i, date)) {
-				taskResults.add(list.get(i));
+		Iterator<Task> taskIterator = list.iterator();
+		
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (endsOnGivenDate(task, date)) {
+				taskResults.add(task);
 			}
 		}
 		return taskResults;
+
 	}
 
 	/*
 	 * Return the index of a task in the list.
 	 */
-	private int getTaskByID(String id) {
-		int index = 0;
-		Task temp = list.get(0);
-		
-		while ((!temp.getTaskID().equalsIgnoreCase(id)) && (index < numberOfTasks)) {
-			index++;
-			temp = list.get(index);
+	private int getTaskIndexInArray(String id) {
+		for (int i = 0; i < list.size(); i++) {
+			Task task = list.get(i);
+			if (task.getTaskID().equalsIgnoreCase(id)) {
+				return i;
+			}
 		}
-		
-		return index;
+		return -1;
 	}
 	
 	/*
 	 * This check function is to check whether the end time of task(i) is before a given time.
 	 */
-	private boolean endsBeforeGivenTime(int index, String time) {
-		Task task = list.get(index);
-		
+	private boolean endsBeforeDeadline(Task task, String deadline) {	
 		if (task.getEndTime().isEmpty()) {
 			return false;
 		}
 		
-		long etime = Long.parseLong(task.getEndTime());
-		long gtime = Long.parseLong(time);
+		long endTime = Long.parseLong(task.getEndTime());
+		long deadlineTime = Long.parseLong(deadline);
 		
-		return etime <= gtime;
+		return endTime <= deadlineTime;
 	}
 	
-	private boolean endsOnGivenDate(int index, String date) {
-		Task task = list.get(index);
-		
+	private boolean endsOnGivenDate(Task task, String date) {
 		if (task.getEndTime().isEmpty()) {
 			return false;
 		}
 		
-		long etime = Long.parseLong(task.getEndTime());
-		long gdate = Long.parseLong(date);
+		long endTime = Long.parseLong(task.getEndTime());
+		long givenDate = Long.parseLong(date);
 		
-		long etimeDay = etime / 10000;
-		long gdateDay = gdate / 10000;
-		long etimeTime = etime % 10000;
+		long endTimeDay = endTime / 10000;
+		long givenDateDay = givenDate / 10000;
+		long endTimeHrMin = endTime % 10000;
 		
-		return (etimeDay == gdateDay) && (etimeTime >= 0000) && (etimeTime <= 2359);
+		return (endTimeDay == givenDateDay) && (endTimeHrMin >= 0000) && (endTimeHrMin <= 2359);
 	}
 }

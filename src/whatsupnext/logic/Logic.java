@@ -20,6 +20,7 @@ public class Logic {
 	private String MESSAGE_DELETED = "Tasks are successfully deleted.";
 	private String MESSAGE_UPDATED = "A task is successfully updated.";
 	private String MESSAGE_NOTFOUND = "No tasks are found.";
+	private String TASK_DISPLAY = "Task ID: %1$s\n\t%2$s\n\tStart Time: %3$s\n\tEnd Time: %4$s";
 	
 	private Storage storage;
 	private PriorityQueue<Integer> availableIDs;
@@ -156,7 +157,13 @@ public class Logic {
 				viewAll();
 				break;
 			case NEXT:
-				viewNext(task);
+				viewNext();
+				break;
+			case DATE:
+				viewDate(task);
+				break;
+			case TIMEFRAME:
+				viewTimeFrame(task);
 				break;
 			default:
 				break;
@@ -169,6 +176,10 @@ public class Logic {
 	}
 	
 	private String formatArrayAsString(ArrayList<String> taskNumberedArray) {
+		if (taskNumberedArray.isEmpty()) {
+			return "No saved tasks!";
+		}
+		
 		String arrayAsString = taskNumberedArray.get(0);
 		for (int i = 1; i < taskNumberedArray.size(); i++) {
 			arrayAsString = arrayAsString.concat("\n" + taskNumberedArray.get(i));
@@ -179,13 +190,13 @@ public class Logic {
 	/*
 	 * Four types of DELETE functions.
 	 */
-	private void deleteById(Task temp) {
-		int index = getTaskIndexInArray(temp.getTaskID());		
+	private void deleteById(Task deleteTask) {
+		int index = getTaskIndexInArray(deleteTask.getTaskID());		
 		list.remove(index);
 	}
 	
-	private void deleteByDate(Task temp) {
-		String endTime = temp.getEndTime();
+	private void deleteByDate(Task deleteTask) {
+		String endTime = deleteTask.getEndTime();
 		Iterator<Task> taskIterator = list.iterator();
 		
 		while (taskIterator.hasNext()) {
@@ -196,8 +207,8 @@ public class Logic {
 		}
 	}
 	
-	private void deleteByDeadline(Task temp) {
-		String endTime = temp.getEndTime();
+	private void deleteByDeadline(Task deleteTask) {
+		String endTime = deleteTask.getEndTime();
 		Iterator<Task> taskIterator = list.iterator();
 		
 		while (taskIterator.hasNext()) {
@@ -208,9 +219,9 @@ public class Logic {
 		}
 	}
 	
-	private void deleteByTimeFrame(Task temp) {
-		String startTime = temp.getStartTime();
-		String endTime = temp.getEndTime();
+	private void deleteByTimeFrame(Task deleteTask) {
+		String startTime = deleteTask.getStartTime();
+		String endTime = deleteTask.getEndTime();
 		Iterator<Task> taskIterator = list.iterator();
 		
 		while (taskIterator.hasNext()) {
@@ -228,26 +239,26 @@ public class Logic {
 	/*
 	 * Three types of UPDATE functions.
 	 */
-	private void updateInfo(Task temp) {
-		int index = getTaskIndexInArray(temp.getTaskID());
-		String info = temp.getDescription();
+	private void updateInfo(Task updateTask) {
+		int index = getTaskIndexInArray(updateTask.getTaskID());
+		String info = updateTask.getDescription();
 		
 		Task task = list.get(index);
 		task.setDescription(info);
 	}
 	
-	private void updateDeadline(Task temp) {
-		int index = getTaskIndexInArray(temp.getTaskID());
-		String endTime = temp.getEndTime();
+	private void updateDeadline(Task updateTask) {
+		int index = getTaskIndexInArray(updateTask.getTaskID());
+		String endTime = updateTask.getEndTime();
 		
 		Task task = list.get(index);
 		task.setEndTime(endTime);
 	}
 	
-	private void updateByTimeFrame(Task temp) {
-		int index = getTaskIndexInArray(temp.getTaskID());
-		String startTime = temp.getStartTime();
-		String endTime = temp.getEndTime();
+	private void updateByTimeFrame(Task updateTask) {
+		int index = getTaskIndexInArray(updateTask.getTaskID());
+		String startTime = updateTask.getStartTime();
+		String endTime = updateTask.getEndTime();
 		
 		Task task = list.get(index);
 		task.setStartTime(startTime);
@@ -255,18 +266,44 @@ public class Logic {
 	}
 	
 	/*
-	 * Two types of VIEW functions.
+	 * Four types of VIEW functions.
 	 */
-	private void viewNext(Task task) {
+	private void viewTimeFrame(Task viewTask) {
+		String startTime = viewTask.getStartTime();
+		String endTime = viewTask.getEndTime();
+		Iterator<Task> taskIterator = list.iterator();
+		
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (!endsBeforeDeadline(task, startTime) && endsBeforeDeadline(task, endTime)) {
+				String taskInfo = String.format(TASK_DISPLAY, task.getTaskID(), task.getDescription(), task.getStartTime(), task.getEndTime());
+				output.add(taskInfo);
+			}
+		}
+	}
+
+	private void viewDate(Task viewTask) {
+		String endTime = viewTask.getEndTime();
+		Iterator<Task> taskIterator = list.iterator();
+		
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (endsOnGivenDate(task, endTime)) {
+				String taskInfo = String.format(TASK_DISPLAY, task.getTaskID(), task.getDescription(), task.getStartTime(), task.getEndTime());
+				output.add(taskInfo);
+			}
+		}
+	}
+	
+	private void viewNext() {
 		boolean found = false;
-		String endTime = task.getEndTime();
 		Task temp = new Task();
 		Task currentTask = new Task();
 		Iterator<Task> taskIterator = list.iterator();
 		
 		while (taskIterator.hasNext()) {
 			currentTask = taskIterator.next();
-			if (!endsBeforeDeadline(currentTask, endTime) && endsBeforeDeadline(currentTask, temp.getEndTime())) {
+			if (!endsBeforeDeadline(currentTask, temp.getEndTime()) && endsBeforeDeadline(currentTask, temp.getEndTime())) {
 				found = true;
 				temp = currentTask;
 			}				
@@ -284,13 +321,11 @@ public class Logic {
 	}
 		
 	private void viewAll() {			
-		for (int i = 0; i < list.size(); i++) {
-			Task temp = list.get(i);
-			String task_Info = "Task ID: " + temp.getTaskID() + 
-								"\n\t" + temp.getDescription() +
-								"\n\tStart Time: " + temp.getStartTime() +
-								"\n\tEnd Time: " + temp.getEndTime();
-			output.add(task_Info);
+		Iterator<Task> taskIterator = list.iterator();
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			String taskInfo = String.format(TASK_DISPLAY, task.getTaskID(), task.getDescription(), task.getStartTime(), task.getEndTime());
+			output.add(taskInfo);
 		}
 	}	
 	

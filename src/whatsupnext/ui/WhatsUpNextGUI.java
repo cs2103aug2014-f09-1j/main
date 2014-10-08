@@ -340,9 +340,7 @@ public class WhatsUpNextGUI {
 	 * or when new execution has been activated
 	 */
 	private void clickUpcoming() {
-		// TODO: Implement response for click upcoming
 		// Get a list of most recent tasks and display
-		displayUpcomingFeedback("No saved tasks!");
 		Task task = generateTaskForUpcoming();
 		
 		String feedback;
@@ -353,18 +351,19 @@ public class WhatsUpNextGUI {
 		}
 		
 		displayUpcomingFeedback(feedback);
-		
 	}
 
-    // generate task for upcoming:
-	// view all tasks within today
+	/**
+	 *  view all tasks within today
+	 * @return	the task that holds the view time frame task for upcoming
+	 */
 	private Task generateTaskForUpcoming() {
 		ParseDate parseDate = new ParseDate();
 		Task task = new Task();
 		task.setOpcode(OPCODE.VIEW);
+		task.setViewType(VIEWTYPE.TIMEFRAME);
 		task.setStartTime(parseDate.getTodayDateString()+"0000");
 		task.setEndTime(parseDate.getTodayDateString()+"2300");
-		task.setViewType(VIEWTYPE.TIMEFRAME);
 		return task;
 	}
 }

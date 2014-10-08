@@ -344,7 +344,7 @@ public class LogicTest {
 		
 		String feedback = logic.execute(task);
 		assertEquals(feedback,
-				"Task ID: 1\n\ttesting\n\tStart Time: \n\tEnd Time: 201410101200\n"
+				"Task ID: 1\n\ttesting\n\tStart Time: \n\tEnd Time: 201410101200"
 		);
 	}
 	
@@ -373,7 +373,7 @@ public class LogicTest {
 		
 		String feedback = logic.execute(task);
 		assertEquals(feedback,
-				"Task ID: 1\n\ttesting\n\tStart Time: 201410111000\n\tEnd Time: 201410111200\n"
+				"Task ID: 2\n\ttesting\n\tStart Time: 201410111000\n\tEnd Time: 201410111200"
 		);
 	}
 

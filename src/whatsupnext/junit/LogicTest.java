@@ -3,7 +3,6 @@ package whatsupnext.junit;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.junit.After;
@@ -12,7 +11,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import whatsupnext.logic.Logic;
-import whatsupnext.parser.ParseDate;
 import whatsupnext.storage.Storage;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;

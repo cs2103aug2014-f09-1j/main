@@ -400,9 +400,6 @@ public class LogicTest {
 		assertEquals(feedback,
 				"Task ID: 2\n\ttesting\n\t" +
 				"Start Time: " + (getLastYearTodayDate() + "0000") + "\n\t" +
-				"End Time: " + (getTodayDate() + "2359") + "\n" +
-				"Task ID: 3\n\ttesting\n\t" +
-				"Start Time: " + (getTodayDate() + "0000") + "\n\t" +
 				"End Time: " + (getTodayDate() + "2359")
 		);
 	}

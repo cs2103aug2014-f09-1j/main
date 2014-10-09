@@ -92,7 +92,7 @@ public class ExtractorTest {
 		ex.extractForDeleteTask();
 		assertEquals("Test Delete - description", "", task.getDescription());
 		assertEquals("Test Delete - startTime", "", task.getStartTime());
-		assertEquals("Test Delete - endTime", "NOW", task.getEndTime());
+		assertEquals("Test Delete - endTime", getTodayDateTime(), task.getEndTime());
 		assertEquals("Test Delete - deleteType", DELETETYPE.DEADLINE, task.getDeleteType());
 	}
 	

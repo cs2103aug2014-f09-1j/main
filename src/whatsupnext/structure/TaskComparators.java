@@ -4,15 +4,15 @@ import java.util.Comparator;
 
 public class TaskComparators {
 
-	private boolean hasEmptyEndTime(Task task) {
+	private static boolean hasEmptyEndTime(Task task) {
 		return task.getEndTime() == null || task.getEndTime().isEmpty();
 	}
 
-	private boolean hasEmptyStartTime(Task task) {
+	private static boolean hasEmptyStartTime(Task task) {
 		return task.getStartTime() == null || task.getStartTime().isEmpty();
 	}
 	
-	public class TaskDefaultComparator implements Comparator<Task> {
+	public static class TaskDefaultComparator implements Comparator<Task> {
 		@Override
 		public int compare(Task taskA, Task taskB) {
 			// Floating tasks get sorted alphabetically on description

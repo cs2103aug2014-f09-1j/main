@@ -5,10 +5,13 @@ package whatsupnext.logic;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
 import whatsupnext.structure.Task;
+import whatsupnext.structure.TaskComparators;
+import whatsupnext.structure.TaskComparators.TaskDefaultComparator;
 import whatsupnext.storage.Storage;
 
 public class Logic {
@@ -134,7 +137,7 @@ public class Logic {
 				updateDeadline(task);
 				break;
 			case TIMEFRAME:
-				updateByTimeFrame(task);
+				updateTimeFrame(task);
 				break;
 			default:
 				break;
@@ -177,7 +180,7 @@ public class Logic {
 	
 	private String formatArrayAsString(ArrayList<String> taskNumberedArray) {
 		if (taskNumberedArray.isEmpty()) {
-			return "No saved tasks!";
+			return "No tasks to display!";
 		}
 		
 		String arrayAsString = taskNumberedArray.get(0);
@@ -192,7 +195,8 @@ public class Logic {
 	 */
 	private void deleteById(Task deleteTask) {
 		int index = getTaskIndexInArray(deleteTask.getTaskID());		
-		list.remove(index);
+		Task removed = list.remove(index);
+		availableIDs.add(Integer.parseInt(removed.getTaskID()));
 	}
 	
 	private void deleteByDate(Task deleteTask) {
@@ -201,7 +205,8 @@ public class Logic {
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (endsOnGivenDate(task, endTime)) {
+			if (!task.getEndTime().isEmpty() && endsOnGivenDate(task, endTime)) {
+				availableIDs.add(Integer.parseInt(task.getTaskID()));
 				taskIterator.remove();
 			}
 		}
@@ -213,7 +218,8 @@ public class Logic {
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (endsBeforeDeadline(task, endTime)) {
+			if (!task.getEndTime().isEmpty() && endsBeforeDeadline(task, endTime)) {
+				availableIDs.add(Integer.parseInt(task.getTaskID()));
 				taskIterator.remove();
 			}
 		}
@@ -226,7 +232,8 @@ public class Logic {
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (!endsBeforeDeadline(task, startTime) && endsBeforeDeadline(task, endTime)) {
+			if (!task.getEndTime().isEmpty() && !endsBeforeDeadline(task, startTime) && endsBeforeDeadline(task, endTime)) {
+				availableIDs.add(Integer.parseInt(task.getTaskID()));
 				taskIterator.remove();
 			}
 		}
@@ -234,6 +241,7 @@ public class Logic {
 	
 	private void deleteAll() {
 		list.clear();
+		setupAvailableIDs();
 	}
 	
 	/*
@@ -255,7 +263,7 @@ public class Logic {
 		task.setEndTime(endTime);
 	}
 	
-	private void updateByTimeFrame(Task updateTask) {
+	private void updateTimeFrame(Task updateTask) {
 		int index = getTaskIndexInArray(updateTask.getTaskID());
 		String startTime = updateTask.getStartTime();
 		String endTime = updateTask.getEndTime();
@@ -275,7 +283,7 @@ public class Logic {
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (!endsBeforeDeadline(task, startTime) && endsBeforeDeadline(task, endTime)) {
+			if (!task.getEndTime().isEmpty() && !endsBeforeDeadline(task, startTime) && endsBeforeDeadline(task, endTime)) {
 				String taskInfo = String.format(TASK_DISPLAY, task.getTaskID(), task.getDescription(), task.getStartTime(), task.getEndTime());
 				output.add(taskInfo);
 			}
@@ -288,7 +296,7 @@ public class Logic {
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (endsOnGivenDate(task, endTime)) {
+			if (!task.getEndTime().isEmpty() && endsOnGivenDate(task, endTime)) {
 				String taskInfo = String.format(TASK_DISPLAY, task.getTaskID(), task.getDescription(), task.getStartTime(), task.getEndTime());
 				output.add(taskInfo);
 			}
@@ -296,14 +304,17 @@ public class Logic {
 	}
 	
 	private void viewNext(Task viewTask) {
-		Task currentTask = new Task();
-		Iterator<Task> taskIterator = list.iterator();
+		Task currentTask;
+		ArrayList<Task> sortedList = new ArrayList<Task>(list);
+		Collections.sort(sortedList, new TaskDefaultComparator());
+		Iterator<Task> taskIterator = sortedList.iterator();
 		
 		while (taskIterator.hasNext()) {
 			currentTask = taskIterator.next();
-			if (!endsBeforeDeadline(currentTask, viewTask.getEndTime())) {
+			if (!currentTask.getEndTime().isEmpty() && !endsBeforeDeadline(currentTask, viewTask.getEndTime())) {
 				String taskInfo = String.format(TASK_DISPLAY, currentTask.getTaskID(), currentTask.getDescription(), currentTask.getStartTime(), currentTask.getEndTime());
 			    output.add(taskInfo);
+			    break;
 			}				
 		}
 		
@@ -372,9 +383,7 @@ public class Logic {
 	 * This check function is to check whether the end time of task(i) is before a given time.
 	 */
 	private boolean endsBeforeDeadline(Task task, String deadline) {	
-		if (task.getEndTime().isEmpty()) {
-			return false;
-		}
+		assert(!task.getEndTime().isEmpty());
 		
 		long endTime = Long.parseLong(task.getEndTime());
 		long deadlineTime = Long.parseLong(deadline);
@@ -383,9 +392,7 @@ public class Logic {
 	}
 	
 	private boolean endsOnGivenDate(Task task, String date) {
-		if (task.getEndTime().isEmpty()) {
-			return false;
-		}
+		assert(!task.getEndTime().isEmpty());
 		
 		long endTime = Long.parseLong(task.getEndTime());
 		long givenDate = Long.parseLong(date);

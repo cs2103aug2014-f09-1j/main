@@ -165,7 +165,7 @@ public class Extractor {
 	private void deleteCaseDeadline() {
 		task.setDeleteType(DELETETYPE.DEADLINE);
 		// TODO get current date and time
-		task.setEndTime("NOW");		
+		task.setEndTime(parseDate.getTodayDateTimeString());		
 	}
 	
 	private void viewCaseTimeFrame(String viewDetail) {

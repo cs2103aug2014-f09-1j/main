@@ -151,6 +151,26 @@ public class ParseDate {
 		String twoDigitDayOfMonth = convertToTwoDigitDayOfMonth(dayOfMonth);       
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
+	
+	/**
+	 * This function reports the date string of today
+	 * In format of : yyyymmddhhss
+	 * @return
+	 */
+	public String getTodayDateTimeString() {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH)+1;
+		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+		int hour = cal.get(Calendar.HOUR_OF_DAY);
+		int minute = cal.get(Calendar.MINUTE);
+		String twoDigitMonth = convertToTwoDigitMonth(month);
+		String twoDigitDayOfMonth = convertToTwoDigitDayOfMonth(dayOfMonth);
+		String twoDigitHour = convertToTwoDigitHour(hour);
+		String twoDigitMinute = convertToTwoDigitMinute(minute);
+
+		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
+	}
 
 }
 

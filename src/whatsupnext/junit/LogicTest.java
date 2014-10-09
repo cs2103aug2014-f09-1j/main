@@ -2,12 +2,15 @@ package whatsupnext.junit;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import whatsupnext.logic.Logic;
+import whatsupnext.parser.ParseDate;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.ADDTYPE;
@@ -19,8 +22,42 @@ public class LogicTest {
 	
 	private Logic logic;
 	private Task task;
-	private static Task viewAllTask;
+	private static Task viewAllTask;	
 	
+	private String getLastYearTodayDate() {
+		Calendar cal = Calendar.getInstance();
+		String lastYear = Integer.toString(cal.get(Calendar.YEAR) - 1);
+		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
+		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));
+		
+		return lastYear + twoDigitMonth + twoDigitDayOfMonth;
+	}
+	
+	public String getTodayDate() {
+		Calendar cal = Calendar.getInstance();
+		String year = Integer.toString(cal.get(Calendar.YEAR));
+		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
+		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));     
+		return year + twoDigitMonth + twoDigitDayOfMonth;
+	}
+	
+	public String getTodayDateTime() {
+		Calendar cal = Calendar.getInstance();
+		String year = Integer.toString(cal.get(Calendar.YEAR));
+		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
+		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));
+		String twoDigitHour = convertToTwoDigits(cal.get(Calendar.HOUR_OF_DAY));
+		String twoDigitMinute = convertToTwoDigits(cal.get(Calendar.MINUTE));
+		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute;
+	}
+	
+	private String convertToTwoDigits(int possibleSingleDigit) {
+		if (possibleSingleDigit < 10) {
+        	return "0" + possibleSingleDigit;
+		} else {
+			return "" + possibleSingleDigit;
+		}
+	}
 	
 	@BeforeClass
 	public static void createViewAllTask() {
@@ -317,8 +354,44 @@ public class LogicTest {
 	}
 	
 	@Test
-	public void testViewNextTask() {
+	public void testViewNextTask() {		
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime(getLastYearTodayDate() + "0000");
+		task.setEndTime(getLastYearTodayDate() + "2359");
+		logic.execute(task);
 		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime(getLastYearTodayDate() + "0000");
+		task.setEndTime(getTodayDate() + "2359");
+		logic.execute(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime(getTodayDate() + "0000");
+		task.setEndTime(getTodayDate() + "2359");
+		logic.execute(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.VIEW);
+		task.setViewType(VIEWTYPE.NEXT);
+		task.setEndTime(getTodayDateTime());
+		
+		String feedback = logic.execute(task);
+		assertEquals(feedback,
+				"Task ID: 2\n\ttesting\n\t" +
+				"Start Time: " + (getLastYearTodayDate() + "0000") + "\n\t" +
+				"End Time: " + (getTodayDate() + "2359") + "\n" +
+				"Task ID: 3\n\ttesting\n\t" +
+				"Start Time: " + (getTodayDate() + "0000") + "\n\t" +
+				"End Time: " + (getTodayDate() + "2359")
+		);
 	}
 	
 	@Test

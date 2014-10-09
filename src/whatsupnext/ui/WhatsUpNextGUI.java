@@ -362,8 +362,8 @@ public class WhatsUpNextGUI {
 		Task task = new Task();
 		task.setOpcode(OPCODE.VIEW);
 		task.setViewType(VIEWTYPE.TIMEFRAME);
-		task.setStartTime(parseDate.getTodayDateString()+"0000");
-		task.setEndTime(parseDate.getTodayDateString()+"2300");
+		task.setStartTime(parseDate.getTodayDateString() + "0000");
+		task.setEndTime(parseDate.getTodayDateString() + "2300");
 		return task;
 	}
 }

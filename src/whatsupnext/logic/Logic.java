@@ -13,7 +13,7 @@ import whatsupnext.storage.Storage;
 
 public class Logic {
 	
-	private ArrayList<Task> list = new ArrayList<Task>();
+	protected ArrayList<Task> list = new ArrayList<Task>();
 	private ArrayList<String> output = new ArrayList<String>();
 	
 	private String MESSAGE_ADDED = "A task is successfully added.";
@@ -22,13 +22,13 @@ public class Logic {
 	private String MESSAGE_NOTFOUND = "No tasks are found.";
 	private String TASK_DISPLAY = "Task ID: %1$s\n\t%2$s\n\tStart Time: %3$s\n\tEnd Time: %4$s";
 	
-	private Storage storage;
+	protected Storage storage;
 	private PriorityQueue<Integer> availableIDs;
 	private int maxTasks = 1000000;
 	
 	
 	public Logic() {
-		storage = new Storage();
+		storage = new Storage("tasks.txt");
 		try {
 			list = storage.readTasks();
 		} catch (IOException e) {
@@ -38,7 +38,7 @@ public class Logic {
 		setupAvailableIDs();
 	}
 	
-	private void setupAvailableIDs() {
+	protected void setupAvailableIDs() {
 		availableIDs = new PriorityQueue<Integer>(maxTasks);
 		
 		// Populate the available ID list

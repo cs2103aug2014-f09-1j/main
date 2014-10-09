@@ -2,6 +2,8 @@ package whatsupnext.junit;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.junit.After;
@@ -11,6 +13,7 @@ import org.junit.Test;
 
 import whatsupnext.logic.Logic;
 import whatsupnext.parser.ParseDate;
+import whatsupnext.storage.Storage;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.ADDTYPE;
@@ -23,6 +26,18 @@ public class LogicTest {
 	private Logic logic;
 	private Task task;
 	private static Task viewAllTask;	
+	
+	private class LogicStub extends Logic {
+		public LogicStub(String fileName) {
+			storage = new Storage(fileName);
+			try {
+				list = storage.readTasks();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			super.setupAvailableIDs();
+		}
+	}
 	
 	private String getLastYearTodayDate() {
 		Calendar cal = Calendar.getInstance();
@@ -68,7 +83,7 @@ public class LogicTest {
 	
 	@Before
 	public void init() {
-		logic = new Logic();
+		logic = new LogicStub("logicTest.txt");
 		task = new Task();
 	}
 	

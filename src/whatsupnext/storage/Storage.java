@@ -14,13 +14,14 @@ import whatsupnext.structure.Task;
 
 public class Storage {
 	
-	private static final String FILE_NAME = "tasks.txt";
+	private String FILE_NAME;
 	private final boolean SUCCESS = true;
 	private final boolean FAILURE = false;
 	
 	private static int numberOfTasks = 0;
 	
-	public Storage() {
+	public Storage(String fileName) {
+		FILE_NAME = fileName;
 		File textFile = new File(FILE_NAME);
 		if (!textFile.exists()) {
 			try {

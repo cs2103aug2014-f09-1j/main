@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.PriorityQueue;
 
 import whatsupnext.structure.Task;
-import whatsupnext.structure.TaskComparators;
 import whatsupnext.structure.TaskComparators.TaskDefaultComparator;
 import whatsupnext.storage.Storage;
 
@@ -305,6 +304,7 @@ public class Logic {
 	
 	private void viewNext(Task viewTask) {
 		Task currentTask;
+		long nearestEndTime = 999999999999L;
 		ArrayList<Task> sortedList = new ArrayList<Task>(list);
 		Collections.sort(sortedList, new TaskDefaultComparator());
 		Iterator<Task> taskIterator = sortedList.iterator();
@@ -312,9 +312,21 @@ public class Logic {
 		while (taskIterator.hasNext()) {
 			currentTask = taskIterator.next();
 			if (!currentTask.getEndTime().isEmpty() && !endsBeforeDeadline(currentTask, viewTask.getEndTime())) {
-				String taskInfo = String.format(TASK_DISPLAY, currentTask.getTaskID(), currentTask.getDescription(), currentTask.getStartTime(), currentTask.getEndTime());
-			    output.add(taskInfo);
-			    break;
+				if (output.isEmpty()) {
+					nearestEndTime = Long.parseLong(currentTask.getEndTime());
+					String taskInfo = String.format(TASK_DISPLAY, currentTask.getTaskID(), currentTask.getDescription(), currentTask.getStartTime(), currentTask.getEndTime());
+					output.add(taskInfo);
+				} else {
+					if (Long.parseLong(currentTask.getEndTime()) < nearestEndTime) {
+						output.clear();
+						nearestEndTime = Long.parseLong(currentTask.getEndTime());
+						String taskInfo = String.format(TASK_DISPLAY, currentTask.getTaskID(), currentTask.getDescription(), currentTask.getStartTime(), currentTask.getEndTime());
+						output.add(taskInfo);
+					} else if (Long.parseLong(currentTask.getEndTime()) == nearestEndTime) {
+						String taskInfo = String.format(TASK_DISPLAY, currentTask.getTaskID(), currentTask.getDescription(), currentTask.getStartTime(), currentTask.getEndTime());
+						output.add(taskInfo);
+					}
+				}
 			}				
 		}
 		

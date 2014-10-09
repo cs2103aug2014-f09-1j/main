@@ -103,18 +103,15 @@ public class Storage {
 	 * @throws IOException
 	 */
 	private ArrayList<Task> readFromFile() throws IOException {
-		//BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME));
 		Scanner reader = new Scanner(new File(FILE_NAME));
 		ArrayList<Task> tasks = new ArrayList<Task>();
+		
 		while (reader.hasNextLine()) {
 			String taskInString = reader.nextLine();
 			tasks.add(StringToTask(taskInString));	
 		}
+		
 		numberOfTasks = tasks.size();
-//		for (int x = 0; x < numberOfTasks; x++) {			
-//			String taskInString = reader.readLine();
-//			tasks.add(x, StringToTask(taskInString));			
-//		}
 		reader.close();
 		return tasks;
 	}

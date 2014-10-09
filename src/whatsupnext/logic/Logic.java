@@ -157,7 +157,7 @@ public class Logic {
 				viewAll();
 				break;
 			case NEXT:
-				viewNext();
+				viewNext(task);
 				break;
 			case DATE:
 				viewDate(task);
@@ -295,29 +295,21 @@ public class Logic {
 		}
 	}
 	
-	private void viewNext() {
-		boolean found = false;
-		Task temp = new Task();
+	private void viewNext(Task viewTask) {
 		Task currentTask = new Task();
 		Iterator<Task> taskIterator = list.iterator();
 		
 		while (taskIterator.hasNext()) {
 			currentTask = taskIterator.next();
-			if (!endsBeforeDeadline(currentTask, temp.getEndTime()) && endsBeforeDeadline(currentTask, temp.getEndTime())) {
-				found = true;
-				temp = currentTask;
+			if (!endsBeforeDeadline(currentTask, viewTask.getEndTime())) {
+				String taskInfo = String.format(TASK_DISPLAY, currentTask.getTaskID(), currentTask.getDescription(), currentTask.getStartTime(), currentTask.getEndTime());
+			    output.add(taskInfo);
 			}				
 		}
 		
-		if (found) {
-			temp = currentTask;		
-		    String task_Info = "Task ID: " + temp.getTaskID() + 
-							"\n\t" + temp.getDescription() +
-							"\n\tStart Time: " + temp.getStartTime() +
-							"\n\tEnd Time: " + temp.getEndTime();
-		    output.add(task_Info);
-		} else 
+		if (output.isEmpty()) {
 			output.add(MESSAGE_NOTFOUND);
+		}
 	}
 		
 	private void viewAll() {			

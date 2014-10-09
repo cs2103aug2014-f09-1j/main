@@ -180,6 +180,7 @@ public class Extractor {
 
 	private void viewCaseNext() {
 		task.setViewType(VIEWTYPE.NEXT);
+		task.setEndTime(parseDate.getTodayDateTimeString());
 	}
 
 	private void viewCaseAll() {

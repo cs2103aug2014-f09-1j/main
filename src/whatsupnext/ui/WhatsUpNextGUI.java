@@ -3,6 +3,8 @@ package whatsupnext.ui;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.awt.EventQueue;
 import java.awt.Color;
 import java.awt.Font;
@@ -11,6 +13,8 @@ import java.awt.Toolkit;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -48,6 +52,10 @@ public class WhatsUpNextGUI {
 	private JTextArea textDisplayUpcoming;
 	
 	private Logic logicHandler;
+	private LinkedList<String> usedCommands;
+	private ListIterator<String> commandIterator;
+	private boolean upLastPressed;
+	private boolean downLastPressed;
 
 	
 	/**
@@ -86,6 +94,10 @@ public class WhatsUpNextGUI {
 	 */
 	public WhatsUpNextGUI() {
 		logicHandler = new Logic();
+		usedCommands = new LinkedList<String>();
+		commandIterator = usedCommands.listIterator();
+		upLastPressed = false;
+		downLastPressed = false;
 		initGUIComponents();
 		setComponentsNames();
 	}
@@ -259,9 +271,27 @@ public class WhatsUpNextGUI {
 		textInput.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Toolkit.getDefaultToolkit().beep(); 
 				clickEnter();
+				commandIterator = usedCommands.listIterator();
 			}	
+		});
+		
+		// Pressing 'up' key causes the previous command to replace user input
+		textInput.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int key = e.getKeyCode();
+				if (key == KeyEvent.VK_UP) {
+					pressUp();
+				} else if (key == KeyEvent.VK_DOWN) {
+					pressDown();
+				}
+			}
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				commandIterator = usedCommands.listIterator();
+			}
 		});
 	}
 
@@ -296,6 +326,7 @@ public class WhatsUpNextGUI {
 			feedback = "Empty command";
 		} else {
 			try {
+				usedCommands.addFirst(commandInput);
 				Parser parser = new Parser(commandInput);
 				Task currentTask = parser.parseInput();
 				feedback = logicHandler.execute(currentTask);
@@ -307,6 +338,28 @@ public class WhatsUpNextGUI {
 		displayFeedback(feedback);
 		clearTextInput();
 		clickUpcoming();
+	}
+	
+	private void pressUp() {
+		upLastPressed = true;
+		if (commandIterator.hasNext()) {
+			textInput.setText(commandIterator.next());
+		}
+		if (downLastPressed) {
+			textInput.setText(commandIterator.next());
+			downLastPressed = false;
+		}
+	}
+	
+	private void pressDown() {
+		downLastPressed = true;
+		if (commandIterator.hasPrevious()) {
+			textInput.setText(commandIterator.previous());
+		}
+		if (upLastPressed) {
+			textInput.setText(commandIterator.previous());
+			upLastPressed = false;
+		}
 	}
 
 	/**

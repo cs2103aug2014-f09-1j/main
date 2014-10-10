@@ -22,7 +22,7 @@ public class Logic {
 	private String MESSAGE_DELETED = "Tasks are successfully deleted.";
 	private String MESSAGE_UPDATED = "A task is successfully updated.";
 	private String MESSAGE_NOTFOUND = "No tasks are found.";
-	private String TASK_DISPLAY = "Task ID: %1$s\n\t%2$s\n\tStart Time: %3$s\n\tEnd Time: %4$s";
+	//private String TASK_DISPLAY = "Task ID: %1$s\n\t%2$s\n\tStart Time: %3$s\n\tEnd Time: %4$s";
 	
 	protected Storage storage;
 	private PriorityQueue<Integer> availableIDs;
@@ -39,7 +39,7 @@ public class Logic {
 		}
 		setupAvailableIDs();
 	}
-	
+
 	protected void setupAvailableIDs() {
 		availableIDs = new PriorityQueue<Integer>(maxTasks);
 		
@@ -283,7 +283,7 @@ public class Logic {
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
 			if (!task.getEndTime().isEmpty() && !endsBeforeDeadline(task, startTime) && endsBeforeDeadline(task, endTime)) {
-				String taskInfo = String.format(TASK_DISPLAY, task.getTaskID(), task.getDescription(), task.getStartTime(), task.getEndTime());
+				String taskInfo = getFormattedOutput(task);
 				output.add(taskInfo);
 			}
 		}
@@ -296,7 +296,7 @@ public class Logic {
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
 			if (!task.getEndTime().isEmpty() && endsOnGivenDate(task, endTime)) {
-				String taskInfo = String.format(TASK_DISPLAY, task.getTaskID(), task.getDescription(), task.getStartTime(), task.getEndTime());
+				String taskInfo = getFormattedOutput(task);
 				output.add(taskInfo);
 			}
 		}
@@ -314,16 +314,16 @@ public class Logic {
 			if (!currentTask.getEndTime().isEmpty() && !endsBeforeDeadline(currentTask, viewTask.getEndTime())) {
 				if (output.isEmpty()) {
 					nearestEndTime = Long.parseLong(currentTask.getEndTime());
-					String taskInfo = String.format(TASK_DISPLAY, currentTask.getTaskID(), currentTask.getDescription(), currentTask.getStartTime(), currentTask.getEndTime());
+					String taskInfo = getFormattedOutput(currentTask);;
 					output.add(taskInfo);
 				} else {
 					if (Long.parseLong(currentTask.getEndTime()) < nearestEndTime) {
 						output.clear();
 						nearestEndTime = Long.parseLong(currentTask.getEndTime());
-						String taskInfo = String.format(TASK_DISPLAY, currentTask.getTaskID(), currentTask.getDescription(), currentTask.getStartTime(), currentTask.getEndTime());
+						String taskInfo = getFormattedOutput(currentTask); 
 						output.add(taskInfo);
 					} else if (Long.parseLong(currentTask.getEndTime()) == nearestEndTime) {
-						String taskInfo = String.format(TASK_DISPLAY, currentTask.getTaskID(), currentTask.getDescription(), currentTask.getStartTime(), currentTask.getEndTime());
+						String taskInfo = getFormattedOutput(currentTask);
 						output.add(taskInfo);
 					}
 				}
@@ -339,7 +339,7 @@ public class Logic {
 		Iterator<Task> taskIterator = list.iterator();
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			String taskInfo = String.format(TASK_DISPLAY, task.getTaskID(), task.getDescription(), task.getStartTime(), task.getEndTime());
+			String taskInfo = getFormattedOutput(task);
 			output.add(taskInfo);
 		}
 	}	
@@ -414,5 +414,64 @@ public class Logic {
 		long endTimeHrMin = endTime % 10000;
 		
 		return (endTimeDay == givenDateDay) && (endTimeHrMin >= 0000) && (endTimeHrMin <= 2359);
+	}
+	
+	/*
+	 * Methods for getting a formatted task information and its formatted time.
+	 */
+	private String getFormattedOutput(Task task) {
+		String task_Info = task.getTaskID() + ": " + task.getDescription();
+		if (!task.getStartTime().isEmpty()) {
+			task_Info = task_Info + "\n\tStart Time: " + getFormattedTime(task.getStartTime());
+		}
+		if (!task.getEndTime().isEmpty()) {
+			task_Info = task_Info + "\n\tEnd Time: " + getFormattedTime(task.getEndTime());
+		}
+		return task_Info;
+	}
+	
+	private String getFormattedTime(String time) {
+		String year = time.substring(0, 4);
+		String month = time.substring(4, 6);
+		String day = time.substring(6, 8);
+		String temp = year + " " + getFormattedMonth(month) + " " + day;
+		
+		if (time.length()==12) {
+			String hour = time.substring(8, 10);
+			String minute = time.substring(10, 12);
+			temp = temp + " " + hour + ":" + minute;
+		}
+		
+		return temp;
+	}
+	
+	private String getFormattedMonth(String month) {		
+		switch (month) {
+		case "01":
+			return "Jan";
+		case "02":
+			return "Feb";
+		case "03":
+			return "Mar";
+		case "04": 
+			return "Apr";
+		case "05":
+			return "May";
+		case "06":
+			return "Jun";
+		case "07":
+			return "Jul";
+		case "08":
+			return "Aug";
+		case "09":
+			return "Sep";
+		case "10":
+			return "Oct";
+		case "11":
+			return "Nov";
+		case "12":
+			return "Dec";
+		}
+		return null;
 	}
 }

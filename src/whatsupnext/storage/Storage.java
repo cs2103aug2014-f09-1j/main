@@ -60,8 +60,8 @@ public class Storage {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true));
 		for (int x = 0; x < tasks.size(); x++) {
 			Task taskToBeWritten = tasks.get(x);
-			writer.write(taskToBeWritten.getTaskID() + "," + taskToBeWritten.getDescription() + "," + 
-					taskToBeWritten.getStartTime() + "," + taskToBeWritten.getEndTime() + ",");
+			writer.write(taskToBeWritten.getTaskID() + "%#" + taskToBeWritten.getDescription() + "%#" + 
+					taskToBeWritten.getStartTime() + "%#" + taskToBeWritten.getEndTime() + "%#");
 			writer.newLine();
 		}		
 		writer.close();
@@ -123,7 +123,7 @@ public class Storage {
 	 */
 	public Task StringToTask(String taskInString) {
 		Scanner extractFromString = new Scanner(taskInString);
-		extractFromString.useDelimiter(",");
+		extractFromString.useDelimiter("%#");
 		
 		String taskID = extractFromString.next();
 		String description = extractFromString.next();

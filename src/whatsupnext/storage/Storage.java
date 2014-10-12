@@ -51,7 +51,7 @@ public class Storage {
 	}	
 	
 	/**
-	 * Writes the tasks to the file, one on each line, separating tokens in each line with commas.
+	 * Writes the tasks to the file, one on each line, separating tokens in each line with "%#".
 	 * @param tasks
 	 * @throws IOException
 	 */
@@ -117,7 +117,8 @@ public class Storage {
 	}
 	
 	/**
-	 * Converts String to Task, by creating a new one with fields that have been read from the string
+	 * Converts String to Task, by creating a new one with fields that have been read from the string. This helps when 
+	 * reading each line of the file as a String.
 	 * @param taskInString
 	 * @return
 	 */

@@ -93,11 +93,7 @@ public class WhatsUpNextGUI {
 	 * Create the application.
 	 */
 	public WhatsUpNextGUI() {
-		logicHandler = new Logic();
-		usedCommands = new LinkedList<String>();
-		commandIterator = usedCommands.listIterator();
-		upLastPressed = false;
-		downLastPressed = false;
+		initClassComponents();
 		initGUIComponents();
 		setComponentsNames();
 	}
@@ -129,14 +125,24 @@ public class WhatsUpNextGUI {
 		textDisplayUpcoming.setName("textDisplayUpcoming");
 	}
 
+	/**
+	 * Initialize all the non-GUI parts
+	 */
+	private void initClassComponents() {
+		logicHandler = new Logic();
+		usedCommands = new LinkedList<String>();
+		commandIterator = usedCommands.listIterator();
+		upLastPressed = false;
+		downLastPressed = false;
+	}
 	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initGUIComponents() {
 		initializeApplicationFrame();
-		intializeWelcomeMessage();		
-		intializeUpcomingTasks();
+		initializeWelcomeMessage();		
+		initializeUpcomingTasks();
 		initializeMain();
 	}
 	
@@ -162,7 +168,7 @@ public class WhatsUpNextGUI {
 	/**
 	 * Initialize welcome message
 	 */
-	private void intializeWelcomeMessage() {
+	private void initializeWelcomeMessage() {
 		appendDateToWelcomeMessage();
 		initializeWelcomeMessageLabel();
 	}
@@ -191,7 +197,7 @@ public class WhatsUpNextGUI {
 	/**
 	 * Initialize upcoming tasks part
 	 */
-	private void intializeUpcomingTasks() {
+	private void initializeUpcomingTasks() {
 		initializeUpcomingTasksTextDisplay();
 		initializeUpcomingTasksButton();
 	}
@@ -276,7 +282,7 @@ public class WhatsUpNextGUI {
 			}	
 		});
 		
-		// Pressing 'up' key causes the previous command to replace user input
+		// Pressing 'up' or 'down' keys allows for cycling of previous commands to replace user input
 		textInput.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {

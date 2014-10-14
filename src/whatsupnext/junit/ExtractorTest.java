@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import whatsupnext.parser.Extractor;
+import whatsupnext.parser.extractor.Extractor;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.ADDTYPE;
 import whatsupnext.structure.Types.DELETETYPE;

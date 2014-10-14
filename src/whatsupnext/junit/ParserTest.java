@@ -3,8 +3,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import whatsupnext.parser.Parser;
-
+import whatsupnext.parser.api.Parser;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.ADDTYPE;

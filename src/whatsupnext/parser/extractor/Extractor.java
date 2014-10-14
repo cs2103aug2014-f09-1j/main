@@ -4,6 +4,7 @@ package whatsupnext.parser.extractor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import whatsupnext.parser.ParseDate;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.ADDTYPE;
 import whatsupnext.structure.Types.DELETETYPE;
@@ -27,24 +28,22 @@ public class Extractor {
 	 *  modifies the Task object accordingly
 	 */
 	public void extractForAddTask(){
-		// First word is assumed to be action type: add
-		String addDetail = removeFirstWord(input); 
 
 		// Determine 'add' case: add by deadline or time frame
 		Pattern byKeywordPattern = Pattern.compile("\\s+(B|b)(Y|y)\\s+");
 		Pattern fromKeywordPattern = Pattern.compile("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
-		Matcher byKeywordMatcher = byKeywordPattern.matcher(addDetail);
-		Matcher fromKeywordMatcher = fromKeywordPattern.matcher(addDetail);
+		Matcher byKeywordMatcher = byKeywordPattern.matcher(input);
+		Matcher fromKeywordMatcher = fromKeywordPattern.matcher(input);
 
 		if (byKeywordMatcher.find()) {
 			task.setAddType(ADDTYPE.DEADLINE);
-			splitOnByKeyword(addDetail);
+			splitOnByKeyword(input);
 		} else if (fromKeywordMatcher.find()) {
 			task.setAddType(ADDTYPE.TIMEFRAME);
-			splitOnFromToKeyword(addDetail);
+			splitOnFromToKeyword(input);
 		} else {
 			task.setAddType(ADDTYPE.FLOATING);
-			task.setDescription(addDetail);
+			task.setDescription(input);
 			// throw new IllegalArgumentException("'add' task must have an argument");
 		}		
 	}
@@ -55,24 +54,22 @@ public class Extractor {
     */
 	public void extractForDeleteTask(){
 		// TODO: The rule for judging delete type may change
-		// First word is assumed to be 'delete'
-		String deleteDetail = removeFirstWord(input); 
 		
-		if (countWords(deleteDetail) == 1) {
-			if (deleteDetail.equalsIgnoreCase("deadline")) {
+		if (countWords(input) == 1) {
+			if (input.equalsIgnoreCase("deadline")) {
 				deleteCaseDeadline();
-			} else if (isDate(deleteDetail)) {
-				deleteCaseDate(deleteDetail);
+			} else if (isDate(input)) {
+				deleteCaseDate(input);
 			} else {
-				deleteCaseID(deleteDetail);
+				deleteCaseID(input);
 			}
 		} else {
 	        Pattern fromKeywordPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
-	        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(deleteDetail);
+	        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(input);
 	        if (fromKeywordMatcher.find()) {
-	        	deleteCaseTimeFrame(deleteDetail);
+	        	deleteCaseTimeFrame(input);
 	        } else {
-	        	deleteCaseDate(deleteDetail);
+	        	deleteCaseDate(input);
 	        }
 		}
 	}
@@ -82,34 +79,32 @@ public class Extractor {
 	 *  modifies the Task object accordingly
     */
 	public void extractForUpdateTask(){
-		// First word is assumed to be 'update'
-		String updateDetail = removeFirstWord(input);
 		
 		// Get the task ID and remove it from the remaining details
 		try {
-			String taskID = getFirstWord(updateDetail);
+			String taskID = getFirstWord(input);
 			Integer.parseInt(taskID);
 			task.setTaskID(taskID);
 		} catch (NumberFormatException e) {
 			throw new NumberFormatException("Update task requires a valid integer id");
 		}
-		updateDetail = removeFirstWord(updateDetail);
+		input = removeFirstWord(input);
 		
 		Pattern byKeywordPattern = Pattern.compile("(B|b)(Y|y)\\s+");
         Pattern fromKeywordPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
-        Matcher byKeywordMatcher = byKeywordPattern.matcher(updateDetail);
-        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(updateDetail);
+        Matcher byKeywordMatcher = byKeywordPattern.matcher(input);
+        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(input);
         
         if (byKeywordMatcher.find()){
         	// Remove 'by'
-        	task.setEndTime(parseDate.parseInput(removeFirstWord(updateDetail)));
+        	task.setEndTime(parseDate.parseInput(removeFirstWord(input)));
         	task.setUpdateType(UPDATETYPE.DEADLINE);
         } else if (fromKeywordMatcher.find()){
         	// Remove 'from'
-        	splitOnToKeyword(updateDetail);
+        	splitOnToKeyword(input);
         	task.setUpdateType(UPDATETYPE.TIMEFRAME);
         } else {
-        	task.setDescription(updateDetail);
+        	task.setDescription(input);
         	task.setUpdateType(UPDATETYPE.DESCRIPTION);
         }
 	}
@@ -120,23 +115,22 @@ public class Extractor {
     */
 	public void extractForViewTask(){
 		// First word is assumed to be 'view'
-		String viewDetail = removeFirstWord(input); 
 		
-		if (countWords(viewDetail) == 1) {
-			if (viewDetail.equalsIgnoreCase("all")) {
+		if (countWords(input) == 1) {
+			if (input.equalsIgnoreCase("all")) {
 				viewCaseAll();
-			} else if (viewDetail.equalsIgnoreCase("next")) {
+			} else if (input.equalsIgnoreCase("next")) {
 				viewCaseNext();
 			} else {
-				viewCaseDate(viewDetail);
+				viewCaseDate(input);
 			}
 		} else {
 	        Pattern fromKeywordPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
-	        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(viewDetail);
+	        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(input);
 	        if (fromKeywordMatcher.find()) {
-	        	viewCaseTimeFrame(viewDetail);
+	        	viewCaseTimeFrame(input);
 	        } else {
-	        	viewCaseDate(viewDetail);
+	        	viewCaseDate(input);
 	        }
 		}
 	}
@@ -239,7 +233,7 @@ public class Extractor {
 		String commandTypeString = userCommand.trim().split("\\s+")[0];
 		return commandTypeString;
 	}
-    
+	
 	/**
 	 * Removes the first word of a string
 	 * @param userCommand

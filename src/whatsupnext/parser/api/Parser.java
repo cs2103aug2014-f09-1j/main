@@ -31,6 +31,7 @@ public class Parser {
 		if (tokenizedInput.hasMoreTokens()){
 			String operation = tokenizedInput.nextToken();
 			task.setOpcode(determineOperation(operation));
+			input = removeFirstWord(input);
 			parseTaskArguments();
 		} else {
 			task.setOpcode(OPCODE.INVALID);
@@ -89,5 +90,20 @@ public class Parser {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Removes the first word of a string
+	 * @param userCommand
+	 * @return
+	 */
+	private static String removeFirstWord(String userCommand) {
+		String commandString;
+		try {
+			commandString = userCommand.trim().split("\\s+", 2)[1];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			commandString = "";
+		}
+		return commandString;
 	}
 }

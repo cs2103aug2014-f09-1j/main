@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import whatsupnext.parser.extractor.ParseDate;
+import whatsupnext.parser.ParseDate;
 
 public class ParseDateTest {
 

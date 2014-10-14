@@ -1,4 +1,4 @@
-package whatsupnext.parser.extractor;
+package whatsupnext.parser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

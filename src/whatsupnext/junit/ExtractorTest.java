@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
+import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.Extractor;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.ADDTYPE;
@@ -44,8 +45,8 @@ public class ExtractorTest {
 	@Test
 	public void testAdd() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "add dine from 0200 301014 to 21:00 301014");
-		ex.extractForAddTask();
+		AddExtractor ex = new AddExtractor();
+		ex.extract(task, "add dine from 0200 301014 to 21:00 301014");
 		assertEquals("Test Add - description", "dine", task.getDescription());
 		assertEquals("Test Add - startTime", "201410300200", task.getStartTime());
 		assertEquals("Test Add - endTime", "201410302100", task.getEndTime());
@@ -55,8 +56,8 @@ public class ExtractorTest {
 	@Test
 	public void testAdd2() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "add dine By 1 pm");
-		ex.extractForAddTask();
+		AddExtractor ex = new AddExtractor();
+		ex.extract(task, "add dine By 1 pm");
 		assertEquals("Test Add - description", "dine", task.getDescription());
 		assertEquals("Test Add - startTime", "", task.getStartTime());
 		assertEquals("Test Add - endTime", getTodayDate() + "1300", task.getEndTime());

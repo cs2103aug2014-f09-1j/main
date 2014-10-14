@@ -38,10 +38,6 @@ public class Parser {
 		}
 		return task;
 	}
-	
-	public Task getTask() {
-		return task;
-	}
 
 	private void parseTaskArguments() {
 		Extractor ex = new Extractor(task, input);

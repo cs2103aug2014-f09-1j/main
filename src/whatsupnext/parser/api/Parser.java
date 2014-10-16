@@ -6,6 +6,9 @@ package whatsupnext.parser.api;
 import java.util.StringTokenizer;
 
 import whatsupnext.parser.extractor.AddExtractor;
+import whatsupnext.parser.extractor.DeleteExtractor;
+import whatsupnext.parser.extractor.UpdateExtractor;
+import whatsupnext.parser.extractor.ViewExtractor;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 
@@ -42,17 +45,23 @@ public class Parser {
 	private void parseTaskArguments() {
 		switch (task.getOpCode()) {
 			case ADD:
-				AddExtractor ex = new AddExtractor();
-				ex.extract(task, input);
+				AddExtractor exAdd = new AddExtractor();
+				exAdd.extract(task, input);
 				break;
 			case DELETE:
 				//ex.extractForDeleteTask();
+				DeleteExtractor exDelete = new DeleteExtractor();
+				exDelete.extract(task, input);
 				break;
 			case UPDATE:
 				//ex.extractForUpdateTask();
+				UpdateExtractor exUpdate = new UpdateExtractor();
+				exUpdate.extract(task, input);
 				break;
 			case VIEW:
 				//ex.extractForViewTask();
+				ViewExtractor exView = new ViewExtractor();
+				exView.extract(task, input);
 				break;
 			case EXIT:
 				System.exit(0);

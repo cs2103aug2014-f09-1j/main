@@ -27,7 +27,7 @@ import javax.swing.JButton;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import whatsupnext.logic.Logic;
-import whatsupnext.parser.ParseDate;
+import whatsupnext.parser.extractor.ParseDate;
 import whatsupnext.parser.api.Parser;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;

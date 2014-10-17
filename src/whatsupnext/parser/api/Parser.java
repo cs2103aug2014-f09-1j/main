@@ -49,17 +49,14 @@ public class Parser {
 				exAdd.extract(task, input);
 				break;
 			case DELETE:
-				//ex.extractForDeleteTask();
 				DeleteExtractor exDelete = new DeleteExtractor();
 				exDelete.extract(task, input);
 				break;
 			case UPDATE:
-				//ex.extractForUpdateTask();
 				UpdateExtractor exUpdate = new UpdateExtractor();
 				exUpdate.extract(task, input);
 				break;
 			case VIEW:
-				//ex.extractForViewTask();
 				ViewExtractor exView = new ViewExtractor();
 				exView.extract(task, input);
 				break;

@@ -4,7 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.UPDATETYPE;
 import whatsupnext.structure.Types.VIEWTYPE;
 
 public class ViewExtractor implements Extractor {

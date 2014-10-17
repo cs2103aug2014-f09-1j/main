@@ -45,8 +45,13 @@ public class UpdateExtractor implements Extractor {
 		    splitOnToKeyword(task,input);
 		    task.setUpdateType(UPDATETYPE.TIMEFRAME);
 		} else {
-		    task.setDescription(input);
-		    task.setUpdateType(UPDATETYPE.DESCRIPTION);
+		    if (input==""){
+		    	throw new IllegalArgumentException("'update' must be followed by content");
+		    } else {
+		        task.setDescription(input);
+		        task.setUpdateType(UPDATETYPE.DESCRIPTION);		    	
+		    }
+
 		}
 		
 		return "";

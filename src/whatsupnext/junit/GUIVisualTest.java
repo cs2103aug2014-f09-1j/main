@@ -33,11 +33,11 @@ public class GUIVisualTest {
 		JFrame frameMain = (JFrame)GUITestUtils.getChildNamed(gui.getMainFrame(), "frameMain");
 		assertNotNull("Can't acess the main frame JFrame", frameMain);
 		
-		assertFalse(frameMain.isResizable());
+		assertTrue(frameMain.isResizable());
 		assertEquals(0, frameMain.getBounds().x);
 		assertEquals(0, frameMain.getBounds().y);
 		assertEquals(555, frameMain.getBounds().width);
-		assertEquals(295, frameMain.getBounds().height);
+		assertEquals(300, frameMain.getBounds().height);
 		
 		assertEquals("Cambria", frameMain.getFont().getName());
 		assertTrue(frameMain.getFont().isBold());
@@ -79,7 +79,7 @@ public class GUIVisualTest {
 		assertEquals(356, textDisplayUpcomingScrollPane.getBounds().x);
 		assertEquals(35, textDisplayUpcomingScrollPane.getBounds().y);
 		assertEquals(174, textDisplayUpcomingScrollPane.getBounds().width);
-		assertEquals(184, textDisplayUpcomingScrollPane.getBounds().height);
+		assertEquals(180, textDisplayUpcomingScrollPane.getBounds().height);
 		
 		JTextArea textDisplayUpcoming = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
 		assertNotNull("Can't acess the upcoming task text area JTextArea", textDisplayUpcoming);
@@ -93,7 +93,7 @@ public class GUIVisualTest {
 		assertEquals(0, textDisplayUpcoming.getBounds().x);
 		assertEquals(0, textDisplayUpcoming.getBounds().y);
 		assertEquals(174, textDisplayUpcoming.getBounds().width);
-		assertEquals(184, textDisplayUpcoming.getBounds().height);
+		assertEquals(180, textDisplayUpcoming.getBounds().height);
 	}
 	
 	@Test
@@ -118,10 +118,10 @@ public class GUIVisualTest {
 		JButton buttonEnter = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonEnter");
 		assertNotNull("Can't acess the main enter button JButton", buttonEnter);
 		
-		assertEquals(451, buttonEnter.getBounds().x);
-		assertEquals(230, buttonEnter.getBounds().y);
-		assertEquals(79, buttonEnter.getBounds().width);
-		assertEquals(23, buttonEnter.getBounds().height);
+		assertEquals(440, buttonEnter.getBounds().x);
+		assertEquals(225, buttonEnter.getBounds().y);
+		assertEquals(90, buttonEnter.getBounds().width);
+		assertEquals(25, buttonEnter.getBounds().height);
 		
 		assertEquals("Cambria", buttonEnter.getFont().getName());
 		assertTrue(buttonEnter.getFont().isBold());
@@ -136,9 +136,9 @@ public class GUIVisualTest {
 		assertNotNull("Can't acess the user CLI JTextField", textInput);
 		
 		assertEquals(10, textInput.getBounds().x);
-		assertEquals(230, textInput.getBounds().y);
+		assertEquals(225, textInput.getBounds().y);
 		assertEquals(423, textInput.getBounds().width);
-		assertEquals(23, textInput.getBounds().height);
+		assertEquals(25, textInput.getBounds().height);
 		
 		assertEquals("Courier New", textInput.getFont().getName());
 		assertTrue(textInput.getFont().isPlain());
@@ -157,7 +157,7 @@ public class GUIVisualTest {
 		assertEquals(10, textDisplayMainScrollPane.getBounds().x);
 		assertEquals(35, textDisplayMainScrollPane.getBounds().y);
 		assertEquals(328, textDisplayMainScrollPane.getBounds().width);
-		assertEquals(184, textDisplayMainScrollPane.getBounds().height);
+		assertEquals(180, textDisplayMainScrollPane.getBounds().height);
 		
 		JTextArea textDisplayMain = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
 		assertNotNull("Can't acess the main text display JTextField", textDisplayMain);
@@ -167,7 +167,7 @@ public class GUIVisualTest {
 		assertEquals(0, textDisplayMain.getBounds().x);
 		assertEquals(0, textDisplayMain.getBounds().y);
 		assertEquals(328, textDisplayMain.getBounds().width);
-		assertEquals(184, textDisplayMain.getBounds().height);
+		assertEquals(180, textDisplayMain.getBounds().height);
 		
 		assertEquals("Courier New", textDisplayMain.getFont().getName());
 		assertTrue(textDisplayMain.getFont().isBold());

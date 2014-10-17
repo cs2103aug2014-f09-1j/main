@@ -21,7 +21,7 @@ import whatsupnext.structure.Types.VIEWTYPE;
 
 public class LogicTest {
 	
-	private Logic logic;
+	private LogicStub logic;
 	private Task task;
 	private static Task viewAllTask;	
 	
@@ -34,6 +34,10 @@ public class LogicTest {
 				e.printStackTrace();
 			}
 			super.setupAvailableIDs();
+		}
+		
+		public String getFormattedTime(String time){
+			return super.getFormattedTime(time);
 		}
 	}
 	
@@ -103,7 +107,7 @@ public class LogicTest {
 		assertEquals("Test Add Floating - Successful ", feedback, "A task is successfully added.");
 		
 		feedback = logic.execute(viewAllTask);
-		assertEquals(feedback, "Task ID: 1\n\ttesting\n\tStart Time: \n\tEnd Time: ");
+		assertEquals(feedback, "1: testing");
 	}
 	
 	@Test
@@ -117,7 +121,7 @@ public class LogicTest {
 		assertEquals("Test Add Deadline - Successful ", "A task is successfully added.", feedback);
 		
 		feedback = logic.execute(viewAllTask);
-		assertEquals(feedback, "Task ID: 1\n\ttesting\n\tStart Time: \n\tEnd Time: 201410101200");
+		assertEquals(feedback, "1: testing\n\tEnd Time: 2014 Oct 10 12:00");
 	}
 	
 	@Test
@@ -132,7 +136,7 @@ public class LogicTest {
 		assertEquals("Test Add Time Frame - Successful ", "A task is successfully added.", feedback);
 		
 		feedback = logic.execute(viewAllTask);
-		assertEquals(feedback, "Task ID: 1\n\ttesting\n\tStart Time: 201410101200\n\tEnd Time: 201410111200");
+		assertEquals(feedback, "1: testing\n\tStart Time: 2014 Oct 10 12:00\n\tEnd Time: 2014 Oct 11 12:00");
 	}
 	
 	@Test
@@ -159,7 +163,7 @@ public class LogicTest {
 		assertEquals("Test Delete Id - Successful ", "Tasks are successfully deleted.", feedback);
 		
 		feedback = logic.execute(viewAllTask);
-		assertEquals(feedback, "Task ID: 1\n\ttesting\n\tStart Time: \n\tEnd Time: ");
+		assertEquals(feedback, "1: testing");
 	}
 	
 	@Test
@@ -187,7 +191,7 @@ public class LogicTest {
 		assertEquals("Test Delete Date - Successful ", "Tasks are successfully deleted.", feedback);
 		
 		feedback = logic.execute(viewAllTask);
-		assertEquals(feedback, "Task ID: 2\n\ttesting\n\tStart Time: 201410111000\n\tEnd Time: 201410111200");
+		assertEquals(feedback, "2: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:00");
 	}
 	
 	@Test
@@ -223,7 +227,7 @@ public class LogicTest {
 		assertEquals("Test Delete Deadline - Successful ", "Tasks are successfully deleted.", feedback);
 		
 		feedback = logic.execute(viewAllTask);
-		assertEquals(feedback, "Task ID: 3\n\ttesting\n\tStart Time: 201410111000\n\tEnd Time: 201410111230");
+		assertEquals(feedback, "3: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:30");
 	}
 	
 	@Test
@@ -260,7 +264,7 @@ public class LogicTest {
 		assertEquals("Test Delete Time Frame - Successful ", "Tasks are successfully deleted.", feedback);
 		
 		feedback = logic.execute(viewAllTask);
-		assertEquals(feedback, "Task ID: 3\n\ttesting\n\tStart Time: 201410111000\n\tEnd Time: 201410111230");
+		assertEquals(feedback, "3: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:30");
 	}
 	
 	@Test
@@ -280,7 +284,7 @@ public class LogicTest {
 		assertEquals("Test Update Description - Successful ", "A task is successfully updated.", feedback);
 		
 		feedback = logic.execute(viewAllTask);
-		assertEquals(feedback, "Task ID: 1\n\tnew description\n\tStart Time: \n\tEnd Time: ");
+		assertEquals(feedback, "1: new description");
 	}
 	
 	@Test
@@ -301,7 +305,7 @@ public class LogicTest {
 		assertEquals("Test Update Deadline - Successful ", "A task is successfully updated.", feedback);
 		
 		feedback = logic.execute(viewAllTask);
-		assertEquals(feedback, "Task ID: 1\n\ttesting\n\tStart Time: \n\tEnd Time: 201411111111");
+		assertEquals(feedback, "1: testing\n\tEnd Time: 2014 Nov 11 11:11");
 	}
 	
 	@Test
@@ -324,7 +328,7 @@ public class LogicTest {
 		assertEquals("Test Update Deadline - Successful ", "A task is successfully updated.", feedback);
 		
 		feedback = logic.execute(viewAllTask);
-		assertEquals(feedback, "Task ID: 1\n\ttesting\n\tStart Time: 201410101010\n\tEnd Time: 201411111111");
+		assertEquals(feedback, "1: testing\n\tStart Time: 2014 Oct 10 10:10\n\tEnd Time: 2014 Nov 11 11:11");
 	}
 	
 	@Test
@@ -335,7 +339,7 @@ public class LogicTest {
 		logic.execute(task);
 		
 		String feedback = logic.execute(viewAllTask);
-		assertEquals(feedback, "Task ID: 1\n\ttesting\n\tStart Time: \n\tEnd Time: ");
+		assertEquals(feedback, "1: testing");
 		
 		task = new Task();
 		task.setOpcode(OPCODE.ADD);
@@ -346,8 +350,8 @@ public class LogicTest {
 		
 		feedback = logic.execute(viewAllTask);
 		assertEquals(feedback,
-				"Task ID: 1\n\ttesting\n\tStart Time: \n\tEnd Time: \n" +
-				"Task ID: 2\n\ttesting2\n\tStart Time: \n\tEnd Time: 201410101200"
+				"1: testing\n" +
+				"2: testing2\n\tEnd Time: 2014 Oct 10 12:00"
 		);
 		
 		task = new Task();
@@ -360,9 +364,9 @@ public class LogicTest {
 		
 		feedback = logic.execute(viewAllTask);
 		assertEquals(feedback,
-				"Task ID: 1\n\ttesting\n\tStart Time: \n\tEnd Time: \n" +
-				"Task ID: 2\n\ttesting2\n\tStart Time: \n\tEnd Time: 201410101200\n" +
-				"Task ID: 3\n\ttesting3\n\tStart Time: 201410102000\n\tEnd Time: 201411111200"
+				"1: testing\n" +
+				"2: testing2\n\tEnd Time: 2014 Oct 10 12:00\n" + 
+				"3: testing3\n\tStart Time: 2014 Oct 10 20:00\n\tEnd Time: 2014 Nov 11 12:00"
 		);
 	}
 	
@@ -398,12 +402,12 @@ public class LogicTest {
 		
 		String feedback = logic.execute(task);
 		assertEquals(feedback,
-				"Task ID: 2\n\ttesting\n\t" +
-				"Start Time: " + (getLastYearTodayDate() + "0000") + "\n\t" +
-				"End Time: " + (getTodayDate() + "2359") + "\n" +
-				"Task ID: 3\n\ttesting\n\t" +
-				"Start Time: " + (getTodayDate() + "0000") + "\n\t" +
-				"End Time: " + (getTodayDate() + "2359")
+				"2: testing\n\t" +
+				"Start Time: " + logic.getFormattedTime(getLastYearTodayDate() + "0000") + "\n\t" +
+				"End Time: " + logic.getFormattedTime(getTodayDate() + "2359") + "\n" +
+				"3: testing\n\t" +
+				"Start Time: " + logic.getFormattedTime(getTodayDate() + "0000") + "\n\t" +
+				"End Time: " + logic.getFormattedTime(getTodayDate() + "2359")
 		);
 	}
 	
@@ -429,9 +433,7 @@ public class LogicTest {
 		task.setEndTime("201410102359");
 		
 		String feedback = logic.execute(task);
-		assertEquals(feedback,
-				"Task ID: 1\n\ttesting\n\tStart Time: \n\tEnd Time: 201410101200"
-		);
+		assertEquals(feedback, "1: testing\n\tEnd Time: 2014 Oct 10 12:00");
 	}
 	
 	@Test
@@ -459,7 +461,7 @@ public class LogicTest {
 		
 		String feedback = logic.execute(task);
 		assertEquals(feedback,
-				"Task ID: 2\n\ttesting\n\tStart Time: 201410111000\n\tEnd Time: 201410111200"
+				"2: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:00"
 		);
 	}
 

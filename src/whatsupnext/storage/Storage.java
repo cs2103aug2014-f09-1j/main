@@ -12,13 +12,28 @@ import whatsupnext.structure.Task;
 
 public class Storage {
 	
+	private static Storage storageSingleton;
 	private String FILE_NAME;
 	private final boolean SUCCESS = true;
 	private final boolean FAILURE = false;
 	
 	private static int numberOfTasks = 0;
 	
-	public Storage(String fileName) {
+	public static Storage getInstance(String fileName) {
+		if (storageSingleton == null) {
+			storageSingleton = new Storage(fileName);
+		}
+		return storageSingleton;
+	}
+	
+	public static Storage getInstance() {
+		if (storageSingleton == null) {
+			storageSingleton = new Storage("tasks.txt");
+		}
+		return storageSingleton;
+	}
+	
+	private Storage(String fileName) {
 		FILE_NAME = fileName;
 		File textFile = new File(FILE_NAME);
 		if (!textFile.exists()) {
@@ -108,7 +123,7 @@ public class Storage {
 		
 		while (reader.hasNextLine()) {
 			String taskInString = reader.nextLine();
-			tasks.add(StringToTask(taskInString));	
+			tasks.add(stringToTask(taskInString));	
 		}
 		
 		numberOfTasks = tasks.size();
@@ -122,7 +137,7 @@ public class Storage {
 	 * @param taskInString
 	 * @return
 	 */
-	public Task StringToTask(String taskInString) {
+	public Task stringToTask(String taskInString) {
 		Scanner extractFromString = new Scanner(taskInString);
 		extractFromString.useDelimiter("%#");
 		

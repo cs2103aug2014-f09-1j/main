@@ -7,6 +7,12 @@ import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.DELETETYPE;
 
 public class DeleteExtractor implements Extractor {
+	
+	private final String MESSAGE_INVALID_ARGUMENT = "'delete' must have an argument";
+	private final String MESSAGE_INVALID_TASKID_OR_DATE = "'delete' must have a valid Task ID or Date";
+	private final String MESSAGE_INVALID_END_TIME = "'delete' must have an valid end time";
+	private final String MESSAGE_INVALID_START_TIME = "'delete' must have an valid start time";
+	
 	private ParseDate parseDate;
 	
 	public DeleteExtractor(){
@@ -14,18 +20,23 @@ public class DeleteExtractor implements Extractor {
 	}
 	
 	public void extract(Task task, String input){
-
-		if (countWords(input) == 1) {
+		int numOfWord = countWords(input);
+		if (numOfWord == 0) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_ARGUMENT);
+		} else if (numOfWord == 1) {
 			// check if input string is formatted date
 		    String formattedDate = parseDate.parseInput(input);
 		    if (input.equalsIgnoreCase("deadline")) {
 				deleteCaseDeadline(task);
-			} else if (!formattedDate.equals("")) {
-			// TODO; should judge for valid ID instead of valid date	
-				deleteCaseDate(task,input);
-			} else {
-				deleteCaseID(task,input);
+			} else{
+				if (formattedDate.isEmpty()) {
+					// TODO; should judge for valid ID instead of valid date	
+					deleteCaseID(task,input);
+				} else{
+					deleteCaseDate(task,input);
+				}
 			}
+		    
 		} else {
 	        Pattern fromKeywordPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
 	        Matcher fromKeywordMatcher = fromKeywordPattern.matcher(input);
@@ -45,10 +56,12 @@ public class DeleteExtractor implements Extractor {
 	private void deleteCaseID(Task task,String deleteDetail) {
 		task.setDeleteType(DELETETYPE.ID);
 		try {
-			int deleteID = Integer.parseInt(deleteDetail);
+			if(Integer.parseInt(deleteDetail) < 0) {
+				throw new IllegalArgumentException(MESSAGE_INVALID_TASKID_OR_DATE) ;
+			}
 			task.setTaskID(deleteDetail);
 		} catch (NumberFormatException e) {
-			throw new NumberFormatException("Delete task requires a valid integer id");
+			throw new NumberFormatException(MESSAGE_INVALID_TASKID_OR_DATE);
 		}
 	}
 
@@ -59,11 +72,9 @@ public class DeleteExtractor implements Extractor {
 	 */
 	private void deleteCaseDate(Task task,String deleteDetail) {
 		task.setDeleteType(DELETETYPE.DATE);
-		String endTime = parseDate.parseInput(deleteDetail);
-		if (!endTime.equals("")){
-		     task.setEndTime(endTime);
-		} else {
-			 throw new IllegalArgumentException("'delete' must be followed by valid ID or date");
+		task.setEndTime(parseDate.parseInput(deleteDetail));
+		if (task.getEndTime().isEmpty()){
+			 throw new IllegalArgumentException(MESSAGE_INVALID_TASKID_OR_DATE );
 		}
 	}
 
@@ -97,13 +108,13 @@ public class DeleteExtractor implements Extractor {
 		// Remove "from"
 		taskDetails = removeFirstWord(taskDetails);
 		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");	
-		String startTime = parseDate.parseInput(details[0]);
-		String endTime = parseDate.parseInput(details[1]);
-		if (startTime.equals("") || endTime.equals("") ){
-			throw new IllegalArgumentException("'delete' must be followed by valid ID or date");
-		} else {
-			task.setStartTime(startTime);
-		    task.setEndTime(endTime);
+		task.setStartTime(parseDate.parseInput(details[0]));
+		if (task.getStartTime().isEmpty()){
+			throw new IllegalArgumentException(MESSAGE_INVALID_START_TIME);
+		}
+		task.setEndTime(parseDate.parseInput(details[1]));
+		if (task.getEndTime().isEmpty()){
+			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
 		}
 	}
 	

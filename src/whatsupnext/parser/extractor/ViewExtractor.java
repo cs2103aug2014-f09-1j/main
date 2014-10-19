@@ -11,7 +11,7 @@ public class ViewExtractor implements Extractor {
 	private final String MESSAGE_INVALID_ARGUMENT = "'view' must have an arguement";
 	private final String MESSAGE_INVALID_END_TIME = "'view' must have an valid end time";
 	private final String MESSAGE_INVALID_START_TIME = "'view' must have an valid start time";
-	private final String MESSAGE_INVALID_TIME = "'view' must have an valid time";
+	private final String MESSAGE_INVALID_DATE = "'view' must have an valid date";
 	
 	private ParseDate parseDate;
 	
@@ -61,7 +61,7 @@ public class ViewExtractor implements Extractor {
 		task.setViewType(VIEWTYPE.DATE);
 		task.setEndTime(parseDate.parseInput(viewDetail));
 		if (task.getEndTime().isEmpty()){
-			throw new IllegalArgumentException(MESSAGE_INVALID_TIME);
+			throw new IllegalArgumentException(MESSAGE_INVALID_DATE);
 		} 
 	}
 

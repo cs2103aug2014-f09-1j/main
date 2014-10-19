@@ -7,6 +7,12 @@ import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.VIEWTYPE;
 
 public class ViewExtractor implements Extractor {
+	
+	private final String MESSAGE_INVALID_ARGUMENT = "'view' must have an arguement";
+	private final String MESSAGE_INVALID_END_TIME = "'view' must have an valid end time";
+	private final String MESSAGE_INVALID_START_TIME = "'view' must have an valid start time";
+	private final String MESSAGE_INVALID_TIME = "'view' must have an valid time";
+	
 	private ParseDate parseDate;
 	
 	public ViewExtractor(){
@@ -14,8 +20,10 @@ public class ViewExtractor implements Extractor {
 	}
 	
 	public void extract(Task task, String input){
-
-		if (countWords(input) == 1) {
+		int numOfWord = countWords(input);
+		if ( numOfWord == 0){
+			throw new IllegalArgumentException(MESSAGE_INVALID_ARGUMENT);
+		} else if (numOfWord == 1) {
 			if (input.equalsIgnoreCase("all")) {
 				viewCaseAll(task);
 			} else if (input.equalsIgnoreCase("next")) {
@@ -51,13 +59,10 @@ public class ViewExtractor implements Extractor {
 	 */
 	private void viewCaseDate(Task task, String viewDetail) {
 		task.setViewType(VIEWTYPE.DATE);
-		String endTime = parseDate.parseInput(viewDetail);
-		if (endTime.equals("")){
-			throw new IllegalArgumentException("'view' must be followed by valid date");
-		} else {
-			task.setEndTime(endTime);	
-		}
-
+		task.setEndTime(parseDate.parseInput(viewDetail));
+		if (task.getEndTime().isEmpty()){
+			throw new IllegalArgumentException(MESSAGE_INVALID_TIME);
+		} 
 	}
 
 	/**
@@ -87,14 +92,14 @@ public class ViewExtractor implements Extractor {
 	private void splitOnToKeyword(Task task,String taskDetails) {
 		// Remove "from"
 		taskDetails = removeFirstWord(taskDetails);
-		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");	
-		String startTime = parseDate.parseInput(details[0]);
-		String endTime = parseDate.parseInput(details[1]);
-		if (startTime.equals("") || endTime.equals("") ){
-			throw new IllegalArgumentException("'view' must be followed by valid date");
-		} else {
-			task.setStartTime(startTime);
-		    task.setEndTime(endTime);
+		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");
+		task.setStartTime(parseDate.parseInput(details[0]));
+		if (task.getStartTime().isEmpty()){
+			throw new IllegalArgumentException(MESSAGE_INVALID_START_TIME);
+		}
+		task.setEndTime(parseDate.parseInput(details[1]));
+		if (task.getEndTime().isEmpty()){
+			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
 		}
 	}
 	

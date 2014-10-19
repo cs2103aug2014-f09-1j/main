@@ -96,12 +96,12 @@ public class ExtractorTest {
 		Task task = new Task();
 		AddExtractor ex = new AddExtractor();
 		try{
-			ex.extract(task, "Add test By rubbish");
+			ex.extract(task, "test By rubbish");
 		} catch (Exception e) {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
 		}
 		try{
-			ex.extract(task, "Add test from 1234 to rubbish");
+			ex.extract(task, "test from 1234 to rubbish");
 		} catch (Exception e) {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
 		}
@@ -110,16 +110,15 @@ public class ExtractorTest {
 	@Test
 	public void testAddInvalidStartTime() {
 		String MESSAGE_INVALID_START_TIME = "'add' must have an valid start time";
-		String MESSAGE_INVALID_END_TIME = "'add' must have an valid end time";
 		Task task = new Task();
 		AddExtractor ex = new AddExtractor();
 		try{
-			ex.extract(task, "Add test from rubbish to 1234");
+			ex.extract(task, "test from rubbish to 1234");
 		} catch (Exception e) {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_START_TIME, e.getMessage());
 		}
 		try{
-			ex.extract(task, "Add test from rubbish to time");
+			ex.extract(task, "test from rubbish to time");
 		} catch (Exception e) {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_START_TIME, e.getMessage());
 		}
@@ -248,5 +247,53 @@ public class ExtractorTest {
 		assertEquals("Test View - startTime", "201410052359", task.getStartTime());
 		assertEquals("Test View - endTime", "201410102000", task.getEndTime());
 		assertEquals("Test View - viewType", VIEWTYPE.TIMEFRAME, task.getViewType());
+	}
+	
+	@Test
+	public void testViewInvalidArgument() {
+		String MESSAGE_INVALID_ARGUMENT = "'view' must have an arguement";
+		Task task = new Task();
+		ViewExtractor ex = new ViewExtractor();
+		try{
+			ex.extract(task, "");
+		} catch (Exception e) {
+			assertEquals("Test invalid argument", MESSAGE_INVALID_ARGUMENT, e.getMessage());
+		}
+	}
+
+	@Test
+	public void testViewInvalidEndTime() {
+		String MESSAGE_INVALID_END_TIME = "'view' must have an valid end time";
+		Task task = new Task();
+		ViewExtractor ex = new ViewExtractor();
+		try{
+			ex.extract(task, "from 1234 to 2014/12/12");
+		} catch (Exception e) {
+			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testViewInvalidStartTime() {
+		String MESSAGE_INVALID_START_TIME = "'view' must have an valid start time";
+		Task task = new Task();
+		ViewExtractor ex = new ViewExtractor();
+		try{
+			ex.extract(task, "from 2014/12/12 to 1234");
+		} catch (Exception e) {
+			assertEquals("Test invalid start time", MESSAGE_INVALID_START_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testViewInvalidTime() {
+		String MESSAGE_INVALID_TIME = "'view' must have an valid time";
+		Task task = new Task();
+		AddExtractor ex = new AddExtractor();
+		try{
+			ex.extract(task, "2014/12/12");
+		} catch (Exception e) {
+			assertEquals("Test invalid time", MESSAGE_INVALID_TIME, e.getMessage());
+		}
 	}
 }

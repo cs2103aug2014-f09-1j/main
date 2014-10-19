@@ -7,6 +7,12 @@ import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.UPDATETYPE;
 
 public class UpdateExtractor implements Extractor {
+	
+	private final String MESSAGE_INVALID_TASKID = "'update' must have a valid integer id";
+	private final String MESSAGE_INVALID_DESCRIPTION = "'update' must have an valid description";
+	private final String MESSAGE_INVALID_END_TIME = "'update' must have an valid end time";
+	private final String MESSAGE_INVALID_START_TIME = "'update' must have an valid start time";
+	
 	private ParseDate parseDate;
 	
 	public UpdateExtractor(){
@@ -18,10 +24,12 @@ public class UpdateExtractor implements Extractor {
 		// Get the task ID and remove it from the remaining details
 		try {
 			String taskID = getFirstWord(input);
-			Integer.parseInt(taskID);
+			if(Integer.parseInt(taskID) < 0 ){
+				throw new IllegalArgumentException(MESSAGE_INVALID_TASKID);
+			}
 			task.setTaskID(taskID);
 		} catch (NumberFormatException e) {
-			throw new NumberFormatException("Update task requires a valid integer id");
+			throw new NumberFormatException(MESSAGE_INVALID_TASKID);
 		}
 		input = removeFirstWord(input);
 				
@@ -32,21 +40,20 @@ public class UpdateExtractor implements Extractor {
 		        
 		if (byKeywordMatcher.find()){
 		    // Remove 'by'
-			String endTime = parseDate.parseInput(removeFirstWord(input));
-			if (endTime.equals("")){
-				throw new IllegalArgumentException("'update' must be followed by valid date");
-			} else {
-				task.setEndTime(endTime);
-		        task.setUpdateType(UPDATETYPE.DEADLINE);
-			}
+			input = removeFirstWord(input);
+					
+			task.setUpdateType(UPDATETYPE.DEADLINE);
+			task.setEndTime(parseDate.parseInput(input));
+			if (task.getEndTime().isEmpty()){
+				throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
+			} 
 
 		} else if (fromKeywordMatcher.find()){
-		    // Remove 'from'
 		    splitOnToKeyword(task,input);
 		    task.setUpdateType(UPDATETYPE.TIMEFRAME);
 		} else {
-		    if (input==""){
-		    	throw new IllegalArgumentException("'update' must be followed by content");
+		    if (input.isEmpty()){
+		    	throw new IllegalArgumentException(MESSAGE_INVALID_DESCRIPTION);
 		    } else {
 		        task.setDescription(input);
 		        task.setUpdateType(UPDATETYPE.DESCRIPTION);		    	
@@ -65,13 +72,13 @@ public class UpdateExtractor implements Extractor {
 		// Remove "from"
 		taskDetails = removeFirstWord(taskDetails);
 		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");	
-		String startTime = parseDate.parseInput(details[0]);
-		String endTime = parseDate.parseInput(details[1]);
-		if (startTime.equals("") || endTime.equals("") ){
-			throw new IllegalArgumentException("'update' must be followed by valid date");
-		} else {
-			task.setStartTime(startTime);
-		    task.setEndTime(endTime);
+		task.setStartTime(parseDate.parseInput(details[0]));
+		if (task.getStartTime().isEmpty()){
+			throw new IllegalArgumentException(MESSAGE_INVALID_START_TIME);
+		}
+		task.setEndTime(parseDate.parseInput(details[1]));
+		if (task.getEndTime().isEmpty()){
+			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
 		}
 	}
 	

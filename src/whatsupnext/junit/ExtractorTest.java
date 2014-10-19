@@ -204,6 +204,63 @@ public class ExtractorTest {
 		assertEquals("Test Update - taskID", "10", task.getTaskID());
 	}
 	
+	@Test
+	public void testUpdateInvalidTaskID() {
+		String MESSAGE_INVALID_TASKID = "'update' must have a valid integer id";
+		Task task = new Task();
+		UpdateExtractor ex = new UpdateExtractor();
+		try{
+			ex.extract(task, "ID by 1400 061014");
+		} catch (Exception e) {
+			assertEquals("Test invalid task ID", MESSAGE_INVALID_TASKID, e.getMessage());
+		}
+		try{
+			ex.extract(task, "-1 by 1400 061014");
+		} catch (Exception e) {
+			assertEquals("Test invalid task ID", MESSAGE_INVALID_TASKID, e.getMessage());
+		}
+	}
+
+	@Test
+	public void testUpdateInvalidDescription() {
+		String MESSAGE_INVALID_DESCRIPTION = "'update' must have an valid description";
+		Task task = new Task();
+		UpdateExtractor ex = new UpdateExtractor();
+		try{
+			ex.extract(task, "14 update Desc");
+		} catch (Exception e) {
+			assertEquals("Test invalid time", MESSAGE_INVALID_DESCRIPTION, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testUpdateInvalidEndTime() {
+		String MESSAGE_INVALID_END_TIME = "'update' must have an valid end time";
+		Task task = new Task();
+		UpdateExtractor ex = new UpdateExtractor();
+		try{
+			ex.extract(task, "14 by 2014/12/12");
+		} catch (Exception e) {
+			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+		try{
+			ex.extract(task, "14 from 1234 to 2014/12/12");
+		} catch (Exception e) {
+			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testUpdateInvalidStartTime() {
+		String MESSAGE_INVALID_START_TIME = "'update' must have an valid start time";
+		Task task = new Task();
+		UpdateExtractor ex = new UpdateExtractor();
+		try{
+			ex.extract(task, "14 from 2014/12/12 to 2014/12/12");
+		} catch (Exception e) {
+			assertEquals("Test invalid start time", MESSAGE_INVALID_START_TIME, e.getMessage());
+		}
+	}
 		
 	@Test
 	public void testViewAll() {

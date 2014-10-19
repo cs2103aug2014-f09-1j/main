@@ -6,7 +6,11 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import whatsupnext.parser.Extractor;
+import whatsupnext.parser.extractor.AddExtractor;
+import whatsupnext.parser.extractor.DeleteExtractor;
+import whatsupnext.parser.extractor.Extractor;
+import whatsupnext.parser.extractor.UpdateExtractor;
+import whatsupnext.parser.extractor.ViewExtractor;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.ADDTYPE;
 import whatsupnext.structure.Types.DELETETYPE;
@@ -44,8 +48,8 @@ public class ExtractorTest {
 	@Test
 	public void testAdd() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "add dine from 0200 301014 to 21:00 301014");
-		ex.extractForAddTask();
+		AddExtractor ex = new AddExtractor();
+		ex.extract(task, "dine from 0200 301014 to 21:00 301014");
 		assertEquals("Test Add - description", "dine", task.getDescription());
 		assertEquals("Test Add - startTime", "201410300200", task.getStartTime());
 		assertEquals("Test Add - endTime", "201410302100", task.getEndTime());
@@ -55,8 +59,8 @@ public class ExtractorTest {
 	@Test
 	public void testAdd2() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "add dine By 1 pm");
-		ex.extractForAddTask();
+		AddExtractor ex = new AddExtractor();
+		ex.extract(task, "dine By 13:00");
 		assertEquals("Test Add - description", "dine", task.getDescription());
 		assertEquals("Test Add - startTime", "", task.getStartTime());
 		assertEquals("Test Add - endTime", getTodayDate() + "1300", task.getEndTime());
@@ -66,9 +70,9 @@ public class ExtractorTest {
 	@Test
 	public void testDelete1() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "delete 190");
-		ex.extractForDeleteTask();
-		assertEquals("Test Delete - ID", "190", task.getTaskID());
+		DeleteExtractor ex = new DeleteExtractor();
+		ex.extract(task, "1");
+		assertEquals("Test Delete - ID", "1", task.getTaskID());
 		assertEquals("Test Delete - startTime", "", task.getStartTime());
 		assertEquals("Test Delete - endTime", "", task.getEndTime());
 		assertEquals("Test Delete - deleteType", DELETETYPE.ID, task.getDeleteType());
@@ -77,8 +81,8 @@ public class ExtractorTest {
 	@Test
 	public void testDelete2() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "delete 101014");
-		ex.extractForDeleteTask();
+		DeleteExtractor ex = new DeleteExtractor();
+		ex.extract(task, "23:59 101014");
 		assertEquals("Test Delete - description", "", task.getDescription());
 		assertEquals("Test Delete - startTime", "", task.getStartTime());
 		assertEquals("Test Delete - endTime", "201410102359", task.getEndTime());
@@ -88,8 +92,8 @@ public class ExtractorTest {
 	@Test
 	public void testDelete3() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "delete Deadline");
-		ex.extractForDeleteTask();
+		DeleteExtractor ex = new DeleteExtractor();
+		ex.extract(task, "Deadline");
 		assertEquals("Test Delete - description", "", task.getDescription());
 		assertEquals("Test Delete - startTime", "", task.getStartTime());
 		assertEquals("Test Delete - endTime", getTodayDateTime(), task.getEndTime());
@@ -99,8 +103,8 @@ public class ExtractorTest {
 	@Test
 	public void testDelete4() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "delete from 12 am 06102014 to 101014");
-		ex.extractForDeleteTask();
+		DeleteExtractor ex = new DeleteExtractor();
+		ex.extract(task, "from 00:00 061014 to 23:59 101014");
 		assertEquals("Test Delete - description", "", task.getDescription());
 		assertEquals("Test Delete - startTime", "201410060000", task.getStartTime());
 		assertEquals("Test Delete - endTime", "201410102359", task.getEndTime());
@@ -110,8 +114,8 @@ public class ExtractorTest {
 	@Test
 	public void testUpdate1() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "update 10 new description");
-		ex.extractForUpdateTask();
+		UpdateExtractor ex = new UpdateExtractor();
+		ex.extract(task, "10 new description");
 		assertEquals("Test Update - description", "new description", task.getDescription());
 		assertEquals("Test Update - startTime", "", task.getStartTime());
 		assertEquals("Test Update - endTime", "", task.getEndTime());
@@ -122,8 +126,8 @@ public class ExtractorTest {
 	@Test
 	public void testUpdate2() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "update 10 by 1400 061014");
-		ex.extractForUpdateTask();
+		UpdateExtractor ex = new UpdateExtractor();
+		ex.extract(task, "10 by 1400 061014");
 		assertEquals("Test Update - description", "", task.getDescription());
 		assertEquals("Test Update - startTime", "", task.getStartTime());
 		assertEquals("Test Update - endTime", "201410061400", task.getEndTime());
@@ -134,8 +138,8 @@ public class ExtractorTest {
 	@Test
 	public void testUpdate3() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "update 10 from 12 am 06102014 to 101014");
-		ex.extractForUpdateTask();
+		UpdateExtractor ex = new UpdateExtractor();
+		ex.extract(task, "10 from 00:00 06102014 to 101014");
 		assertEquals("Test Update - description", "", task.getDescription());
 		assertEquals("Test Update - startTime", "201410060000", task.getStartTime());
 		assertEquals("Test Update - endTime", "201410102359", task.getEndTime());
@@ -143,11 +147,12 @@ public class ExtractorTest {
 		assertEquals("Test Update - taskID", "10", task.getTaskID());
 	}
 	
+		
 	@Test
 	public void testViewAll() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "view all");
-		ex.extractForViewTask();
+		ViewExtractor ex = new ViewExtractor();
+		ex.extract(task, "all");
 		assertEquals("Test View - description", "", task.getDescription());
 		assertEquals("Test View - startTime", "", task.getStartTime());
 		assertEquals("Test View - endTime", "", task.getEndTime());
@@ -157,8 +162,8 @@ public class ExtractorTest {
 	@Test
 	public void testViewNext() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "view next");
-		ex.extractForViewTask();
+		ViewExtractor ex = new ViewExtractor();
+		ex.extract(task, "next");
 		assertEquals("Test View - description", "", task.getDescription());
 		assertEquals("Test View - startTime", "", task.getStartTime());
 		assertEquals("Test View - endTime", getTodayDateTime(), task.getEndTime());
@@ -168,8 +173,8 @@ public class ExtractorTest {
 	@Test
 	public void testViewDate() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "view 101014");
-		ex.extractForViewTask();
+		ViewExtractor ex = new ViewExtractor();
+		ex.extract(task, "101014");
 		assertEquals("Test View - description", "", task.getDescription());
 		assertEquals("Test View - startTime", "", task.getStartTime());
 		assertEquals("Test View - endTime", "201410102359", task.getEndTime());
@@ -179,8 +184,8 @@ public class ExtractorTest {
 	@Test
 	public void testViewTimeFrame() {
 		Task task = new Task();
-		Extractor ex = new Extractor(task, "view from 05102014 to 8 pm 101014");
-		ex.extractForViewTask();
+		ViewExtractor ex = new ViewExtractor();
+		ex.extract(task, "from 05102014 to 20:00 101014");
 		assertEquals("Test View - description", "", task.getDescription());
 		assertEquals("Test View - startTime", "201410052359", task.getStartTime());
 		assertEquals("Test View - endTime", "201410102000", task.getEndTime());

@@ -15,26 +15,22 @@ import whatsupnext.storage.Storage;
 
 public class Logic {
 	
-	protected ArrayList<Task> list = new ArrayList<Task>();
-	private ArrayList<String> output = new ArrayList<String>();
+	protected static ArrayList<Task> list = new ArrayList<Task>();
+	protected static ArrayList<String> output = new ArrayList<String>();
 	
-	private String MESSAGE_ADDED = "A task is successfully added.";
-	private String MESSAGE_DELETED = "Tasks are successfully deleted.";
 	private String MESSAGE_UPDATED = "A task is successfully updated.";
 	private String MESSAGE_NOTFOUND = "No tasks are found.";
 	//private String TASK_DISPLAY = "Task ID: %1$s\n\t%2$s\n\tStart Time: %3$s\n\tEnd Time: %4$s";
 	
-	protected Storage storage;
-	private PriorityQueue<Integer> availableIDs;
-	private int maxTasks = 1000000;
+	protected static PriorityQueue<Integer> availableIDs;
+	protected static int maxTasks = 1000000;
 	
 	
 	public Logic() {
-		storage = new Storage("tasks.txt");
+		Storage storage = Storage.getInstance();
 		try {
 			list = storage.readTasks();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		setupAvailableIDs();
@@ -58,12 +54,27 @@ public class Logic {
 	public String execute(Task task) {
 		String feedback;
 		
+		
 		switch (task.getOpCode()) {
 			case ADD:
-				feedback = addTask(task);
+				AddTask addTask = new AddTask();
+				addTask.setOpcode(task.getOpCode());
+				addTask.setAddType(task.getAddType());
+				addTask.setTaskID(task.getTaskID());
+				addTask.setDescription(task.getDescription());
+				addTask.setStartTime(task.getStartTime());
+				addTask.setEndTime(task.getEndTime());
+				feedback = addTask.execute();
 				break;
 			case DELETE:
-				feedback = deleteTask(task);
+				DeleteTask deleteTask = new DeleteTask();
+				deleteTask.setOpcode(task.getOpCode());
+				deleteTask.setDeleteType(task.getDeleteType());
+				deleteTask.setTaskID(task.getTaskID());
+				deleteTask.setDescription(task.getDescription());
+				deleteTask.setStartTime(task.getStartTime());
+				deleteTask.setEndTime(task.getEndTime());
+				feedback = deleteTask.execute();
 				break;
 			case UPDATE:
 				feedback = updateTask(task);
@@ -77,54 +88,6 @@ public class Logic {
 		}
 		
 		return feedback;
-	}
-	
-	private String addTask(Task task) {
-		String taskID = Integer.toString(availableIDs.remove());
-		task.setTaskID(taskID);
-		list.add(task);
-		
-		String feedbackAdd;
-		try {
-			storage.inputTasks(list);
-			feedbackAdd = MESSAGE_ADDED;
-		} catch (IOException e) {
-			feedbackAdd = e.getMessage();
-		}
-		
-		return feedbackAdd;
-	}
-	
-	private String deleteTask(Task task) {
-		switch (task.getDeleteType()) {
-			case ALL:
-				deleteAll();
-				break;
-			case ID:
-				deleteById(task);
-				break;
-			case DEADLINE:
-				deleteByDeadline(task);
-				break;
-			case DATE:
-				deleteByDate(task);
-				break;
-			case TIMEFRAME:
-				deleteByTimeFrame(task);
-				break;
-			default:
-				break;
-		}
-		
-		String feedbackDelete;
-		try {
-			storage.inputTasks(list);
-			feedbackDelete = MESSAGE_DELETED;
-		} catch (IOException e) {
-			feedbackDelete = e.getMessage();
-		}
-		
-		return feedbackDelete;
 	}
 	
 	private String updateTask(Task task) {	
@@ -144,7 +107,7 @@ public class Logic {
 		
 		String feedbackUpdate;
 		try {
-			storage.inputTasks(list);
+			Storage.getInstance().inputTasks(list);
 			feedbackUpdate = MESSAGE_UPDATED;
 		} catch (IOException e) {
 			feedbackUpdate = e.getMessage();
@@ -187,60 +150,6 @@ public class Logic {
 			arrayAsString = arrayAsString.concat("\n" + taskNumberedArray.get(i));
 		}
 		return arrayAsString;
-	}
-	
-	/*
-	 * Four types of DELETE functions.
-	 */
-	private void deleteById(Task deleteTask) {
-		int index = getTaskIndexInArray(deleteTask.getTaskID());		
-		Task removed = list.remove(index);
-		availableIDs.add(Integer.parseInt(removed.getTaskID()));
-	}
-	
-	private void deleteByDate(Task deleteTask) {
-		String endTime = deleteTask.getEndTime();
-		Iterator<Task> taskIterator = list.iterator();
-		
-		while (taskIterator.hasNext()) {
-			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && endsOnGivenDate(task, endTime)) {
-				availableIDs.add(Integer.parseInt(task.getTaskID()));
-				taskIterator.remove();
-			}
-		}
-	}
-	
-	private void deleteByDeadline(Task deleteTask) {
-		String endTime = deleteTask.getEndTime();
-		Iterator<Task> taskIterator = list.iterator();
-		
-		while (taskIterator.hasNext()) {
-			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && endsBeforeDeadline(task, endTime)) {
-				availableIDs.add(Integer.parseInt(task.getTaskID()));
-				taskIterator.remove();
-			}
-		}
-	}
-	
-	private void deleteByTimeFrame(Task deleteTask) {
-		String startTime = deleteTask.getStartTime();
-		String endTime = deleteTask.getEndTime();
-		Iterator<Task> taskIterator = list.iterator();
-		
-		while (taskIterator.hasNext()) {
-			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && !endsBeforeDeadline(task, startTime) && endsBeforeDeadline(task, endTime)) {
-				availableIDs.add(Integer.parseInt(task.getTaskID()));
-				taskIterator.remove();
-			}
-		}
-	}
-	
-	private void deleteAll() {
-		list.clear();
-		setupAvailableIDs();
 	}
 	
 	/*
@@ -381,7 +290,7 @@ public class Logic {
 	/*
 	 * Return the index of a task in the list.
 	 */
-	private int getTaskIndexInArray(String id) {
+	protected static int getTaskIndexInArray(String id) {
 		for (int i = 0; i < list.size(); i++) {
 			Task task = list.get(i);
 			if (task.getTaskID().equalsIgnoreCase(id)) {
@@ -394,7 +303,7 @@ public class Logic {
 	/*
 	 * This check function is to check whether the end time of task(i) is before a given time.
 	 */
-	private boolean endsBeforeDeadline(Task task, String deadline) {	
+	protected static boolean endsBeforeDeadline(Task task, String deadline) {	
 		assert(!task.getEndTime().isEmpty());
 		
 		long endTime = Long.parseLong(task.getEndTime());
@@ -403,7 +312,7 @@ public class Logic {
 		return endTime <= deadlineTime;
 	}
 	
-	private boolean endsOnGivenDate(Task task, String date) {
+	protected static boolean endsOnGivenDate(Task task, String date) {
 		assert(!task.getEndTime().isEmpty());
 		
 		long endTime = Long.parseLong(task.getEndTime());

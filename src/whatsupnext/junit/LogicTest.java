@@ -27,7 +27,7 @@ public class LogicTest {
 	
 	private class LogicStub extends Logic {
 		public LogicStub(String fileName) {
-			storage = new Storage(fileName);
+			Storage storage = Storage.getInstance(fileName);
 			try {
 				list = storage.readTasks();
 			} catch (IOException e) {

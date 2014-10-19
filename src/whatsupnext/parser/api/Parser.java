@@ -1,10 +1,14 @@
 /*
  *  This is the Parser class for WhatsUpNext
  */
-package whatsupnext.parser;
+package whatsupnext.parser.api;
 
 import java.util.StringTokenizer;
 
+import whatsupnext.parser.extractor.AddExtractor;
+import whatsupnext.parser.extractor.DeleteExtractor;
+import whatsupnext.parser.extractor.UpdateExtractor;
+import whatsupnext.parser.extractor.ViewExtractor;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 
@@ -30,31 +34,31 @@ public class Parser {
 		if (tokenizedInput.hasMoreTokens()){
 			String operation = tokenizedInput.nextToken();
 			task.setOpcode(determineOperation(operation));
+			input = removeFirstWord(input);
 			parseTaskArguments();
 		} else {
 			task.setOpcode(OPCODE.INVALID);
 		}
 		return task;
 	}
-	
-	public Task getTask() {
-		return task;
-	}
 
 	private void parseTaskArguments() {
-		Extractor ex = new Extractor(task, input);
 		switch (task.getOpCode()) {
 			case ADD:
-				ex.extractForAddTask();
+				AddExtractor exAdd = new AddExtractor();
+				exAdd.extract(task, input);
 				break;
 			case DELETE:
-				ex.extractForDeleteTask();
+				DeleteExtractor exDelete = new DeleteExtractor();
+				exDelete.extract(task, input);
 				break;
 			case UPDATE:
-				ex.extractForUpdateTask();
+				UpdateExtractor exUpdate = new UpdateExtractor();
+				exUpdate.extract(task, input);
 				break;
 			case VIEW:
-				ex.extractForViewTask();
+				ViewExtractor exView = new ViewExtractor();
+				exView.extract(task, input);
 				break;
 			case EXIT:
 				System.exit(0);
@@ -88,5 +92,20 @@ public class Parser {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Removes the first word of a string
+	 * @param userCommand
+	 * @return
+	 */
+	private static String removeFirstWord(String userCommand) {
+		String commandString;
+		try {
+			commandString = userCommand.trim().split("\\s+", 2)[1];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			commandString = "";
+		}
+		return commandString;
 	}
 }

@@ -13,7 +13,7 @@ public class DeleteExtractor implements Extractor {
 		this.parseDate = new ParseDate();
 	}
 	
-	public String extract(Task task, String input){
+	public void extract(Task task, String input){
 
 		if (countWords(input) == 1) {
 			// check if input string is formatted date
@@ -35,8 +35,6 @@ public class DeleteExtractor implements Extractor {
 	        	deleteCaseDate(task,input);
 	        }
 		}
-		
-		return "";
 	}
 	
 	/**

@@ -68,6 +68,64 @@ public class ExtractorTest {
 	}
 	
 	@Test
+	public void testAddInvalidDescription() {
+		String MESSAGE_INVALID_DESCRIPTION = "'add' must have an valid description";
+		Task task = new Task();
+		AddExtractor ex = new AddExtractor();
+		try{
+			ex.extract(task, "By 13:00");
+		} catch (Exception e) {
+			assertEquals("Test invalid description", MESSAGE_INVALID_DESCRIPTION, e.getMessage());
+		}
+		try{
+			ex.extract(task, "");
+		} catch (Exception e) {
+			assertEquals("Test invalid description", MESSAGE_INVALID_DESCRIPTION, e.getMessage());
+		}
+		try{
+			ex.extract(task, "from 1234 to 1235");
+		} catch (Exception e) {
+			assertEquals("Test invalid description", MESSAGE_INVALID_DESCRIPTION, e.getMessage());
+		}
+		
+	}
+
+	@Test
+	public void testAddInvalidEndTime() {
+		String MESSAGE_INVALID_END_TIME = "'add' must have an valid end time";
+		Task task = new Task();
+		AddExtractor ex = new AddExtractor();
+		try{
+			ex.extract(task, "Add test By rubbish");
+		} catch (Exception e) {
+			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+		try{
+			ex.extract(task, "Add test from 1234 to rubbish");
+		} catch (Exception e) {
+			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testAddInvalidStartTime() {
+		String MESSAGE_INVALID_START_TIME = "'add' must have an valid start time";
+		String MESSAGE_INVALID_END_TIME = "'add' must have an valid end time";
+		Task task = new Task();
+		AddExtractor ex = new AddExtractor();
+		try{
+			ex.extract(task, "Add test from rubbish to 1234");
+		} catch (Exception e) {
+			assertEquals("Test invalid end time", MESSAGE_INVALID_START_TIME, e.getMessage());
+		}
+		try{
+			ex.extract(task, "Add test from rubbish to time");
+		} catch (Exception e) {
+			assertEquals("Test invalid end time", MESSAGE_INVALID_START_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
 	public void testDelete1() {
 		Task task = new Task();
 		DeleteExtractor ex = new DeleteExtractor();

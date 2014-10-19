@@ -14,6 +14,8 @@ import whatsupnext.structure.Task;
 
 public class Parser {
 
+	private final String MESSAGE_INVALID_OPCODE = "Unrecognized command type";
+	
 	private final String[] ALIASES_ADD = {"add", "a"};
 	private final String[] ALIASES_VIEW = {"view", "v", "list", "ls", "l"};
 	private final String[] ALIASES_UPDATE = {"update", "u", "edit", "e", "modify", "m"};
@@ -63,7 +65,7 @@ public class Parser {
 			case EXIT:
 				System.exit(0);
 			default:
-				throw new IllegalArgumentException("Unrecognized command type");
+				throw new IllegalArgumentException(MESSAGE_INVALID_OPCODE);
 		}
 	}
 

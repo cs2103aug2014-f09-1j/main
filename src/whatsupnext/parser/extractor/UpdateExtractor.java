@@ -13,7 +13,7 @@ public class UpdateExtractor implements Extractor {
 		this.parseDate = new ParseDate();
 	}
 	
-	public String extract(Task task, String input){
+	public void extract(Task task, String input){
 
 		// Get the task ID and remove it from the remaining details
 		try {
@@ -53,8 +53,6 @@ public class UpdateExtractor implements Extractor {
 		    }
 
 		}
-		
-		return "";
 	}
 	
 	/**

@@ -13,7 +13,7 @@ public class ViewExtractor implements Extractor {
 		this.parseDate = new ParseDate();
 	}
 	
-	public String extract(Task task, String input){
+	public void extract(Task task, String input){
 
 		if (countWords(input) == 1) {
 			if (input.equalsIgnoreCase("all")) {
@@ -32,8 +32,6 @@ public class ViewExtractor implements Extractor {
 	        	viewCaseDate(task,input);
 	        }
 		}
-		
-		return "";
 	}
 	
     /**

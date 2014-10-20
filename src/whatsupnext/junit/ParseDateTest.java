@@ -276,7 +276,7 @@ public class ParseDateTest {
 	
 	private String getTomorrow() {
 		Calendar cal = Calendar.getInstance();
-		cal.add(cal.DAY_OF_YEAR, 1);
+		cal.add(Calendar.DAY_OF_YEAR, 1);
 		int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH)+1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);

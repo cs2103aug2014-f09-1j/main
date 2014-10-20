@@ -10,6 +10,7 @@ public class ParseDate {
 	
 	private final String FORMAT_LAST_MINUTE = "HHmm";
 	private final String FORMAT_TODAY = "ddMMyyyy";
+	
 	private final ArrayList<String> FORMATS_TIME = new ArrayList<String>(Arrays.asList("HHmm",
 																						"HH:mm",
 																						"h:mm a",
@@ -20,8 +21,11 @@ public class ParseDate {
 																						"dd/MM/yyyy", 
 																						"dd-MM-yy", 
 																						"dd-MM-yyyy"));
-	private final String LAST_MINUTE = "2359";
+	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("tomorrow",
+																						"tml"));
 	
+	private final String LAST_MINUTE = "2359";
+	private final String SINGLE_QUOTE = "'";
 	
 	public String parseInput(String input) {
 		ArrayList<String> allFormats = getAllFormats();
@@ -35,10 +39,18 @@ public class ParseDate {
 			for (String date : FORMATS_DATE) {
 				allFormats.add(time + " " + date);
 			}
+			for (String dayOfWeek: ALIASES_TOMORROW){
+				allFormats.add(time + " " + SINGLE_QUOTE + dayOfWeek + SINGLE_QUOTE);
+			}
 		}
 		for (String date : FORMATS_DATE) {
 			for (String time : FORMATS_TIME) {
 				allFormats.add(date + " " + time);
+			}
+		}
+		for (String dayOfWeek: ALIASES_TOMORROW){
+			for (String time : FORMATS_TIME) {
+				allFormats.add(SINGLE_QUOTE + dayOfWeek + SINGLE_QUOTE + " " + time);
 			}
 		}
 		for (String time : FORMATS_TIME) {
@@ -47,32 +59,51 @@ public class ParseDate {
 		for (String date : FORMATS_DATE) {
 			allFormats.add(date);
 		}
-		
+		/*for (String dayOfWeek: ALIASES_TOMORROW){
+			allFormats.add(dayOfWeek);
+		}*/
 		return allFormats;
 	}
 	
 	private String getFormattedDate(String input, ArrayList<String> allFormats) {
 		String formattedDate = "";
 		String formattedInput = "";
+		SimpleDateFormat formatter = null;
 		for (String format : allFormats) {
 			try {
 				formattedInput = input;
-				SimpleDateFormat formatter = new SimpleDateFormat(format);
-				if (FORMATS_TIME.contains(format)) {
-					formatter = new SimpleDateFormat(format+" "+FORMAT_TODAY);
+				formatter = new SimpleDateFormat(format);
+				if (FORMATS_TIME.contains(format) || hasDayOfWeek(input)) {
+					formatter = new SimpleDateFormat(format + " " + FORMAT_TODAY);
 					formattedInput = formattedInput + " " + getToday();
 				}
 				if (FORMATS_DATE.contains(format)) {
-					formatter = new SimpleDateFormat(format+" "+FORMAT_LAST_MINUTE);
+					formatter = new SimpleDateFormat(format + " " + FORMAT_LAST_MINUTE);
 					formattedInput = formattedInput + " " + LAST_MINUTE;
 				}
 				formatter.setLenient(false);
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(formatter.parse(formattedInput));
+				if(hasDayOfWeek(input)){
+					cal = setNewTime(cal, input);
+				}
 				formattedDate = formatDate(cal);
 				break;
 			} catch (ParseException e) {
 				//Do nothing. Continue with other formats
+			}
+		}
+		if(ALIASES_TOMORROW.contains(input)) {
+			try {
+				formatter = new SimpleDateFormat(FORMAT_TODAY + " " + FORMAT_LAST_MINUTE);
+				formattedInput = getToday() + " " + LAST_MINUTE;
+				formatter.setLenient(false);
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(formatter.parse(formattedInput));
+				cal = setNewTime(cal, input);
+				formattedDate = formatDate(cal);
+			} catch (ParseException e) {
+				//Do nothing.
 			}
 		}
 		
@@ -89,6 +120,26 @@ public class ParseDate {
 		String twoDigitDayOfMonth = convertToTwoDigitDayOfMonth(dayOfMonth); 
           
 		return twoDigitDayOfMonth + twoDigitMonth + year;
+	}
+	
+	private boolean hasDayOfWeek(String input){
+		for (String dayOfWeek: ALIASES_TOMORROW){
+			if(input.matches(".* " + dayOfWeek) || input.matches(dayOfWeek + " .*")){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private Calendar setNewTime(Calendar cal, String input){
+		for (String tomorrow: ALIASES_TOMORROW){
+			if(input.contains(tomorrow)){
+				cal.add(cal.DAY_OF_YEAR, 1);
+			}
+		}
+		
+		return cal;
 	}
 
 	private String formatDate(Calendar cal) {

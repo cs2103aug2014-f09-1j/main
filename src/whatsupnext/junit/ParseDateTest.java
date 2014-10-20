@@ -171,6 +171,44 @@ public class ParseDateTest {
 	}
 	
 	@Test
+	public void testParseTimeDay() {
+		ParseDate parseDate = new ParseDate();
+		String formattedDate = "";
+		
+		formattedDate = parseDate.parseInput("2222 tml");
+		assertEquals("Test HHmm tml", getTomorrow()+"2222", formattedDate);
+		
+		formattedDate = parseDate.parseInput("0102 tomorrow");
+		assertEquals("Test HHmm tomorrow", getTomorrow()+"0102", formattedDate);
+		
+	}
+	
+	@Test
+	public void testParseDayTime() {
+		ParseDate parseDate = new ParseDate();
+		String formattedDate = "";
+		
+		formattedDate = parseDate.parseInput("tml 2222");
+		assertEquals("Test tml HHmm ", getTomorrow()+"2222", formattedDate);
+		
+		formattedDate = parseDate.parseInput("tomorrow 0102");
+		assertEquals("Test tomorrow ddMMyyyy", getTomorrow()+"0102", formattedDate);
+		
+	}
+	
+	@Test
+	public void testParseStandaloneDay() {
+		ParseDate parseDate = new ParseDate();
+		String formattedDate = "";
+		
+		formattedDate = parseDate.parseInput("tml");
+		assertEquals("Test HHmm", getTomorrow()+"2359", formattedDate);
+		
+		formattedDate = parseDate.parseInput("tomorrow");
+		assertEquals("Test HH:mm", getTomorrow()+"2359", formattedDate);
+	}
+	
+	@Test
 	public void testParseOthers() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
@@ -217,6 +255,28 @@ public class ParseDateTest {
 	
 	private String getToday() {
 		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH)+1;
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        String twoDigitMonth = "";
+		String twoDigitDayOfMonth = ""; 
+        if (month < 10) {
+        	twoDigitMonth = "0" + month;
+ 		} else {
+ 			twoDigitMonth = "" + month;
+ 		}
+ 		if (dayOfMonth < 10) {
+ 			twoDigitDayOfMonth = "0" + dayOfMonth;
+ 		} else {
+ 			twoDigitDayOfMonth = "" + dayOfMonth;
+ 		}
+         
+		return year + twoDigitMonth + twoDigitDayOfMonth;
+	}
+	
+	private String getTomorrow() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(cal.DAY_OF_YEAR, 1);
 		int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH)+1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);

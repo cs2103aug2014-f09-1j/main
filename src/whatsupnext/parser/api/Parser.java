@@ -5,6 +5,8 @@ package whatsupnext.parser.api;
 
 import java.util.StringTokenizer;
 
+import whatsupnext.logic.AddTask;
+import whatsupnext.logic.DeleteTask;
 import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.DeleteExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
@@ -35,7 +37,18 @@ public class Parser {
 		StringTokenizer tokenizedInput = new StringTokenizer(input);
 		if (tokenizedInput.hasMoreTokens()){
 			String operation = tokenizedInput.nextToken();
-			task.setOpcode(determineOperation(operation));
+			OPCODE taskOpcode = determineOperation(operation);
+			switch (taskOpcode) {
+				case ADD:
+					task = new AddTask();
+					break;
+				case DELETE:
+					task = new DeleteTask();
+					break;
+				default:
+					break;
+			}
+			task.setOpcode(taskOpcode);
 			input = removeFirstWord(input);
 			parseTaskArguments();
 		} else {

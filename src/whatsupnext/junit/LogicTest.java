@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import whatsupnext.logic.AddTask;
+import whatsupnext.logic.DeleteTask;
 import whatsupnext.logic.Logic;
 import whatsupnext.storage.Storage;
 import whatsupnext.structure.OPCODE;
@@ -91,7 +93,7 @@ public class LogicTest {
 	
 	@After
 	public void deleteAllTasks() {
-		Task delete = new Task();
+		Task delete = new DeleteTask();
 		delete.setOpcode(OPCODE.DELETE);
 		delete.setDeleteType(DELETETYPE.ALL);
 		logic.execute(delete);
@@ -99,6 +101,7 @@ public class LogicTest {
 	
 	@Test
 	public void testAddFloatingTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.FLOATING);
 		task.setDescription("testing");
@@ -112,6 +115,7 @@ public class LogicTest {
 	
 	@Test
 	public void testAddDeadlineTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.DEADLINE);
 		task.setDescription("testing");
@@ -126,6 +130,7 @@ public class LogicTest {
 	
 	@Test
 	public void testAddTimeFrameTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -141,20 +146,21 @@ public class LogicTest {
 	
 	@Test
 	public void testDeleteIdTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.FLOATING);
 		task.setTaskID("1");
 		task.setDescription("testing");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.FLOATING);
 		task.setTaskID("2");
 		task.setDescription("testing");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new DeleteTask();
 		task.setOpcode(OPCODE.DELETE);
 		task.setDeleteType(DELETETYPE.ID);
 		task.setTaskID("2");
@@ -168,13 +174,14 @@ public class LogicTest {
 	
 	@Test
 	public void testDeleteDateTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.DEADLINE);
 		task.setDescription("testing");
 		task.setEndTime("201410101200");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -182,7 +189,7 @@ public class LogicTest {
 		task.setEndTime("201410111200");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new DeleteTask();
 		task.setOpcode(OPCODE.DELETE);
 		task.setDeleteType(DELETETYPE.DATE);
 		task.setEndTime("201410102359");
@@ -196,13 +203,14 @@ public class LogicTest {
 	
 	@Test
 	public void testDeleteDeadlineTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.DEADLINE);
 		task.setDescription("testing");
 		task.setEndTime("201410101200");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -210,7 +218,7 @@ public class LogicTest {
 		task.setEndTime("201410111200");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -218,7 +226,7 @@ public class LogicTest {
 		task.setEndTime("201410111230");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new DeleteTask();
 		task.setOpcode(OPCODE.DELETE);
 		task.setDeleteType(DELETETYPE.DEADLINE);
 		task.setEndTime("201410111200");
@@ -232,13 +240,14 @@ public class LogicTest {
 	
 	@Test
 	public void testDeleteTimeFrameTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.DEADLINE);
 		task.setDescription("testing");
 		task.setEndTime("201410101200");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -246,7 +255,7 @@ public class LogicTest {
 		task.setEndTime("201410111200");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -254,7 +263,7 @@ public class LogicTest {
 		task.setEndTime("201410111230");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new DeleteTask();
 		task.setOpcode(OPCODE.DELETE);
 		task.setDeleteType(DELETETYPE.TIMEFRAME);
 		task.setStartTime("201410100000");
@@ -269,6 +278,7 @@ public class LogicTest {
 	
 	@Test
 	public void testUpdateDescriptionTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.FLOATING);
 		task.setDescription("testing");
@@ -289,6 +299,7 @@ public class LogicTest {
 	
 	@Test
 	public void testUpdateDeadlineTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.DEADLINE);
 		task.setDescription("testing");
@@ -310,6 +321,7 @@ public class LogicTest {
 	
 	@Test
 	public void testUpdateTimeFrameTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -333,6 +345,7 @@ public class LogicTest {
 	
 	@Test
 	public void testViewAllTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.FLOATING);
 		task.setDescription("testing");
@@ -341,7 +354,7 @@ public class LogicTest {
 		String feedback = logic.execute(viewAllTask);
 		assertEquals(feedback, "1: testing");
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.DEADLINE);
 		task.setDescription("testing2");
@@ -354,7 +367,7 @@ public class LogicTest {
 				"2: testing2\n\tEnd Time: 2014 Oct 10 12:00"
 		);
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing3");
@@ -372,6 +385,7 @@ public class LogicTest {
 	
 	@Test
 	public void testViewNextTask() {		
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -379,7 +393,7 @@ public class LogicTest {
 		task.setEndTime(getLastYearTodayDate() + "2359");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -387,7 +401,7 @@ public class LogicTest {
 		task.setEndTime(getTodayDate() + "2359");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -413,13 +427,14 @@ public class LogicTest {
 	
 	@Test
 	public void testViewDateTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.DEADLINE);
 		task.setDescription("testing");
 		task.setEndTime("201410101200");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -438,6 +453,7 @@ public class LogicTest {
 	
 	@Test
 	public void testViewTimeFrameTask() {
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");
@@ -445,7 +461,7 @@ public class LogicTest {
 		task.setEndTime("201410101200");
 		logic.execute(task);
 		
-		task = new Task();
+		task = new AddTask();
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.TIMEFRAME);
 		task.setDescription("testing");

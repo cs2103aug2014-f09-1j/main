@@ -8,9 +8,9 @@ import whatsupnext.structure.Types.ADDTYPE;
 
 public class AddExtractor implements Extractor {
 	
-	private final String MESSAGE_INVALID_DESCRIPTION = "'add' must have an valid description";
-	private final String MESSAGE_INVALID_END_TIME = "'add' must have an valid end time";
-	private final String MESSAGE_INVALID_START_TIME = "'add' must have an valid start time";
+	private final String MESSAGE_INVALID_DESCRIPTION = "'add' must have a valid description";
+	private final String MESSAGE_INVALID_END_TIME = "'add' must have a valid end time";
+	private final String MESSAGE_INVALID_START_TIME = "'add' must have a valid start time";
 	
 	private ParseDate parseDate;
 	

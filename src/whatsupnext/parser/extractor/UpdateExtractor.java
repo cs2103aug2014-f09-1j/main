@@ -9,9 +9,9 @@ import whatsupnext.structure.Types.UPDATETYPE;
 public class UpdateExtractor implements Extractor {
 	
 	private final String MESSAGE_INVALID_TASKID = "'update' must have a valid Task ID";
-	private final String MESSAGE_INVALID_DESCRIPTION = "'update' must have an valid description";
-	private final String MESSAGE_INVALID_END_TIME = "'update' must have an valid end time";
-	private final String MESSAGE_INVALID_START_TIME = "'update' must have an valid start time";
+	private final String MESSAGE_INVALID_DESCRIPTION = "'update' must have a valid description";
+	private final String MESSAGE_INVALID_END_TIME = "'update' must have a valid end time";
+	private final String MESSAGE_INVALID_START_TIME = "'update' must have a valid start time";
 	
 	private ParseDate parseDate;
 	

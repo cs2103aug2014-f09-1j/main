@@ -57,24 +57,10 @@ public class Logic {
 		
 		switch (task.getOpCode()) {
 			case ADD:
-				AddTask addTask = new AddTask();
-				addTask.setOpcode(task.getOpCode());
-				addTask.setAddType(task.getAddType());
-				addTask.setTaskID(task.getTaskID());
-				addTask.setDescription(task.getDescription());
-				addTask.setStartTime(task.getStartTime());
-				addTask.setEndTime(task.getEndTime());
-				feedback = addTask.execute();
+				feedback = task.execute();
 				break;
 			case DELETE:
-				DeleteTask deleteTask = new DeleteTask();
-				deleteTask.setOpcode(task.getOpCode());
-				deleteTask.setDeleteType(task.getDeleteType());
-				deleteTask.setTaskID(task.getTaskID());
-				deleteTask.setDescription(task.getDescription());
-				deleteTask.setStartTime(task.getStartTime());
-				deleteTask.setEndTime(task.getEndTime());
-				feedback = deleteTask.execute();
+				feedback = task.execute();
 				break;
 			case UPDATE:
 				feedback = updateTask(task);

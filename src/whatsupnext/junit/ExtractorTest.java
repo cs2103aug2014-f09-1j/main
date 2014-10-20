@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.DeleteExtractor;
-import whatsupnext.parser.extractor.Extractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
 import whatsupnext.structure.Task;
@@ -69,7 +68,7 @@ public class ExtractorTest {
 	
 	@Test
 	public void testAddInvalidDescription() {
-		String MESSAGE_INVALID_DESCRIPTION = "'add' must have an valid description";
+		String MESSAGE_INVALID_DESCRIPTION = "'add' must have a valid description";
 		Task task = new Task();
 		AddExtractor ex = new AddExtractor();
 		try{
@@ -92,7 +91,7 @@ public class ExtractorTest {
 
 	@Test
 	public void testAddInvalidEndTime() {
-		String MESSAGE_INVALID_END_TIME = "'add' must have an valid end time";
+		String MESSAGE_INVALID_END_TIME = "'add' must have a valid end time";
 		Task task = new Task();
 		AddExtractor ex = new AddExtractor();
 		try{
@@ -109,7 +108,7 @@ public class ExtractorTest {
 	
 	@Test
 	public void testAddInvalidStartTime() {
-		String MESSAGE_INVALID_START_TIME = "'add' must have an valid start time";
+		String MESSAGE_INVALID_START_TIME = "'add' must have a valid start time";
 		Task task = new Task();
 		AddExtractor ex = new AddExtractor();
 		try{
@@ -293,7 +292,7 @@ public class ExtractorTest {
 	
 	@Test
 	public void testUpdateInvalidEndTime() {
-		String MESSAGE_INVALID_END_TIME = "'update' must have an valid end time";
+		String MESSAGE_INVALID_END_TIME = "'update' must have a valid end time";
 		Task task = new Task();
 		UpdateExtractor ex = new UpdateExtractor();
 		try{
@@ -310,7 +309,7 @@ public class ExtractorTest {
 	
 	@Test
 	public void testUpdateInvalidStartTime() {
-		String MESSAGE_INVALID_START_TIME = "'update' must have an valid start time";
+		String MESSAGE_INVALID_START_TIME = "'update' must have a valid start time";
 		Task task = new Task();
 		UpdateExtractor ex = new UpdateExtractor();
 		try{

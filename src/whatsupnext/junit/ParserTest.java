@@ -96,11 +96,11 @@ public class ParserTest {
 	public void testParserAdd7() {
 		String input = "add";	
 		Parser parser = new Parser(input);
-		Task task = parser.parseInput();
-        assertEquals("Test Add - OPCODE", OPCODE.ADD, task.getOpCode());
-		assertEquals("Test Add - description", "", task.getDescription());
-		assertEquals("Test Add - startTime", "", task.getStartTime());
-		assertEquals("Test Add - endTime", "", task.getEndTime());
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals("'add' must have a valid description", e.getMessage());
+		}
 	}
 	
 	@Test

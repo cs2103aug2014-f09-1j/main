@@ -13,6 +13,20 @@ public class DeleteTask extends Task {
 
 	private Storage storage = Storage.getInstance();
 
+	public DeleteTask() {
+		super();
+	}
+	
+	public DeleteTask(Task task) {
+		super();
+		this.setOpcode(task.getOpCode());
+		this.setDeleteType(task.getDeleteType());
+		this.setTaskID(task.getTaskID());
+		this.setDescription(task.getDescription());
+		this.setStartTime(task.getStartTime());
+		this.setEndTime(task.getEndTime());
+	}
+
 	public String execute() {
 		switch (this.getDeleteType()) {
 			case ALL:

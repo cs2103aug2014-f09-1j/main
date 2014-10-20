@@ -57,10 +57,12 @@ public class Logic {
 		
 		switch (task.getOpCode()) {
 			case ADD:
-				feedback = task.execute();
+				AddTask addTask = new AddTask(task);
+				feedback = addTask.execute();
 				break;
 			case DELETE:
-				feedback = task.execute();
+				DeleteTask deleteTask = new DeleteTask(task);
+				feedback = deleteTask.execute();
 				break;
 			case UPDATE:
 				feedback = updateTask(task);

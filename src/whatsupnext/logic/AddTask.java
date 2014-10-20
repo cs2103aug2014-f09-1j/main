@@ -10,6 +10,20 @@ public class AddTask extends Task {
 	
 	private Storage storage = Storage.getInstance();
 	
+	public AddTask() {
+		super();
+	}
+	
+	public AddTask(Task task) {
+		super();
+		this.setOpcode(task.getOpCode());
+		this.setAddType(task.getAddType());
+		this.setTaskID(task.getTaskID());
+		this.setDescription(task.getDescription());
+		this.setStartTime(task.getStartTime());
+		this.setEndTime(task.getEndTime());
+	}
+
 	public String execute() {
 		String taskID = Integer.toString(Logic.availableIDs.remove());
 		this.setTaskID(taskID);

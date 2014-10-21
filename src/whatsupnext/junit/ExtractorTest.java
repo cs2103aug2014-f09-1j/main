@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.DeleteExtractor;
+import whatsupnext.parser.extractor.DoneExtractor;
+import whatsupnext.parser.extractor.SearchExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
 import whatsupnext.structure.Task;
@@ -358,9 +360,31 @@ public class ExtractorTest {
 		ViewExtractor ex = new ViewExtractor();
 		ex.extract(task, "from 05102014 to 20:00 101014");
 		assertEquals("Test View - description", "", task.getDescription());
-		assertEquals("Test View - startTime", "201410052359", task.getStartTime());
+		assertEquals("Test View - startTime", "201410050000", task.getStartTime());
 		assertEquals("Test View - endTime", "201410102000", task.getEndTime());
 		assertEquals("Test View - viewType", VIEWTYPE.TIMEFRAME, task.getViewType());
+	}
+	
+	@Test
+	public void testDone() {
+		Task task = new Task();
+		DoneExtractor ex = new DoneExtractor();
+		ex.extract(task, "10");
+		assertEquals("Test Done - description", "", task.getDescription());
+		assertEquals("Test Done - startTime", "", task.getStartTime());
+		assertEquals("Test Done - endTime", "", task.getEndTime());
+		assertEquals("Test Done - taskID", "10", task.getTaskID());
+	}
+	
+	@Test
+	public void testSearch() {
+		Task task = new Task();
+		SearchExtractor ex = new SearchExtractor();
+		ex.extract(task, "FYP presentation");
+		assertEquals("Test Done - description", "FYP presentation", task.getDescription());
+		assertEquals("Test Done - startTime", "", task.getStartTime());
+		assertEquals("Test Done - endTime", "", task.getEndTime());
+		assertEquals("Test Done - taskID", "", task.getTaskID());
 	}
 	
 	@Test

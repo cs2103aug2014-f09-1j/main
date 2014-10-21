@@ -5,26 +5,13 @@ package whatsupnext.logic;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.PriorityQueue;
-
 import whatsupnext.structure.Task;
-import whatsupnext.structure.TaskComparators.TaskDefaultComparator;
 import whatsupnext.storage.Storage;
 
 public class Logic {
 	
-	protected static ArrayList<Task> list = new ArrayList<Task>();
-	protected static ArrayList<String> output = new ArrayList<String>();
-	
-	private String MESSAGE_UPDATED = "A task is successfully updated.";
-	private String MESSAGE_NOTFOUND = "No tasks are found.";
-	//private String TASK_DISPLAY = "Task ID: %1$s\n\t%2$s\n\tStart Time: %3$s\n\tEnd Time: %4$s";
-	
-	protected static PriorityQueue<Integer> availableIDs;
-	protected static int maxTasks = 1000000;
-	
+	private ArrayList<Task> list = LogicUtilities.getTaskList();
 	
 	public Logic() {
 		Storage storage = Storage.getInstance();
@@ -33,102 +20,43 @@ public class Logic {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		setupAvailableIDs();
+		LogicUtilities.setupAvailableIDs();
 	}
-
-	protected void setupAvailableIDs() {
-		availableIDs = new PriorityQueue<Integer>(maxTasks);
-		
-		// Populate the available ID list
-		for (int i = 1; i < maxTasks; i++) {
-			availableIDs.add(i);
+	
+	public Logic(String fileName) {
+		Storage storage = Storage.getInstance(fileName);
+		try {
+			list = storage.readTasks();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		// Remove the IDs that are already in use
-		for (int i = 0; i < list.size(); i++) {
-			int usedID = Integer.parseInt(list.get(i).getTaskID());
-			availableIDs.remove(usedID);
-		}
+		LogicUtilities.setupAvailableIDs();
 	}
-
-	public String execute(Task task) {
-		String feedback;
-		
+	
+	public String executeTask(Task task) {
+		Command userCommand;
 		
 		switch (task.getOpCode()) {
 			case ADD:
-				AddTask addTask = new AddTask(task);
-				feedback = addTask.execute();
+				userCommand = new AddCommand(task);
 				break;
 			case DELETE:
-				DeleteTask deleteTask = new DeleteTask(task);
-				feedback = deleteTask.execute();
+				userCommand = new DeleteCommand(task);
 				break;
 			case UPDATE:
-				feedback = updateTask(task);
+				userCommand = new UpdateCommand(task);
 				break;
 			case VIEW:
-				feedback = viewTask(task);
+				userCommand = new ViewCommand(task);
 				break;
 			default:
-				feedback = "Unable to execute the command";
-				break;
+				return "Unable to execute the command";
 		}
 		
-		return feedback;
+		return userCommand.executeCommand();
 	}
 	
-	private String updateTask(Task task) {	
-		switch (task.getUpdateType()) {
-			case DESCRIPTION:
-				updateInfo(task);
-				break;
-			case DEADLINE:
-				updateDeadline(task);
-				break;
-			case TIMEFRAME:
-				updateTimeFrame(task);
-				break;
-			default:
-				break;
-		}
-		
-		String feedbackUpdate;
-		try {
-			Storage.getInstance().inputTasks(list);
-			feedbackUpdate = MESSAGE_UPDATED;
-		} catch (IOException e) {
-			feedbackUpdate = e.getMessage();
-		}
-		
-		return feedbackUpdate;
-	}	
-	
-	private String viewTask(Task task) {	
-		switch (task.getViewType()) {
-			case ALL:
-				viewAll();
-				break;
-			case NEXT:
-				viewNext(task);
-				break;
-			case DATE:
-				viewDate(task);
-				break;
-			case TIMEFRAME:
-				viewTimeFrame(task);
-				break;
-			default:
-				break;
-		}
-		
-		String feedbackView = formatArrayAsString(output);
-		output.clear();
-		
-		return feedbackView;
-	}
-	
-	private String formatArrayAsString(ArrayList<String> taskNumberedArray) {
+	protected static String formatArrayAsString(ArrayList<String> taskNumberedArray) {
 		if (taskNumberedArray.isEmpty()) {
 			return "No tasks to display!";
 		}
@@ -139,107 +67,6 @@ public class Logic {
 		}
 		return arrayAsString;
 	}
-	
-	/*
-	 * Three types of UPDATE functions.
-	 */
-	private void updateInfo(Task updateTask) {
-		int index = getTaskIndexInArray(updateTask.getTaskID());
-		String info = updateTask.getDescription();
-		
-		Task task = list.get(index);
-		task.setDescription(info);
-	}
-	
-	private void updateDeadline(Task updateTask) {
-		int index = getTaskIndexInArray(updateTask.getTaskID());
-		String endTime = updateTask.getEndTime();
-		
-		Task task = list.get(index);
-		task.setEndTime(endTime);
-	}
-	
-	private void updateTimeFrame(Task updateTask) {
-		int index = getTaskIndexInArray(updateTask.getTaskID());
-		String startTime = updateTask.getStartTime();
-		String endTime = updateTask.getEndTime();
-		
-		Task task = list.get(index);
-		task.setStartTime(startTime);
-		task.setEndTime(endTime);
-	}
-	
-	/*
-	 * Four types of VIEW functions.
-	 */
-	private void viewTimeFrame(Task viewTask) {
-		String startTime = viewTask.getStartTime();
-		String endTime = viewTask.getEndTime();
-		Iterator<Task> taskIterator = list.iterator();
-		
-		while (taskIterator.hasNext()) {
-			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && !endsBeforeDeadline(task, startTime) && endsBeforeDeadline(task, endTime)) {
-				String taskInfo = getFormattedOutput(task);
-				output.add(taskInfo);
-			}
-		}
-	}
-
-	private void viewDate(Task viewTask) {
-		String endTime = viewTask.getEndTime();
-		Iterator<Task> taskIterator = list.iterator();
-		
-		while (taskIterator.hasNext()) {
-			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && endsOnGivenDate(task, endTime)) {
-				String taskInfo = getFormattedOutput(task);
-				output.add(taskInfo);
-			}
-		}
-	}
-	
-	private void viewNext(Task viewTask) {
-		Task currentTask;
-		long nearestEndTime = 999999999999L;
-		ArrayList<Task> sortedList = new ArrayList<Task>(list);
-		Collections.sort(sortedList, new TaskDefaultComparator());
-		Iterator<Task> taskIterator = sortedList.iterator();
-		
-		while (taskIterator.hasNext()) {
-			currentTask = taskIterator.next();
-			if (!currentTask.getEndTime().isEmpty() && !endsBeforeDeadline(currentTask, viewTask.getEndTime())) {
-				if (output.isEmpty()) {
-					nearestEndTime = Long.parseLong(currentTask.getEndTime());
-					String taskInfo = getFormattedOutput(currentTask);;
-					output.add(taskInfo);
-				} else {
-					if (Long.parseLong(currentTask.getEndTime()) < nearestEndTime) {
-						output.clear();
-						nearestEndTime = Long.parseLong(currentTask.getEndTime());
-						String taskInfo = getFormattedOutput(currentTask); 
-						output.add(taskInfo);
-					} else if (Long.parseLong(currentTask.getEndTime()) == nearestEndTime) {
-						String taskInfo = getFormattedOutput(currentTask);
-						output.add(taskInfo);
-					}
-				}
-			}				
-		}
-		
-		if (output.isEmpty()) {
-			output.add(MESSAGE_NOTFOUND);
-		}
-	}
-		
-	private void viewAll() {			
-		Iterator<Task> taskIterator = list.iterator();
-		while (taskIterator.hasNext()) {
-			Task task = taskIterator.next();
-			String taskInfo = getFormattedOutput(task);
-			output.add(taskInfo);
-		}
-	}	
 	
 	/*
 	 * Three types of SEARCH functions.
@@ -274,19 +101,6 @@ public class Logic {
 		return taskResults;
 
 	}
-
-	/*
-	 * Return the index of a task in the list.
-	 */
-	protected static int getTaskIndexInArray(String id) {
-		for (int i = 0; i < list.size(); i++) {
-			Task task = list.get(i);
-			if (task.getTaskID().equalsIgnoreCase(id)) {
-				return i;
-			}
-		}
-		return -1;
-	}
 	
 	/*
 	 * This check function is to check whether the end time of task(i) is before a given time.
@@ -316,7 +130,7 @@ public class Logic {
 	/*
 	 * Methods for getting a formatted task information and its formatted time.
 	 */
-	private String getFormattedOutput(Task task) {
+	protected static String getFormattedOutput(Task task) {
 		String task_Info = task.getTaskID() + ": " + task.getDescription();
 		if (!task.getStartTime().isEmpty()) {
 			task_Info = task_Info + "\n\tStart Time: " + getFormattedTime(task.getStartTime());
@@ -327,7 +141,7 @@ public class Logic {
 		return task_Info;
 	}
 	
-	protected String getFormattedTime(String time) {
+	protected static String getFormattedTime(String time) {
 		String year = time.substring(0, 4);
 		String month = time.substring(4, 6);
 		String day = time.substring(6, 8);
@@ -342,7 +156,7 @@ public class Logic {
 		return temp;
 	}
 	
-	private String getFormattedMonth(String month) {		
+	private static String getFormattedMonth(String month) {		
 		switch (month) {
 			case "01":
 				return "Jan";

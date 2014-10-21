@@ -147,7 +147,7 @@ public class Storage {
 		String endTime = extractFromString.next();
 		
 		Task taskFromString = new Task();
-		taskFromString.setTaskID(taskID);;
+		taskFromString.setTaskID(taskID);
 		taskFromString.setDescription(description);
 		taskFromString.setStartTime(startTime);
 		taskFromString.setEndTime(endTime);

@@ -445,7 +445,7 @@ public class WhatsUpNextGUI {
 				usedCommands.addFirst(commandInput);
 				Parser parser = new Parser(commandInput);
 				Task currentTask = parser.parseInput();
-				feedback = logicHandler.execute(currentTask);
+				feedback = logicHandler.executeTask(currentTask);
 			} catch (Exception e) {
 				feedback = e.getMessage();
 			}
@@ -512,7 +512,7 @@ public class WhatsUpNextGUI {
 		
 		String feedback;
 		try {
-			feedback = logicHandler.execute(task);
+			feedback = logicHandler.executeTask(task);
 		} catch (Exception e) {
 			feedback = e.getMessage();
 		}

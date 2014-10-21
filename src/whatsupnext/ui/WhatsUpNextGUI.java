@@ -2,6 +2,8 @@ package whatsupnext.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -41,7 +43,8 @@ import whatsupnext.structure.Types.VIEWTYPE;
  */
 public class WhatsUpNextGUI {
 	
-    private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";    
+    private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";   
+	private final ArrayList<String> STRINGS_CLEAR = new ArrayList<String>(Arrays.asList("clear", "Clear", "CLEAR", "clc"));
     
 	private JFrame frameMain;
 	private final int FRAME_MAIN_WIDTH = 555;
@@ -441,6 +444,14 @@ public class WhatsUpNextGUI {
 		if (commandInput.trim().isEmpty()) {
 			feedback = "Empty command";
 		} else {
+			for (String stringClear : STRINGS_CLEAR) {
+				if (stringClear.equals(commandInput.trim())){
+					usedCommands.addFirst(commandInput);	
+					clearMainTextDisplay();
+					clearTextInput();
+					return;
+				}
+			}
 			try {
 				usedCommands.addFirst(commandInput);
 				Parser parser = new Parser(commandInput);
@@ -456,6 +467,7 @@ public class WhatsUpNextGUI {
 		clickUpcoming();
 	}
 	
+
 	private void pressUp() {
 		upLastPressed = true;
 		if (commandIterator.hasNext()) {
@@ -484,7 +496,13 @@ public class WhatsUpNextGUI {
 	private void clearTextInput() {
 		textInput.setText("");
 	}
-
+ 
+	/**
+	 * Clears the main display area
+	 */
+	private void clearMainTextDisplay() {
+		textDisplayMain.setText("---Please enter command below:\r\n");
+	}
 
 	/** 
 	 * This method would display feedback message in main display area

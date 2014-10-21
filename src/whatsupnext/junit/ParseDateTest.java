@@ -391,7 +391,7 @@ public class ParseDateTest {
 	
 	private String getTodayToNextDayOfWeek(int expectedDay) {
 		Calendar cal = Calendar.getInstance();
-		int numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), expectedDay);
+		int numOfDay = getNumOfDay(cal.get(Calendar.DAY_OF_WEEK), expectedDay);
 		cal.add(Calendar.DAY_OF_YEAR, numOfDay);
 		
 		int year = cal.get(Calendar.YEAR);
@@ -413,20 +413,17 @@ public class ParseDateTest {
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
-	private int getNumOfDayToAdd(int currentDay, int expectedDay) {
+	private int getNumOfDay(int currentDay, int expectedDay) {
 		int numOfDay = 0;
 		int newDay = 0;
-		for(int i = 1; i <= DAYS_IN_WEEK; i++){
+		for(int i = 1; i <= DAYS_IN_WEEK; i++) {
 			newDay = currentDay + i; 
+			if(newDay > DAYS_IN_WEEK) {
+				newDay = (currentDay + i) % DAYS_IN_WEEK;
+			}
 			if (newDay == expectedDay) {
 				numOfDay = i;
 				break;
-			}
-			if ((newDay > DAYS_IN_WEEK)) {
-				if(newDay % DAYS_IN_WEEK == expectedDay) {
-					numOfDay = i;
-					break;
-				}
 			}
 		}
 		

@@ -190,49 +190,49 @@ public class ParseDate {
 		}
 		for (String sunday : ALIASES_SUNDAY) {
 			if(input.contains(sunday)) {
-				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.SUNDAY);
+				numOfDay = getNumOfDay(cal.get(Calendar.DAY_OF_WEEK), Calendar.SUNDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
 				return cal;
 			}
 		}
 		for (String monday : ALIASES_MONDAY) {
 			if(input.contains(monday)) {
-				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.MONDAY);
+				numOfDay = getNumOfDay(cal.get(Calendar.DAY_OF_WEEK), Calendar.MONDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
 				return cal;
 			}
 		}
 		for (String tuesday : ALIASES_TUESDAY) {
 			if(input.contains(tuesday)) {
-				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.TUESDAY);
+				numOfDay = getNumOfDay(cal.get(Calendar.DAY_OF_WEEK), Calendar.TUESDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
 				return cal;
 			}
 		}
 		for (String wednesday : ALIASES_WEDNESDAY) {
 			if(input.contains(wednesday)) {
-				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.WEDNESDAY);
+				numOfDay = getNumOfDay(cal.get(Calendar.DAY_OF_WEEK), Calendar.WEDNESDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
 				return cal;
 			}
 		}
 		for (String thursday : ALIASES_THURSDAY) {
 			if(input.contains(thursday)) {
-				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.THURSDAY);
+				numOfDay = getNumOfDay(cal.get(Calendar.DAY_OF_WEEK), Calendar.THURSDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
 				return cal;
 			}
 		}
 		for (String friday : ALIASES_FRIDAY) {
 			if(input.contains(friday)) {
-				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.FRIDAY);
+				numOfDay = getNumOfDay(cal.get(Calendar.DAY_OF_WEEK), Calendar.FRIDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
 				return cal;
 			}
 		}
 		for (String saturday : ALIASES_SATURDAY) {
 			if(input.contains(saturday)) {
-				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.SATURDAY);
+				numOfDay = getNumOfDay(cal.get(Calendar.DAY_OF_WEEK), Calendar.SATURDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
 				return cal;
 			}
@@ -241,20 +241,17 @@ public class ParseDate {
 		return cal;
 	}
 
-	private int getNumOfDayToAdd(int currentDay, int expectedDay) {
+	private int getNumOfDay(int currentDay, int expectedDay) {
 		int numOfDay = 0;
 		int newDay = 0;
-		for(int i = 1; i <= DAYS_IN_WEEK; i++){
+		for(int i = 1; i <= DAYS_IN_WEEK; i++) {
 			newDay = currentDay + i; 
+			if(newDay > DAYS_IN_WEEK) {
+				newDay = (currentDay + i) % DAYS_IN_WEEK;
+			}
 			if (newDay == expectedDay) {
 				numOfDay = i;
 				break;
-			}
-			if ((newDay > DAYS_IN_WEEK)) {
-				if(newDay % DAYS_IN_WEEK == expectedDay) {
-					numOfDay = i;
-					break;
-				}
 			}
 		}
 		

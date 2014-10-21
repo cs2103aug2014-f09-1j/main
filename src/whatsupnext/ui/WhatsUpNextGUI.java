@@ -509,7 +509,7 @@ public class WhatsUpNextGUI {
 	 * This method would display feedback message in main display area
 	 */
 	private void displayFeedback(String feedback) {
-		textDisplayMain.append("\n"+feedback);
+		textDisplayMain.append("\n"+feedback+"\n");
 	}
 	
 	/** 

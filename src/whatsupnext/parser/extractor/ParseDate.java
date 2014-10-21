@@ -10,22 +10,27 @@ public class ParseDate {
 	
 	private final String FORMAT_LAST_MINUTE = "HHmm";
 	private final String FORMAT_TODAY = "ddMMyyyy";
-	private final ArrayList<String> FORMATS_TIME = new ArrayList<String>(Arrays.asList("HHmm",
-																						"HH:mm",
-																						"h:mm a",
-																						"h a"));
-	private final ArrayList<String> FORMATS_DATE = new ArrayList<String>(Arrays.asList("ddMMyy", 
-																						"ddMMyyyy", 
-																						"dd/MM/yy", 
-																						"dd/MM/yyyy", 
-																						"dd-MM-yy", 
-																						"dd-MM-yyyy"));
-	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("tomorrow",
-																							"tml"));
-	private final ArrayList<String> ALIASES_SUNDAY = new ArrayList<String>(Arrays.asList("sunday", 
-																						  "sun"));
-	private final ArrayList<String> ALIASES_SATURDAY = new ArrayList<String>(Arrays.asList("saturday", 
-																							"sat"));
+	private final ArrayList<String> FORMATS_TIME = new ArrayList<String>(Arrays.asList("HHmm", "HH:mm",
+																						"h:mm a", "h a"));
+	private final ArrayList<String> FORMATS_DATE = new ArrayList<String>(Arrays.asList("ddMMyy", "ddMMyyyy", 
+																						"dd/MM/yy", "dd/MM/yyyy", 
+																						"dd-MM-yy", "dd-MM-yyyy"));
+	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("Tomorrow", "Tml",
+																							"tomorrow", "tml"));
+	private final ArrayList<String> ALIASES_SUNDAY = new ArrayList<String>(Arrays.asList("Sunday", "Sun",
+																						  "sunday", "sun"));
+	private final ArrayList<String> ALIASES_MONDAY = new ArrayList<String>(Arrays.asList("Monday", "Mon",
+																						  "monday", "mon"));
+	private final ArrayList<String> ALIASES_TUESDAY = new ArrayList<String>(Arrays.asList("Tuesday", "Tue",
+																						   "tuesday", "tue"));
+	private final ArrayList<String> ALIASES_WEDNESDAY = new ArrayList<String>(Arrays.asList("Wednesday", "Wed",
+																							 "wednesday", "wed"));
+	private final ArrayList<String> ALIASES_THURSDAY = new ArrayList<String>(Arrays.asList("Thursday", "Thu",
+																							"thursday", "thu"));
+	private final ArrayList<String> ALIASES_FRIDAY = new ArrayList<String>(Arrays.asList("Friday", "Fri",
+																						  "friday", "fri"));
+	private final ArrayList<String> ALIASES_SATURDAY = new ArrayList<String>(Arrays.asList("Saturday", "Sat",
+																							"saturday", "sat"));
 	
 	private final String LAST_MINUTE = "2359";
 	private final String SINGLE_QUOTE = "'";
@@ -75,6 +80,11 @@ public class ParseDate {
 		ArrayList<String> allAliasesDay = new ArrayList<String>();
 		allAliasesDay.addAll(ALIASES_TOMORROW);
 		allAliasesDay.addAll(ALIASES_SUNDAY);
+		allAliasesDay.addAll(ALIASES_MONDAY);
+		allAliasesDay.addAll(ALIASES_TUESDAY);
+		allAliasesDay.addAll(ALIASES_WEDNESDAY);
+		allAliasesDay.addAll(ALIASES_THURSDAY);
+		allAliasesDay.addAll(ALIASES_FRIDAY);
 		allAliasesDay.addAll(ALIASES_SATURDAY);
 		
 		return allAliasesDay;
@@ -164,20 +174,55 @@ public class ParseDate {
 	
 	private Calendar setNewDay(Calendar cal, String input){
 		int numOfDay = 0; 
-		for (String tomorrow: ALIASES_TOMORROW) {
+		for (String tomorrow : ALIASES_TOMORROW) {
 			if(input.contains(tomorrow)) {
 				cal.add(Calendar.DAY_OF_YEAR, 1);
 				break;
 			}
 		}
-		for (String sunday: ALIASES_SUNDAY) {
+		for (String sunday : ALIASES_SUNDAY) {
 			if(input.contains(sunday)) {
 				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.SUNDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
 				break;
 			}
 		}
-		for (String saturday: ALIASES_SATURDAY) {
+		for (String monday : ALIASES_MONDAY) {
+			if(input.contains(monday)) {
+				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.MONDAY);
+				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
+				break;
+			}
+		}
+		for (String tuesday : ALIASES_TUESDAY) {
+			if(input.contains(tuesday)) {
+				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.TUESDAY);
+				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
+				break;
+			}
+		}
+		for (String wednesday : ALIASES_WEDNESDAY) {
+			if(input.contains(wednesday)) {
+				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.WEDNESDAY);
+				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
+				break;
+			}
+		}
+		for (String thursday : ALIASES_THURSDAY) {
+			if(input.contains(thursday)) {
+				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.THURSDAY);
+				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
+				break;
+			}
+		}
+		for (String friday : ALIASES_FRIDAY) {
+			if(input.contains(friday)) {
+				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.FRIDAY);
+				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
+				break;
+			}
+		}
+		for (String saturday : ALIASES_SATURDAY) {
 			if(input.contains(saturday)) {
 				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.SATURDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);

@@ -20,7 +20,7 @@ public class DeleteExtractor implements Extractor {
 	}
 	
 	public void extract(Task task, String input){
-		int numOfWord = countWords(input);
+		int numOfWord = Utility.countWords(input);
 		if (numOfWord == 0) {
 			throw new IllegalArgumentException(MESSAGE_INVALID_ARGUMENT);
 		} else if (numOfWord == 1) {
@@ -120,19 +120,7 @@ public class DeleteExtractor implements Extractor {
 		}
 	}
 	
-	
-	/**
-	 * Count the total number of words in a string
-	 * @param userCommand
-	*/
-	private int countWords (String input) {
-		String trim = input.trim();
-		if (trim.isEmpty()) {
-			return 0;
-		}
-		// Separate string around 1 or more spaces
-		return trim.split("\\s+").length;
-	}
+
 	
 
 	

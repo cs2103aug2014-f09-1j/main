@@ -177,6 +177,9 @@ public class ParseDateTest {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
 		
+		formattedDate = parseDate.parseInput("0102 today");
+		assertEquals("HHmm today", getToday()+"0102", formattedDate);
+		
 		formattedDate = parseDate.parseInput("0102 tomorrow");
 		assertEquals("HHmm tomorrow", getTomorrow()+"0102", formattedDate);
 		
@@ -209,6 +212,9 @@ public class ParseDateTest {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
 		
+		formattedDate = parseDate.parseInput("Today 2222");
+		assertEquals("Today HHmm", getToday()+"2222", formattedDate);
+		
 		formattedDate = parseDate.parseInput("Tml 2222");
 		assertEquals("Tml HHmm", getTomorrow()+"2222", formattedDate);
 		
@@ -239,6 +245,12 @@ public class ParseDateTest {
 	public void testParseStandaloneDay() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
+		
+		formattedDate = parseDate.parseInput("Today");
+		assertEquals("Today", getToday()+"2359", formattedDate);
+		
+		formattedDate = parseDate.parseInput("today");
+		assertEquals("today", getToday()+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Tomorrow");
 		assertEquals("Tomorrow", getTomorrow()+"2359", formattedDate);

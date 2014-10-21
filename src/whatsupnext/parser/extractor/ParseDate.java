@@ -15,6 +15,7 @@ public class ParseDate {
 	private final ArrayList<String> FORMATS_DATE = new ArrayList<String>(Arrays.asList("ddMMyy", "ddMMyyyy", 
 																						"dd/MM/yy", "dd/MM/yyyy", 
 																						"dd-MM-yy", "dd-MM-yyyy"));
+	private final ArrayList<String> ALIASES_TODAY = new ArrayList<String>(Arrays.asList("Today", "today"));
 	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("Tomorrow", "Tml",
 																							"tomorrow", "tml"));
 	private final ArrayList<String> ALIASES_SUNDAY = new ArrayList<String>(Arrays.asList("Sunday", "Sun",
@@ -78,6 +79,7 @@ public class ParseDate {
 	
 	private ArrayList<String> getAliasesDay(){
 		ArrayList<String> allAliasesDay = new ArrayList<String>();
+		allAliasesDay.addAll(ALIASES_TODAY);
 		allAliasesDay.addAll(ALIASES_TOMORROW);
 		allAliasesDay.addAll(ALIASES_SUNDAY);
 		allAliasesDay.addAll(ALIASES_MONDAY);
@@ -173,60 +175,66 @@ public class ParseDate {
 	}
 	
 	private Calendar setNewDay(Calendar cal, String input){
-		int numOfDay = 0; 
+		int numOfDay = 0;
+		for (String today : ALIASES_TODAY) {
+			if(input.contains(today)) {
+				cal.add(Calendar.DAY_OF_YEAR, 0);
+				return cal;
+			}
+		}
 		for (String tomorrow : ALIASES_TOMORROW) {
 			if(input.contains(tomorrow)) {
 				cal.add(Calendar.DAY_OF_YEAR, 1);
-				break;
+				return cal;
 			}
 		}
 		for (String sunday : ALIASES_SUNDAY) {
 			if(input.contains(sunday)) {
 				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.SUNDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
-				break;
+				return cal;
 			}
 		}
 		for (String monday : ALIASES_MONDAY) {
 			if(input.contains(monday)) {
 				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.MONDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
-				break;
+				return cal;
 			}
 		}
 		for (String tuesday : ALIASES_TUESDAY) {
 			if(input.contains(tuesday)) {
 				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.TUESDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
-				break;
+				return cal;
 			}
 		}
 		for (String wednesday : ALIASES_WEDNESDAY) {
 			if(input.contains(wednesday)) {
 				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.WEDNESDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
-				break;
+				return cal;
 			}
 		}
 		for (String thursday : ALIASES_THURSDAY) {
 			if(input.contains(thursday)) {
 				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.THURSDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
-				break;
+				return cal;
 			}
 		}
 		for (String friday : ALIASES_FRIDAY) {
 			if(input.contains(friday)) {
 				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.FRIDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
-				break;
+				return cal;
 			}
 		}
 		for (String saturday : ALIASES_SATURDAY) {
 			if(input.contains(saturday)) {
 				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.SATURDAY);
 				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
-				break;
+				return cal;
 			}
 		}
 		

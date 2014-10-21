@@ -36,14 +36,14 @@ public class ParseDate {
 	private final String SINGLE_QUOTE = "'";
 	private final int DAYS_IN_WEEK = 7;
 	
-	private ArrayList<String> allTimeDateFormats;
-	private ArrayList<String> allDayFormats;
-	private ArrayList<String> allAliasesDay;
+	private ArrayList<String> listOfTimeDateFormats;
+	private ArrayList<String> listOfTimeDayFormats;
+	private ArrayList<String> listOfAliasesDay;
 	
 	public ParseDate(){
-		allTimeDateFormats = getAllTimeDateFormats();
-		allAliasesDay = getAllAliasesDay();
-		allDayFormats = getAllDayFormats();
+		listOfTimeDateFormats = getTimeDateFormats();
+		listOfAliasesDay = getAliasesDay();
+		listOfTimeDayFormats = getDayFormats();
 	}
 	
 	public String parseInput(String input) {
@@ -55,7 +55,7 @@ public class ParseDate {
 		return formattedDate;
 	}
 	
-	private ArrayList<String> getAllTimeDateFormats() {
+	private ArrayList<String> getTimeDateFormats() {
 		ArrayList<String> allFormats = new ArrayList<String>();
 		for (String time : FORMATS_TIME) {
 			for (String date : FORMATS_DATE) {
@@ -76,7 +76,7 @@ public class ParseDate {
 		return allFormats;
 	}
 	
-	private ArrayList<String> getAllAliasesDay(){
+	private ArrayList<String> getAliasesDay(){
 		ArrayList<String> allAliasesDay = new ArrayList<String>();
 		allAliasesDay.addAll(ALIASES_TOMORROW);
 		allAliasesDay.addAll(ALIASES_SUNDAY);
@@ -89,14 +89,14 @@ public class ParseDate {
 		
 		return allAliasesDay;
 	}
-	private ArrayList<String> getAllDayFormats() {
+	private ArrayList<String> getDayFormats() {
 		ArrayList<String> allFormats = new ArrayList<String>();
 		for (String time : FORMATS_TIME) {
-			for (String day : allAliasesDay){
+			for (String day : listOfAliasesDay){
 				allFormats.add(time + " " + SINGLE_QUOTE + day + SINGLE_QUOTE);
 			}
 		}
-		for (String day : allAliasesDay){
+		for (String day : listOfAliasesDay){
 			for (String time : FORMATS_TIME) {
 				allFormats.add(SINGLE_QUOTE + day + SINGLE_QUOTE + " " + time);
 			}
@@ -109,7 +109,7 @@ public class ParseDate {
 		String formattedDate = "";
 		String formattedInput = "";
 		SimpleDateFormat formatter = null;
-		for (String format : allTimeDateFormats) {
+		for (String format : listOfTimeDateFormats) {
 			try {
 				formattedInput = input;
 				formatter = new SimpleDateFormat(format);
@@ -138,11 +138,11 @@ public class ParseDate {
 		String formattedDate = "";
 		String formattedInput = "";
 		SimpleDateFormat formatter = null;
-		for (String format : allDayFormats) {
+		for (String format : listOfTimeDayFormats) {
 			try {
 				formattedInput = input + " " + getToday();
 				formatter = new SimpleDateFormat(format + " " + FORMAT_TODAY);
-				if (allAliasesDay.contains(input)){
+				if (listOfAliasesDay.contains(input)){
 					formatter = new SimpleDateFormat(FORMAT_TODAY + " " + FORMAT_LAST_MINUTE);
 					formattedInput = getToday() + " " + LAST_MINUTE;
 				}

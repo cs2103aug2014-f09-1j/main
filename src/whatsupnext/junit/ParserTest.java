@@ -247,4 +247,13 @@ public class ParserTest {
 		assertEquals("Test update - endTime", "201409292359", task.getEndTime());		
 	}
 	
+	@Test
+	// Parser Testing: done
+	public void testParserDone() {
+		String input = "done 13";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.DONE, task.getOpCode());
+        assertEquals("ID", "13", task.getTaskID());
+	}
 }

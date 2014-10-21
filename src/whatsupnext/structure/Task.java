@@ -22,6 +22,7 @@ public class Task {
 	private UPDATETYPE updateType;
 	private DELETETYPE deleteType;
 	private String[] operand;
+	private boolean isDone;
 
 	public Task() {
 		setOpcode(null);
@@ -103,6 +104,14 @@ public class Task {
 	
 	public void setEndTime(String endTime) {
 		operand[INDEX_FOR_END_TIME] = endTime;
+	}
+	
+	public boolean getDone() {
+		return isDone;
+	}
+	
+	public void setDone(boolean isDone) {
+		this.isDone = isDone;
 	}
 	
 	// Function to check the equality of any two task objects on the basis of taskID, description, startTime, endTime

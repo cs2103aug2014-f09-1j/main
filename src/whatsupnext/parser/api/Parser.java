@@ -4,9 +4,9 @@
 package whatsupnext.parser.api;
 
 import java.util.StringTokenizer;
-
 import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.DeleteExtractor;
+import whatsupnext.parser.extractor.DoneExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
 import whatsupnext.structure.OPCODE;
@@ -20,6 +20,7 @@ public class Parser {
 	private final String[] ALIASES_VIEW = {"view", "v", "list", "ls", "l"};
 	private final String[] ALIASES_UPDATE = {"update", "u", "edit", "e", "modify", "m"};
 	private final String[] ALIASES_DELETE = {"delete", "del", "d"};
+	private final String[] ALIASES_DONE = {"done"};
 	private final String[] ALIASES_HELP = {"help", "h", "?"};
 	private final String[] ALIASES_EXIT = {"exit", "e", "quit", "q"};
 	
@@ -62,6 +63,10 @@ public class Parser {
 				ViewExtractor exView = new ViewExtractor();
 				exView.extract(task, input);
 				break;
+			case DONE:
+				DoneExtractor exDone = new DoneExtractor();
+				exDone.extract(task, input);
+				break;
 			case EXIT:
 				System.exit(0);
 			default:
@@ -78,7 +83,9 @@ public class Parser {
 			return OPCODE.UPDATE;
 		} else if (isInOperationAliases(operation, ALIASES_DELETE)) {
 			return OPCODE.DELETE;
-		} else if (isInOperationAliases(operation, ALIASES_HELP)) {
+		} else if (isInOperationAliases(operation, ALIASES_DONE)) {
+			return OPCODE.DONE;
+		}else if (isInOperationAliases(operation, ALIASES_HELP)) {
 			return OPCODE.HELP;
 		} else if (isInOperationAliases(operation, ALIASES_EXIT)) {
 			return OPCODE.EXIT;

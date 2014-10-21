@@ -23,7 +23,7 @@ public class UpdateExtractor implements Extractor {
 
 		// Get the task ID and remove it from the remaining details
 		try {
-			String taskID = getFirstWord(input);
+			String taskID = Utility.getFirstWord(input);
 			if(Integer.parseInt(taskID) < 0 ){
 				throw new IllegalArgumentException(MESSAGE_INVALID_TASKID);
 			}
@@ -31,7 +31,7 @@ public class UpdateExtractor implements Extractor {
 		} catch (NumberFormatException e) {
 			throw new NumberFormatException(MESSAGE_INVALID_TASKID);
 		}
-		input = removeFirstWord(input);
+		input = Utility.removeFirstWord(input);
 				
 		Pattern byKeywordPattern = Pattern.compile("(B|b)(Y|y)\\s+");
 		Pattern fromKeywordPattern = Pattern.compile("(F|f)(R|r)(O|o)(M|m)\\s+");
@@ -40,7 +40,7 @@ public class UpdateExtractor implements Extractor {
 		        
 		if (byKeywordMatcher.find()){
 		    // Remove 'by'
-			input = removeFirstWord(input);
+			input = Utility.removeFirstWord(input);
 					
 			task.setUpdateType(UPDATETYPE.DEADLINE);
 			task.setEndTime(parseDate.parseInput(input));
@@ -70,12 +70,14 @@ public class UpdateExtractor implements Extractor {
 	 */
 	private void splitOnToKeyword(Task task,String taskDetails) {
 		// Remove "from"
-		taskDetails = removeFirstWord(taskDetails);
-		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");	
+		taskDetails = Utility.removeFirstWord(taskDetails);
+		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");
+		parseDate.setParsingStartTime(true);
 		task.setStartTime(parseDate.parseInput(details[0]));
 		if (task.getStartTime().isEmpty()){
 			throw new IllegalArgumentException(MESSAGE_INVALID_START_TIME);
 		}
+		parseDate.setParsingStartTime(false);
 		task.setEndTime(parseDate.parseInput(details[1]));
 		if (task.getEndTime().isEmpty()){
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
@@ -83,30 +85,7 @@ public class UpdateExtractor implements Extractor {
 	}
 	
 	
-	/**
-	 * Returns the first word of an input string
-	 * @param userCommand
-	 * @return
-	 */
-    private static String getFirstWord(String userCommand) {
-		String commandTypeString = userCommand.trim().split("\\s+")[0];
-		return commandTypeString;
-	}
-	
-	/**
-	 * Removes the first word of a string
-	 * @param userCommand
-	 * @return
-	 */
-	private static String removeFirstWord(String userCommand) {
-		String commandString;
-		try {
-			commandString = userCommand.trim().split("\\s+", 2)[1];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			commandString = "";
-		}
-		return commandString;
-	}
+
 	
 }
 

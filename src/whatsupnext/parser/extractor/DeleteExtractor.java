@@ -20,7 +20,7 @@ public class DeleteExtractor implements Extractor {
 	}
 	
 	public void extract(Task task, String input){
-		int numOfWord = countWords(input);
+		int numOfWord = Utility.countWords(input);
 		if (numOfWord == 0) {
 			throw new IllegalArgumentException(MESSAGE_INVALID_ARGUMENT);
 		} else if (numOfWord == 1) {
@@ -106,46 +106,23 @@ public class DeleteExtractor implements Extractor {
 	 */
 	private void splitOnToKeyword(Task task,String taskDetails) {
 		// Remove "from"
-		taskDetails = removeFirstWord(taskDetails);
-		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");	
+		taskDetails = Utility.removeFirstWord(taskDetails);
+		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");
+		parseDate.setParsingStartTime(true);
 		task.setStartTime(parseDate.parseInput(details[0]));
 		if (task.getStartTime().isEmpty()){
 			throw new IllegalArgumentException(MESSAGE_INVALID_START_TIME);
 		}
+		parseDate.setParsingStartTime(false);
 		task.setEndTime(parseDate.parseInput(details[1]));
 		if (task.getEndTime().isEmpty()){
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
 		}
 	}
 	
+
 	
-	/**
-	 * Count the total number of words in a string
-	 * @param userCommand
-	*/
-	private int countWords (String input) {
-		String trim = input.trim();
-		if (trim.isEmpty()) {
-			return 0;
-		}
-		// Separate string around 1 or more spaces
-		return trim.split("\\s+").length;
-	}
-	
-	/**
-	 * Removes the first word of a string
-	 * @param userCommand
-	 * @return
-	 */
-	private static String removeFirstWord(String userCommand) {
-		String commandString;
-		try {
-			commandString = userCommand.trim().split("\\s+", 2)[1];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			commandString = "";
-		}
-		return commandString;
-	}
+
 	
 }
 

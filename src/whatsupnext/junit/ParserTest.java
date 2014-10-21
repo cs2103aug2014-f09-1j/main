@@ -104,6 +104,19 @@ public class ParserTest {
 	}
 	
 	@Test
+	//Parser testing: Add timeframe task with date only
+	public void testParserAdd8() {
+		String input = "add do homework from 29-09-14 to 29-09-14";	
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("Test Add - OPCODE", OPCODE.ADD, task.getOpCode());
+        assertEquals("Test Add - addType",ADDTYPE.TIMEFRAME,task.getAddType());
+		assertEquals("Test Add - description", "do homework", task.getDescription());
+		assertEquals("Test Add - startTime", "201409290000", task.getStartTime());
+		assertEquals("Test Add - endTime", "201409292359", task.getEndTime());
+	}
+	
+	@Test
 	// Parser Testing: update by timeframe
 	public void testParserUpdate1() {
 		String input = "update 19 from 1800 29/09/2014 to 2000 29/09/2014";
@@ -146,6 +159,20 @@ public class ParserTest {
 	}
 	
 	@Test
+	// Parser Testing: update by timeframe with date only
+	public void testParserUpdate4() {
+		String input = "update 19 from 29-09-14 to 29-09-14";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("Test update - OPCODE", OPCODE.UPDATE, task.getOpCode());
+		assertEquals("Test update - updateType", UPDATETYPE.TIMEFRAME, task.getUpdateType());
+        assertEquals("Test update - taskID", "19", task.getTaskID());
+		assertEquals("Test update - description", "", task.getDescription());
+		assertEquals("Test update - startTime", "201409290000", task.getStartTime());
+		assertEquals("Test update - endTime", "201409292359", task.getEndTime());		
+	}
+	
+	@Test
 	// Parser Testing: view all
 	public void testParserView1() {
 		String input = "view All";
@@ -182,6 +209,19 @@ public class ParserTest {
 	}
 	
 	@Test
+	// Parser Testing: view by timeframe with date only
+	public void testParserView4() {
+		String input = "v from 29092014 to 29092014";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("Test view - OPCODE", OPCODE.VIEW, task.getOpCode());
+        assertEquals("Test view - viewType", VIEWTYPE.TIMEFRAME, task.getViewType());
+		assertEquals("Test view - description", "", task.getDescription());
+		assertEquals("Test view - startTime", "201409290000", task.getStartTime());
+		assertEquals("Test view - endTime", "201409292359", task.getEndTime());
+	}
+	
+	@Test
 	// Parser Testing: delete by timeframe
 	public void testParserDelete1() {
 		String input = "d from 1900 29092014 To 2030 29092014";
@@ -192,6 +232,19 @@ public class ParserTest {
         assertEquals("Test delete - description", "", task.getDescription());
 		assertEquals("Test delete - startTime", "201409291900", task.getStartTime());
 		assertEquals("Test update - endTime", "201409292030", task.getEndTime());		
+	}
+	
+	@Test
+	// Parser Testing: delete by timeframe with date only
+	public void testParserDelete2() {
+		String input = "d from 29092014 To 29092014";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("Test delete - OPCODE", OPCODE.DELETE, task.getOpCode());
+        assertEquals("Test delete - deleteType", DELETETYPE.TIMEFRAME, task.getDeleteType());
+        assertEquals("Test delete - description", "", task.getDescription());
+		assertEquals("Test delete - startTime", "201409290000", task.getStartTime());
+		assertEquals("Test update - endTime", "201409292359", task.getEndTime());		
 	}
 	
 }

@@ -33,6 +33,7 @@ public class ParseDate {
 	private final ArrayList<String> ALIASES_SATURDAY = new ArrayList<String>(Arrays.asList("Saturday", "Sat",
 																							"saturday", "sat"));
 	
+	private final String FIRST_MINUTE = "0000";
 	private final String LAST_MINUTE = "2359";
 	private final String SINGLE_QUOTE = "'";
 	private final int DAYS_IN_WEEK = 7;
@@ -41,10 +42,13 @@ public class ParseDate {
 	private ArrayList<String> listOfTimeDayFormats;
 	private ArrayList<String> listOfAliasesDay;
 	
+	private boolean isParsingStartTime;
+	
 	public ParseDate(){
 		listOfTimeDateFormats = getTimeDateFormats();
 		listOfAliasesDay = getAliasesDay();
 		listOfTimeDayFormats = getDayFormats();
+		isParsingStartTime = false;
 	}
 	
 	public String parseInput(String input) {
@@ -56,6 +60,9 @@ public class ParseDate {
 		return formattedDate;
 	}
 	
+	public void setParsingStartTime(boolean isParsingStartTime) {
+		this.isParsingStartTime = isParsingStartTime;
+	}
 	private ArrayList<String> getTimeDateFormats() {
 		ArrayList<String> allFormats = new ArrayList<String>();
 		for (String time : FORMATS_TIME) {
@@ -121,7 +128,11 @@ public class ParseDate {
 				}
 				if (FORMATS_DATE.contains(format)) {
 					formatter = new SimpleDateFormat(format + " " + FORMAT_LAST_MINUTE);
-					formattedInput = formattedInput + " " + LAST_MINUTE;
+					if(isParsingStartTime) {
+						formattedInput = formattedInput + " " + FIRST_MINUTE;
+					} else {
+						formattedInput = formattedInput + " " + LAST_MINUTE;
+					}
 				}
 				formatter.setLenient(false);
 				Calendar cal = Calendar.getInstance();
@@ -146,7 +157,11 @@ public class ParseDate {
 				formatter = new SimpleDateFormat(format + " " + FORMAT_TODAY);
 				if (listOfAliasesDay.contains(input)){
 					formatter = new SimpleDateFormat(FORMAT_TODAY + " " + FORMAT_LAST_MINUTE);
-					formattedInput = getToday() + " " + LAST_MINUTE;
+					if(isParsingStartTime) {
+						formattedInput = getToday() + " " + FIRST_MINUTE;
+					} else {
+						formattedInput = getToday() + " " + LAST_MINUTE;
+					}					
 				}
 				formatter.setLenient(false);
 				Calendar cal = Calendar.getInstance();

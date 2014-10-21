@@ -93,10 +93,12 @@ public class ViewExtractor implements Extractor {
 		// Remove "from"
 		taskDetails = removeFirstWord(taskDetails);
 		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");
+		parseDate.setParsingStartTime(true);
 		task.setStartTime(parseDate.parseInput(details[0]));
 		if (task.getStartTime().isEmpty()){
 			throw new IllegalArgumentException(MESSAGE_INVALID_START_TIME);
 		}
+		parseDate.setParsingStartTime(false);
 		task.setEndTime(parseDate.parseInput(details[1]));
 		if (task.getEndTime().isEmpty()){
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);

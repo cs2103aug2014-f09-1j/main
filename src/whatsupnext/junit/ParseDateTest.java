@@ -170,6 +170,14 @@ public class ParseDateTest {
 		
 		formattedDate = parseDate.parseInput("29-09-2014");
 		assertEquals("Test dd-MM-yyyy", "201409292359", formattedDate);
+		
+		parseDate.setParsingStartTime(true);
+		formattedDate = parseDate.parseInput("29-09-2014");
+		assertEquals("Test dd-MM-yyyy 0000", "201409290000", formattedDate);
+		
+		parseDate.setParsingStartTime(false);
+		formattedDate = parseDate.parseInput("29-09-2014");
+		assertEquals("Test dd-MM-yyyy 2359", "201409292359", formattedDate);
 	}
 	
 	@Test
@@ -299,6 +307,14 @@ public class ParseDateTest {
 		
 		formattedDate = parseDate.parseInput("sat");
 		assertEquals("sat", getTodayToNextDayOfWeek(Calendar.SATURDAY)+"2359", formattedDate);
+		
+		parseDate.setParsingStartTime(true);
+		formattedDate = parseDate.parseInput("today");
+		assertEquals("Today 0000", getToday()+"0000", formattedDate);
+		
+		parseDate.setParsingStartTime(false);
+		formattedDate = parseDate.parseInput("today");
+		assertEquals("Today 2359", getToday()+"2359", formattedDate);
 	}
 	
 	@Test

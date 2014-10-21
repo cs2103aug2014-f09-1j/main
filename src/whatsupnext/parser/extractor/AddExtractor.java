@@ -56,10 +56,12 @@ public class AddExtractor implements Extractor {
 		}
 		String detailsTime = details[1];
 		String[] detailsTimeStartAndEnd = detailsTime.split("\\s+(T|t)(O|o)\\s+");
+		parseDate.setParsingStartTime(true);
 		task.setStartTime(parseDate.parseInput(detailsTimeStartAndEnd[0]));
 		if(task.getStartTime().isEmpty()){
 			throw new IllegalArgumentException(MESSAGE_INVALID_START_TIME);
 		}
+		parseDate.setParsingStartTime(false);
 		task.setEndTime(parseDate.parseInput(detailsTimeStartAndEnd[1]));
 		if(task.getEndTime().isEmpty()){
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);

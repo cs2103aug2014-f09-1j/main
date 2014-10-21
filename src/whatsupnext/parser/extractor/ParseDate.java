@@ -10,7 +10,6 @@ public class ParseDate {
 	
 	private final String FORMAT_LAST_MINUTE = "HHmm";
 	private final String FORMAT_TODAY = "ddMMyyyy";
-	
 	private final ArrayList<String> FORMATS_TIME = new ArrayList<String>(Arrays.asList("HHmm",
 																						"HH:mm",
 																						"h:mm a",
@@ -22,16 +21,23 @@ public class ParseDate {
 																						"dd-MM-yy", 
 																						"dd-MM-yyyy"));
 	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("tomorrow",
-																						"tml"));
+																							"tml"));
+	private final ArrayList<String> ALIASES_SUNDAY = new ArrayList<String>(Arrays.asList("sunday", 
+																						  "sun"));
+	private final ArrayList<String> ALIASES_SATURDAY = new ArrayList<String>(Arrays.asList("saturday", 
+																							"sat"));
 	
 	private final String LAST_MINUTE = "2359";
 	private final String SINGLE_QUOTE = "'";
+	private final int DAYS_IN_WEEK = 7;
 	
 	private ArrayList<String> allTimeDateFormats;
 	private ArrayList<String> allDayFormats;
+	private ArrayList<String> allAliasesDay;
 	
 	public ParseDate(){
 		allTimeDateFormats = getAllTimeDateFormats();
+		allAliasesDay = getAllAliasesDay();
 		allDayFormats = getAllDayFormats();
 	}
 	
@@ -65,21 +71,27 @@ public class ParseDate {
 		return allFormats;
 	}
 	
+	private ArrayList<String> getAllAliasesDay(){
+		ArrayList<String> allAliasesDay = new ArrayList<String>();
+		allAliasesDay.addAll(ALIASES_TOMORROW);
+		allAliasesDay.addAll(ALIASES_SUNDAY);
+		allAliasesDay.addAll(ALIASES_SATURDAY);
+		
+		return allAliasesDay;
+	}
 	private ArrayList<String> getAllDayFormats() {
 		ArrayList<String> allFormats = new ArrayList<String>();
 		for (String time : FORMATS_TIME) {
-			for (String day : ALIASES_TOMORROW){
+			for (String day : allAliasesDay){
 				allFormats.add(time + " " + SINGLE_QUOTE + day + SINGLE_QUOTE);
 			}
 		}
-		for (String day : ALIASES_TOMORROW){
+		for (String day : allAliasesDay){
 			for (String time : FORMATS_TIME) {
 				allFormats.add(SINGLE_QUOTE + day + SINGLE_QUOTE + " " + time);
 			}
 		}
-		/*for (String dayOfWeek: ALIASES_TOMORROW){
-			allFormats.add(dayOfWeek);
-		}*/
+		
 		return allFormats;
 	}
 	
@@ -120,7 +132,7 @@ public class ParseDate {
 			try {
 				formattedInput = input + " " + getToday();
 				formatter = new SimpleDateFormat(format + " " + FORMAT_TODAY);
-				if (ALIASES_TOMORROW.contains(input)){
+				if (allAliasesDay.contains(input)){
 					formatter = new SimpleDateFormat(FORMAT_TODAY + " " + FORMAT_LAST_MINUTE);
 					formattedInput = getToday() + " " + LAST_MINUTE;
 				}
@@ -151,13 +163,49 @@ public class ParseDate {
 	}
 	
 	private Calendar setNewDay(Calendar cal, String input){
-		for (String tomorrow: ALIASES_TOMORROW){
-			if(input.contains(tomorrow)){
+		int numOfDay = 0; 
+		for (String tomorrow: ALIASES_TOMORROW) {
+			if(input.contains(tomorrow)) {
 				cal.add(Calendar.DAY_OF_YEAR, 1);
+				break;
+			}
+		}
+		for (String sunday: ALIASES_SUNDAY) {
+			if(input.contains(sunday)) {
+				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.SUNDAY);
+				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
+				break;
+			}
+		}
+		for (String saturday: ALIASES_SATURDAY) {
+			if(input.contains(saturday)) {
+				numOfDay = getNumOfDayToAdd(cal.get(Calendar.DAY_OF_WEEK), Calendar.SATURDAY);
+				cal.add(Calendar.DAY_OF_YEAR, numOfDay);
+				break;
 			}
 		}
 		
 		return cal;
+	}
+
+	private int getNumOfDayToAdd(int currentDay, int expectedDay) {
+		int numOfDay = 0;
+		int newDay = 0;
+		for(int i = 1; i <= DAYS_IN_WEEK; i++){
+			newDay = currentDay + i; 
+			if (newDay == expectedDay) {
+				numOfDay = i;
+				break;
+			}
+			if ((newDay > DAYS_IN_WEEK)) {
+				if(newDay % DAYS_IN_WEEK == expectedDay) {
+					numOfDay = i;
+					break;
+				}
+			}
+		}
+		
+		return numOfDay;
 	}
 
 	private String formatDate(Calendar cal) {
@@ -242,5 +290,3 @@ public class ParseDate {
 	}
 
 }
-
-

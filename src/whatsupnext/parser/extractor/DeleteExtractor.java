@@ -106,7 +106,7 @@ public class DeleteExtractor implements Extractor {
 	 */
 	private void splitOnToKeyword(Task task,String taskDetails) {
 		// Remove "from"
-		taskDetails = removeFirstWord(taskDetails);
+		taskDetails = Utility.removeFirstWord(taskDetails);
 		String[] details = taskDetails.split("\\s+(T|t)(O|o)\\s+");
 		parseDate.setParsingStartTime(true);
 		task.setStartTime(parseDate.parseInput(details[0]));
@@ -134,20 +134,7 @@ public class DeleteExtractor implements Extractor {
 		return trim.split("\\s+").length;
 	}
 	
-	/**
-	 * Removes the first word of a string
-	 * @param userCommand
-	 * @return
-	 */
-	private static String removeFirstWord(String userCommand) {
-		String commandString;
-		try {
-			commandString = userCommand.trim().split("\\s+", 2)[1];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			commandString = "";
-		}
-		return commandString;
-	}
+
 	
 }
 

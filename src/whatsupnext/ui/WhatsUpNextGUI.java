@@ -114,6 +114,7 @@ public class WhatsUpNextGUI {
 		initClassComponents();
 		initGUIComponents();
 		setComponentsNames();
+		clickUpcoming();
 	}
 	
 	/**

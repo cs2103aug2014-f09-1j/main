@@ -49,6 +49,9 @@ public class Logic {
 			case VIEW:
 				userCommand = new ViewCommand(task);
 				break;
+			case DONE:
+				userCommand = new ViewCommand(task);
+				break;
 			default:
 				return "Unable to execute the command";
 		}
@@ -73,33 +76,6 @@ public class Logic {
 	 */
 	private ArrayList<Task> searchByDescription(String task_Info) {
 		return null;
-	}
-	
-	private ArrayList<Task> searchByDeadline(String deadline) {
-		ArrayList<Task> taskResults = new ArrayList<Task>();
-		Iterator<Task> taskIterator = list.iterator();
-		
-		while (taskIterator.hasNext()) {
-			Task task = taskIterator.next();
-			if (endsBeforeDeadline(task, deadline)) {
-				taskResults.add(task);
-			}
-		}
-		return taskResults;
-	}
-
-	private ArrayList<Task> searchByDate(String date) {
-		ArrayList<Task> taskResults = new ArrayList<Task>();
-		Iterator<Task> taskIterator = list.iterator();
-		
-		while (taskIterator.hasNext()) {
-			Task task = taskIterator.next();
-			if (endsOnGivenDate(task, date)) {
-				taskResults.add(task);
-			}
-		}
-		return taskResults;
-
 	}
 	
 	/*
@@ -137,6 +113,11 @@ public class Logic {
 		}
 		if (!task.getEndTime().isEmpty()) {
 			task_Info = task_Info + "\n\tEnd Time: " + getFormattedTime(task.getEndTime());
+		}
+		if (task.getDone()) {
+			task_Info = task_Info + "\nDone.";
+		} else {
+			task_Info = task_Info + "\nNot done.";
 		}
 		return task_Info;
 	}

@@ -50,7 +50,7 @@ public class Logic {
 				userCommand = new ViewCommand(task);
 				break;
 			case DONE:
-				userCommand = new ViewCommand(task);
+				userCommand = new DoneCommand(task);
 				break;
 			default:
 				return "Unable to execute the command";

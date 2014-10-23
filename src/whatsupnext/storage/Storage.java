@@ -144,7 +144,10 @@ public class Storage {
 		String description = extractFromString.next();
 		String startTime = extractFromString.next();
 		String endTime = extractFromString.next();
-		boolean isDone = Boolean.parseBoolean(extractFromString.next());
+		String booleanString = extractFromString.next();
+		
+		assertTrue(booleanString.equals("true") || booleanString.equals("false"));		
+		boolean isDone = Boolean.parseBoolean(booleanString);
 		
 		Task taskFromString = new Task();
 		taskFromString.setTaskID(taskID);

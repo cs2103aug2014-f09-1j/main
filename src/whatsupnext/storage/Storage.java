@@ -18,9 +18,8 @@ public class Storage {
 	private String FILE_NAME;
 	private final boolean SUCCESS = true;
 	private final boolean FAILURE = false;
-	public final static String DELIMITER = "%#"; 
+	public final static String DELIMITER = "%#";	
 	
-	private static int numberOfTasks = 0;
 	
 	public static Storage getInstance(String fileName) {
 		if (storageSingleton == null) {
@@ -56,8 +55,7 @@ public class Storage {
 	 * @throws IOException
 	 */
 	public boolean inputTasks(ArrayList<Task> tasks) throws IOException {
-		if (isValidInput(tasks)) {
-			incrementTaskNumber(tasks.size());
+		if (isValidInput(tasks)) {			
 			writeTasksToFile(tasks);
 			return SUCCESS;
 		} else if (tasks.size() == 0) {
@@ -128,7 +126,6 @@ public class Storage {
 			tasks.add(stringToTask(taskInString));	
 		}
 		
-		numberOfTasks = tasks.size();
 		reader.close();
 		return tasks;
 	}
@@ -170,14 +167,6 @@ public class Storage {
 		return task.getTaskID() + DELIMITER + task.getDescription() + DELIMITER + 
 				task.getStartTime() + DELIMITER + task.getEndTime() + 
 				DELIMITER + task.getDone() + DELIMITER;
-	}
-	
-	private void incrementTaskNumber(int increase) {
-		numberOfTasks = numberOfTasks + increase;
-	}
-	
-	private void decrementTaskNumber() {
-		numberOfTasks = numberOfTasks - 1;
 	}
 	
 	public void clearFile() throws IOException {

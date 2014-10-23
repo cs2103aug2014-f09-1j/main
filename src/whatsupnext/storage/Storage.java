@@ -16,6 +16,7 @@ public class Storage {
 	private String FILE_NAME;
 	private final boolean SUCCESS = true;
 	private final boolean FAILURE = false;
+	public final static String DELIMITER = "%#"; 
 	
 	private static int numberOfTasks = 0;
 	
@@ -75,8 +76,9 @@ public class Storage {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true));
 		for (int x = 0; x < tasks.size(); x++) {
 			Task taskToBeWritten = tasks.get(x);
-			writer.write(taskToBeWritten.getTaskID() + "%#" + taskToBeWritten.getDescription() + "%#" + 
-					taskToBeWritten.getStartTime() + "%#" + taskToBeWritten.getEndTime() + "%#");
+			writer.write(taskToBeWritten.getTaskID() + DELIMITER + taskToBeWritten.getDescription() + DELIMITER + 
+					taskToBeWritten.getStartTime() + DELIMITER + taskToBeWritten.getEndTime() + 
+					DELIMITER + taskToBeWritten.getDone() + DELIMITER);
 			writer.newLine();
 		}		
 		writer.close();
@@ -139,18 +141,20 @@ public class Storage {
 	 */
 	public Task stringToTask(String taskInString) {
 		Scanner extractFromString = new Scanner(taskInString);
-		extractFromString.useDelimiter("%#");
+		extractFromString.useDelimiter(DELIMITER);
 		
 		String taskID = extractFromString.next();
 		String description = extractFromString.next();
 		String startTime = extractFromString.next();
 		String endTime = extractFromString.next();
+		boolean isDone = Boolean.parseBoolean(extractFromString.next());
 		
 		Task taskFromString = new Task();
 		taskFromString.setTaskID(taskID);
 		taskFromString.setDescription(description);
 		taskFromString.setStartTime(startTime);
 		taskFromString.setEndTime(endTime);
+		taskFromString.setDone(isDone);
 		
 		extractFromString.close();
 		

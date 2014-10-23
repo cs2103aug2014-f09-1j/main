@@ -43,7 +43,6 @@ public class StorageTest {
 	
 	@Test
 	public void testInputAndReadTasks() throws IOException {
-		obj.clearFile();
 		
 		Task dummyTask1 = obj.stringToTask("DummyTaskID1" + Storage.DELIMITER + "DummyDescription1" + Storage.DELIMITER + 
 				"DummyStartTime1" + Storage.DELIMITER + "DummyEndTime1" + Storage.DELIMITER + "true" + Storage.DELIMITER);
@@ -57,11 +56,11 @@ public class StorageTest {
 		tasks.add(dummyTask2);
 		tasks.add(dummyTask3);
 		
-		obj.inputTasks(tasks);
+		assertTrue(obj.inputTasks(tasks));
 		
 		ArrayList<Task> tasksToCompare = obj.readTasks();
 		
 		assertEquals(tasks, tasksToCompare);
+		
 	}
-
 }

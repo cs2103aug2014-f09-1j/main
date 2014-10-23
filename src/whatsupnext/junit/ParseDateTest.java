@@ -13,6 +13,7 @@ public class ParseDateTest {
 	private final int DAYS_IN_WEEK = 7;
 	
 	@Test
+	/* This is a boundary case for the 'time date' partition */
 	public void testParseTimeDate() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
@@ -67,6 +68,7 @@ public class ParseDateTest {
 	}
 	
 	@Test
+	/* This is a boundary case for the 'date time' partition */
 	public void testParseDateTime() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
@@ -122,6 +124,7 @@ public class ParseDateTest {
 	}
 	
 	@Test
+	/* This is a boundary case for the 'time' partition */
 	public void testParseStandaloneTime() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
@@ -149,6 +152,7 @@ public class ParseDateTest {
 	}
 	
 	@Test
+	/* This is a boundary case for the 'date' partition */
 	public void testParseStandaloneDate() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
@@ -181,6 +185,7 @@ public class ParseDateTest {
 	}
 	
 	@Test
+	/* This is a boundary case for the 'time day' partition */
 	public void testParseTimeDay() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
@@ -216,6 +221,7 @@ public class ParseDateTest {
 	}
 	
 	@Test
+	/* This is a boundary case for the 'day time' partition */
 	public void testParseDayTime() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
@@ -250,6 +256,7 @@ public class ParseDateTest {
 	}
 	
 	@Test
+	/* This is a boundary case for the 'day' partition */
 	public void testParseStandaloneDay() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
@@ -318,48 +325,41 @@ public class ParseDateTest {
 	}
 	
 	@Test
-	public void testParseOthers() {
+	public void testParseInvalid() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
 		
-		formattedDate = parseDate.parseInput("0000 04012014");
-		assertEquals("Test 0000 ddMMyy ", "201401040000", formattedDate);
-		
+		/* This is a boundary case for the 'any other days' partition */
 		formattedDate = parseDate.parseInput("rubbish");
-		assertEquals("Test invalid", "", formattedDate);
+		assertEquals("Invalid day", "", formattedDate);
 		
-		formattedDate = parseDate.parseInput("rubbish Date");
-		assertEquals("Test invalid", "", formattedDate);
+		/* This is a boundary case for the 'any other time format' partition */
+		formattedDate = parseDate.parseInput("1144 PM");
+		assertEquals("Invalid time format", "", formattedDate);
 		
-		formattedDate = parseDate.parseInput("23591 040114");
-		assertEquals("Test invalid time", "", formattedDate);
+		/* This is a boundary case for the 'any other date format' partition */
+		formattedDate = parseDate.parseInput("04:04:14");
+		assertEquals("Invalid date format", "", formattedDate);
 		
+		/* This is a boundary case for the 'MAX_24_HOUR+1' partition */
 		formattedDate = parseDate.parseInput("2459 040114");
-		assertEquals("Test invalid time", "", formattedDate);
+		assertEquals("Invalid HH", "", formattedDate);
 		
+		/* This is a boundary case for the 'MAX_MINUTE+1' partition */
 		formattedDate = parseDate.parseInput("2360 040114");
-		assertEquals("Test invalid time", "", formattedDate);
+		assertEquals("Invalid mm", "", formattedDate);
 		
-		formattedDate = parseDate.parseInput("2360");
-		assertEquals("Test invalid time", "", formattedDate);
-
-		formattedDate = parseDate.parseInput("1144 PM 040114");
-		assertEquals("Test invalid time", "", formattedDate);
-		
+		/* This is a boundary case for the 'MAX_12_HOUR+1' partition */
 		formattedDate = parseDate.parseInput("13 AM 040114");
-		assertEquals("Test invalid time", "", formattedDate);
+		assertEquals("Invalid h", "", formattedDate);
 		
-		formattedDate = parseDate.parseInput("12 AM 040114");
-		assertEquals("Test invalid time", "201401040000", formattedDate);
+		/* This is a boundary case for the 'MAX_MONTH+1' partition */
+		formattedDate = parseDate.parseInput("2359 041314");
+		assertEquals("Invalid", "", formattedDate);
 		
-		formattedDate = parseDate.parseInput("12 pM 040114");
-		assertEquals("Test invalid time", "201401041200", formattedDate);
-		
-		formattedDate = parseDate.parseInput("2360 041314");
-		assertEquals("Test invalid date", "", formattedDate);
-		
-		formattedDate = parseDate.parseInput("300214");
-		assertEquals("Test invalid date", "", formattedDate);
+		/* This is a boundary case for the 'MAX_DAYOFMONTH+1' partition */
+		formattedDate = parseDate.parseInput("320314");
+		assertEquals("Invalid", "", formattedDate);
 	}
 	
 	private String getToday() {

@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 import whatsupnext.structure.Task;
 
+import static org.junit.Assert.*;
+
 
 public class Storage {
 	
@@ -76,9 +78,7 @@ public class Storage {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true));
 		for (int x = 0; x < tasks.size(); x++) {
 			Task taskToBeWritten = tasks.get(x);
-			writer.write(taskToBeWritten.getTaskID() + DELIMITER + taskToBeWritten.getDescription() + DELIMITER + 
-					taskToBeWritten.getStartTime() + DELIMITER + taskToBeWritten.getEndTime() + 
-					DELIMITER + taskToBeWritten.getDone() + DELIMITER);
+			writer.write(taskToString(taskToBeWritten));
 			writer.newLine();
 		}		
 		writer.close();
@@ -161,6 +161,17 @@ public class Storage {
 		return taskFromString;
 	}
 		
+	public String taskToString(Task task) {
+		assertNotNull(task.getTaskID());
+		assertNotNull(task.getDescription());
+		assertNotNull(task.getStartTime());
+		assertNotNull(task.getEndTime());
+		assertNotNull(task.getDone());
+		return task.getTaskID() + DELIMITER + task.getDescription() + DELIMITER + 
+				task.getStartTime() + DELIMITER + task.getEndTime() + 
+				DELIMITER + task.getDone() + DELIMITER;
+	}
+	
 	private void incrementTaskNumber(int increase) {
 		numberOfTasks = numberOfTasks + increase;
 	}

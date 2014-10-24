@@ -5,7 +5,6 @@ package whatsupnext.logic;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import whatsupnext.structure.Task;
 import whatsupnext.storage.Storage;
 
@@ -52,6 +51,9 @@ public class Logic {
 			case DONE:
 				userCommand = new DoneCommand(task);
 				break;
+			case SEARCH:
+				userCommand = new SearchCommand(task);
+				break;
 			default:
 				return "Unable to execute the command";
 		}
@@ -69,13 +71,6 @@ public class Logic {
 			arrayAsString = arrayAsString.concat("\n" + taskNumberedArray.get(i));
 		}
 		return arrayAsString;
-	}
-	
-	/*
-	 * Three types of SEARCH functions.
-	 */
-	private ArrayList<Task> searchByDescription(String task_Info) {
-		return null;
 	}
 	
 	/*

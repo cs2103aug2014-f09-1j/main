@@ -470,4 +470,44 @@ public class LogicTest {
 		);
 	}
 
+	@Test
+	public void testSearch() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.FLOATING);
+		task.setDescription("task");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.FLOATING);
+		task.setDescription("task a b");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.FLOATING);
+		task.setDescription("a b");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.SEARCH);
+		task.setDescription("a");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals(feedback,
+				"1: task\nNot done." + "\n" +
+		        "2: task a b\nNot done." + "\n" +
+		        "3: a b\nNot done."
+		);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.SEARCH);
+		task.setDescription("task b");
+		
+		feedback = logic.executeTask(task);
+		assertEquals(feedback,
+				"2: task a b\nNot done."
+		);
+	}
 }

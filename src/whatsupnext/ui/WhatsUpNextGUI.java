@@ -45,6 +45,7 @@ public class WhatsUpNextGUI {
 	
     private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";   
 	private final ArrayList<String> STRINGS_CLEAR = new ArrayList<String>(Arrays.asList("clear", "Clear", "CLEAR", "clc"));
+    private String currentYear;
     
 	private JFrame frameMain;
 	private final int FRAME_MAIN_WIDTH = 555;
@@ -205,6 +206,8 @@ public class WhatsUpNextGUI {
 		DateFormat dateFormat = new SimpleDateFormat("EEE, yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
 		STRING_WELCOME = STRING_WELCOME + dateFormat.format(cal.getTime());
+		dateFormat = new SimpleDateFormat(" yyyy");
+		currentYear = dateFormat.format(cal.getTime());
 	}
 
 	/**
@@ -509,6 +512,7 @@ public class WhatsUpNextGUI {
 	 * This method would display feedback message in main display area
 	 */
 	private void displayFeedback(String feedback) {
+		feedback = feedback.replaceAll(currentYear, "");
 		textDisplayMain.append("\n"+feedback+"\n");
 	}
 	
@@ -516,6 +520,7 @@ public class WhatsUpNextGUI {
 	 * This method would display feedback message in main display area
 	 */
 	private void displayUpcomingFeedback(String feedback) {
+		feedback = feedback.replaceAll(currentYear, "");
 		textDisplayUpcoming.setText(feedback);
 	}
 	

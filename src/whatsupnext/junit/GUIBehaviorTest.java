@@ -57,6 +57,7 @@ public class GUIBehaviorTest {
 	@Test
 	public void PressEnterOnCLIWhenEmptyTest() {
 		JTextArea textDisplayMain = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
+//		textDisplayMain.set
 		JTextField textInput = (JTextField)GUITestUtils.getChildNamed(gui.getMainFrame(), "textInput");
 		JTextArea textDisplayUpcoming = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
 		assertNotNull("Can't acess the main text display JTextField", textDisplayMain);
@@ -65,6 +66,7 @@ public class GUIBehaviorTest {
 		
 		ActionListener[] als = (ActionListener[])(textInput.getListeners(ActionListener.class));
 		assertEquals(1, als.length);
+		textDisplayMain.setColumns(333);
 		
 		textInput.postActionEvent();
 		

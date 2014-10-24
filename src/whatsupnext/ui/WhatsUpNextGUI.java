@@ -2,11 +2,7 @@ package whatsupnext.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.ListIterator;
 import java.awt.EventQueue;
 import java.awt.Color;
 import java.awt.Font;
@@ -31,38 +27,31 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import whatsupnext.logic.Logic;
-import whatsupnext.parser.extractor.ParseDate;
-import whatsupnext.parser.api.Parser;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.VIEWTYPE;
-
 /*
  * This class is used for GUI of software WhatsUpNext
  */
 public class WhatsUpNextGUI {
 	
-	protected static JFrame frameMain;
+	private JFrame frameMain;
 	private final int FRAME_MAIN_WIDTH = 555;
 	private final int FRAME_MAIN_HEIGHT = 300;
-	protected static JLabel labelWelcome;
+	private static JLabel labelWelcome;
 	private final int[] LABEL_WELCOME_DIMENSIONS = {13, 10, 328, 15};
 	
-	protected static JScrollPane textDisplayMainScrollPane;
+	private static JScrollPane textDisplayMainScrollPane;
 	private final int[] TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS = {10, 35, 328, 180};
-	protected static JTextArea textDisplayMain;
+	static JTextArea textDisplayMain;
 	private final int[] TEXT_DISPLAY_MAIN_DIMENSIONS = {0, 0, 328, 180};
-	protected static JTextField textInput;
+	static JTextField textInput;
 	private final int[] TEXT_INPUT_DIMENSIONS = {10, 225, 423, 25};
-	protected static JButton buttonEnter;
+	private static JButton buttonEnter;
 	private final int[] BUTTON_ENTER_DIMENSIONS = {440, 225, 90, 25};
 	
-	protected static JButton buttonUpcoming;
+	private static JButton buttonUpcoming;
 	private final int[] BUTTON_UPCOMING_DIMENSIONS = {356, 5, 174, 28};
-	protected static JScrollPane textDisplayUpcomingScrollPane;
+	private static JScrollPane textDisplayUpcomingScrollPane;
 	private final int[] TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS = {356, 35, 174, 180};
-	protected static JTextArea textDisplayUpcoming;
+	static JTextArea textDisplayUpcoming;
 	private final int[] TEXT_DISPLAY_UPCOMING_DIMENSIONS = {0, 0, 174, 180};
 	
     private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";
@@ -415,5 +404,5 @@ public class WhatsUpNextGUI {
 				BUTTON_ENTER_DIMENSIONS[2],
 				BUTTON_ENTER_DIMENSIONS[3]);
 	}
-	
+
 }

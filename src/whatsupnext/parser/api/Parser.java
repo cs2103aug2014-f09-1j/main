@@ -4,9 +4,11 @@
 package whatsupnext.parser.api;
 
 import java.util.StringTokenizer;
+
 import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.DeleteExtractor;
 import whatsupnext.parser.extractor.DoneExtractor;
+import whatsupnext.parser.extractor.SearchExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
 import whatsupnext.structure.OPCODE;
@@ -20,7 +22,10 @@ public class Parser {
 	private final String[] ALIASES_VIEW = {"view", "v", "list", "ls", "l"};
 	private final String[] ALIASES_UPDATE = {"update", "u", "edit", "e", "modify", "m"};
 	private final String[] ALIASES_DELETE = {"delete", "del", "d"};
+	private final String[] ALIASES_SEARCH = {"search", "s", "find", "f"};
 	private final String[] ALIASES_DONE = {"done"};
+	private final String[] ALIASES_UNDO = {"undo"};
+	private final String[] ALIASES_REDO = {"redo"};
 	private final String[] ALIASES_HELP = {"help", "h", "?"};
 	private final String[] ALIASES_EXIT = {"exit", "e", "quit", "q"};
 	
@@ -51,21 +56,29 @@ public class Parser {
 				AddExtractor exAdd = new AddExtractor();
 				exAdd.extract(task, input);
 				break;
-			case DELETE:
-				DeleteExtractor exDelete = new DeleteExtractor();
-				exDelete.extract(task, input);
+			case VIEW:
+				ViewExtractor exView = new ViewExtractor();
+				exView.extract(task, input);
 				break;
 			case UPDATE:
 				UpdateExtractor exUpdate = new UpdateExtractor();
 				exUpdate.extract(task, input);
 				break;
-			case VIEW:
-				ViewExtractor exView = new ViewExtractor();
-				exView.extract(task, input);
+			case DELETE:
+				DeleteExtractor exDelete = new DeleteExtractor();
+				exDelete.extract(task, input);
+				break;
+			case SEARCH:
+				SearchExtractor exSearch = new SearchExtractor();
+				exSearch.extract(task, input);
 				break;
 			case DONE:
 				DoneExtractor exDone = new DoneExtractor();
 				exDone.extract(task, input);
+				break;
+			case UNDO:
+				break;
+			case REDO:
 				break;
 			case EXIT:
 				System.exit(0);
@@ -83,8 +96,14 @@ public class Parser {
 			return OPCODE.UPDATE;
 		} else if (isInOperationAliases(operation, ALIASES_DELETE)) {
 			return OPCODE.DELETE;
+		} else if (isInOperationAliases(operation, ALIASES_SEARCH)) {
+			return OPCODE.SEARCH;
 		} else if (isInOperationAliases(operation, ALIASES_DONE)) {
 			return OPCODE.DONE;
+		} else if (isInOperationAliases(operation, ALIASES_UNDO)) {
+			return OPCODE.UNDO;
+		} else if (isInOperationAliases(operation, ALIASES_REDO)) {
+			return OPCODE.REDO;
 		}else if (isInOperationAliases(operation, ALIASES_HELP)) {
 			return OPCODE.HELP;
 		} else if (isInOperationAliases(operation, ALIASES_EXIT)) {

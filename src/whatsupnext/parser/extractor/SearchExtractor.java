@@ -12,7 +12,7 @@ public class SearchExtractor implements Extractor{
 		if (keywords.trim().equals("")){
 			throw new IllegalArgumentException(MESSAGE_INVALID_DESCRIPTION); 
 		} else {
-			task.setDescription(keywords);
+			task.setSearchKeyword(keywords);
 		}
 			
 	}

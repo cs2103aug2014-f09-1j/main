@@ -12,6 +12,7 @@ public class ViewExtractor implements Extractor {
 	private final String MESSAGE_INVALID_END_TIME = "'view' must have an valid end time";
 	private final String MESSAGE_INVALID_START_TIME = "'view' must have an valid start time";
 	private final String MESSAGE_INVALID_DATE = "'view' must have an valid date";
+	private final String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
 	
 	private ParseDate parseDate;
 	
@@ -102,6 +103,9 @@ public class ViewExtractor implements Extractor {
 		task.setEndTime(parseDate.parseInput(details[1]));
 		if (task.getEndTime().isEmpty()){
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
+		}
+		if (task.getStartTime().compareTo(task.getEndTime())>0) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_START_END_TIME);
 		}
 	}
 	

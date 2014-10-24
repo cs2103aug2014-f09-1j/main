@@ -248,6 +248,16 @@ public class ParserTest {
 	}
 	
 	@Test
+	// Parser Testing: search
+	public void testParserSearch() {
+		String input = "search for this keyword";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.SEARCH, task.getOpCode());
+        assertEquals("OPCODE", "for this keyword", task.getSearchKeyword());
+	}
+	
+	@Test
 	// Parser Testing: done
 	public void testParserDone() {
 		String input = "done 13";

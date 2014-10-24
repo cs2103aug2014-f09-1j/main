@@ -13,6 +13,7 @@ public class Task {
 	private static final int OPERAND_SIZE = 4;
 	private static final int INDEX_FOR_TASK_ID = 0;
 	private static final int INDEX_FOR_DESCRIPTION = 1;
+	private static final int INDEX_FOR_SEARCH_KEYWORD = 1;
 	private static final int INDEX_FOR_START_TIME = 2;
 	private static final int INDEX_FOR_END_TIME = 3;
 	
@@ -88,6 +89,14 @@ public class Task {
 	
 	public void setDescription(String description) {
 		operand[INDEX_FOR_DESCRIPTION] = description;
+	}
+	
+	public String getSearchKeyword() {
+		return operand[INDEX_FOR_SEARCH_KEYWORD];
+	}
+	
+	public void setSearchKeyword(String keyword) {
+		operand[INDEX_FOR_SEARCH_KEYWORD] = keyword;
 	}
 	
 	public String getStartTime() {

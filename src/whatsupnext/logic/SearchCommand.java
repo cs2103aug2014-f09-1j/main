@@ -1,6 +1,7 @@
 package whatsupnext.logic;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import whatsupnext.structure.Task;
 
@@ -22,14 +23,26 @@ public class SearchCommand extends Command {
 		
 		return feedbackSearch;
 	}
-	
-	/*
-	 * One type of SEARCH function.
-	 */
-	private void searchByDescription(String description) {
+
+	private void searchByDescription(String keywords) {
+			
 		for (int i = 0; i < list.size(); i++) {
 			Task task = list.get(i);
-			if (task.getDescription().contains(description)) {
+			String taskDescription = task.getDescription();
+			int number = 0;
+			
+			StringTokenizer keywordToken = new StringTokenizer(keywords);
+		    int tokenNumber = keywordToken.countTokens();
+		    
+			while (keywordToken.hasMoreTokens()) {
+				if (taskDescription.contains(keywordToken.nextToken())) {
+					number++;
+				} else {
+					break;
+				}
+			}
+			
+			if (number == tokenNumber) {
 				String taskInfo = Logic.getFormattedOutput(task);
 				output.add(taskInfo);
 			}

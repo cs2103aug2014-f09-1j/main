@@ -43,37 +43,30 @@ import whatsupnext.structure.Types.VIEWTYPE;
  */
 public class WhatsUpNextGUI {
 	
-    private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";   
-	private final ArrayList<String> STRINGS_CLEAR = new ArrayList<String>(Arrays.asList("clear", "Clear", "CLEAR", "clc"));
-    
-	private JFrame frameMain;
+	protected static JFrame frameMain;
 	private final int FRAME_MAIN_WIDTH = 555;
 	private final int FRAME_MAIN_HEIGHT = 300;
-	private JLabel labelWelcome;
+	protected static JLabel labelWelcome;
 	private final int[] LABEL_WELCOME_DIMENSIONS = {13, 10, 328, 15};
 	
-	private JScrollPane textDisplayMainScrollPane;
+	protected static JScrollPane textDisplayMainScrollPane;
 	private final int[] TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS = {10, 35, 328, 180};
-	private JTextArea textDisplayMain;
+	protected static JTextArea textDisplayMain;
 	private final int[] TEXT_DISPLAY_MAIN_DIMENSIONS = {0, 0, 328, 180};
-	private JTextField textInput;
+	protected static JTextField textInput;
 	private final int[] TEXT_INPUT_DIMENSIONS = {10, 225, 423, 25};
-	private JButton buttonEnter;
+	protected static JButton buttonEnter;
 	private final int[] BUTTON_ENTER_DIMENSIONS = {440, 225, 90, 25};
 	
-	private JButton buttonUpcoming;
+	protected static JButton buttonUpcoming;
 	private final int[] BUTTON_UPCOMING_DIMENSIONS = {356, 5, 174, 28};
-	private JScrollPane textDisplayUpcomingScrollPane;
+	protected static JScrollPane textDisplayUpcomingScrollPane;
 	private final int[] TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS = {356, 35, 174, 180};
-	private JTextArea textDisplayUpcoming;
+	protected static JTextArea textDisplayUpcoming;
 	private final int[] TEXT_DISPLAY_UPCOMING_DIMENSIONS = {0, 0, 174, 180};
 	
-	private Logic logicHandler;
-	private LinkedList<String> usedCommands;
-	private ListIterator<String> commandIterator;
-	private boolean upLastPressed;
-	private boolean downLastPressed;
-	
+    private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";
+    private GUIFunctionality guiBehavior;
 
 	
 	/**
@@ -109,12 +102,13 @@ public class WhatsUpNextGUI {
 	
 	/**
 	 * Create the application.
+	 * Be sure to initialize the GUIComponents before the GUIFunctionality
 	 */
 	public WhatsUpNextGUI() {
-		initClassComponents();
 		initGUIComponents();
 		setComponentsNames();
-		clickUpcoming();
+		guiBehavior = new GUIFunctionality();
+		guiBehavior.clickUpcoming();
 	}
 	
 	/**
@@ -144,17 +138,6 @@ public class WhatsUpNextGUI {
 		textDisplayUpcoming.setName("textDisplayUpcoming");
 	}
 
-	/**
-	 * Initialize all the non-GUI parts
-	 */
-	private void initClassComponents() {
-		logicHandler = new Logic();
-		usedCommands = new LinkedList<String>();
-		commandIterator = usedCommands.listIterator();
-		upLastPressed = false;
-		downLastPressed = false;
-	}
-	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -266,7 +249,7 @@ public class WhatsUpNextGUI {
 		buttonUpcoming.setBackground(new Color(70, 130, 180));
 		buttonUpcoming.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				clickUpcoming();
+				guiBehavior.clickUpcoming();
 			}
 		});
 		buttonUpcoming.setBounds(
@@ -297,7 +280,7 @@ public class WhatsUpNextGUI {
 		buttonEnter.setBackground(new Color(70, 130, 180));
 		buttonEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				clickEnter();
+				guiBehavior.clickEnter();
 			}
 		});
 		buttonEnter.setBounds(
@@ -326,8 +309,7 @@ public class WhatsUpNextGUI {
 		textInput.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				clickEnter();
-				commandIterator = usedCommands.listIterator();
+				guiBehavior.pressEnterFromCLI();
 			}	
 		});
 		
@@ -337,15 +319,15 @@ public class WhatsUpNextGUI {
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyCode();
 				if (key == KeyEvent.VK_UP) {
-					pressUp();
+					guiBehavior.pressUpFromCLI();
 				} else if (key == KeyEvent.VK_DOWN) {
-					pressDown();
+					guiBehavior.pressDownFromCLI();
 				}
 			}
 			
 			@Override
 			public void keyTyped(KeyEvent e) {
-				commandIterator = usedCommands.listIterator();
+				guiBehavior.pressKeyFromCLI();
 			}
 		});
 	}
@@ -434,122 +416,4 @@ public class WhatsUpNextGUI {
 				BUTTON_ENTER_DIMENSIONS[3]);
 	}
 	
-	/**
-	 * This method is activated as 'input command'
-	 * It is called whenever user clicks the input button or presses the enter key
-	 */
-	private void clickEnter(){
-		String commandInput = textInput.getText();
-		String feedback;
-		
-		if (commandInput.trim().isEmpty()) {
-			feedback = "Empty command";
-		} else {
-			for (String stringClear : STRINGS_CLEAR) {
-				if (stringClear.equals(commandInput.trim())){
-					usedCommands.addFirst(commandInput);	
-					clearMainTextDisplay();
-					clearTextInput();
-					return;
-				}
-			}
-			try {
-				usedCommands.addFirst(commandInput);
-				Parser parser = new Parser(commandInput);
-				Task currentTask = parser.parseInput();
-				feedback = logicHandler.executeTask(currentTask);
-			} catch (Exception e) {
-				feedback = e.getMessage();
-			}
-		}
-		
-		displayFeedback(feedback);
-		clearTextInput();
-		clickUpcoming();
-	}
-	
-
-	private void pressUp() {
-		upLastPressed = true;
-		if (commandIterator.hasNext()) {
-			textInput.setText(commandIterator.next());
-		}
-		if (downLastPressed) {
-			textInput.setText(commandIterator.next());
-			downLastPressed = false;
-		}
-	}
-	
-	private void pressDown() {
-		downLastPressed = true;
-		if (commandIterator.hasPrevious()) {
-			textInput.setText(commandIterator.previous());
-		}
-		if (upLastPressed) {
-			textInput.setText(commandIterator.previous());
-			upLastPressed = false;
-		}
-	}
-
-	/**
-	 * Clears the user command prompt
-	 */
-	private void clearTextInput() {
-		textInput.setText("");
-	}
- 
-	/**
-	 * Clears the main display area
-	 */
-	private void clearMainTextDisplay() {
-		textDisplayMain.setText("---Please enter command below:\r\n");
-	}
-
-	/** 
-	 * This method would display feedback message in main display area
-	 */
-	private void displayFeedback(String feedback) {
-		textDisplayMain.append("\n"+feedback+"\n");
-	}
-	
-	/** 
-	 * This method would display feedback message in main display area
-	 */
-	private void displayUpcomingFeedback(String feedback) {
-		textDisplayUpcoming.setText(feedback);
-	}
-	
-	
-	
-	/**
-	 * Callback function for when the user clicks the Upcoming Tasks button
-	 * or when new execution has been activated
-	 */
-	private void clickUpcoming() {
-		// Get a list of most recent tasks and display
-		Task task = generateTaskForUpcoming();
-		
-		String feedback;
-		try {
-			feedback = logicHandler.executeTask(task);
-		} catch (Exception e) {
-			feedback = e.getMessage();
-		}
-		
-		displayUpcomingFeedback(feedback);
-	}
-
-	/**
-	 *  view all tasks within today
-	 * @return	the task that holds the view time frame task for upcoming
-	 */
-	private Task generateTaskForUpcoming() {
-		ParseDate parseDate = new ParseDate();
-		Task task = new Task();
-		task.setOpcode(OPCODE.VIEW);
-		task.setViewType(VIEWTYPE.TIMEFRAME);
-		task.setStartTime(parseDate.getTodayDateString() + "0000");
-		task.setEndTime(parseDate.getTodayDateString() + "2359");
-		return task;
-	}
 }

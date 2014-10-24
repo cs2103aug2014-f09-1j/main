@@ -256,4 +256,22 @@ public class ParserTest {
         assertEquals("OPCODE", OPCODE.DONE, task.getOpCode());
         assertEquals("ID", "13", task.getTaskID());
 	}
+	
+	@Test
+	// Parser Testing: undo
+	public void testParserUndo() {
+		String input = "undo";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.UNDO, task.getOpCode());
+	}
+	
+	@Test
+	// Parser Testing: redo
+	public void testParserRedo() {
+		String input = "redo";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.REDO, task.getOpCode());
+	}
 }

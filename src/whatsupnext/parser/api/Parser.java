@@ -21,6 +21,8 @@ public class Parser {
 	private final String[] ALIASES_UPDATE = {"update", "u", "edit", "e", "modify", "m"};
 	private final String[] ALIASES_DELETE = {"delete", "del", "d"};
 	private final String[] ALIASES_DONE = {"done"};
+	private final String[] ALIASES_UNDO = {"undo"};
+	private final String[] ALIASES_REDO = {"redo"};
 	private final String[] ALIASES_HELP = {"help", "h", "?"};
 	private final String[] ALIASES_EXIT = {"exit", "e", "quit", "q"};
 	
@@ -67,6 +69,10 @@ public class Parser {
 				DoneExtractor exDone = new DoneExtractor();
 				exDone.extract(task, input);
 				break;
+			case UNDO:
+				break;
+			case REDO:
+				break;
 			case EXIT:
 				System.exit(0);
 			default:
@@ -85,6 +91,10 @@ public class Parser {
 			return OPCODE.DELETE;
 		} else if (isInOperationAliases(operation, ALIASES_DONE)) {
 			return OPCODE.DONE;
+		} else if (isInOperationAliases(operation, ALIASES_UNDO)) {
+			return OPCODE.UNDO;
+		} else if (isInOperationAliases(operation, ALIASES_REDO)) {
+			return OPCODE.REDO;
 		}else if (isInOperationAliases(operation, ALIASES_HELP)) {
 			return OPCODE.HELP;
 		} else if (isInOperationAliases(operation, ALIASES_EXIT)) {

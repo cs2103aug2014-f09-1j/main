@@ -23,7 +23,8 @@ public class ViewExtractor implements Extractor {
 	public void extract(Task task, String input){
 		int numOfWord = Utility.countWords(input);
 		if ( numOfWord == 0){
-			throw new IllegalArgumentException(MESSAGE_INVALID_ARGUMENT);
+			// throw new IllegalArgumentException(MESSAGE_INVALID_ARGUMENT);
+			viewCaseUndone(task);
 		} else if (numOfWord == 1) {
 			if (input.equalsIgnoreCase("all")) {
 				viewCaseAll(task);
@@ -43,7 +44,16 @@ public class ViewExtractor implements Extractor {
 		}
 	}
 	
-    /**
+	
+	/**
+	 *  View case for only tasks not done 
+	 * @param task
+	 */
+    private void viewCaseUndone(Task task) {
+    	task.setViewType(VIEWTYPE.UNDONE);	
+	}
+
+	/**
      * View case for Time frame: start time and end time gven
      * @param task
      * @param viewDetail

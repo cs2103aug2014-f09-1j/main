@@ -7,8 +7,8 @@ import whatsupnext.structure.Task;
 public class SearchCommand extends Command {
 
 	private final String MESSAGE_NOTFOUND = "No tasks are found.";
-	private ArrayList<Task> list = LogicUtilities.getTaskList();
-	private ArrayList<String> output = LogicUtilities.getOutputList();
+	private ArrayList<Task> list = LogicUtilities.list;
+	private ArrayList<String> output = LogicUtilities.output;
 	
 	public SearchCommand(Task task) {
 		super(task);

@@ -13,8 +13,8 @@ public class DeleteCommand extends Command {
 	private final String MESSAGE_DELETED = "Tasks are successfully deleted.";
 	private DELETETYPE deleteType;
 	
-	private ArrayList<Task> list = LogicUtilities.getTaskList();
-	private PriorityQueue<Integer> availableIDs = LogicUtilities.getAvailableIDs();
+	private ArrayList<Task> list = LogicUtilities.list;
+	private PriorityQueue<Integer> availableIDs = LogicUtilities.availableIDs;
 	
 	public DeleteCommand(Task task) {
 		super(task);

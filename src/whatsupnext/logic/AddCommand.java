@@ -12,8 +12,8 @@ public class AddCommand extends Command {
 	private final String MESSAGE_ADDED = "A task is successfully added.";
 	private ADDTYPE addType;
 	
-	private ArrayList<Task> list = LogicUtilities.getTaskList();
-	private PriorityQueue<Integer> availableIDs = LogicUtilities.getAvailableIDs();
+	private ArrayList<Task> list = LogicUtilities.list;
+	private PriorityQueue<Integer> availableIDs = LogicUtilities.availableIDs;
 	
 	public AddCommand(Task task) {
 		super(task);

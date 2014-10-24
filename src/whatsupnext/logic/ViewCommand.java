@@ -12,8 +12,8 @@ public class ViewCommand extends Command {
 
 	private final String MESSAGE_NOTFOUND = "No tasks are found.";
 	private VIEWTYPE viewType;
-	private ArrayList<Task> list = LogicUtilities.getTaskList();
-	private ArrayList<String> output = LogicUtilities.getOutputList();
+	private ArrayList<Task> list = LogicUtilities.list;
+	private ArrayList<String> output = LogicUtilities.output;
 	
 	public ViewCommand(Task task) {
 		super(task);

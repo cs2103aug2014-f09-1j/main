@@ -17,7 +17,8 @@ public class StorageTest {
 	
 	@Before
 	public void initialize() {
-		obj = Storage.getInstance("storageTest.txt");
+		Storage.tryInitialize("storageTest.txt");
+		obj = Storage.getInstance();
 	}
 
 	@After

@@ -21,11 +21,18 @@ public class Storage {
 	public final static String DELIMITER = "%#";	
 	
 	
-	public static Storage getInstance(String fileName) {
+	/**
+	 * Tries to initialize the Storage singleton with the file name
+	 * @param fileName
+	 * @return
+	 * 		True if successful or False otherwise
+	 */
+	public static boolean tryInitialize(String fileName) {
 		if (storageSingleton == null) {
 			storageSingleton = new Storage(fileName);
+			return true;
 		}
-		return storageSingleton;
+		return false;
 	}
 	
 	public static Storage getInstance() {

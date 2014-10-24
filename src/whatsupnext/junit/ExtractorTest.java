@@ -19,7 +19,7 @@ import whatsupnext.structure.Types.UPDATETYPE;
 import whatsupnext.structure.Types.VIEWTYPE;
 
 public class ExtractorTest {
-
+	
 	public String getTodayDate() {
 		Calendar cal = Calendar.getInstance();
 		String year = Integer.toString(cal.get(Calendar.YEAR));
@@ -106,7 +106,17 @@ public class ExtractorTest {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
 		}
 		try{
+			ex.extract(task, "test by 231014");
+		} catch (Exception e) {
+			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+		try{
 			ex.extract(task, "test from 1234 to rubbish");
+		} catch (Exception e) {
+			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+		try{
+			ex.extract(task, "test from 2359 today to 231014");
 		} catch (Exception e) {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
 		}
@@ -128,6 +138,12 @@ public class ExtractorTest {
 		} catch (Exception e) {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_START_TIME, e.getMessage());
 		}
+		try{
+			ex.extract(task, "test from 231014 to tml");
+			System.out.println(task.getStartTime());
+		} catch (Exception e) {
+			assertEquals("Test invalid start time", MESSAGE_INVALID_START_TIME, e.getMessage());
+		}
 	}
 	
 	@Test
@@ -137,7 +153,7 @@ public class ExtractorTest {
 		Task task = new Task();
 		AddExtractor ex = new AddExtractor();
 		try{
-			ex.extract(task, "get up from 0800 to 0100");
+			ex.extract(task, "get up from 2359 tml to 2358 tml");
 		} catch (Exception e) {
 			assertEquals("Test invalid start end time", MESSAGE_INVALID_START_END_TIME, e.getMessage());
 		}	

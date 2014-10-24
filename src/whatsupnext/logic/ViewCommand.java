@@ -34,9 +34,6 @@ public class ViewCommand extends Command {
 			case TIMEFRAME:
 				viewTimeFrame();
 				break;
-			case UNDONE:
-				viewUndone();
-				break;
 			default:
 				break;
 		}
@@ -115,15 +112,4 @@ public class ViewCommand extends Command {
 			output.add(taskInfo);
 		}
 	}	
-	
-	private void viewUndone() {
-		Iterator<Task> taskIterator = list.iterator();
-		while (taskIterator.hasNext()) {
-			Task task = taskIterator.next();
-			if (task.getDone() == false) {
-				String taskInfo = Logic.getFormattedOutput(task);
-			    output.add(taskInfo);
-			}			
-		}
-	}
 }

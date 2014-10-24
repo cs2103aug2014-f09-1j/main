@@ -35,7 +35,7 @@ public class SearchCommand extends Command {
 		    int tokenNumber = keywordToken.countTokens();
 		    
 			while (keywordToken.hasMoreTokens()) {
-				if (taskDescription.contains(keywordToken.nextToken())) {
+				if (taskDescription.equalsIgnoreCase(keywordToken.nextToken())) {
 					number++;
 				} else {
 					break;

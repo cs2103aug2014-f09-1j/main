@@ -24,26 +24,10 @@ public class StorageTest {
 	
 	@Before
 	public void initialize() {
-		obj = Storage.getInstance("storageTest");
-		
-		dummyTask1 = obj.stringToTask("DummyTaskID1" + Storage.DELIMITER + "DummyDescription1" + Storage.DELIMITER + 
-				"DummyStartTime1" + Storage.DELIMITER + "DummyEndTime1" + Storage.DELIMITER + "true" + Storage.DELIMITER);
-		dummyTask2 = obj.stringToTask("DummyTaskID2" + Storage.DELIMITER + "DummyDescription2" + Storage.DELIMITER + 
-				"DummyStartTime2" + Storage.DELIMITER + "DummyEndTime2" + Storage.DELIMITER + "false" + Storage.DELIMITER);
-		dummyTask3 = obj.stringToTask("DummyTaskID3" + Storage.DELIMITER + "DummyDescription3" + Storage.DELIMITER + 
-				"DummyStartTime3" + Storage.DELIMITER + "DummyEndTime3" + Storage.DELIMITER + "true" + Storage.DELIMITER);
-		
-		taskArray1 = new ArrayList<Task>();
-		taskArray1.add(dummyTask1);
-		
-		taskArray2 = new ArrayList<Task>();
-		taskArray2.add(dummyTask1);
-		taskArray2.add(dummyTask2);
-		
-		taskArray3 = new ArrayList<Task>();
-		taskArray3.add(dummyTask1);
-		taskArray3.add(dummyTask2);
-		taskArray3.add(dummyTask3);
+		Storage.tryInitialize("storageTest");
+		obj = Storage.getInstance();
+		setUpDummyTasks();
+		setUpTaskArrays();
 	}
 	
 	@After
@@ -81,11 +65,27 @@ public class StorageTest {
 		undoBeyondExistingVersions();
 	}
 	
+	private void setUpDummyTasks() {
+		dummyTask1 = obj.stringToTask("DummyTaskID1" + Storage.DELIMITER + "DummyDescription1" + Storage.DELIMITER + 
+				"DummyStartTime1" + Storage.DELIMITER + "DummyEndTime1" + Storage.DELIMITER + "true" + Storage.DELIMITER);
+		dummyTask2 = obj.stringToTask("DummyTaskID2" + Storage.DELIMITER + "DummyDescription2" + Storage.DELIMITER + 
+				"DummyStartTime2" + Storage.DELIMITER + "DummyEndTime2" + Storage.DELIMITER + "false" + Storage.DELIMITER);
+		dummyTask3 = obj.stringToTask("DummyTaskID3" + Storage.DELIMITER + "DummyDescription3" + Storage.DELIMITER + 
+				"DummyStartTime3" + Storage.DELIMITER + "DummyEndTime3" + Storage.DELIMITER + "true" + Storage.DELIMITER);
+	}
 	
-	private void redo() throws IOException {
-		assertTrue(obj.goToNextVersion());
-		tasksToCompare = obj.readTasks();
-		assertEquals(taskArray2, tasksToCompare);
+	private void setUpTaskArrays() {
+		taskArray1 = new ArrayList<Task>();
+		taskArray1.add(dummyTask1);
+		
+		taskArray2 = new ArrayList<Task>();
+		taskArray2.add(dummyTask1);
+		taskArray2.add(dummyTask2);
+		
+		taskArray3 = new ArrayList<Task>();
+		taskArray3.add(dummyTask1);
+		taskArray3.add(dummyTask2);
+		taskArray3.add(dummyTask3);
 	}
 	
 	private void undo() throws IOException {
@@ -102,12 +102,10 @@ public class StorageTest {
 		assertEquals(taskArray1, tasksToCompare);
 	}
 	
-	private void redoAfterChange() throws IOException {
-		assertTrue(obj.inputTasks(taskArray2));
+	private void redo() throws IOException {
+		assertTrue(obj.goToNextVersion());
 		tasksToCompare = obj.readTasks();
 		assertEquals(taskArray2, tasksToCompare);
-		
-		assertFalse(obj.goToNextVersion());
 	}
 	
 	private void undoBoundary() throws IOException {
@@ -120,6 +118,14 @@ public class StorageTest {
 		assertEquals(taskArray2, tasksToCompare);
 	}
 	
+	private void redoAfterChange() throws IOException {
+		assertTrue(obj.inputTasks(taskArray2));
+		tasksToCompare = obj.readTasks();
+		assertEquals(taskArray2, tasksToCompare);
+		
+		assertFalse(obj.goToNextVersion());
+	}
+		
 	private void undoBeyondExistingVersions() throws IOException {
 		assertTrue(obj.goToPreviousVersion());
 		assertTrue(obj.goToPreviousVersion());

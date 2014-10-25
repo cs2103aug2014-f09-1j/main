@@ -2,11 +2,13 @@ package whatsupnext.logic;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
 import whatsupnext.storage.Storage;
 import whatsupnext.structure.Task;
+import whatsupnext.structure.TaskComparators.TaskDefaultComparator;
 
 public class LogicUtilities {
 	
@@ -55,5 +57,13 @@ public class LogicUtilities {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/*
+	 * Sort the tasks in the list.
+	 */
+	public static void sortTasks(ArrayList<Task> tasks) {
+		TaskDefaultComparator comparator = new TaskDefaultComparator();
+		Collections.sort(tasks, comparator);
 	}
 }

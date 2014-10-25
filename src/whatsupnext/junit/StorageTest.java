@@ -44,8 +44,6 @@ public class StorageTest {
 		taskArray3.add(dummyTask1);
 		taskArray3.add(dummyTask2);
 		taskArray3.add(dummyTask3);
-		
-		
 	}
 	
 	@After

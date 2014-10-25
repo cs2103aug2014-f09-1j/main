@@ -12,6 +12,7 @@ public class UpdateExtractor implements Extractor {
 	private final String MESSAGE_INVALID_DESCRIPTION = "'update' must have a valid description";
 	private final String MESSAGE_INVALID_END_TIME = "'update' must have a valid end time";
 	private final String MESSAGE_INVALID_START_TIME = "'update' must have a valid start time";
+	private final String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
 	
 	private ParseDate parseDate;
 	
@@ -81,6 +82,9 @@ public class UpdateExtractor implements Extractor {
 		task.setEndTime(parseDate.parseInput(details[1]));
 		if (task.getEndTime().isEmpty()){
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
+		}
+		if (task.getStartTime().compareTo(task.getEndTime())>0) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_START_END_TIME);
 		}
 	}
 	

@@ -11,6 +11,7 @@ public class AddExtractor implements Extractor {
 	private final String MESSAGE_INVALID_DESCRIPTION = "'add' must have a valid description";
 	private final String MESSAGE_INVALID_END_TIME = "'add' must have a valid end time";
 	private final String MESSAGE_INVALID_START_TIME = "'add' must have a valid start time";
+	private final String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
 	
 	private ParseDate parseDate;
 	
@@ -58,13 +59,18 @@ public class AddExtractor implements Extractor {
 		String[] detailsTimeStartAndEnd = detailsTime.split("\\s+(T|t)(O|o)\\s+");
 		parseDate.setParsingStartTime(true);
 		task.setStartTime(parseDate.parseInput(detailsTimeStartAndEnd[0]));
-		if(task.getStartTime().isEmpty()){
+		if(task.getStartTime().isEmpty() 
+				|| task.getStartTime().compareTo(parseDate.getTodayDateTimeString()) == -1) {
 			throw new IllegalArgumentException(MESSAGE_INVALID_START_TIME);
 		}
 		parseDate.setParsingStartTime(false);
 		task.setEndTime(parseDate.parseInput(detailsTimeStartAndEnd[1]));
-		if(task.getEndTime().isEmpty()){
+		if(task.getEndTime().isEmpty() 
+				|| task.getEndTime().compareTo(parseDate.getTodayDateTimeString()) == -1) {
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
+		}
+		if (task.getStartTime().compareTo(task.getEndTime())>0) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_START_END_TIME);
 		}
 	}
 
@@ -77,7 +83,8 @@ public class AddExtractor implements Extractor {
 		String[] details = taskDetails.split("\\s+(B|b)(Y|y)\\s+");
 		task.setDescription(details[0]);
 		task.setEndTime(parseDate.parseInput(details[1]));
-		if(task.getEndTime().isEmpty()){
+		if(task.getEndTime().isEmpty() 
+				|| task.getEndTime().compareTo(parseDate.getTodayDateTimeString()) == -1) {
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
 		}
 	}

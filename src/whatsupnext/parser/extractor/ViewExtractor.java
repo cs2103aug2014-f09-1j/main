@@ -12,6 +12,7 @@ public class ViewExtractor implements Extractor {
 	private final String MESSAGE_INVALID_END_TIME = "'view' must have an valid end time";
 	private final String MESSAGE_INVALID_START_TIME = "'view' must have an valid start time";
 	private final String MESSAGE_INVALID_DATE = "'view' must have an valid date";
+	private final String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
 	
 	private ParseDate parseDate;
 	
@@ -22,7 +23,8 @@ public class ViewExtractor implements Extractor {
 	public void extract(Task task, String input){
 		int numOfWord = Utility.countWords(input);
 		if ( numOfWord == 0){
-			throw new IllegalArgumentException(MESSAGE_INVALID_ARGUMENT);
+			// throw new IllegalArgumentException(MESSAGE_INVALID_ARGUMENT);
+			viewCaseUndone(task);
 		} else if (numOfWord == 1) {
 			if (input.equalsIgnoreCase("all")) {
 				viewCaseAll(task);
@@ -42,7 +44,16 @@ public class ViewExtractor implements Extractor {
 		}
 	}
 	
-    /**
+	
+	/**
+	 *  View case for only tasks not done 
+	 * @param task
+	 */
+    private void viewCaseUndone(Task task) {
+    	task.setViewType(VIEWTYPE.UNDONE);	
+	}
+
+	/**
      * View case for Time frame: start time and end time gven
      * @param task
      * @param viewDetail
@@ -102,6 +113,9 @@ public class ViewExtractor implements Extractor {
 		task.setEndTime(parseDate.parseInput(details[1]));
 		if (task.getEndTime().isEmpty()){
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
+		}
+		if (task.getStartTime().compareTo(task.getEndTime())>0) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_START_END_TIME);
 		}
 	}
 	

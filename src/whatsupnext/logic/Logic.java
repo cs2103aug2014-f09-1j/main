@@ -3,33 +3,21 @@
  */
 package whatsupnext.logic;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import whatsupnext.structure.Task;
 import whatsupnext.storage.Storage;
 
 public class Logic {
 	
-	private ArrayList<Task> list = LogicUtilities.getTaskList();
-	
 	public Logic() {
-		Storage storage = Storage.getInstance();
-		try {
-			list = storage.readTasks();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Storage.tryInitialize("tasks.txt");
+		LogicUtilities.readTasksIntoInternalList();
 		LogicUtilities.setupAvailableIDs();
 	}
 	
 	public Logic(String fileName) {
-		Storage storage = Storage.getInstance(fileName);
-		try {
-			list = storage.readTasks();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Storage.tryInitialize(fileName);
+		LogicUtilities.readTasksIntoInternalList();
 		LogicUtilities.setupAvailableIDs();
 	}
 	
@@ -52,6 +40,9 @@ public class Logic {
 			case DONE:
 				userCommand = new DoneCommand(task);
 				break;
+			case SEARCH:
+				userCommand = new SearchCommand(task);
+				break;
 			default:
 				return "Unable to execute the command";
 		}
@@ -69,13 +60,6 @@ public class Logic {
 			arrayAsString = arrayAsString.concat("\n" + taskNumberedArray.get(i));
 		}
 		return arrayAsString;
-	}
-	
-	/*
-	 * Three types of SEARCH functions.
-	 */
-	private ArrayList<Task> searchByDescription(String task_Info) {
-		return null;
 	}
 	
 	/*

@@ -11,7 +11,7 @@ public class UpdateCommand extends Command{
 	private final String MESSAGE_UPDATED = "A task is successfully updated.";
 	private UPDATETYPE updateType;
 	
-	private ArrayList<Task> list = LogicUtilities.getTaskList();
+	private ArrayList<Task> list = LogicUtilities.list;
 
 	public UpdateCommand(Task task) {
 		super(task);
@@ -32,6 +32,8 @@ public class UpdateCommand extends Command{
 			default:
 				break;
 		}
+		
+		LogicUtilities.sortTasks(list);
 		
 		String feedbackUpdate;
 		try {

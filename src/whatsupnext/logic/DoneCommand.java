@@ -8,7 +8,7 @@ import whatsupnext.structure.Task;
 public class DoneCommand extends Command {
 
 	private final String MESSAGE_DONE = "Tasks are successfully labeled.";
-	private ArrayList<Task> list = LogicUtilities.getTaskList();
+	private ArrayList<Task> list = LogicUtilities.list;
 	
 	public DoneCommand(Task task) {
 		super(task);

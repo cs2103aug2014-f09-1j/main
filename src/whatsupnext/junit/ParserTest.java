@@ -248,6 +248,16 @@ public class ParserTest {
 	}
 	
 	@Test
+	// Parser Testing: search
+	public void testParserSearch() {
+		String input = "search for this keyword";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.SEARCH, task.getOpCode());
+        assertEquals("OPCODE", "for this keyword", task.getSearchKeyword());
+	}
+	
+	@Test
 	// Parser Testing: done
 	public void testParserDone() {
 		String input = "done 13";
@@ -255,5 +265,23 @@ public class ParserTest {
 		Task task = parser.parseInput();
         assertEquals("OPCODE", OPCODE.DONE, task.getOpCode());
         assertEquals("ID", "13", task.getTaskID());
+	}
+	
+	@Test
+	// Parser Testing: undo
+	public void testParserUndo() {
+		String input = "undo";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.UNDO, task.getOpCode());
+	}
+	
+	@Test
+	// Parser Testing: redo
+	public void testParserRedo() {
+		String input = "redo";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.REDO, task.getOpCode());
 	}
 }

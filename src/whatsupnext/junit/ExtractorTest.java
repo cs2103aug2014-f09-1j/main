@@ -19,7 +19,7 @@ import whatsupnext.structure.Types.UPDATETYPE;
 import whatsupnext.structure.Types.VIEWTYPE;
 
 public class ExtractorTest {
-
+	
 	public String getTodayDate() {
 		Calendar cal = Calendar.getInstance();
 		String year = Integer.toString(cal.get(Calendar.YEAR));
@@ -47,6 +47,7 @@ public class ExtractorTest {
 	}
 	
 	@Test
+	/* This test case combines 2 valid dates*/
 	public void testAdd() {
 		Task task = new Task();
 		AddExtractor ex = new AddExtractor();
@@ -58,6 +59,7 @@ public class ExtractorTest {
 	}
 	
 	@Test
+	/* This test case is equivalent partitioning of add by deadline only*/
 	public void testAdd2() {
 		Task task = new Task();
 		AddExtractor ex = new AddExtractor();
@@ -69,6 +71,7 @@ public class ExtractorTest {
 	}
 	
 	@Test
+	/* testing invalid case one by one*/
 	public void testAddInvalidDescription() {
 		String MESSAGE_INVALID_DESCRIPTION = "'add' must have a valid description";
 		Task task = new Task();
@@ -92,6 +95,7 @@ public class ExtractorTest {
 	}
 
 	@Test
+	/* testing invalid case one by one*/
 	public void testAddInvalidEndTime() {
 		String MESSAGE_INVALID_END_TIME = "'add' must have a valid end time";
 		Task task = new Task();
@@ -102,13 +106,24 @@ public class ExtractorTest {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
 		}
 		try{
+			ex.extract(task, "test by 231014");
+		} catch (Exception e) {
+			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+		try{
 			ex.extract(task, "test from 1234 to rubbish");
+		} catch (Exception e) {
+			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+		try{
+			ex.extract(task, "test from 2359 today to 231014");
 		} catch (Exception e) {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
 		}
 	}
 	
 	@Test
+	/* testing invalid case one by one*/
 	public void testAddInvalidStartTime() {
 		String MESSAGE_INVALID_START_TIME = "'add' must have a valid start time";
 		Task task = new Task();
@@ -123,9 +138,29 @@ public class ExtractorTest {
 		} catch (Exception e) {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_START_TIME, e.getMessage());
 		}
+		try{
+			ex.extract(task, "test from 231014 to tml");
+			System.out.println(task.getStartTime());
+		} catch (Exception e) {
+			assertEquals("Test invalid start time", MESSAGE_INVALID_START_TIME, e.getMessage());
+		}
 	}
 	
 	@Test
+	/* testing invalid case one by one*/
+	public void testAddInvalidStartEndTime() {
+		String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
+		Task task = new Task();
+		AddExtractor ex = new AddExtractor();
+		try{
+			ex.extract(task, "get up from 2359 tml to 2358 tml");
+		} catch (Exception e) {
+			assertEquals("Test invalid start end time", MESSAGE_INVALID_START_END_TIME, e.getMessage());
+		}	
+	}
+	
+	@Test
+	/* testing for delete ID case:equivalent partitioning*/
 	public void testDelete1() {
 		Task task = new Task();
 		DeleteExtractor ex = new DeleteExtractor();
@@ -137,6 +172,7 @@ public class ExtractorTest {
 	}
 	
 	@Test
+	/* testing for delete by endtime case:equivalent partitioning*/
 	public void testDelete2() {
 		Task task = new Task();
 		DeleteExtractor ex = new DeleteExtractor();
@@ -148,6 +184,7 @@ public class ExtractorTest {
 	}
 	
 	@Test
+	/* testing for delete deadline case:equivalent partitioning*/
 	public void testDelete3() {
 		Task task = new Task();
 		DeleteExtractor ex = new DeleteExtractor();
@@ -159,6 +196,7 @@ public class ExtractorTest {
 	}
 	
 	@Test
+	/* testing for delete time frame case:equivalent partitioning*/
 	public void testDelete4() {
 		Task task = new Task();
 		DeleteExtractor ex = new DeleteExtractor();
@@ -182,6 +220,7 @@ public class ExtractorTest {
 	}
 	
 	@Test
+	/* testing invalid case one by one*/
 	public void testDeleteInvalidTaskIDOrDate() {
 		String MESSAGE_INVALID_TASKID_OR_DATE = "'delete' must have a valid Task ID or Date";
 		Task task = new Task();
@@ -225,6 +264,19 @@ public class ExtractorTest {
 		} catch (Exception e) {
 			assertEquals("Test invalid start time", MESSAGE_INVALID_START_TIME, e.getMessage());
 		}
+	}
+	
+	@Test
+	/* testing invalid case one by one*/
+	public void testDeleteInvalidStartEndTime() {
+		String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
+		Task task = new Task();
+		DeleteExtractor ex = new DeleteExtractor();
+		try{
+			ex.extract(task, "from 0800 to 0100");
+		} catch (Exception e) {
+			assertEquals("Test invalid start end time", MESSAGE_INVALID_START_END_TIME, e.getMessage());
+		}	
 	}
 	
 	@Test
@@ -319,6 +371,19 @@ public class ExtractorTest {
 		} catch (Exception e) {
 			assertEquals("Test invalid start time", MESSAGE_INVALID_START_TIME, e.getMessage());
 		}
+	}
+	
+	@Test
+	/* testing invalid case one by one*/
+	public void testUpdateInvalidStartEndTime() {
+		String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
+		Task task = new Task();
+		UpdateExtractor ex = new UpdateExtractor();
+		try{
+			ex.extract(task, "14 from 0800 to 0100");
+		} catch (Exception e) {
+			assertEquals("Test invalid start end time", MESSAGE_INVALID_START_END_TIME, e.getMessage());
+		}	
 	}
 		
 	@Test
@@ -433,5 +498,18 @@ public class ExtractorTest {
 		} catch (Exception e) {
 			assertEquals("Test invalid time", MESSAGE_INVALID_DATE, e.getMessage());
 		}
+	}
+	
+	@Test
+	/* testing invalid case one by one*/
+	public void testViewInvalidStartEndTime() {
+		String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
+		Task task = new Task();
+		ViewExtractor ex = new ViewExtractor();
+		try{
+			ex.extract(task, "from 0800 to 0100");
+		} catch (Exception e) {
+			assertEquals("Test invalid start end time", MESSAGE_INVALID_START_END_TIME, e.getMessage());
+		}	
 	}
 }

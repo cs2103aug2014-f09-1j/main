@@ -1,32 +1,22 @@
 package whatsupnext.logic;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 
+import whatsupnext.storage.Storage;
 import whatsupnext.structure.Task;
+import whatsupnext.structure.TaskComparators.TaskDefaultComparator;
 
 public class LogicUtilities {
 	
-	private static final ArrayList<Task> list = new ArrayList<Task>();
-	private static final ArrayList<String> output = new ArrayList<String>();
-	private static final int maxTasks = 1000000;
-	private static final PriorityQueue<Integer> availableIDs = new PriorityQueue<Integer>(maxTasks);
+	protected static final ArrayList<Task> list = new ArrayList<Task>();
+	protected static final ArrayList<String> output = new ArrayList<String>();
+	protected static final int maxTasks = 1000000;
+	protected static final PriorityQueue<Integer> availableIDs = new PriorityQueue<Integer>(maxTasks);
 	
-	public static ArrayList<Task> getTaskList() {
-		return list;
-	}
-	
-	public static ArrayList<String> getOutputList() {
-		return output;
-	}
-
-	public static int getMaxTasks() {
-		return maxTasks;
-	}
-	
-	public static PriorityQueue<Integer> getAvailableIDs() {
-		return availableIDs;
-	}
 	
 	/*
 	 * Return the index of a task in the list.
@@ -45,7 +35,7 @@ public class LogicUtilities {
 		availableIDs.clear();
 		
 		// Populate the available ID list
-		for (int i = 1; i < LogicUtilities.getMaxTasks(); i++) {
+		for (int i = 1; i < maxTasks; i++) {
 			availableIDs.add(i);
 		}
 		
@@ -54,5 +44,26 @@ public class LogicUtilities {
 			int usedID = Integer.parseInt(list.get(i).getTaskID());
 			availableIDs.remove(usedID);
 		}
+	}
+
+	public static void readTasksIntoInternalList() {
+		Storage storage = Storage.getInstance();
+		try {
+			Iterator<Task> readIterator = storage.readTasks().iterator();
+			while (readIterator.hasNext()) {
+				Task readTask = readIterator.next();
+				list.add(readTask);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * Sort the tasks in the list.
+	 */
+	public static void sortTasks(ArrayList<Task> tasks) {
+		TaskDefaultComparator comparator = new TaskDefaultComparator();
+		Collections.sort(tasks, comparator);
 	}
 }

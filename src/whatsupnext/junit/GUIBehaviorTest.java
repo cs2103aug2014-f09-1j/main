@@ -50,7 +50,7 @@ public class GUIBehaviorTest {
 		
 		buttonEnter.doClick();
 		
-		assertEquals("---Please enter command below:\r\n\nEmpty command", textDisplayMain.getText());
+		assertEquals("---Please enter command below:\r\n\nEmpty command\n", textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 	}
 	
@@ -68,7 +68,7 @@ public class GUIBehaviorTest {
 		
 		textInput.postActionEvent();
 		
-		assertEquals("---Please enter command below:\r\n\nEmpty command", textDisplayMain.getText());
+		assertEquals("---Please enter command below:\r\n\nEmpty command\n", textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 	}
 	

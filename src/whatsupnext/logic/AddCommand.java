@@ -23,6 +23,8 @@ public class AddCommand extends Command {
 	public String executeCommand() {
 		taskID = Integer.toString(availableIDs.remove());
 		list.add(this.toTask());
+		
+		LogicUtilities.sortTasks(list);
 
 		String feedbackAdd;
 		try {

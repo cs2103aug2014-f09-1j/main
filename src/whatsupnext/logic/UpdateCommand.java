@@ -33,6 +33,8 @@ public class UpdateCommand extends Command{
 				break;
 		}
 		
+		LogicUtilities.sortTasks(list);
+		
 		String feedbackUpdate;
 		try {
 			storage.inputTasks(list);

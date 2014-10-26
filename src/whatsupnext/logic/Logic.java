@@ -48,6 +48,9 @@ public class Logic {
 			case UNDO:
 				userCommand = new UndoCommand(task);
 				break;
+			case REDO:
+				userCommand = new RedoCommand(task);
+				break;
 			default:
 				return "Unable to execute the command";
 		}

@@ -3,26 +3,24 @@ package whatsupnext.logic;
 import whatsupnext.storage.Storage;
 import whatsupnext.structure.Task;
 
-public class UndoCommand extends Command{
+public class RedoCommand extends Command{
 
-	private final String MESSAGE_UNDO = "The execution was canceled.";
-	private final String MESSAGE_UNDO_FAIL = "Cannot execute undo command.";
+	private final String MESSAGE_REDO = "The execution was re executed.";
+	private final String MESSAGE_REDO_FAIL = "Cannot execute redo command.";
 	
-	public UndoCommand(Task task) {
+	public RedoCommand(Task task) {
 		super(task);
 	}
 
 	public String executeCommand() {
 		storage = Storage.getInstance();
-		if (storage.goToPreviousVersion()) {
+		if (storage.goToNextVersion()) {
 			LogicUtilities.clearList();
 			Logic.readTasksIntoInternalList();
 			LogicUtilities.setupAvailableIDs();
-			return MESSAGE_UNDO;
+			return MESSAGE_REDO;
 		} else {
-			return MESSAGE_UNDO_FAIL;
+			return MESSAGE_REDO_FAIL;
 		}
 	}
-	
-
 }

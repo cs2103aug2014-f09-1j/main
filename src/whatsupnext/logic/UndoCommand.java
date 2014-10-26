@@ -17,7 +17,6 @@ public class UndoCommand extends Command{
 		if (storage.goToPreviousVersion()) {
 			Logic.readTasksIntoInternalList();
 			LogicUtilities.setupAvailableIDs();
-			
 			return MESSAGE_UNDO;
 		} else {
 			return MESSAGE_UNDO_FIAL;

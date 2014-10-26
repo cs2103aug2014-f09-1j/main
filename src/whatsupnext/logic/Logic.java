@@ -68,4 +68,14 @@ public class Logic {
 		}
 	}
 	
+	public void clearRevisionFiles() {
+		Storage storage = Storage.getInstance();
+		try {
+			storage.deleteFileVersions();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }

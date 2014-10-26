@@ -186,4 +186,8 @@ public class GUIFunctionality {
 		commandIterator = usedCommands.listIterator();
 	}
 
+	void deleteRevisions() {
+		logic.clearRevisionFiles();
+	}
+
 }

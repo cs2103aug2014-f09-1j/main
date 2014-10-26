@@ -16,6 +16,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -157,6 +159,11 @@ public class WhatsUpNextGUI {
 			@Override
 			public void componentResized(ComponentEvent arg0) {
 				resetComponentSizes();
+			}
+		});
+		frameMain.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				guiBehavior.deleteRevisions();
 			}
 		});
 	}

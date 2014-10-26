@@ -111,11 +111,6 @@ public class ExtractorTest {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
 		}
 		try{
-			ex.extract(task, "test from 1234 to rubbish");
-		} catch (Exception e) {
-			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
-		}
-		try{
 			ex.extract(task, "test from 2359 today to 231014");
 		} catch (Exception e) {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());

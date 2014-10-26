@@ -45,6 +45,9 @@ public class Logic {
 			case SEARCH:
 				userCommand = new SearchCommand(task);
 				break;
+			case UNDO:
+				userCommand = new UndoCommand(task);
+				break;
 			default:
 				return "Unable to execute the command";
 		}
@@ -52,7 +55,7 @@ public class Logic {
 		return userCommand.executeCommand();
 	}
 	
-	private void readTasksIntoInternalList() {
+	public static void readTasksIntoInternalList() {
 		Storage storage = Storage.getInstance();
 		try {
 			Iterator<Task> readIterator = storage.readTasks().iterator();

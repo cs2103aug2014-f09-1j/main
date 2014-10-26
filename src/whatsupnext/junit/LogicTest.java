@@ -517,9 +517,9 @@ public class LogicTest {
 		
 		String feedback = logic.executeTask(task);
 		assertEquals(feedback,
-				"1: task\nNot done." + "\n" +
+				"3: a b\nNot done." + "\n" +
 		        "2: task a b\nNot done." + "\n" +
-		        "3: a b\nNot done."
+		        "1: task\nNot done."
 		);
 		
 		task = new Task();

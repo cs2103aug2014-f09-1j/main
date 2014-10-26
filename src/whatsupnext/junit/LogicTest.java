@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import whatsupnext.logic.Logic;
+import whatsupnext.logic.LogicUtilities;
 import whatsupnext.storage.Storage;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
@@ -30,7 +31,7 @@ public class LogicTest {
 		}
 		
 		public String formatTime(String time){
-			return Logic.getFormattedTime(time);
+			return LogicUtilities.getFormattedTime(time);
 		}
 	}
 	

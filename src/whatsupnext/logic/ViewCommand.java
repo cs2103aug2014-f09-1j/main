@@ -41,7 +41,7 @@ public class ViewCommand extends Command {
 				break;
 		}
 		
-		String feedbackView = Logic.formatArrayAsString(output);
+		String feedbackView = LogicUtilities.formatArrayAsString(output);
 		output.clear();
 		
 		return feedbackView;
@@ -55,8 +55,10 @@ public class ViewCommand extends Command {
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && !Logic.endsBeforeDeadline(task, startTime) && Logic.endsBeforeDeadline(task, endTime) && (task.getDone() == false)) {
-				String taskInfo = Logic.getFormattedOutput(task);
+			if (!task.getEndTime().isEmpty() &&
+					!LogicUtilities.endsBeforeDeadline(task, startTime) &&
+					LogicUtilities.endsBeforeDeadline(task, endTime) && (task.getDone() == false)) {
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
 				output.add(taskInfo);
 			}
 		}
@@ -67,8 +69,10 @@ public class ViewCommand extends Command {
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && Logic.endsOnGivenDate(task, endTime) && (task.getDone() == false)) {
-				String taskInfo = Logic.getFormattedOutput(task);
+			if (!task.getEndTime().isEmpty() &&
+					LogicUtilities.endsOnGivenDate(task, endTime) &&
+					(task.getDone() == false)) {
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
 				output.add(taskInfo);
 			}
 		}
@@ -83,19 +87,21 @@ public class ViewCommand extends Command {
 		
 		while (taskIterator.hasNext()) {
 			currentTask = taskIterator.next();
-			if (!currentTask.getEndTime().isEmpty() && !Logic.endsBeforeDeadline(currentTask, endTime) && (currentTask.getDone() == false)) {
+			if (!currentTask.getEndTime().isEmpty() &&
+					!LogicUtilities.endsBeforeDeadline(currentTask, endTime) &&
+					(currentTask.getDone() == false)) {
 				if (output.isEmpty()) {
 					nearestEndTime = Long.parseLong(currentTask.getEndTime());
-					String taskInfo = Logic.getFormattedOutput(currentTask);;
+					String taskInfo = LogicUtilities.getFormattedOutput(currentTask);;
 					output.add(taskInfo);
 				} else {
 					if (Long.parseLong(currentTask.getEndTime()) < nearestEndTime) {
 						output.clear();
 						nearestEndTime = Long.parseLong(currentTask.getEndTime());
-						String taskInfo = Logic.getFormattedOutput(currentTask); 
+						String taskInfo = LogicUtilities.getFormattedOutput(currentTask); 
 						output.add(taskInfo);
 					} else if (Long.parseLong(currentTask.getEndTime()) == nearestEndTime) {
-						String taskInfo = Logic.getFormattedOutput(currentTask);
+						String taskInfo = LogicUtilities.getFormattedOutput(currentTask);
 						output.add(taskInfo);
 					}
 				}
@@ -111,7 +117,7 @@ public class ViewCommand extends Command {
 		Iterator<Task> taskIterator = list.iterator();
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			String taskInfo = Logic.getFormattedOutput(task);
+			String taskInfo = LogicUtilities.getFormattedOutput(task);
 			output.add(taskInfo);
 		}
 	}	
@@ -121,7 +127,7 @@ public class ViewCommand extends Command {
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
 			if (!task.getDone()) {
-				String taskInfo = Logic.getFormattedOutput(task);
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
 			    output.add(taskInfo);
 			}			
 		}

@@ -18,7 +18,7 @@ public class SearchCommand extends Command {
 	public String executeCommand () {
 		searchByDescription(description);
 		
-		String feedbackSearch = Logic.formatArrayAsString(output);
+		String feedbackSearch = LogicUtilities.formatArrayAsString(output);
 		output.clear();
 		
 		return feedbackSearch;
@@ -43,7 +43,7 @@ public class SearchCommand extends Command {
 			}
 			
 			if (number == tokenNumber) {
-				String taskInfo = Logic.getFormattedOutput(task);
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
 				output.add(taskInfo);
 			}
 		}

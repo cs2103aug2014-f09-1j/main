@@ -69,7 +69,7 @@ public class DeleteCommand extends Command {
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && Logic.endsBeforeDeadline(task, endTime)) {
+			if (!task.getEndTime().isEmpty() && LogicUtilities.endsBeforeDeadline(task, endTime)) {
 				availableIDs.add(Integer.parseInt(task.getTaskID()));
 				taskIterator.remove();
 			}
@@ -81,7 +81,7 @@ public class DeleteCommand extends Command {
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && Logic.endsOnGivenDate(task, endTime)) {
+			if (!task.getEndTime().isEmpty() && LogicUtilities.endsOnGivenDate(task, endTime)) {
 				availableIDs.add(Integer.parseInt(task.getTaskID()));
 				taskIterator.remove();
 			}
@@ -93,7 +93,9 @@ public class DeleteCommand extends Command {
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && !Logic.endsBeforeDeadline(task, startTime) && Logic.endsBeforeDeadline(task, endTime)) {
+			if (!task.getEndTime().isEmpty() &&
+					!LogicUtilities.endsBeforeDeadline(task, startTime) &&
+					LogicUtilities.endsBeforeDeadline(task, endTime)) {
 				availableIDs.add(Integer.parseInt(task.getTaskID()));
 				taskIterator.remove();
 			}

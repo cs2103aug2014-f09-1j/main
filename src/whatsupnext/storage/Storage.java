@@ -212,6 +212,7 @@ public class Storage {
 		File newNameFile = new File(FILE_NAME + (fileVersions.size() - 1) + EXTENSION);
 		transferData(currentFile.getName(), newNameFile.getName());
 		fileVersions.remove(currentFileVersionNumber);
+		
 		fileVersions.add(newNameFile);
 		currentFile = new File(FILE_NAME + EXTENSION);
 		fileVersions.add(currentFile);

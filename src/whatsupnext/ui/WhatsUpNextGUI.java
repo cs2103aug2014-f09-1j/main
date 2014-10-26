@@ -404,5 +404,4 @@ public class WhatsUpNextGUI {
 				BUTTON_ENTER_DIMENSIONS[2],
 				BUTTON_ENTER_DIMENSIONS[3]);
 	}
-
 }

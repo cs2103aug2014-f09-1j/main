@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import whatsupnext.logic.Logic;
+import whatsupnext.storage.Storage;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.ADDTYPE;
@@ -77,7 +78,7 @@ public class LogicTest {
 	
 	@Before
 	public void init() {
-		logic = new LogicStub("logicTest.txt");
+		logic = new LogicStub("logicTest");
 	}
 	
 	@After
@@ -86,6 +87,25 @@ public class LogicTest {
 		delete.setOpcode(OPCODE.DELETE);
 		delete.setDeleteType(DELETETYPE.ALL);
 		logic.executeTask(delete);
+		
+		Storage storage = Storage.getInstance();
+		try {
+			storage.clearFile();
+			storage.deleteFileVersions();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@After
+	public void deleteAllFileVersions() {
+		Storage storage = Storage.getInstance();
+		try {
+			storage.clearFile();
+			storage.deleteFileVersions();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test

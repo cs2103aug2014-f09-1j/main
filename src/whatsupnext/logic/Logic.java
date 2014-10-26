@@ -10,7 +10,7 @@ import whatsupnext.storage.Storage;
 public class Logic {
 	
 	public Logic() {
-		Storage.tryInitialize("tasks.txt");
+		Storage.tryInitialize("tasks");
 		LogicUtilities.readTasksIntoInternalList();
 		LogicUtilities.setupAvailableIDs();
 	}

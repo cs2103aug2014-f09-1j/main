@@ -20,6 +20,16 @@ import whatsupnext.structure.Types.VIEWTYPE;
 
 public class ExtractorTest {
 	
+	private String getTomorrowDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+		String year = Integer.toString(cal.get(Calendar.YEAR));
+		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
+		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));  
+         
+		return year + twoDigitMonth + twoDigitDayOfMonth;
+	}
+	
 	public String getTodayDate() {
 		Calendar cal = Calendar.getInstance();
 		String year = Integer.toString(cal.get(Calendar.YEAR));
@@ -63,11 +73,11 @@ public class ExtractorTest {
 	public void testAdd2() {
 		Task task = new Task();
 		AddExtractor ex = new AddExtractor();
-		ex.extract(task, "dine By 13:00");
+		ex.extract(task, "dine By 13:00 tml");
 		assertEquals("Test Add - description", "dine", task.getDescription());
 		assertEquals("Test Add - startTime", "", task.getStartTime());
-		assertEquals("Test Add - endTime", getTodayDate() + "1300", task.getEndTime());
-		assertEquals("Test Add - addType",ADDTYPE.DEADLINE,task.getAddType());
+		assertEquals("Test Add - endTime", getTomorrowDate() + "1300", task.getEndTime());
+		assertEquals("Test Add - addType", ADDTYPE.DEADLINE,task.getAddType());
 	}
 	
 	@Test
@@ -290,10 +300,10 @@ public class ExtractorTest {
 	public void testUpdate2() {
 		Task task = new Task();
 		UpdateExtractor ex = new UpdateExtractor();
-		ex.extract(task, "10 by 1400 061014");
+		ex.extract(task, "10 by 1400 tml");
 		assertEquals("Test Update - description", "", task.getDescription());
 		assertEquals("Test Update - startTime", "", task.getStartTime());
-		assertEquals("Test Update - endTime", "201410061400", task.getEndTime());
+		assertEquals("Test Update - endTime", getTomorrowDate()+"1400", task.getEndTime());
 		assertEquals("Test Update - updateType", UPDATETYPE.DEADLINE, task.getUpdateType());
 		assertEquals("Test Update - taskID", "10", task.getTaskID());
 	}
@@ -302,10 +312,10 @@ public class ExtractorTest {
 	public void testUpdate3() {
 		Task task = new Task();
 		UpdateExtractor ex = new UpdateExtractor();
-		ex.extract(task, "10 from 00:00 06102014 to 101014");
+		ex.extract(task, "10 from 00:00 tml to tml");
 		assertEquals("Test Update - description", "", task.getDescription());
-		assertEquals("Test Update - startTime", "201410060000", task.getStartTime());
-		assertEquals("Test Update - endTime", "201410102359", task.getEndTime());
+		assertEquals("Test Update - startTime", getTomorrowDate()+"0000", task.getStartTime());
+		assertEquals("Test Update - endTime", getTomorrowDate()+"2359", task.getEndTime());
 		assertEquals("Test Update - updateType", UPDATETYPE.TIMEFRAME, task.getUpdateType());
 		assertEquals("Test Update - taskID", "10", task.getTaskID());
 	}
@@ -350,7 +360,7 @@ public class ExtractorTest {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
 		}
 		try{
-			ex.extract(task, "14 from 1234 to 2014/12/12");
+			ex.extract(task, "14 from 1234 tml to 2014/12/12");
 		} catch (Exception e) {
 			assertEquals("Test invalid end time", MESSAGE_INVALID_END_TIME, e.getMessage());
 		}
@@ -375,7 +385,7 @@ public class ExtractorTest {
 		Task task = new Task();
 		UpdateExtractor ex = new UpdateExtractor();
 		try{
-			ex.extract(task, "14 from 0800 to 0100");
+			ex.extract(task, "14 from 0800 tml to 0100 tml");
 		} catch (Exception e) {
 			assertEquals("Test invalid start end time", MESSAGE_INVALID_START_END_TIME, e.getMessage());
 		}	

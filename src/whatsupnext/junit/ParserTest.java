@@ -176,7 +176,7 @@ public class ParserTest {
 	}
 	
 	@Test
-	/* This is a test case for the 'add invalid start_time' partition */
+	/* This is a test case for the 'update invalid start_time' partition */
 	public void testParserUpdateInvalidStartTime() {
 		String MESSAGE_INVALID_START_TIME = "'update' must have a valid start time";
 		String input = "update 19 d from 23/09/14 to tml";	
@@ -189,7 +189,7 @@ public class ParserTest {
 	}
 	
 	@Test
-	/* This is a test case for the 'add invalid end_time' partition */
+	/* This is a test case for the 'update invalid end_time' partition */
 	public void testParserUpdateInvalidEndtime() {
 		String MESSAGE_INVALID_END_TIME = "'update' must have a valid end time";
 		String input = "update 19 by 23/09/14";	
@@ -202,7 +202,7 @@ public class ParserTest {
 	}
 	
 	@Test
-	/* This is a test case for the 'add invalid start_end_time' partition */
+	/* This is a test case for the 'update invalid start_end_time' partition */
 	public void testParserUpdateInvalidStartEndTime() {
 		String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
 		String input = "update 19 from tml to today";	
@@ -271,6 +271,58 @@ public class ParserTest {
 	}
 	
 	@Test
+	/* This is a test case for the 'view invalid start_time' partition */
+	public void testParserViewInvalidStartTime() {
+		String MESSAGE_INVALID_START_TIME = "'view' must have an valid start time";
+		String input = "view from 32/09/14 to tml";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_START_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'view invalid end_time' partition */
+	public void testParserViewInvalidEndtime() {
+		String MESSAGE_INVALID_END_TIME = "'view' must have an valid end time";
+		String input = "view from today to 32/09/14";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'view invalid start_end_time' partition */
+	public void testParserViewInvalidStartEndTime() {
+		String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
+		String input = "view from tml to today";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_START_END_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'view invalid date' partition */
+	public void testParserViewInvalidDate() {
+		String MESSAGE_INVALID_DATE = "'view' must have an valid date";
+		String input = "view 32/09/14";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_DATE, e.getMessage());
+		}
+	}
+	
+	@Test
 	/* This is a test case for the 'delete id' partition */
 	public void testParserDeleteID() {
 		String input = "delete 19";
@@ -318,6 +370,71 @@ public class ParserTest {
         assertEquals("deleteType", DELETETYPE.TIMEFRAME, task.getDeleteType());
 		assertEquals("startTime", "201409291900", task.getStartTime());
 		assertEquals("endTime", "201409292030", task.getEndTime());
+	}
+	
+	@Test
+	/* This is a test case for the 'delete empty' partition */
+	public void testParserDeleteInvalid() {
+		String MESSAGE_INVALID_ARGUMENT = "'delete' must have an argument";
+		String input = "delete";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_ARGUMENT, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'delete invalid start_time' partition */
+	public void testParserDeleteInvalidStartTime() {
+		String MESSAGE_INVALID_START_TIME = "'delete' must have an valid start time";
+		String input = "delete from 32/09/14 to tml";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_START_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'delete invalid end_time' partition */
+	public void testParserDeleteInvalidEndtime() {
+		String MESSAGE_INVALID_END_TIME = "'delete' must have an valid end time";
+		String input = "delete from today to 32/09/14";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'delete invalid start_end_time' partition */
+	public void testParserDeleteInvalidStartEndTime() {
+		String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
+		String input = "delete from tml to today";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_START_END_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'delete invalid date' partition */
+	public void testParserdeleteInvalidDate() {
+		String MESSAGE_INVALID_TASKID_OR_DATE = "'delete' must have a valid Task ID or Date";
+		String input = "delete 32/09/14";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_TASKID_OR_DATE, e.getMessage());
+		}
 	}
 	
 	@Test

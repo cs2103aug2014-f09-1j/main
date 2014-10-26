@@ -1,9 +1,12 @@
 package whatsupnext.junit;
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+
 import org.junit.Test;
 
 import whatsupnext.parser.api.Parser;
+import whatsupnext.parser.extractor.ParseDate;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.ADDTYPE;
@@ -14,241 +17,311 @@ import whatsupnext.structure.Types.VIEWTYPE;
 public class ParserTest {
 	
 	@Test
-	//Parser testing: Add timeframe task
-	public void testParserAdd1() {
-		String input = "add dine with Amy from 6 PM 29/09/2014 to 8 pm 29/09/2014";	
+	/* This is a test case for the 'add timeframe' partition */
+	public void testParserAddTimeframe() {
+		String input = "add dine with Amy from 7 am tml to 9 AM tomorrow";	
 		Parser parser = new Parser(input);
 		Task task = parser.parseInput();
-        assertEquals("Test Add - OPCODE",OPCODE.ADD,task.getOpCode());
-        assertEquals("Test Add - addType",ADDTYPE.TIMEFRAME,task.getAddType());
-		assertEquals("Test Add - description", "dine with Amy", task.getDescription());
-		assertEquals("Test Add - startTime", "201409291800", task.getStartTime());
-		assertEquals("Test Add - endTime", "201409292000", task.getEndTime());
+        assertEquals("OPCODE",OPCODE.ADD,task.getOpCode());
+        assertEquals("addType",ADDTYPE.TIMEFRAME,task.getAddType());
+		assertEquals("description", "dine with Amy", task.getDescription());
+		assertEquals("startTime", getTomorrow()+"0700", task.getStartTime());
+		assertEquals("endTime", getTomorrow()+"0900", task.getEndTime());
 	}
 	
 	@Test
-	//Parser testing: Add timeframe task
-	public void testParserAdd2() {
-		String input = "add dine with Bob from 1800 29092014 to 2000 29092014";	
+	/* This is a test case for the 'add deadline' partition */
+	public void testParserAddDeadline() {
+		String input = "add submit report by 10 PM tml";	
 		Parser parser = new Parser(input);
 		Task task = parser.parseInput();
-        assertEquals("Test Add - OPCODE", OPCODE.ADD, task.getOpCode());
-        assertEquals("Test Add - addType",ADDTYPE.TIMEFRAME,task.getAddType());
-		assertEquals("Test Add - description", "dine with Bob", task.getDescription());
-		assertEquals("Test Add - startTime", "201409291800", task.getStartTime());
-		assertEquals("Test Add - endTime", "201409292000", task.getEndTime());
+        assertEquals("OPCODE", OPCODE.ADD, task.getOpCode());
+        assertEquals("addType",ADDTYPE.DEADLINE,task.getAddType());
+		assertEquals("description", "submit report", task.getDescription());
+		assertEquals("startTime", "", task.getStartTime());
+		assertEquals("endTime", getTomorrow()+"2200", task.getEndTime());
 	}
 	
 	@Test
-	//Parser testing: Add timeframe task
-	public void testParserAdd3() {
-		String input = "add dance with Amy from 6:00 am 29-09-14 to 8 am 29-09-14";	
-		Parser parser = new Parser(input);
-		Task task = parser.parseInput();
-        assertEquals("Test Add - OPCODE", OPCODE.ADD, task.getOpCode());
-        assertEquals("Test Add - addType",ADDTYPE.TIMEFRAME,task.getAddType());
-		assertEquals("Test Add - description", "dance with Amy", task.getDescription());
-		assertEquals("Test Add - startTime", "201409290600", task.getStartTime());
-		assertEquals("Test Add - endTime", "201409290800", task.getEndTime());
-	}
-	
-	@Test
-	//Parser testing: Add timeframe task
-	public void testParserAdd4() {
-		String input = "add dance with Bob from 9:00 29-09-14 to 13:00 29-09-14";	
-		Parser parser = new Parser(input);
-		Task task = parser.parseInput();
-        assertEquals("Test Add - OPCODE", OPCODE.ADD, task.getOpCode());
-        assertEquals("Test Add - addType",ADDTYPE.TIMEFRAME,task.getAddType());
-		assertEquals("Test Add - description", "dance with Bob", task.getDescription());
-		assertEquals("Test Add - startTime", "201409290900", task.getStartTime());
-		assertEquals("Test Add - endTime", "201409291300", task.getEndTime());
-	}
-	
-	@Test
-	//Parser testing: Add deadline task
-	public void testParserAdd5() {
-		String input = "add submit report by 9 AM 29-09-14";	
-		Parser parser = new Parser(input);
-		Task task = parser.parseInput();
-        assertEquals("Test Add - OPCODE", OPCODE.ADD, task.getOpCode());
-        assertEquals("Test Add - addType",ADDTYPE.DEADLINE,task.getAddType());
-		assertEquals("Test Add - description", "submit report", task.getDescription());
-		assertEquals("Test Add - startTime", "", task.getStartTime());
-		assertEquals("Test Add - endTime", "201409290900", task.getEndTime());
-	}
-	
-	@Test
-	//Parser testing: Add floating task
-	public void testParserAdd6() {
+	/* This is a test case for the 'add floating' partition */
+	public void testParserAddFloating() {
 		String input = "add submit report";	
 		Parser parser = new Parser(input);
 		Task task = parser.parseInput();
-        assertEquals("Test Add - OPCODE", OPCODE.ADD, task.getOpCode());
-        assertEquals("Test Add - addType",ADDTYPE.FLOATING,task.getAddType());
-		assertEquals("Test Add - description", "submit report", task.getDescription());
-		assertEquals("Test Add - startTime", "", task.getStartTime());
-		assertEquals("Test Add - endTime", "", task.getEndTime());
+        assertEquals("OPCODE", OPCODE.ADD, task.getOpCode());
+        assertEquals("addType",ADDTYPE.FLOATING,task.getAddType());
+		assertEquals("description", "submit report", task.getDescription());
+		assertEquals("startTime", "", task.getStartTime());
+		assertEquals("endTime", "", task.getEndTime());
 	}
 	
 	@Test
-	//Parser testing: Add empty task
-	public void testParserAdd7() {
+	/* This is a test case for the 'add empty' partition */
+	public void testParserAddInvalidDesc() {
+		String MESSAGE_INVALID_DESCRIPTION = "'add' must have a valid description";
 		String input = "add";	
 		Parser parser = new Parser(input);
 		try {
 			parser.parseInput();
 		} catch (IllegalArgumentException e) {
-			assertEquals("'add' must have a valid description", e.getMessage());
+			assertEquals(MESSAGE_INVALID_DESCRIPTION, e.getMessage());
 		}
 	}
 	
 	@Test
-	//Parser testing: Add timeframe task with date only
-	public void testParserAdd8() {
-		String input = "add do homework from 29-09-14 to 29-09-14";	
+	/* This is a test case for the 'add invalid start_time' partition */
+	public void testParserAddInvalidStartTime() {
+		String MESSAGE_INVALID_START_TIME = "'add' must have a valid start time";
+		String input = "add invalid from 23/09/14 to tml";	
 		Parser parser = new Parser(input);
-		Task task = parser.parseInput();
-        assertEquals("Test Add - OPCODE", OPCODE.ADD, task.getOpCode());
-        assertEquals("Test Add - addType",ADDTYPE.TIMEFRAME,task.getAddType());
-		assertEquals("Test Add - description", "do homework", task.getDescription());
-		assertEquals("Test Add - startTime", "201409290000", task.getStartTime());
-		assertEquals("Test Add - endTime", "201409292359", task.getEndTime());
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_START_TIME, e.getMessage());
+		}
 	}
 	
 	@Test
-	// Parser Testing: update by timeframe
-	public void testParserUpdate1() {
-		String input = "update 19 from 1800 29/09/2014 to 2000 29/09/2014";
+	/* This is a test case for the 'add invalid end_time' partition */
+	public void testParserAddInvalidEndtime() {
+		String MESSAGE_INVALID_END_TIME = "'add' must have a valid end time";
+		String input = "add invalid from tml to 23/09/14";	
 		Parser parser = new Parser(input);
-		Task task = parser.parseInput();
-        assertEquals("Test update - OPCODE", OPCODE.UPDATE, task.getOpCode());
-		assertEquals("Test update - updateType", UPDATETYPE.TIMEFRAME, task.getUpdateType());
-        assertEquals("Test update - taskID", "19", task.getTaskID());
-		assertEquals("Test update - description", "", task.getDescription());
-		assertEquals("Test update - startTime", "201409291800", task.getStartTime());
-		assertEquals("Test update - endTime", "201409292000", task.getEndTime());		
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
 	}
 	
 	@Test
-	// Parser Testing: update by end time(deadline)
-	public void testParserUpdate2() {
-		String input = "update 19 by 18:00 29/09/2014";
+	/* This is a test case for the 'add invalid start_end_time' partition */
+	public void testParserAddInvalidStartEndTime() {
+		String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
+		String input = "add invalid from tml to today";	
 		Parser parser = new Parser(input);
-		Task task = parser.parseInput();
-        assertEquals("Test update - OPCODE", OPCODE.UPDATE, task.getOpCode());
-        assertEquals("Test update - updateType", UPDATETYPE.DEADLINE, task.getUpdateType());
-        assertEquals("Test update - taskID", "19", task.getTaskID());
-		assertEquals("Test update - description", "", task.getDescription());
-		assertEquals("Test update - startTime", "", task.getStartTime());
-		assertEquals("Test update - endTime", "201409291800", task.getEndTime());		
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_START_END_TIME, e.getMessage());
+		}
 	}
 	
 	@Test
-	// Parser Testing: update by description
-	public void testParserUpdate3() {
+	/* This is a test case for the 'update timeframe' partition */
+	public void testParserUpdateTimeframe() {
+		String input = "update 19 from tml 9 am to tml 12 pm";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.UPDATE, task.getOpCode());
+		assertEquals("updateType", UPDATETYPE.TIMEFRAME, task.getUpdateType());
+        assertEquals("taskID", "19", task.getTaskID());
+		assertEquals("description", "", task.getDescription());
+		assertEquals("startTime", getTomorrow()+"0900", task.getStartTime());
+		assertEquals("endTime", getTomorrow()+"1200", task.getEndTime());
+	}
+	
+	@Test
+	/* This is a test case for the 'update deadline' partition */
+	public void testParserUpdateDeadline() {
+		String input = "update 19 by 18:00 tml";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.UPDATE, task.getOpCode());
+        assertEquals("updateType", UPDATETYPE.DEADLINE, task.getUpdateType());
+        assertEquals("taskID", "19", task.getTaskID());
+		assertEquals("description", "", task.getDescription());
+		assertEquals("startTime", "", task.getStartTime());
+		assertEquals("endTime", getTomorrow()+"1800", task.getEndTime());	
+	}
+	
+	@Test
+	/* This is a test case for the 'update floating' partition */
+	public void testParserUpdateDescription() {
 		String input = "update 19 new descripitions1234";
 		Parser parser = new Parser(input);
 		Task task = parser.parseInput();
-        assertEquals("Test update - OPCODE", OPCODE.UPDATE, task.getOpCode());
-        assertEquals("Test update - updateType", UPDATETYPE.DESCRIPTION, task.getUpdateType());
-        assertEquals("Test update - taskID", "19", task.getTaskID());
-		assertEquals("Test update - description", "new descripitions1234", task.getDescription());
-		assertEquals("Test update - startTime", "", task.getStartTime());
-		assertEquals("Test update - endTime", "", task.getEndTime());		
+        assertEquals("OPCODE", OPCODE.UPDATE, task.getOpCode());
+        assertEquals("updateType", UPDATETYPE.DESCRIPTION, task.getUpdateType());
+        assertEquals("taskID", "19", task.getTaskID());
+		assertEquals("description", "new descripitions1234", task.getDescription());
+		assertEquals("startTime", "", task.getStartTime());
+		assertEquals("endTime", "", task.getEndTime());
 	}
 	
 	@Test
-	// Parser Testing: update by timeframe with date only
-	public void testParserUpdate4() {
-		String input = "update 19 from 29-09-14 to 29-09-14";
+	/* This is a test case for the 'update invalid ID' partition */
+	public void testParserUpdateInvalidID() {
+		String MESSAGE_INVALID_TASKID = "'update' must have a valid Task ID";
+		String input = "update -1";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_TASKID, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'update empty' partition */
+	public void testParserUpdateInvalidDesc() {
+		String MESSAGE_INVALID_DESCRIPTION = "'update' must have a valid description";
+		String input = "update 19";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_DESCRIPTION, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'add invalid start_time' partition */
+	public void testParserUpdateInvalidStartTime() {
+		String MESSAGE_INVALID_START_TIME = "'update' must have a valid start time";
+		String input = "update 19 d from 23/09/14 to tml";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_START_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'add invalid end_time' partition */
+	public void testParserUpdateInvalidEndtime() {
+		String MESSAGE_INVALID_END_TIME = "'update' must have a valid end time";
+		String input = "update 19 by 23/09/14";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_END_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'add invalid start_end_time' partition */
+	public void testParserUpdateInvalidStartEndTime() {
+		String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
+		String input = "update 19 from tml to today";	
+		Parser parser = new Parser(input);
+		try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+			assertEquals(MESSAGE_INVALID_START_END_TIME, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'view undone' partition */
+	public void testParserViewUndone() {
+		String input = "view";
 		Parser parser = new Parser(input);
 		Task task = parser.parseInput();
-        assertEquals("Test update - OPCODE", OPCODE.UPDATE, task.getOpCode());
-		assertEquals("Test update - updateType", UPDATETYPE.TIMEFRAME, task.getUpdateType());
-        assertEquals("Test update - taskID", "19", task.getTaskID());
-		assertEquals("Test update - description", "", task.getDescription());
-		assertEquals("Test update - startTime", "201409290000", task.getStartTime());
-		assertEquals("Test update - endTime", "201409292359", task.getEndTime());		
+        assertEquals("OPCODE", OPCODE.VIEW, task.getOpCode());
+		assertEquals("viewType", VIEWTYPE.UNDONE, task.getViewType());
 	}
 	
 	@Test
-	// Parser Testing: view all
-	public void testParserView1() {
-		String input = "view All";
+	/* This is a test case for the 'view all' partition */
+	public void testParserViewAll() {
+		String input = "view all";
 		Parser parser = new Parser(input);
 		Task task = parser.parseInput();
-        assertEquals("Test view - OPCODE", OPCODE.VIEW, task.getOpCode());
-		assertEquals("Test view - viewType", VIEWTYPE.ALL, task.getViewType());
+        assertEquals("OPCODE", OPCODE.VIEW, task.getOpCode());
+		assertEquals("viewType", VIEWTYPE.ALL, task.getViewType());
 	}
 	
 	@Test
-	// Parser Testing: view by timeframe
-	public void testParserView2() {
+	/* This is a test case for the 'view next' partition */
+	public void testParserViewNext() {
+		String input = "view next";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.VIEW, task.getOpCode());
+		assertEquals("viewType", VIEWTYPE.NEXT, task.getViewType());
+	}
+	
+	@Test
+	/* This is a test case for the 'view timeframe' partition */
+	public void testParserViewTimeframe() {
 		String input = "v from 1900 29092014 to 2030 29092014";
 		Parser parser = new Parser(input);
 		Task task = parser.parseInput();
-        assertEquals("Test view - OPCODE", OPCODE.VIEW, task.getOpCode());
-        assertEquals("Test view - viewType", VIEWTYPE.TIMEFRAME, task.getViewType());
-		assertEquals("Test view - description", "", task.getDescription());
-		assertEquals("Test view - startTime", "201409291900", task.getStartTime());
-		assertEquals("Test view - endTime", "201409292030", task.getEndTime());
+        assertEquals("OPCODE", OPCODE.VIEW, task.getOpCode());
+        assertEquals("viewType", VIEWTYPE.TIMEFRAME, task.getViewType());
+		assertEquals("description", "", task.getDescription());
+		assertEquals("startTime", "201409291900", task.getStartTime());
+		assertEquals("endTime", "201409292030", task.getEndTime());
 	}
 	
 	@Test
-	// Parser Testing: view by deadline
-	public void testParserView3() {
+	/* This is a test case for the 'view date' partition */
+	public void testParserViewDate() {
 		String input = "view 1900 29092014";
 		Parser parser = new Parser(input);
 		Task task = parser.parseInput();
-        assertEquals("Test view - OPCODE", OPCODE.VIEW, task.getOpCode());
-        assertEquals("Test view - viewType", VIEWTYPE.DATE, task.getViewType());
-        assertEquals("Test view - description", "", task.getDescription());
-		assertEquals("Test view - startTime", "", task.getStartTime());
-		assertEquals("Test view - endTime", "201409291900", task.getEndTime());		
+        assertEquals("OPCODE", OPCODE.VIEW, task.getOpCode());
+        assertEquals("viewType", VIEWTYPE.DATE, task.getViewType());
+        assertEquals("description", "", task.getDescription());
+		assertEquals("startTime", "", task.getStartTime());
+		assertEquals("endTime", "201409291900", task.getEndTime());
 	}
 	
 	@Test
-	// Parser Testing: view by timeframe with date only
-	public void testParserView4() {
-		String input = "v from 29092014 to 29092014";
+	/* This is a test case for the 'delete id' partition */
+	public void testParserDeleteID() {
+		String input = "delete 19";
 		Parser parser = new Parser(input);
 		Task task = parser.parseInput();
-        assertEquals("Test view - OPCODE", OPCODE.VIEW, task.getOpCode());
-        assertEquals("Test view - viewType", VIEWTYPE.TIMEFRAME, task.getViewType());
-		assertEquals("Test view - description", "", task.getDescription());
-		assertEquals("Test view - startTime", "201409290000", task.getStartTime());
-		assertEquals("Test view - endTime", "201409292359", task.getEndTime());
+        assertEquals("OPCODE", OPCODE.DELETE, task.getOpCode());
+        assertEquals("deleteType", DELETETYPE.ID, task.getDeleteType());
+        assertEquals("taskID", "19", task.getTaskID());
+		assertEquals("startTime", "", task.getStartTime());
+		assertEquals("endTime", "", task.getEndTime());
 	}
 	
 	@Test
-	// Parser Testing: delete by timeframe
-	public void testParserDelete1() {
+	/* This is a test case for the 'delete deadline' partition */
+	public void testParserDeleteTimeDeadline() {
+		String input = "delete deadline";
+		Parser parser = new Parser(input);
+		ParseDate parseDate = new ParseDate();
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.DELETE, task.getOpCode());
+        assertEquals("deleteType", DELETETYPE.DEADLINE, task.getDeleteType());
+		assertEquals("startTime", "", task.getStartTime());
+		assertEquals("endTime", parseDate.getTodayDateTimeString(), task.getEndTime());
+	}
+	
+	@Test
+	/* This is a test case for the 'delete date' partition */
+	public void testParserDeleteDate() {
+		String input = "d 2030 29092014";
+		Parser parser = new Parser(input);
+		Task task = parser.parseInput();
+        assertEquals("OPCODE", OPCODE.DELETE, task.getOpCode());
+        assertEquals("deleteType", DELETETYPE.DATE, task.getDeleteType());
+		assertEquals("startTime", "", task.getStartTime());
+		assertEquals("endTime", "201409292030", task.getEndTime());
+	}
+	
+	@Test
+	/* This is a test case for the 'delete timeframe' partition */
+	public void testParserDeleteTimeframe() {
 		String input = "d from 1900 29092014 To 2030 29092014";
 		Parser parser = new Parser(input);
 		Task task = parser.parseInput();
-        assertEquals("Test delete - OPCODE", OPCODE.DELETE, task.getOpCode());
-        assertEquals("Test delete - deleteType", DELETETYPE.TIMEFRAME, task.getDeleteType());
-        assertEquals("Test delete - description", "", task.getDescription());
-		assertEquals("Test delete - startTime", "201409291900", task.getStartTime());
-		assertEquals("Test update - endTime", "201409292030", task.getEndTime());		
+        assertEquals("OPCODE", OPCODE.DELETE, task.getOpCode());
+        assertEquals("deleteType", DELETETYPE.TIMEFRAME, task.getDeleteType());
+		assertEquals("startTime", "201409291900", task.getStartTime());
+		assertEquals("endTime", "201409292030", task.getEndTime());
 	}
 	
 	@Test
-	// Parser Testing: delete by timeframe with date only
-	public void testParserDelete2() {
-		String input = "d from 29092014 To 29092014";
-		Parser parser = new Parser(input);
-		Task task = parser.parseInput();
-        assertEquals("Test delete - OPCODE", OPCODE.DELETE, task.getOpCode());
-        assertEquals("Test delete - deleteType", DELETETYPE.TIMEFRAME, task.getDeleteType());
-        assertEquals("Test delete - description", "", task.getDescription());
-		assertEquals("Test delete - startTime", "201409290000", task.getStartTime());
-		assertEquals("Test update - endTime", "201409292359", task.getEndTime());		
-	}
-	
-	@Test
-	// Parser Testing: search
+	/* This is a test case for the 'search keyword' partition */
 	public void testParserSearch() {
 		String input = "search for this keyword";
 		Parser parser = new Parser(input);
@@ -258,7 +331,20 @@ public class ParserTest {
 	}
 	
 	@Test
-	// Parser Testing: done
+	/* This is a test case for the 'search empty' partition */
+	public void testParserSearchEmpty() {
+		String MESSAGE_INVALID_DESCRIPTION = "'Search' must have valid keywords";
+		String input = "search";
+		Parser parser = new Parser(input);      
+        try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+	        assertEquals("OPCODE", MESSAGE_INVALID_DESCRIPTION, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'done ID' partition */
 	public void testParserDone() {
 		String input = "done 13";
 		Parser parser = new Parser(input);
@@ -268,7 +354,20 @@ public class ParserTest {
 	}
 	
 	@Test
-	// Parser Testing: undo
+	/* This is a test case for the 'done empty' partition */
+	public void testParserDoneEmpty() {
+		String MESSAGE_INVALID_TASKID = "'Done' must have a valid ID";
+		String input = "done";
+		Parser parser = new Parser(input);      
+        try {
+			parser.parseInput();
+		} catch (IllegalArgumentException e) {
+	        assertEquals("OPCODE", MESSAGE_INVALID_TASKID, e.getMessage());
+		}
+	}
+	
+	@Test
+	/* This is a test case for the 'undo' partition */
 	public void testParserUndo() {
 		String input = "undo";
 		Parser parser = new Parser(input);
@@ -277,11 +376,35 @@ public class ParserTest {
 	}
 	
 	@Test
-	// Parser Testing: redo
+	/* This is a test case for the 'redo' partition */
 	public void testParserRedo() {
 		String input = "redo";
 		Parser parser = new Parser(input);
 		Task task = parser.parseInput();
         assertEquals("OPCODE", OPCODE.REDO, task.getOpCode());
 	}
+	
+	private String getTomorrow() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+		int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH)+1;
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        String twoDigitMonth = "";
+		String twoDigitDayOfMonth = ""; 
+        if (month < 10) {
+        	twoDigitMonth = "0" + month;
+ 		} else {
+ 			twoDigitMonth = "" + month;
+ 		}
+ 		if (dayOfMonth < 10) {
+ 			twoDigitDayOfMonth = "0" + dayOfMonth;
+ 		} else {
+ 			twoDigitDayOfMonth = "" + dayOfMonth;
+ 		}
+         
+		return year + twoDigitMonth + twoDigitDayOfMonth;
+	}
+	
+	
 }

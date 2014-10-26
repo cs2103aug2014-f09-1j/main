@@ -151,4 +151,8 @@ public class LogicUtilities {
 		TaskDefaultComparator comparator = new TaskDefaultComparator();
 		Collections.sort(tasks, comparator);
 	}
+	
+	public static void clearList() {
+		list.clear();
+	}
 }

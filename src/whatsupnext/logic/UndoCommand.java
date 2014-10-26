@@ -15,6 +15,7 @@ public class UndoCommand extends Command{
 	public String executeCommand() {
 		storage = Storage.getInstance();
 		if (storage.goToPreviousVersion()) {
+			LogicUtilities.clearList();
 			Logic.readTasksIntoInternalList();
 			LogicUtilities.setupAvailableIDs();
 			return MESSAGE_UNDO;

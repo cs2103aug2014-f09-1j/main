@@ -81,12 +81,21 @@ public class AddExtractor implements Extractor {
 	 */
 	private void splitOnByKeyword(Task task, String taskDetails) {
 		String[] details = taskDetails.split("\\s+(B|b)(Y|y)\\s+");
-		task.setDescription(details[0]);
-		task.setEndTime(parseDate.parseInput(details[1]));
+		int detailsSize = details.length;
+		if (detailsSize==2) {
+			task.setDescription(details[0]);
+		    task.setEndTime(parseDate.parseInput(details[1]));
+		} else {
+			task.setDescription(Utility.recoverDetails("by",details));
+			task.setEndTime(parseDate.parseInput(details[detailsSize-1]));
+		}
 		if(task.getEndTime().isEmpty() 
 				|| task.getEndTime().compareTo(parseDate.getTodayDateTimeString()) < 0) {
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
 		}
 	}
+
+	
+
 	
 }

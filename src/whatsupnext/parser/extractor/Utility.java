@@ -52,5 +52,21 @@ public final class Utility {
 	}
     
     
+	/**
+	 * This method is to recover task description containing keyword
+	 * @param details
+	 * @return
+	 */
+	public static String recoverDetails(String keyword, String[] details) {
+		// TODO Auto-generated method stub
+		int detailsSize = details.length;
+		String recoveredDetail = "";
+		for (int i=0; i<detailsSize-1; i++) {
+			recoveredDetail += " " + keyword + " " + details[i]; 
+		}
+		return removeFirstWord(recoveredDetail);	
+	}
+	
+    
 }
 

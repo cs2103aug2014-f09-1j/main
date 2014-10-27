@@ -80,6 +80,20 @@ public class ExtractorTest {
 		assertEquals("Test Add - addType", ADDTYPE.DEADLINE,task.getAddType());
 	}
 	
+	
+	@Test
+	/* This test case is extreme case where description contains keyword by*/
+	public void testAdd3() {
+		Task task = new Task();
+		AddExtractor ex = new AddExtractor();
+		ex.extract(task, "dine in restaurant by the river By 13:00 tml");
+		assertEquals("Test Add - description", "dine in restaurant by the river", task.getDescription());
+		assertEquals("Test Add - startTime", "", task.getStartTime());
+		assertEquals("Test Add - endTime", getTomorrowDate() + "1300", task.getEndTime());
+		assertEquals("Test Add - addType", ADDTYPE.DEADLINE,task.getAddType());
+	}
+	
+	
 	@Test
 	/* testing invalid case one by one*/
 	public void testAddInvalidDescription() {

@@ -2,14 +2,21 @@ package whatsupnext.storage;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.Iterator;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import whatsupnext.structure.Task;
-
 import static org.junit.Assert.*;
 
 
@@ -120,7 +127,7 @@ public class Storage {
 	 * @return
 	 * @throws IOException
 	 */
-	public ArrayList<Task> readTasks() throws IOException {
+	public ArrayList<Task> readTasks() throws IOException, ParseException {
 		ArrayList<Task> arrayOfTasks = readFromFile();
 		if (arrayOfTasks.size() > 0) {
 			return arrayOfTasks;
@@ -136,14 +143,47 @@ public class Storage {
 	 * @return
 	 * @throws IOException
 	 */
-	private ArrayList<Task> readFromFile() throws IOException {
+	private ArrayList<Task> readFromFile() throws IOException, ParseException {
 		Scanner reader = new Scanner(currentFile);
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		
-		while (reader.hasNextLine()) {
+		
+		
+	    while (reader.hasNextLine()) {
+	    	JSONParser parser=new JSONParser();
+		    Object parsedJSON = parser.parse(reader.nextLine());
+		    JSONObject object = (JSONObject)parsedJSON;
+		      
+		    
+		    Set<String> keySet= (Set<String>) object.keySet();
+		    Iterator<String> it = keySet.iterator();
+	    	String taskID = it.next();	    	
+	    	JSONArray arr = (JSONArray)object.get(taskID);
+	    	
+	    	String description = (String) arr.get(0);
+	    	String startTime = (String) arr.get(1);
+	    	String endTime = (String) arr.get(2);
+	    	
+	    	
+	    	/*String booleanString = (String) arr.get(3);
+			
+			assertTrue(booleanString.equals("true") || booleanString.equals("false"));		
+			boolean isDone = Boolean.parseBoolean(booleanString);*/
+	    	boolean isDone = (boolean) arr.get(3);
+	    	
+	    	Task taskFromJSON = new Task();
+	    	taskFromJSON.setTaskID(taskID);
+	    	taskFromJSON.setDescription(description);
+	    	taskFromJSON.setStartTime(startTime);
+	    	taskFromJSON.setEndTime(endTime);
+	    	taskFromJSON.setDone(isDone);
+
+	    	tasks.add(taskFromJSON);
+	    }
+		/*while (reader.hasNextLine()) {
 			String taskInString = reader.nextLine();
 			tasks.add(stringToTask(taskInString));	
-		}
+		}*/
 		
 		reader.close();
 		return tasks;
@@ -186,9 +226,21 @@ public class Storage {
 		assertNotNull(task.getStartTime());
 		assertNotNull(task.getEndTime());
 		assertNotNull(task.getDone());
-		return task.getTaskID() + DELIMITER + task.getDescription() + DELIMITER + 
+		
+		JSONObject obj = new JSONObject();
+		JSONArray arr = new JSONArray();
+  
+		arr.add(task.getDescription());
+		arr.add(task.getStartTime());
+		arr.add(task.getEndTime());
+		arr.add(task.getDone());
+		  
+		obj.put(task.getTaskID(), arr);
+
+		/*return task.getTaskID() + DELIMITER + task.getDescription() + DELIMITER + 
 				task.getStartTime() + DELIMITER + task.getEndTime() + 
-				DELIMITER + task.getDone() + DELIMITER;
+				DELIMITER + task.getDone() + DELIMITER;*/
+		return obj.toJSONString();
 	}
 	
 	public void clearFile() throws IOException {

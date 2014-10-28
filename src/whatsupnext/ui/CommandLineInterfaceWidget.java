@@ -21,11 +21,12 @@ import whatsupnext.structure.Task;
 public class CommandLineInterfaceWidget {
 
 	private JFrame frameMain = WhatsUpNextGUI.frameMain;
-	private MainDisplayWidget displayForCLI;
+	private MainDisplayWidget linkedDisplay;
+	private UpcomingTasksWidget linkedUpcomingOptional;
 
-	static JTextField textInput;
+	private JTextField textInput;
 	private final int[] TEXT_INPUT_DIMENSIONS = {10, 225, 423, 25};
-	private static JButton buttonEnter;
+	private JButton buttonEnter;
 	private final int[] BUTTON_ENTER_DIMENSIONS = {440, 225, 90, 25};
 
 	private final ArrayList<String> STRINGS_CLEAR = new ArrayList<String>(Arrays.asList("clear", "Clear", "CLEAR", "clc"));
@@ -36,8 +37,18 @@ public class CommandLineInterfaceWidget {
 	private boolean downLastPressed;
 
 
-	public CommandLineInterfaceWidget(MainDisplayWidget linkedDisplay) {
-		displayForCLI = linkedDisplay;
+	public CommandLineInterfaceWidget(MainDisplayWidget displayForCLI) {
+		linkedDisplay = displayForCLI;
+		constructCLI();
+	}
+	
+	public CommandLineInterfaceWidget(MainDisplayWidget displayForCLI, UpcomingTasksWidget upcomingOptionalForCLI) {
+		linkedDisplay = displayForCLI;
+		linkedUpcomingOptional = upcomingOptionalForCLI;
+		constructCLI();
+	}
+	
+	private void constructCLI() {
 		initializeCLIPanel();
 		setComponentNames();
 
@@ -116,7 +127,7 @@ public class CommandLineInterfaceWidget {
 	 * This method is activated as 'input command'
 	 * It is called whenever user clicks the input button or presses the enter key
 	 */
-	void clickEnter(){
+	private void clickEnter(){
 		String commandInput = textInput.getText();
 		String feedback;
 
@@ -132,13 +143,15 @@ public class CommandLineInterfaceWidget {
 					usedCommands.addFirst(commandInput);
 					Parser parser = new Parser(commandInput);
 					Task currentTask = parser.parseInput();
-					feedback = GUIFunctionality.logic.executeTask(currentTask);
+					feedback = WhatsUpNextGUI.logic.executeTask(currentTask);
 				} catch (Exception e) {
 					feedback = e.getMessage();
 				}
 			}
-			displayForCLI.displayFeedback(feedback);
-			GUIFunctionality.clickUpcoming();
+			linkedDisplay.displayFeedback(feedback);
+			if (linkedUpcomingOptional != null) {
+				linkedUpcomingOptional.clickUpcoming();
+			}
 		}
 		clearTextInput();
 	}
@@ -147,7 +160,7 @@ public class CommandLineInterfaceWidget {
 	 * pressUp and pressDown must check if the opposite key was pressed
 	 * because the pointer must move twice if so
 	 */
-	void pressUpFromCLI() {
+	private void pressUpFromCLI() {
 		upLastPressed = true;
 		if (commandIterator.hasNext()) {
 			textInput.setText(commandIterator.next());
@@ -158,7 +171,7 @@ public class CommandLineInterfaceWidget {
 		}
 	}
 
-	void pressDownFromCLI() {
+	private void pressDownFromCLI() {
 		downLastPressed = true;
 		if (commandIterator.hasPrevious()) {
 			textInput.setText(commandIterator.previous());
@@ -189,15 +202,15 @@ public class CommandLineInterfaceWidget {
 	 * Clears the main display area
 	 */
 	private void clearLinkedDisplay() {
-		displayForCLI.setText("---Please enter command below:\r\n");
+		linkedDisplay.setText("---Please enter command below:\r\n");
 	}
 
-	void pressEnterFromCLI() {
+	private void pressEnterFromCLI() {
 		clickEnter();
 		pressKeyFromCLI();
 	}
 
-	void pressKeyFromCLI() {
+	private void pressKeyFromCLI() {
 		commandIterator = usedCommands.listIterator();
 	}
 }

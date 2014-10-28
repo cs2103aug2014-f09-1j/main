@@ -1,33 +1,19 @@
 package whatsupnext.ui;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.awt.EventQueue;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Rectangle;
 import java.awt.Window.Type;
 import java.awt.Toolkit;
 import java.awt.SystemColor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.JButton;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import whatsupnext.logic.Logic;
 
 /*
  * This class is used for GUI of software WhatsUpNext
@@ -38,15 +24,11 @@ public class WhatsUpNextGUI {
 	private final int FRAME_MAIN_WIDTH = 555;
 	private final int FRAME_MAIN_HEIGHT = 300;
 	
-	private static JButton buttonUpcoming;
-	private final int[] BUTTON_UPCOMING_DIMENSIONS = {356, 5, 174, 28};
-	private static JScrollPane textDisplayUpcomingScrollPane;
-	private final int[] TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS = {356, 35, 174, 180};
-	static JTextArea textDisplayUpcoming;
-	private final int[] TEXT_DISPLAY_UPCOMING_DIMENSIONS = {0, 0, 174, 180};
+	private MainDisplayWidget mainDisplayWidget;
+	private CommandLineInterfaceWidget cliWidget;
+	private UpcomingTasksWidget upcomingWidget;
 	
-    private GUIFunctionality guiBehavior;
-
+	static final Logic logic = new Logic();
 	
 	/**
 	 * Launch the application.
@@ -68,9 +50,9 @@ public class WhatsUpNextGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					WhatsUpNextGUI window = new WhatsUpNextGUI();
-					window.frameMain.setLocationByPlatform(true);
-					window.frameMain.setVisible(true);
+					new WhatsUpNextGUI();
+					WhatsUpNextGUI.frameMain.setLocationByPlatform(true);
+					WhatsUpNextGUI.frameMain.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -86,8 +68,7 @@ public class WhatsUpNextGUI {
 	public WhatsUpNextGUI() {
 		initGUIComponents();
 		setComponentsNames();
-		guiBehavior = new GUIFunctionality();
-		guiBehavior.clickUpcoming();
+		upcomingWidget.clickUpcoming();
 	}
 	
 	/**
@@ -99,16 +80,11 @@ public class WhatsUpNextGUI {
 		return frameMain;
 	}
 	
-	
 	/**
 	 * Names every component used in the GUI
 	 */
 	private void setComponentsNames() {
 		frameMain.setName("frameMain");
-		
-		buttonUpcoming.setName("buttonUpcoming");
-		textDisplayUpcomingScrollPane.setName("textDisplayUpcomingScrollPane");
-		textDisplayUpcoming.setName("textDisplayUpcoming");
 	}
 
 	/**
@@ -116,9 +92,9 @@ public class WhatsUpNextGUI {
 	 */
 	private void initGUIComponents() {
 		initializeApplicationFrame();
-		MainDisplayWidget mainDisplay = new MainDisplayWidget();
-		CommandLineInterfaceWidget cli = new CommandLineInterfaceWidget(mainDisplay);
-		initializeUpcomingTasks();
+		mainDisplayWidget = new MainDisplayWidget();
+		upcomingWidget = new UpcomingTasksWidget();
+		cliWidget = new CommandLineInterfaceWidget(mainDisplayWidget, upcomingWidget);
 	}
 	
 	/**
@@ -145,64 +121,19 @@ public class WhatsUpNextGUI {
 //		});
 		frameMain.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				guiBehavior.deleteRevisions();
+				deleteRevisions();
 			}
 		});
 	}
 	
-	/**
-	 * Initialize upcoming tasks part
-	 */
-	private void initializeUpcomingTasks() {
-		initializeUpcomingTasksTextDisplay();
-		initializeUpcomingTasksButton();
+	private void deleteRevisions() {
+		logic.clearRevisionFiles();
 	}
-
+	
 	/**
 	 *  Display area for upcoming tasks
 	 */
-	private void initializeUpcomingTasksTextDisplay() {
-		textDisplayUpcoming = new JTextArea();
-		textDisplayUpcoming.setFont(new Font("Courier New", Font.BOLD, 12));
-		textDisplayUpcoming.setForeground(new Color(25, 25, 112));
-		textDisplayUpcoming.setEditable(false);
-		textDisplayUpcoming.setBackground(new Color(240, 255, 255));
-		textDisplayUpcoming.setBounds(
-				TEXT_DISPLAY_UPCOMING_DIMENSIONS[0],
-				TEXT_DISPLAY_UPCOMING_DIMENSIONS[1],
-				TEXT_DISPLAY_UPCOMING_DIMENSIONS[2],
-				TEXT_DISPLAY_UPCOMING_DIMENSIONS[3]);
-		
-		textDisplayUpcomingScrollPane = new JScrollPane(textDisplayUpcoming);
-		textDisplayUpcomingScrollPane.setBounds(
-				TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[0],
-				TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[1],
-				TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[2],
-				TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[3]);
-		textDisplayUpcomingScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		frameMain.getContentPane().add(textDisplayUpcomingScrollPane);
-	}
 	
-	/**
-	 * Initializes the button panel container and the clickable button
-	 */
-	private void initializeUpcomingTasksButton() {		
-		buttonUpcoming = new JButton("Upcoming Tasks");
-		buttonUpcoming.setFont(new Font("Cambria", Font.BOLD, 12));
-		buttonUpcoming.setForeground(new Color(224, 255, 255));
-		buttonUpcoming.setBackground(new Color(70, 130, 180));
-		buttonUpcoming.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				guiBehavior.clickUpcoming();
-			}
-		});
-		buttonUpcoming.setBounds(
-				BUTTON_UPCOMING_DIMENSIONS[0],
-				BUTTON_UPCOMING_DIMENSIONS[1],
-				BUTTON_UPCOMING_DIMENSIONS[2],
-				BUTTON_UPCOMING_DIMENSIONS[3]);
-		frameMain.getContentPane().add(buttonUpcoming);
-	}
 
 //	private void resetComponentSizes() {
 //		Rectangle frameSize = frameMain.getBounds();

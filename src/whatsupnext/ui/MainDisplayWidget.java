@@ -17,12 +17,12 @@ public class MainDisplayWidget {
 	private JFrame frameMain = WhatsUpNextGUI.frameMain;
 
     private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";
-    private static JLabel labelWelcome;
+    private JLabel labelWelcome;
 	private final int[] LABEL_WELCOME_DIMENSIONS = {13, 10, 328, 15};
 	
-	private static JScrollPane textDisplayMainScrollPane;
+	private JScrollPane textDisplayMainScrollPane;
 	private final int[] TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS = {10, 35, 328, 180};
-	static JTextArea textDisplayMain;
+	private JTextArea textDisplayMain;
 	private final int[] TEXT_DISPLAY_MAIN_DIMENSIONS = {0, 0, 328, 180};
 	
 	private String currentYear;

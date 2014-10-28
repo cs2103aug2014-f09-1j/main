@@ -38,11 +38,6 @@ public class WhatsUpNextGUI {
 	private final int FRAME_MAIN_WIDTH = 555;
 	private final int FRAME_MAIN_HEIGHT = 300;
 	
-	static JTextField textInput;
-	private final int[] TEXT_INPUT_DIMENSIONS = {10, 225, 423, 25};
-	private static JButton buttonEnter;
-	private final int[] BUTTON_ENTER_DIMENSIONS = {440, 225, 90, 25};
-	
 	private static JButton buttonUpcoming;
 	private final int[] BUTTON_UPCOMING_DIMENSIONS = {356, 5, 174, 28};
 	private static JScrollPane textDisplayUpcomingScrollPane;
@@ -111,9 +106,6 @@ public class WhatsUpNextGUI {
 	private void setComponentsNames() {
 		frameMain.setName("frameMain");
 		
-		textInput.setName("textInput");
-		buttonEnter.setName("buttonEnter");
-		
 		buttonUpcoming.setName("buttonUpcoming");
 		textDisplayUpcomingScrollPane.setName("textDisplayUpcomingScrollPane");
 		textDisplayUpcoming.setName("textDisplayUpcoming");
@@ -125,8 +117,8 @@ public class WhatsUpNextGUI {
 	private void initGUIComponents() {
 		initializeApplicationFrame();
 		MainDisplayWidget mainDisplay = new MainDisplayWidget();
+		CommandLineInterfaceWidget cli = new CommandLineInterfaceWidget(mainDisplay);
 		initializeUpcomingTasks();
-		initializeMain();
 	}
 	
 	/**
@@ -212,77 +204,6 @@ public class WhatsUpNextGUI {
 		frameMain.getContentPane().add(buttonUpcoming);
 	}
 
-	
-	/**
-	 * Initialize main part: button, input area, mainDisplay
-	 */
-	private void initializeMain() {
-		initializeMainEnterButton();
-		initializeMainUserCLI();
-	}
-
-	/**
-	 * Creates the button that users press to execute command
-	 */
-	private void initializeMainEnterButton() {
-		buttonEnter = new JButton(" Enter ");
-		buttonEnter.setFont(new Font("Cambria", Font.BOLD, 12));
-		buttonEnter.setForeground(new Color(224, 255, 255));
-		buttonEnter.setBackground(new Color(70, 130, 180));
-		buttonEnter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				guiBehavior.clickEnter();
-			}
-		});
-		buttonEnter.setBounds(
-				BUTTON_ENTER_DIMENSIONS[0],
-				BUTTON_ENTER_DIMENSIONS[1],
-				BUTTON_ENTER_DIMENSIONS[2],
-				BUTTON_ENTER_DIMENSIONS[3]);
-		frameMain.getContentPane().add(buttonEnter);
-	}
-
-	/**
-	 * Creates the text field that user can edit, for entering command
-	 */
-	private void initializeMainUserCLI() {
-		textInput = new JTextField();
-		textInput.setBackground(new Color(240, 255, 255));
-		textInput.setFont(new Font("Courier New", Font.PLAIN, 12));
-		textInput.setBounds(
-				TEXT_INPUT_DIMENSIONS[0],
-				TEXT_INPUT_DIMENSIONS[1],
-				TEXT_INPUT_DIMENSIONS[2],
-				TEXT_INPUT_DIMENSIONS[3]);
-		frameMain.getContentPane().add(textInput);
-		
-		// Pressing 'enter' key causes the command to be executed
-		textInput.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				guiBehavior.pressEnterFromCLI();
-			}	
-		});
-		
-		// Pressing 'up' or 'down' keys allows for cycling of previous commands to replace user input
-		textInput.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				int key = e.getKeyCode();
-				if (key == KeyEvent.VK_UP) {
-					guiBehavior.pressUpFromCLI();
-				} else if (key == KeyEvent.VK_DOWN) {
-					guiBehavior.pressDownFromCLI();
-				}
-			}
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				guiBehavior.pressKeyFromCLI();
-			}
-		});
-	}
-	
 //	private void resetComponentSizes() {
 //		Rectangle frameSize = frameMain.getBounds();
 //		

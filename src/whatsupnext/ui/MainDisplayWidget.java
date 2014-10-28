@@ -14,6 +14,8 @@ import javax.swing.ScrollPaneConstants;
 
 public class MainDisplayWidget {
 	
+	private JFrame frameMain = WhatsUpNextGUI.frameMain;
+
     private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";
     private static JLabel labelWelcome;
 	private final int[] LABEL_WELCOME_DIMENSIONS = {13, 10, 328, 15};
@@ -23,14 +25,22 @@ public class MainDisplayWidget {
 	static JTextArea textDisplayMain;
 	private final int[] TEXT_DISPLAY_MAIN_DIMENSIONS = {0, 0, 328, 180};
 	
-	private JFrame frameMain = WhatsUpNextGUI.frameMain;
+	private String currentYear;
+	
 
     public MainDisplayWidget() {
+    	initializeCurrentYear();
 		initializeMainDisplayPanel();
 		setComponentNames();
 	}
     
-    private void setComponentNames() {
+    private void initializeCurrentYear() {
+    	DateFormat dateFormat = new SimpleDateFormat(" yyyy");
+		Calendar cal = Calendar.getInstance();
+		currentYear = dateFormat.format(cal.getTime());
+	}
+
+	private void setComponentNames() {
     	labelWelcome.setName("labelWelcome");
 		textDisplayMain.setName("textDisplayMain");
 		textDisplayMainScrollPane.setName("textDisplayMainScrollPane");
@@ -93,7 +103,16 @@ public class MainDisplayWidget {
 		frameMain.getContentPane().add(textDisplayMainScrollPane);
 	}
 	
-	private void resetComponentSizes() {
-		
+//	private void resetComponentSizes() {
+//		
+//	}
+
+	public void setText(String string) {
+		textDisplayMain.setText("---Please enter command below:\r\n");
+	}
+
+	public void displayFeedback(String feedback) {
+		feedback = feedback.replaceAll(currentYear, "");
+		textDisplayMain.append("\n"+feedback+"\n");
 	}
 }

@@ -34,16 +34,10 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class WhatsUpNextGUI {
 	
-	private JFrame frameMain;
+	static JFrame frameMain;
 	private final int FRAME_MAIN_WIDTH = 555;
 	private final int FRAME_MAIN_HEIGHT = 300;
-	private static JLabel labelWelcome;
-	private final int[] LABEL_WELCOME_DIMENSIONS = {13, 10, 328, 15};
 	
-	private static JScrollPane textDisplayMainScrollPane;
-	private final int[] TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS = {10, 35, 328, 180};
-	static JTextArea textDisplayMain;
-	private final int[] TEXT_DISPLAY_MAIN_DIMENSIONS = {0, 0, 328, 180};
 	static JTextField textInput;
 	private final int[] TEXT_INPUT_DIMENSIONS = {10, 225, 423, 25};
 	private static JButton buttonEnter;
@@ -56,7 +50,6 @@ public class WhatsUpNextGUI {
 	static JTextArea textDisplayUpcoming;
 	private final int[] TEXT_DISPLAY_UPCOMING_DIMENSIONS = {0, 0, 174, 180};
 	
-    private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";
     private GUIFunctionality guiBehavior;
 
 	
@@ -117,10 +110,7 @@ public class WhatsUpNextGUI {
 	 */
 	private void setComponentsNames() {
 		frameMain.setName("frameMain");
-		labelWelcome.setName("labelWelcome");
 		
-		textDisplayMain.setName("textDisplayMain");
-		textDisplayMainScrollPane.setName("textDisplayMainScrollPane");
 		textInput.setName("textInput");
 		buttonEnter.setName("buttonEnter");
 		
@@ -134,7 +124,7 @@ public class WhatsUpNextGUI {
 	 */
 	private void initGUIComponents() {
 		initializeApplicationFrame();
-		initializeWelcomeMessage();		
+		MainDisplayWidget mainDisplay = new MainDisplayWidget();
 		initializeUpcomingTasks();
 		initializeMain();
 	}
@@ -155,52 +145,18 @@ public class WhatsUpNextGUI {
 		frameMain.getContentPane().setLayout(null);
 		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMain.setBounds(0, 0, FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT);
-		frameMain.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent arg0) {
-				resetComponentSizes();
-			}
-		});
+//		frameMain.addComponentListener(new ComponentAdapter() {
+//			@Override
+//			public void componentResized(ComponentEvent arg0) {
+//				resetComponentSizes();
+//			}
+//		});
 		frameMain.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				guiBehavior.deleteRevisions();
 			}
 		});
 	}
-	
-	
-	/**
-	 * Initialize welcome message
-	 */
-	private void initializeWelcomeMessage() {
-		appendDateToWelcomeMessage();
-		initializeWelcomeMessageLabel();
-	}
-
-	/**
-	 * Gets the current date and completes the welcome message
-	 */
-	private void appendDateToWelcomeMessage() {
-		DateFormat dateFormat = new SimpleDateFormat("EEE, yyyy-MM-dd");
-		Calendar cal = Calendar.getInstance();
-		STRING_WELCOME = STRING_WELCOME + dateFormat.format(cal.getTime());
-	}
-
-	/**
-	 * Creates the label for welcome message
-	 */
-	private void initializeWelcomeMessageLabel() {
-		labelWelcome = new JLabel(STRING_WELCOME);
-		labelWelcome.setForeground(new Color(0, 0, 128));
-		labelWelcome.setBounds(
-				LABEL_WELCOME_DIMENSIONS[0],
-				LABEL_WELCOME_DIMENSIONS[1],
-				LABEL_WELCOME_DIMENSIONS[2],
-				LABEL_WELCOME_DIMENSIONS[3]);
-		labelWelcome.setFont(new Font("Cambria", Font.BOLD, 12));
-		frameMain.getContentPane().add(labelWelcome);
-	}
-	
 	
 	/**
 	 * Initialize upcoming tasks part
@@ -263,7 +219,6 @@ public class WhatsUpNextGUI {
 	private void initializeMain() {
 		initializeMainEnterButton();
 		initializeMainUserCLI();
-		initializeMainTextDisplay();
 	}
 
 	/**
@@ -327,88 +282,61 @@ public class WhatsUpNextGUI {
 			}
 		});
 	}
-
-	/**
-	 * Creates the main display area for program feedback
-	 */
-	private void initializeMainTextDisplay() {
-		textDisplayMain = new JTextArea();
-		textDisplayMain.setFont(new Font("Courier New", Font.BOLD, 12));
-		textDisplayMain.setForeground(new Color(25, 25, 112));
-		textDisplayMain.setText("---Please enter command below:\r\n");
-		textDisplayMain.setEditable(false);
-		textDisplayMain.setBackground(new Color(240, 255, 255));
-		textDisplayMain.setBounds(
-				TEXT_DISPLAY_MAIN_DIMENSIONS[0],
-				TEXT_DISPLAY_MAIN_DIMENSIONS[1],
-				TEXT_DISPLAY_MAIN_DIMENSIONS[2],
-				TEXT_DISPLAY_MAIN_DIMENSIONS[3]);
-		
-		textDisplayMainScrollPane = new JScrollPane(textDisplayMain);
-		textDisplayMainScrollPane.setBounds(
-				TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[0],
-				TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[1],
-				TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[2],
-				TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[3]);
-		textDisplayMainScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		frameMain.getContentPane().add(textDisplayMainScrollPane);
-	}
 	
-	
-	private void resetComponentSizes() {
-		Rectangle frameSize = frameMain.getBounds();
-		
-		int pixelsFromCLIToBottom = FRAME_MAIN_HEIGHT - (TEXT_INPUT_DIMENSIONS[1] + TEXT_INPUT_DIMENSIONS[3]);
-		int pixelsFromDisplayToCLI = TEXT_INPUT_DIMENSIONS[1] - (TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[1] + TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[3]);
-		int pixelsFromUpcomingToRight = FRAME_MAIN_WIDTH - (TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[0] + TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[2]);
-		int pixelsFromMainToUpcoming = TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[0] - (TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[0] + TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[2]);
-		
-		int upcomingDisplayRelativeX = (int)(frameSize.width * ((double)(TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[0]) / FRAME_MAIN_WIDTH));
-		int upcomingDisplayRelativeWidth = frameSize.width - (upcomingDisplayRelativeX + pixelsFromUpcomingToRight);
-
-		buttonUpcoming.setBounds(
-				upcomingDisplayRelativeX,
-				BUTTON_UPCOMING_DIMENSIONS[1],
-				upcomingDisplayRelativeWidth,
-				BUTTON_ENTER_DIMENSIONS[3]);
-		textDisplayUpcomingScrollPane.setBounds(
-				upcomingDisplayRelativeX,
-				TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[1],
-				upcomingDisplayRelativeWidth,
-				frameSize.height - TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
-		// Don't change textDisplayUpcoming x and y because they are relative to the textDisplayUpcomingScrollPane
-		textDisplayUpcoming.setBounds(
-				TEXT_DISPLAY_UPCOMING_DIMENSIONS[0],
-				TEXT_DISPLAY_UPCOMING_DIMENSIONS[1],
-				upcomingDisplayRelativeWidth,
-				frameSize.height - TEXT_DISPLAY_UPCOMING_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
-		
-		labelWelcome.setBounds(
-				LABEL_WELCOME_DIMENSIONS[0],
-				LABEL_WELCOME_DIMENSIONS[1],
-				frameSize.width - LABEL_WELCOME_DIMENSIONS[0] - (pixelsFromMainToUpcoming + upcomingDisplayRelativeWidth + pixelsFromUpcomingToRight),
-				LABEL_WELCOME_DIMENSIONS[3]);
-		textDisplayMainScrollPane.setBounds(
-				TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[0],
-				TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[1],
-				frameSize.width - TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[0] - (pixelsFromMainToUpcoming + upcomingDisplayRelativeWidth + pixelsFromUpcomingToRight),
-				frameSize.height - TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
-		// Don't change textDisplayMain x and y because they are relative to the textDisplayMainScrollPane
-		textDisplayMain.setBounds(
-				TEXT_DISPLAY_MAIN_DIMENSIONS[0],
-				TEXT_DISPLAY_MAIN_DIMENSIONS[1],
-				frameSize.width - TEXT_DISPLAY_MAIN_DIMENSIONS[0] - (pixelsFromMainToUpcoming + upcomingDisplayRelativeWidth + pixelsFromUpcomingToRight),
-				frameSize.height - TEXT_DISPLAY_MAIN_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
-		
-		textInput.setBounds(
-				TEXT_INPUT_DIMENSIONS[0],
-				frameSize.height - (TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom),
-				frameSize.width - TEXT_INPUT_DIMENSIONS[0] - (BUTTON_ENTER_DIMENSIONS[2] + pixelsFromUpcomingToRight),
-				TEXT_INPUT_DIMENSIONS[3]);
-		buttonEnter.setBounds(
-				frameSize.width - (BUTTON_ENTER_DIMENSIONS[2] + pixelsFromUpcomingToRight),
-				frameSize.height - (BUTTON_ENTER_DIMENSIONS[3] + pixelsFromCLIToBottom),
-				BUTTON_ENTER_DIMENSIONS[2],
-				BUTTON_ENTER_DIMENSIONS[3]);
-	}
+//	private void resetComponentSizes() {
+//		Rectangle frameSize = frameMain.getBounds();
+//		
+//		int pixelsFromCLIToBottom = FRAME_MAIN_HEIGHT - (TEXT_INPUT_DIMENSIONS[1] + TEXT_INPUT_DIMENSIONS[3]);
+//		int pixelsFromDisplayToCLI = TEXT_INPUT_DIMENSIONS[1] - (TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[1] + TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[3]);
+//		int pixelsFromUpcomingToRight = FRAME_MAIN_WIDTH - (TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[0] + TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[2]);
+//		int pixelsFromMainToUpcoming = TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[0] - (TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[0] + TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[2]);
+//		
+//		int upcomingDisplayRelativeX = (int)(frameSize.width * ((double)(TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[0]) / FRAME_MAIN_WIDTH));
+//		int upcomingDisplayRelativeWidth = frameSize.width - (upcomingDisplayRelativeX + pixelsFromUpcomingToRight);
+//
+//		buttonUpcoming.setBounds(
+//				upcomingDisplayRelativeX,
+//				BUTTON_UPCOMING_DIMENSIONS[1],
+//				upcomingDisplayRelativeWidth,
+//				BUTTON_ENTER_DIMENSIONS[3]);
+//		textDisplayUpcomingScrollPane.setBounds(
+//				upcomingDisplayRelativeX,
+//				TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[1],
+//				upcomingDisplayRelativeWidth,
+//				frameSize.height - TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
+//		// Don't change textDisplayUpcoming x and y because they are relative to the textDisplayUpcomingScrollPane
+//		textDisplayUpcoming.setBounds(
+//				TEXT_DISPLAY_UPCOMING_DIMENSIONS[0],
+//				TEXT_DISPLAY_UPCOMING_DIMENSIONS[1],
+//				upcomingDisplayRelativeWidth,
+//				frameSize.height - TEXT_DISPLAY_UPCOMING_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
+//		
+//		labelWelcome.setBounds(
+//				LABEL_WELCOME_DIMENSIONS[0],
+//				LABEL_WELCOME_DIMENSIONS[1],
+//				frameSize.width - LABEL_WELCOME_DIMENSIONS[0] - (pixelsFromMainToUpcoming + upcomingDisplayRelativeWidth + pixelsFromUpcomingToRight),
+//				LABEL_WELCOME_DIMENSIONS[3]);
+//		textDisplayMainScrollPane.setBounds(
+//				TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[0],
+//				TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[1],
+//				frameSize.width - TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[0] - (pixelsFromMainToUpcoming + upcomingDisplayRelativeWidth + pixelsFromUpcomingToRight),
+//				frameSize.height - TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
+//		// Don't change textDisplayMain x and y because they are relative to the textDisplayMainScrollPane
+//		textDisplayMain.setBounds(
+//				TEXT_DISPLAY_MAIN_DIMENSIONS[0],
+//				TEXT_DISPLAY_MAIN_DIMENSIONS[1],
+//				frameSize.width - TEXT_DISPLAY_MAIN_DIMENSIONS[0] - (pixelsFromMainToUpcoming + upcomingDisplayRelativeWidth + pixelsFromUpcomingToRight),
+//				frameSize.height - TEXT_DISPLAY_MAIN_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
+//		
+//		textInput.setBounds(
+//				TEXT_INPUT_DIMENSIONS[0],
+//				frameSize.height - (TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom),
+//				frameSize.width - TEXT_INPUT_DIMENSIONS[0] - (BUTTON_ENTER_DIMENSIONS[2] + pixelsFromUpcomingToRight),
+//				TEXT_INPUT_DIMENSIONS[3]);
+//		buttonEnter.setBounds(
+//				frameSize.width - (BUTTON_ENTER_DIMENSIONS[2] + pixelsFromUpcomingToRight),
+//				frameSize.height - (BUTTON_ENTER_DIMENSIONS[3] + pixelsFromCLIToBottom),
+//				BUTTON_ENTER_DIMENSIONS[2],
+//				BUTTON_ENTER_DIMENSIONS[3]);
+//	}
 }

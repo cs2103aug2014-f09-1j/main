@@ -20,7 +20,7 @@ import whatsupnext.structure.Types.VIEWTYPE;
 
 public class GUIFunctionality {
 	
-	private JTextArea textDisplayMain = WhatsUpNextGUI.textDisplayMain;
+	private JTextArea textDisplayMain = MainDisplayWidget.textDisplayMain;
 	private JTextField textInput = WhatsUpNextGUI.textInput;
 	private JTextArea textDisplayUpcoming = WhatsUpNextGUI.textDisplayUpcoming;
 	

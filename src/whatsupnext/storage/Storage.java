@@ -2,7 +2,6 @@ package whatsupnext.storage;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -127,7 +126,7 @@ public class Storage {
 	 * @return
 	 * @throws IOException
 	 */
-	public ArrayList<Task> readTasks() throws IOException, ParseException {
+	public ArrayList<Task> readTasks() throws IOException {
 		ArrayList<Task> arrayOfTasks = readFromFile();
 		if (arrayOfTasks.size() > 0) {
 			return arrayOfTasks;
@@ -143,48 +142,51 @@ public class Storage {
 	 * @return
 	 * @throws IOException
 	 */
-	private ArrayList<Task> readFromFile() throws IOException, ParseException {
+	private ArrayList<Task> readFromFile() throws IOException {
 		Scanner reader = new Scanner(currentFile);
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		
+		try {
 		
-		
-	    while (reader.hasNextLine()) {
-	    	JSONParser parser=new JSONParser();
-		    Object parsedJSON = parser.parse(reader.nextLine());
-		    JSONObject object = (JSONObject)parsedJSON;
-		      
-		    
-		    Set<String> keySet= (Set<String>) object.keySet();
-		    Iterator<String> it = keySet.iterator();
-	    	String taskID = it.next();	    	
-	    	JSONArray arr = (JSONArray)object.get(taskID);
-	    	
-	    	String description = (String) arr.get(0);
-	    	String startTime = (String) arr.get(1);
-	    	String endTime = (String) arr.get(2);
-	    	
-	    	
-	    	/*String booleanString = (String) arr.get(3);
-			
-			assertTrue(booleanString.equals("true") || booleanString.equals("false"));		
-			boolean isDone = Boolean.parseBoolean(booleanString);*/
-	    	boolean isDone = (boolean) arr.get(3);
-	    	
-	    	Task taskFromJSON = new Task();
-	    	taskFromJSON.setTaskID(taskID);
-	    	taskFromJSON.setDescription(description);
-	    	taskFromJSON.setStartTime(startTime);
-	    	taskFromJSON.setEndTime(endTime);
-	    	taskFromJSON.setDone(isDone);
-
-	    	tasks.add(taskFromJSON);
-	    }
-		/*while (reader.hasNextLine()) {
-			String taskInString = reader.nextLine();
-			tasks.add(stringToTask(taskInString));	
-		}*/
-		
+		    while (reader.hasNextLine()) {
+		    	JSONParser parser=new JSONParser();
+			    Object parsedJSON = parser.parse(reader.nextLine());
+			    JSONObject object = (JSONObject)parsedJSON;
+			      
+			    
+			    Set<String> keySet= (Set<String>) object.keySet();
+			    Iterator<String> it = keySet.iterator();
+		    	String taskID = it.next();	    	
+		    	JSONArray arr = (JSONArray)object.get(taskID);
+		    	
+		    	String description = (String) arr.get(0);
+		    	String startTime = (String) arr.get(1);
+		    	String endTime = (String) arr.get(2);
+		    	
+		    	
+		    	/*String booleanString = (String) arr.get(3);
+				
+				assertTrue(booleanString.equals("true") || booleanString.equals("false"));		
+				boolean isDone = Boolean.parseBoolean(booleanString);*/
+		    	boolean isDone = (boolean) arr.get(3);
+		    	
+		    	Task taskFromJSON = new Task();
+		    	taskFromJSON.setTaskID(taskID);
+		    	taskFromJSON.setDescription(description);
+		    	taskFromJSON.setStartTime(startTime);
+		    	taskFromJSON.setEndTime(endTime);
+		    	taskFromJSON.setDone(isDone);
+	
+		    	tasks.add(taskFromJSON);
+		    }
+			/*while (reader.hasNextLine()) {
+				String taskInString = reader.nextLine();
+				tasks.add(stringToTask(taskInString));	
+			}*/
+		}
+		catch (ParseException p) {
+			p.printStackTrace();
+		}
 		reader.close();
 		return tasks;
 	}

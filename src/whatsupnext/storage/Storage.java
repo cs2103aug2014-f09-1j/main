@@ -7,16 +7,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.LinkedList;
-import java.util.Set;
-import java.util.Iterator;
 
-import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import whatsupnext.structure.Task;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 
 public class Storage {
@@ -25,8 +22,7 @@ public class Storage {
 	private String FILE_NAME;
 	private final static String EXTENSION = ".txt";
 	private final boolean SUCCESS = true;
-	private final boolean FAILURE = false;
-	public final static String DELIMITER = "%#";	
+	private final boolean FAILURE = false;	
 	private final static int NUMBER_OF_VERSIONS = 3; 
 	
 	private LinkedList<File> fileVersions;
@@ -100,11 +96,29 @@ public class Storage {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(currentFile));
 		for (int x = 0; x < tasks.size(); x++) {
 			Task taskToBeWritten = tasks.get(x);
-			writer.write(taskToString(taskToBeWritten));
+			writer.write(taskToJSONString(taskToBeWritten));
 			writer.newLine();
 			writer.flush();
 		}		
 		writer.close();
+	}
+	
+	public String taskToJSONString(Task task) {
+		assertNotNull(task.getTaskID());
+		assertNotNull(task.getDescription());
+		assertNotNull(task.getStartTime());
+		assertNotNull(task.getEndTime());
+		assertNotNull(task.getDone());
+		
+		JSONArray taskDetailsArray = new JSONArray();
+		
+		taskDetailsArray.add(task.getTaskID());
+		taskDetailsArray.add(task.getDescription());
+		taskDetailsArray.add(task.getStartTime());
+		taskDetailsArray.add(task.getEndTime());
+		taskDetailsArray.add(task.getDone());
+		
+		return taskDetailsArray.toJSONString();
 	}
 	
 	/**
@@ -151,24 +165,13 @@ public class Storage {
 		    while (reader.hasNextLine()) {
 		    	JSONParser parser=new JSONParser();
 			    Object parsedJSON = parser.parse(reader.nextLine());
-			    JSONObject object = (JSONObject)parsedJSON;
-			      
+			    JSONArray arr = (JSONArray) parsedJSON;
 			    
-			    Set<String> keySet= (Set<String>) object.keySet();
-			    Iterator<String> it = keySet.iterator();
-		    	String taskID = it.next();	    	
-		    	JSONArray arr = (JSONArray)object.get(taskID);
-		    	
-		    	String description = (String) arr.get(0);
-		    	String startTime = (String) arr.get(1);
-		    	String endTime = (String) arr.get(2);
-		    	
-		    	
-		    	/*String booleanString = (String) arr.get(3);
-				
-				assertTrue(booleanString.equals("true") || booleanString.equals("false"));		
-				boolean isDone = Boolean.parseBoolean(booleanString);*/
-		    	boolean isDone = (boolean) arr.get(3);
+			    String taskID = (String) arr.get(0);
+		    	String description = (String) arr.get(1);
+		    	String startTime = (String) arr.get(2);
+		    	String endTime = (String) arr.get(3);
+		    	boolean isDone = (boolean) arr.get(4);
 		    	
 		    	Task taskFromJSON = new Task();
 		    	taskFromJSON.setTaskID(taskID);
@@ -179,70 +182,12 @@ public class Storage {
 	
 		    	tasks.add(taskFromJSON);
 		    }
-			/*while (reader.hasNextLine()) {
-				String taskInString = reader.nextLine();
-				tasks.add(stringToTask(taskInString));	
-			}*/
 		}
 		catch (ParseException p) {
 			p.printStackTrace();
 		}
 		reader.close();
 		return tasks;
-	}
-	
-	/**
-	 * Converts String to Task, by creating a new one with fields that have been read from the string. This helps when 
-	 * reading each line of the file as a String.
-	 * @param taskInString
-	 * @return
-	 */
-	public Task stringToTask(String taskInString) {
-		Scanner extractFromString = new Scanner(taskInString);
-		extractFromString.useDelimiter(DELIMITER);
-		
-		String taskID = extractFromString.next();
-		String description = extractFromString.next();
-		String startTime = extractFromString.next();
-		String endTime = extractFromString.next();
-		String booleanString = extractFromString.next();
-		
-		assertTrue(booleanString.equals("true") || booleanString.equals("false"));		
-		boolean isDone = Boolean.parseBoolean(booleanString);
-		
-		Task taskFromString = new Task();
-		taskFromString.setTaskID(taskID);
-		taskFromString.setDescription(description);
-		taskFromString.setStartTime(startTime);
-		taskFromString.setEndTime(endTime);
-		taskFromString.setDone(isDone);
-		
-		extractFromString.close();
-		
-		return taskFromString;
-	}
-		
-	public String taskToString(Task task) {
-		assertNotNull(task.getTaskID());
-		assertNotNull(task.getDescription());
-		assertNotNull(task.getStartTime());
-		assertNotNull(task.getEndTime());
-		assertNotNull(task.getDone());
-		
-		JSONObject obj = new JSONObject();
-		JSONArray arr = new JSONArray();
-  
-		arr.add(task.getDescription());
-		arr.add(task.getStartTime());
-		arr.add(task.getEndTime());
-		arr.add(task.getDone());
-		  
-		obj.put(task.getTaskID(), arr);
-
-		/*return task.getTaskID() + DELIMITER + task.getDescription() + DELIMITER + 
-				task.getStartTime() + DELIMITER + task.getEndTime() + 
-				DELIMITER + task.getDone() + DELIMITER;*/
-		return obj.toJSONString();
 	}
 	
 	public void clearFile() throws IOException {

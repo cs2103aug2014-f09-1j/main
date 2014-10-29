@@ -37,6 +37,9 @@ public class ViewCommand extends Command {
 			case UNDONE:
 				viewUndone();
 				break;
+			case FLOATING:
+				viewFloating();
+				break;
 			default:
 				break;
 		}
@@ -127,6 +130,17 @@ public class ViewCommand extends Command {
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
 			if (!task.getDone()) {
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
+			    output.add(taskInfo);
+			}			
+		}
+	}
+	
+	private void viewFloating() {
+		Iterator<Task> taskIterator = list.iterator();
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (task.getStartTime().isEmpty() && task.getEndTime().isEmpty()) {
 				String taskInfo = LogicUtilities.getFormattedOutput(task);
 			    output.add(taskInfo);
 			}			

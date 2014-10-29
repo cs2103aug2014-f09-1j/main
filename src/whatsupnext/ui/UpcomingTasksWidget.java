@@ -2,6 +2,9 @@ package whatsupnext.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -10,6 +13,7 @@ import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
@@ -23,6 +27,9 @@ public class UpcomingTasksWidget {
 
 	private JFrame frameMain = WhatsUpNextGUI.frameMain;
 
+	private JPanel widgetPanel;
+	private final int[] PANEL_DIMENSIONS = {356, 5, 174, 210};
+	
 	private JButton buttonUpcoming;
 	private final int[] BUTTON_UPCOMING_DIMENSIONS = {356, 5, 174, 28};
 	private JScrollPane textDisplayUpcomingScrollPane;
@@ -51,8 +58,26 @@ public class UpcomingTasksWidget {
 	}
 
 	private void initializeUpcomingTasksPanel() {
+		widgetPanel = new JPanel();
+		widgetPanel.setBackground(new Color(204, 224, 250));
+		widgetPanel.setBounds(
+				PANEL_DIMENSIONS[0],
+				PANEL_DIMENSIONS[1],
+				PANEL_DIMENSIONS[2],
+				PANEL_DIMENSIONS[3]);
+//		widgetPanel.setPreferredSize(new Dimension(PANEL_DIMENSIONS[2], PANEL_DIMENSIONS[3]));
+		
+		GridBagLayout gbl_widgetPanel = new GridBagLayout();
+		gbl_widgetPanel.columnWidths = new int[]{PANEL_DIMENSIONS[2]};
+		gbl_widgetPanel.rowHeights = new int[]{28, 180};
+		gbl_widgetPanel.columnWeights = new double[]{1.0};
+		gbl_widgetPanel.rowWeights = new double[]{0.0, 1.0};
+		widgetPanel.setLayout(gbl_widgetPanel);
+		
 		initializeUpcomingTasksTextDisplay();
 		initializeUpcomingTasksButton();
+		
+		frameMain.getContentPane().add(widgetPanel);
 	}
 	
 	private void initializeUpcomingTasksTextDisplay() {
@@ -61,20 +86,17 @@ public class UpcomingTasksWidget {
 		textDisplayUpcoming.setForeground(new Color(25, 25, 112));
 		textDisplayUpcoming.setEditable(false);
 		textDisplayUpcoming.setBackground(new Color(240, 255, 255));
-		textDisplayUpcoming.setBounds(
-				TEXT_DISPLAY_UPCOMING_DIMENSIONS[0],
-				TEXT_DISPLAY_UPCOMING_DIMENSIONS[1],
-				TEXT_DISPLAY_UPCOMING_DIMENSIONS[2],
-				TEXT_DISPLAY_UPCOMING_DIMENSIONS[3]);
 		
 		textDisplayUpcomingScrollPane = new JScrollPane(textDisplayUpcoming);
-		textDisplayUpcomingScrollPane.setBounds(
-				TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[0],
-				TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[1],
-				TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[2],
-				TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[3]);
 		textDisplayUpcomingScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		frameMain.getContentPane().add(textDisplayUpcomingScrollPane);
+		
+		GridBagConstraints gbc_textDisplayUpcomingScrollPane = new GridBagConstraints();
+		gbc_textDisplayUpcomingScrollPane.fill = GridBagConstraints.BOTH;
+		gbc_textDisplayUpcomingScrollPane.anchor = GridBagConstraints.NORTHWEST;
+		gbc_textDisplayUpcomingScrollPane.gridx = 0;
+		gbc_textDisplayUpcomingScrollPane.gridy = 1;
+		
+		widgetPanel.add(textDisplayUpcomingScrollPane, gbc_textDisplayUpcomingScrollPane);
 	}
 	
 	private void initializeUpcomingTasksButton() {		
@@ -87,12 +109,15 @@ public class UpcomingTasksWidget {
 				clickUpcoming();
 			}
 		});
-		buttonUpcoming.setBounds(
-				BUTTON_UPCOMING_DIMENSIONS[0],
-				BUTTON_UPCOMING_DIMENSIONS[1],
-				BUTTON_UPCOMING_DIMENSIONS[2],
-				BUTTON_UPCOMING_DIMENSIONS[3]);
-		frameMain.getContentPane().add(buttonUpcoming);
+		
+		GridBagConstraints gbc_buttonUpcoming = new GridBagConstraints();
+		gbc_buttonUpcoming.fill = GridBagConstraints.HORIZONTAL;
+		gbc_buttonUpcoming.anchor = GridBagConstraints.NORTHWEST;
+		gbc_buttonUpcoming.insets = new Insets(0, 0, 2, 0);
+		gbc_buttonUpcoming.gridx = 0;
+		gbc_buttonUpcoming.gridy = 0;
+		
+		widgetPanel.add(buttonUpcoming, gbc_buttonUpcoming);
 	}
 	
 	private void displayUpcomingFeedback(String feedback) {

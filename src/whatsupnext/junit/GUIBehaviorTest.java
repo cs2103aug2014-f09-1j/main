@@ -18,7 +18,7 @@ public class GUIBehaviorTest {
 	
 	@Before
 	public void setUpGUI() {
-		gui = new WhatsUpNextGUI();
+		gui = new WhatsUpNextGUI("guiTest");
 	}
 
 	@Test

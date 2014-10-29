@@ -29,7 +29,7 @@ public class WhatsUpNextGUI {
 	private CommandLineInterfaceWidget cliWidget;
 	private UpcomingTasksWidget upcomingWidget;
 	
-	static final Logic logic = new Logic();
+	static Logic logic;
 	
 	/**
 	 * Launch the application.
@@ -67,6 +67,14 @@ public class WhatsUpNextGUI {
 	 * Be sure to initialize the GUIComponents before the GUIFunctionality
 	 */
 	public WhatsUpNextGUI() {
+		logic = new Logic();
+		initGUIComponents();
+		setComponentsNames();
+		upcomingWidget.clickUpcoming();
+	}
+	
+	public WhatsUpNextGUI(String fileName) {
+		logic = new Logic(fileName);
 		initGUIComponents();
 		setComponentsNames();
 		upcomingWidget.clickUpcoming();

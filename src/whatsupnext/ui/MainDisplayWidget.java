@@ -20,7 +20,8 @@ import java.awt.Insets;
 public class MainDisplayWidget {
 	
 	private JPanel widgetPanel;
-	private final int[] PANEL_DIMENSIONS = {0, 0, 328, 205};
+	private final int PANEL_WIDTH = 328;
+	private final int PANEL_HEIGHT = 205;
 
     private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";
     private JLabel labelWelcome;
@@ -56,10 +57,10 @@ public class MainDisplayWidget {
 	private void initializeMainDisplayPanel() {
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(new Color(204, 224, 250));
-		widgetPanel.setPreferredSize(new Dimension(PANEL_DIMENSIONS[2], PANEL_DIMENSIONS[3]));
+		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
-		gbl_widgetPanel.columnWidths = new int[]{PANEL_DIMENSIONS[2]};
+		gbl_widgetPanel.columnWidths = new int[]{PANEL_WIDTH};
 		gbl_widgetPanel.rowHeights = new int[]{30, 180};
 		gbl_widgetPanel.columnWeights = new double[]{1.0};
 		gbl_widgetPanel.rowWeights = new double[]{0.0, 1.0};

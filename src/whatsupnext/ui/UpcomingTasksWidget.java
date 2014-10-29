@@ -26,7 +26,8 @@ import whatsupnext.structure.Types.VIEWTYPE;
 public class UpcomingTasksWidget {
 
 	private JPanel widgetPanel;
-	private final int[] PANEL_DIMENSIONS = {0, 0, 174, 210};
+	private final int PANEL_WIDTH = 174;
+	private final int PANEL_HEIGHT = 210;
 	
 	private JButton buttonUpcoming;
 	private JScrollPane textDisplayUpcomingScrollPane;
@@ -60,17 +61,17 @@ public class UpcomingTasksWidget {
 	private void initializeUpcomingTasksPanel() {
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(new Color(204, 224, 250));
-		widgetPanel.setPreferredSize(new Dimension(PANEL_DIMENSIONS[2], PANEL_DIMENSIONS[3]));
+		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
-		gbl_widgetPanel.columnWidths = new int[]{PANEL_DIMENSIONS[2]};
+		gbl_widgetPanel.columnWidths = new int[]{PANEL_WIDTH};
 		gbl_widgetPanel.rowHeights = new int[]{28, 180};
 		gbl_widgetPanel.columnWeights = new double[]{1.0};
 		gbl_widgetPanel.rowWeights = new double[]{0.0, 1.0};
 		widgetPanel.setLayout(gbl_widgetPanel);
 		
 		initializeUpcomingTasksTextDisplay();
-		initializeUpcomingTasksButton();
+		initializeUpcomingTasksSelector();
 	}
 	
 	private void initializeUpcomingTasksTextDisplay() {
@@ -88,11 +89,18 @@ public class UpcomingTasksWidget {
 		gbc_textDisplayUpcomingScrollPane.anchor = GridBagConstraints.NORTHWEST;
 		gbc_textDisplayUpcomingScrollPane.gridx = 0;
 		gbc_textDisplayUpcomingScrollPane.gridy = 1;
+		gbc_textDisplayUpcomingScrollPane.gridwidth = 3;
 		
 		widgetPanel.add(textDisplayUpcomingScrollPane, gbc_textDisplayUpcomingScrollPane);
 	}
 	
-	private void initializeUpcomingTasksButton() {		
+	private void initializeUpcomingTasksSelector() {
+		createUpcomingButton();
+		createForLabel();
+		createTimeLengthCombobox();
+	}
+	
+	private void createUpcomingButton() {
 		buttonUpcoming = new JButton("Upcoming Tasks");
 		buttonUpcoming.setFont(new Font("Cambria", Font.BOLD, 12));
 		buttonUpcoming.setForeground(new Color(224, 255, 255));
@@ -112,7 +120,17 @@ public class UpcomingTasksWidget {
 		
 		widgetPanel.add(buttonUpcoming, gbc_buttonUpcoming);
 	}
-	
+
+	private void createForLabel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void createTimeLengthCombobox() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void displayUpcomingFeedback(String feedback) {
 		feedback = feedback.replaceAll(currentYear, "");
 		textDisplayUpcoming.setText(feedback);

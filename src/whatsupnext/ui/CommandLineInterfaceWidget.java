@@ -28,7 +28,8 @@ public class CommandLineInterfaceWidget {
 	private UpcomingTasksWidget linkedUpcomingOptional;
 
 	private JPanel widgetPanel;
-	private final int[] PANEL_DIMENSIONS = {0, 0, 520, 25};
+	private final int PANEL_WIDTH = 520;
+	private final int PANEL_HEIGHT = 25;
 	
 	private JTextField textInput;
 	private JButton buttonEnter;
@@ -73,11 +74,11 @@ public class CommandLineInterfaceWidget {
 	private void initializeCLIPanel() {
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(new Color(204, 224, 250));
-		widgetPanel.setPreferredSize(new Dimension(PANEL_DIMENSIONS[2], PANEL_DIMENSIONS[3]));
+		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
 		gbl_widgetPanel.columnWidths = new int[]{430, 90};
-		gbl_widgetPanel.rowHeights = new int[]{PANEL_DIMENSIONS[3]};
+		gbl_widgetPanel.rowHeights = new int[]{PANEL_HEIGHT};
 		gbl_widgetPanel.columnWeights = new double[]{1.0, 0.0};
 		gbl_widgetPanel.rowWeights = new double[]{1.0};
 		widgetPanel.setLayout(gbl_widgetPanel);

@@ -6,7 +6,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -20,10 +19,8 @@ import java.awt.Insets;
 
 public class MainDisplayWidget {
 	
-	private JFrame frameMain = WhatsUpNextGUI.frameMain;
-	
 	private JPanel widgetPanel;
-	private final int[] PANEL_DIMENSIONS = {10, 10, 328, 205};
+	private final int[] PANEL_DIMENSIONS = {0, 0, 328, 205};
 
     private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";
     private JLabel labelWelcome;
@@ -38,6 +35,10 @@ public class MainDisplayWidget {
 		initializeMainDisplayPanel();
 		setComponentNames();
 	}
+    
+    public JPanel getWidgetPanel() {
+    	return widgetPanel;
+    }
     
     private void initializeCurrentYear() {
     	DateFormat dateFormat = new SimpleDateFormat(" yyyy");
@@ -55,24 +56,17 @@ public class MainDisplayWidget {
 	private void initializeMainDisplayPanel() {
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(new Color(204, 224, 250));
-		widgetPanel.setBounds(
-				PANEL_DIMENSIONS[0],
-				PANEL_DIMENSIONS[1],
-				PANEL_DIMENSIONS[2],
-				PANEL_DIMENSIONS[3]);
-//		widgetPanel.setPreferredSize(new Dimension(PANEL_DIMENSIONS[2], PANEL_DIMENSIONS[3]));
+		widgetPanel.setPreferredSize(new Dimension(PANEL_DIMENSIONS[2], PANEL_DIMENSIONS[3]));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
 		gbl_widgetPanel.columnWidths = new int[]{PANEL_DIMENSIONS[2]};
-		gbl_widgetPanel.rowHeights = new int[]{15, 180};
+		gbl_widgetPanel.rowHeights = new int[]{30, 180};
 		gbl_widgetPanel.columnWeights = new double[]{1.0};
 		gbl_widgetPanel.rowWeights = new double[]{0.0, 1.0};
 		widgetPanel.setLayout(gbl_widgetPanel);
 		
 		initializeWelcomeMessage();
 		initializeMainTextDisplay();
-		
-		frameMain.getContentPane().add(widgetPanel);
 	}
 	
 	private void initializeWelcomeMessage() {
@@ -92,12 +86,12 @@ public class MainDisplayWidget {
 	private void initializeWelcomeMessageLabel() {
 		labelWelcome = new JLabel(STRING_WELCOME);
 		labelWelcome.setForeground(new Color(0, 0, 128));
-		labelWelcome.setFont(new Font("Cambria", Font.BOLD, 12));
+		labelWelcome.setFont(new Font("Cambria", Font.BOLD, 13));
 		
 		GridBagConstraints gbc_labelWelcome = new GridBagConstraints();
 		gbc_labelWelcome.fill = GridBagConstraints.HORIZONTAL;
 		gbc_labelWelcome.anchor = GridBagConstraints.NORTHWEST;
-		gbc_labelWelcome.insets = new Insets(0, 0, 5, 0);
+		gbc_labelWelcome.insets = new Insets(5, 0, 5, 0);
 		gbc_labelWelcome.gridx = 0;
 		gbc_labelWelcome.gridy = 0;
 		
@@ -124,10 +118,6 @@ public class MainDisplayWidget {
 		widgetPanel.add(textDisplayMainScrollPane, gbc_textDisplayMainScrollPane);
 	}
 	
-//	private void resetComponentSizes() {
-//		
-//	}
-
 	public void setText(String string) {
 		textDisplayMain.setText("---Please enter command below:\r\n");
 	}
@@ -137,8 +127,4 @@ public class MainDisplayWidget {
 		textDisplayMain.append("\n"+feedback+"\n");
 	}
 
-	public void resize() {
-		widgetPanel.revalidate();
-		widgetPanel.repaint();
-	}
 }

@@ -1,6 +1,7 @@
 package whatsupnext.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -25,10 +25,8 @@ import whatsupnext.structure.Types.VIEWTYPE;
 
 public class UpcomingTasksWidget {
 
-	private JFrame frameMain = WhatsUpNextGUI.frameMain;
-
 	private JPanel widgetPanel;
-	private final int[] PANEL_DIMENSIONS = {356, 5, 174, 210};
+	private final int[] PANEL_DIMENSIONS = {0, 0, 174, 210};
 	
 	private JButton buttonUpcoming;
 	private JScrollPane textDisplayUpcomingScrollPane;
@@ -41,6 +39,10 @@ public class UpcomingTasksWidget {
 		initializeUpcomingTasksPanel();
 		setComponentNames();
 	}
+	
+	public JPanel getWidgetPanel() {
+    	return widgetPanel;
+    }
 	
 	private void initializeCurrentYear() {
     	DateFormat dateFormat = new SimpleDateFormat(" yyyy");
@@ -58,12 +60,7 @@ public class UpcomingTasksWidget {
 	private void initializeUpcomingTasksPanel() {
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(new Color(204, 224, 250));
-		widgetPanel.setBounds(
-				PANEL_DIMENSIONS[0],
-				PANEL_DIMENSIONS[1],
-				PANEL_DIMENSIONS[2],
-				PANEL_DIMENSIONS[3]);
-//		widgetPanel.setPreferredSize(new Dimension(PANEL_DIMENSIONS[2], PANEL_DIMENSIONS[3]));
+		widgetPanel.setPreferredSize(new Dimension(PANEL_DIMENSIONS[2], PANEL_DIMENSIONS[3]));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
 		gbl_widgetPanel.columnWidths = new int[]{PANEL_DIMENSIONS[2]};
@@ -74,8 +71,6 @@ public class UpcomingTasksWidget {
 		
 		initializeUpcomingTasksTextDisplay();
 		initializeUpcomingTasksButton();
-		
-		frameMain.getContentPane().add(widgetPanel);
 	}
 	
 	private void initializeUpcomingTasksTextDisplay() {

@@ -1,16 +1,19 @@
 package whatsupnext.ui;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Window.Type;
 import java.awt.Toolkit;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -21,10 +24,11 @@ import whatsupnext.logic.Logic;
  */
 public class WhatsUpNextGUI {
 	
-	static JFrame frameMain;
-	private final int FRAME_MAIN_WIDTH = 555;
+	private JFrame frameMain;
+	private final int FRAME_MAIN_WIDTH = 580;
 	private final int FRAME_MAIN_HEIGHT = 300;
 	
+	private JPanel mainPanel;
 	private MainDisplayWidget mainDisplayWidget;
 	private CommandLineInterfaceWidget cliWidget;
 	private UpcomingTasksWidget upcomingWidget;
@@ -51,9 +55,10 @@ public class WhatsUpNextGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new WhatsUpNextGUI();
-					WhatsUpNextGUI.frameMain.setLocationByPlatform(true);
-					WhatsUpNextGUI.frameMain.setVisible(true);
+					WhatsUpNextGUI gui = new WhatsUpNextGUI();
+					gui.frameMain.setLocationByPlatform(true);
+					gui.frameMain.setVisible(true);
+					gui.frameMain.pack();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -101,32 +106,28 @@ public class WhatsUpNextGUI {
 	 */
 	private void initGUIComponents() {
 		initializeApplicationFrame();
+		
 		mainDisplayWidget = new MainDisplayWidget();
 		upcomingWidget = new UpcomingTasksWidget();
 		cliWidget = new CommandLineInterfaceWidget(mainDisplayWidget, upcomingWidget);
+		
+		initializeMainPanel();
 	}
 	
 	/**
 	 * Initialize frame of the application
 	 */
-	private void initializeApplicationFrame() {	
+	private void initializeApplicationFrame() {
 		frameMain = new JFrame();
 		frameMain.setResizable(true);
 		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/whatsupnext/ui/iconGUI.png")));
 		frameMain.setType(Type.POPUP);
 		frameMain.setFont(new Font("Cambria", Font.BOLD, 12));
 		frameMain.setTitle("WhatsUpNext");
-		frameMain.getContentPane().setBackground(new Color(204, 224, 250));
-		frameMain.getContentPane().setLayout(null);
 		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frameMain.setBounds(0, 0, FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT);
-		frameMain.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent arg0) {
-//				resetComponentSizes();
-				mainDisplayWidget.resize();
-			}
-		});
+		frameMain.setPreferredSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
+		frameMain.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
+		
 		frameMain.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				deleteRevisions();
@@ -134,69 +135,49 @@ public class WhatsUpNextGUI {
 		});
 	}
 	
+	private void initializeMainPanel() {
+		mainPanel = new JPanel();
+		mainPanel.setBackground(new Color(204, 224, 250));
+		mainPanel.setPreferredSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
+		mainPanel.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
+		
+		GridBagLayout gbl_mainPanel = new GridBagLayout();
+		gbl_mainPanel.columnWidths = new int[]{330, 200};
+		gbl_mainPanel.rowHeights = new int[]{210, 25};
+		gbl_mainPanel.columnWeights = new double[]{0.8, 0.2};
+		gbl_mainPanel.rowWeights = new double[]{1.0, 0.0};
+		mainPanel.setLayout(gbl_mainPanel);
+		
+		GridBagConstraints gbc_mainDisplayWidget = new GridBagConstraints();
+		gbc_mainDisplayWidget.fill = GridBagConstraints.BOTH;
+		gbc_mainDisplayWidget.anchor = GridBagConstraints.NORTHWEST;
+		gbc_mainDisplayWidget.insets = new Insets(5, 10, 10, 10);
+		gbc_mainDisplayWidget.gridx = 0;
+		gbc_mainDisplayWidget.gridy = 0;
+		mainPanel.add(mainDisplayWidget.getWidgetPanel(), gbc_mainDisplayWidget);
+		
+		GridBagConstraints gbc_upcomingWidget = new GridBagConstraints();
+		gbc_upcomingWidget.fill = GridBagConstraints.BOTH;
+		gbc_upcomingWidget.anchor = GridBagConstraints.NORTHWEST;
+		gbc_upcomingWidget.insets = new Insets(5, 0, 10, 10);
+		gbc_upcomingWidget.gridx = 1;
+		gbc_upcomingWidget.gridy = 0;
+		mainPanel.add(upcomingWidget.getWidgetPanel(), gbc_upcomingWidget);
+		
+		GridBagConstraints gbc_cliWidget = new GridBagConstraints();
+		gbc_cliWidget.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cliWidget.anchor = GridBagConstraints.WEST;
+		gbc_cliWidget.insets = new Insets(0, 10, 10, 10);
+		gbc_cliWidget.gridx = 0;
+		gbc_cliWidget.gridy = 1;
+		gbc_cliWidget.gridwidth = 2;
+		mainPanel.add(cliWidget.getWidgetPanel(), gbc_cliWidget);
+		
+		frameMain.getContentPane().add(mainPanel);
+	}
+	
 	private void deleteRevisions() {
 		logic.clearRevisionFiles();
 	}
 	
-	/**
-	 *  Display area for upcoming tasks
-	 */
-	
-
-//	private void resetComponentSizes() {
-//		Rectangle frameSize = frameMain.getBounds();
-//		
-//		int pixelsFromCLIToBottom = FRAME_MAIN_HEIGHT - (TEXT_INPUT_DIMENSIONS[1] + TEXT_INPUT_DIMENSIONS[3]);
-//		int pixelsFromDisplayToCLI = TEXT_INPUT_DIMENSIONS[1] - (TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[1] + TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[3]);
-//		int pixelsFromUpcomingToRight = FRAME_MAIN_WIDTH - (TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[0] + TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[2]);
-//		int pixelsFromMainToUpcoming = TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[0] - (TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[0] + TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[2]);
-//		
-//		int upcomingDisplayRelativeX = (int)(frameSize.width * ((double)(TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[0]) / FRAME_MAIN_WIDTH));
-//		int upcomingDisplayRelativeWidth = frameSize.width - (upcomingDisplayRelativeX + pixelsFromUpcomingToRight);
-//
-//		buttonUpcoming.setBounds(
-//				upcomingDisplayRelativeX,
-//				BUTTON_UPCOMING_DIMENSIONS[1],
-//				upcomingDisplayRelativeWidth,
-//				BUTTON_ENTER_DIMENSIONS[3]);
-//		textDisplayUpcomingScrollPane.setBounds(
-//				upcomingDisplayRelativeX,
-//				TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[1],
-//				upcomingDisplayRelativeWidth,
-//				frameSize.height - TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
-//		// Don't change textDisplayUpcoming x and y because they are relative to the textDisplayUpcomingScrollPane
-//		textDisplayUpcoming.setBounds(
-//				TEXT_DISPLAY_UPCOMING_DIMENSIONS[0],
-//				TEXT_DISPLAY_UPCOMING_DIMENSIONS[1],
-//				upcomingDisplayRelativeWidth,
-//				frameSize.height - TEXT_DISPLAY_UPCOMING_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
-//		
-//		labelWelcome.setBounds(
-//				LABEL_WELCOME_DIMENSIONS[0],
-//				LABEL_WELCOME_DIMENSIONS[1],
-//				frameSize.width - LABEL_WELCOME_DIMENSIONS[0] - (pixelsFromMainToUpcoming + upcomingDisplayRelativeWidth + pixelsFromUpcomingToRight),
-//				LABEL_WELCOME_DIMENSIONS[3]);
-//		textDisplayMainScrollPane.setBounds(
-//				TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[0],
-//				TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[1],
-//				frameSize.width - TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[0] - (pixelsFromMainToUpcoming + upcomingDisplayRelativeWidth + pixelsFromUpcomingToRight),
-//				frameSize.height - TEXT_DISPLAY_MAIN_SCROLL_PANE_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
-//		// Don't change textDisplayMain x and y because they are relative to the textDisplayMainScrollPane
-//		textDisplayMain.setBounds(
-//				TEXT_DISPLAY_MAIN_DIMENSIONS[0],
-//				TEXT_DISPLAY_MAIN_DIMENSIONS[1],
-//				frameSize.width - TEXT_DISPLAY_MAIN_DIMENSIONS[0] - (pixelsFromMainToUpcoming + upcomingDisplayRelativeWidth + pixelsFromUpcomingToRight),
-//				frameSize.height - TEXT_DISPLAY_MAIN_DIMENSIONS[1] - (pixelsFromDisplayToCLI + TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom));
-//		
-//		textInput.setBounds(
-//				TEXT_INPUT_DIMENSIONS[0],
-//				frameSize.height - (TEXT_INPUT_DIMENSIONS[3] + pixelsFromCLIToBottom),
-//				frameSize.width - TEXT_INPUT_DIMENSIONS[0] - (BUTTON_ENTER_DIMENSIONS[2] + pixelsFromUpcomingToRight),
-//				TEXT_INPUT_DIMENSIONS[3]);
-//		buttonEnter.setBounds(
-//				frameSize.width - (BUTTON_ENTER_DIMENSIONS[2] + pixelsFromUpcomingToRight),
-//				frameSize.height - (BUTTON_ENTER_DIMENSIONS[3] + pixelsFromCLIToBottom),
-//				BUTTON_ENTER_DIMENSIONS[2],
-//				BUTTON_ENTER_DIMENSIONS[3]);
-//	}
 }

@@ -1,6 +1,7 @@
 package whatsupnext.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,7 +16,6 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -24,12 +24,11 @@ import whatsupnext.structure.Task;
 
 public class CommandLineInterfaceWidget {
 
-	private JFrame frameMain = WhatsUpNextGUI.frameMain;
 	private MainDisplayWidget linkedDisplay;
 	private UpcomingTasksWidget linkedUpcomingOptional;
 
 	private JPanel widgetPanel;
-	private final int[] PANEL_DIMENSIONS = {10, 225, 520, 25};
+	private final int[] PANEL_DIMENSIONS = {0, 0, 520, 25};
 	
 	private JTextField textInput;
 	private JButton buttonEnter;
@@ -60,6 +59,10 @@ public class CommandLineInterfaceWidget {
 		upLastPressed = false;
 		downLastPressed = false;
 	}
+	
+	public JPanel getWidgetPanel() {
+    	return widgetPanel;
+    }
 
 	private void setComponentNames() {
 		widgetPanel.setName("commandLineInterfaceWidgetPanel");
@@ -69,13 +72,8 @@ public class CommandLineInterfaceWidget {
 
 	private void initializeCLIPanel() {
 		widgetPanel = new JPanel();
-//		widgetPanel.setBackground(new Color(204, 224, 250));
-		widgetPanel.setBounds(
-				PANEL_DIMENSIONS[0],
-				PANEL_DIMENSIONS[1],
-				PANEL_DIMENSIONS[2],
-				PANEL_DIMENSIONS[3]);
-//		widgetPanel.setPreferredSize(new Dimension(PANEL_DIMENSIONS[2], PANEL_DIMENSIONS[3]));
+		widgetPanel.setBackground(new Color(204, 224, 250));
+		widgetPanel.setPreferredSize(new Dimension(PANEL_DIMENSIONS[2], PANEL_DIMENSIONS[3]));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
 		gbl_widgetPanel.columnWidths = new int[]{430, 90};
@@ -86,8 +84,6 @@ public class CommandLineInterfaceWidget {
 		
 		initializeMainEnterButton();
 		initializeMainUserCLI();
-		
-		frameMain.getContentPane().add(widgetPanel);
 	}
 
 	private void initializeMainEnterButton() {

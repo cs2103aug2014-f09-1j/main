@@ -25,12 +25,13 @@ import whatsupnext.logic.Logic;
 public class WhatsUpNextGUI {
 	
 	private JFrame frameMain;
-	private final int FRAME_MAIN_WIDTH = 580;
-	private final int FRAME_MAIN_HEIGHT = 300;
+	private final int FRAME_MAIN_WIDTH = 830;
+	private final int FRAME_MAIN_HEIGHT = 360;
 	
 	private JPanel mainPanel;
 	private MainDisplayWidget mainDisplayWidget;
 	private CommandLineInterfaceWidget cliWidget;
+	private FloatingTasksWidget floatingWidget;
 	private UpcomingTasksWidget upcomingWidget;
 	
 	static Logic logic;
@@ -75,14 +76,14 @@ public class WhatsUpNextGUI {
 		logic = new Logic();
 		initGUIComponents();
 		setComponentsNames();
-		upcomingWidget.clickUpcoming();
+		displayWidgetTasks();
 	}
 	
 	public WhatsUpNextGUI(String fileName) {
 		logic = new Logic(fileName);
 		initGUIComponents();
 		setComponentsNames();
-		upcomingWidget.clickUpcoming();
+		displayWidgetTasks();
 	}
 	
 	/**
@@ -100,17 +101,24 @@ public class WhatsUpNextGUI {
 	private void setComponentsNames() {
 		frameMain.setName("frameMain");
 	}
+	
+	private void displayWidgetTasks() {
+		floatingWidget.clickFloating();
+		upcomingWidget.clickUpcoming();
+	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initGUIComponents() {
 		initializeApplicationFrame();
-		
 		mainDisplayWidget = new MainDisplayWidget();
+		floatingWidget = new FloatingTasksWidget();
 		upcomingWidget = new UpcomingTasksWidget();
-		cliWidget = new CommandLineInterfaceWidget(mainDisplayWidget, upcomingWidget);
 		
+		cliWidget = new CommandLineInterfaceWidget(mainDisplayWidget);
+		cliWidget.linkToWidget(floatingWidget);
+		cliWidget.linkToWidget(upcomingWidget);
 		initializeMainPanel();
 	}
 	
@@ -142,9 +150,9 @@ public class WhatsUpNextGUI {
 		mainPanel.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
 		
 		GridBagLayout gbl_mainPanel = new GridBagLayout();
-		gbl_mainPanel.columnWidths = new int[]{330, 200};
+		gbl_mainPanel.columnWidths = new int[]{400, 180, 250};
 		gbl_mainPanel.rowHeights = new int[]{210, 25};
-		gbl_mainPanel.columnWeights = new double[]{0.8, 0.2};
+		gbl_mainPanel.columnWeights = new double[]{0.7, 0.1, 0.2};
 		gbl_mainPanel.rowWeights = new double[]{1.0, 0.0};
 		mainPanel.setLayout(gbl_mainPanel);
 		
@@ -156,12 +164,21 @@ public class WhatsUpNextGUI {
 		gbc_mainDisplayWidget.gridy = 0;
 		mainPanel.add(mainDisplayWidget.getWidgetPanel(), gbc_mainDisplayWidget);
 		
+		GridBagConstraints gbc_floatingWidget = new GridBagConstraints();
+		gbc_floatingWidget.fill = GridBagConstraints.BOTH;
+		gbc_floatingWidget.anchor = GridBagConstraints.NORTHWEST;
+		gbc_floatingWidget.insets = new Insets(5, 0, 10, 10);
+		gbc_floatingWidget.gridx = 1;
+		gbc_floatingWidget.gridy = 0;
+		mainPanel.add(floatingWidget.getWidgetPanel(), gbc_floatingWidget);
+		
 		GridBagConstraints gbc_upcomingWidget = new GridBagConstraints();
 		gbc_upcomingWidget.fill = GridBagConstraints.BOTH;
 		gbc_upcomingWidget.anchor = GridBagConstraints.NORTHWEST;
 		gbc_upcomingWidget.insets = new Insets(5, 0, 10, 10);
-		gbc_upcomingWidget.gridx = 1;
+		gbc_upcomingWidget.gridx = 2;
 		gbc_upcomingWidget.gridy = 0;
+		gbc_upcomingWidget.gridheight = 2;
 		mainPanel.add(upcomingWidget.getWidgetPanel(), gbc_upcomingWidget);
 		
 		GridBagConstraints gbc_cliWidget = new GridBagConstraints();

@@ -37,11 +37,11 @@ public class GUIVisualTest {
 		assertTrue(frameMain.isResizable());
 		
 		Dimension prefSize = frameMain.getPreferredSize();
-		assertEquals(580, prefSize.width);
-		assertEquals(300, prefSize.height);
+		assertEquals(830, prefSize.width);
+		assertEquals(360, prefSize.height);
 		Dimension minSize = frameMain.getMinimumSize();
-		assertEquals(580, minSize.width);
-		assertEquals(300, minSize.height);
+		assertEquals(830, minSize.width);
+		assertEquals(360, minSize.height);
 		
 		assertEquals("Cambria", frameMain.getFont().getName());
 		assertTrue(frameMain.getFont().isBold());

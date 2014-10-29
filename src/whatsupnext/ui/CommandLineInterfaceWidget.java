@@ -25,7 +25,7 @@ import whatsupnext.structure.Task;
 public class CommandLineInterfaceWidget {
 
 	private MainDisplayWidget linkedDisplay;
-	private UpcomingTasksWidget linkedUpcomingOptional;
+	private ArrayList<TasksWidget> linkedOptionalDisplays;
 
 	private JPanel widgetPanel;
 	private final int PANEL_WIDTH = 520;
@@ -43,22 +43,17 @@ public class CommandLineInterfaceWidget {
 
 	public CommandLineInterfaceWidget(MainDisplayWidget displayForCLI) {
 		linkedDisplay = displayForCLI;
-		constructCLI();
-	}
-	
-	public CommandLineInterfaceWidget(MainDisplayWidget displayForCLI, UpcomingTasksWidget upcomingOptionalForCLI) {
-		linkedDisplay = displayForCLI;
-		linkedUpcomingOptional = upcomingOptionalForCLI;
-		constructCLI();
-	}
-	
-	private void constructCLI() {
 		initializeCLIPanel();
 		setComponentNames();
-
+		linkedOptionalDisplays = new ArrayList<TasksWidget>();
+		
 		commandIterator = usedCommands.listIterator();
 		upLastPressed = false;
 		downLastPressed = false;
+	}
+	
+	public void linkToWidget(TasksWidget widget) {
+		linkedOptionalDisplays.add(widget);
 	}
 	
 	public JPanel getWidgetPanel() {
@@ -174,8 +169,8 @@ public class CommandLineInterfaceWidget {
 				}
 			}
 			linkedDisplay.displayFeedback(feedback);
-			if (linkedUpcomingOptional != null) {
-				linkedUpcomingOptional.clickUpcoming();
+			for (TasksWidget widget : linkedOptionalDisplays) {
+				widget.doActionOnClick();
 			}
 		}
 		clearTextInput();

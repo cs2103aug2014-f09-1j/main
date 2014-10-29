@@ -24,7 +24,7 @@ import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.VIEWTYPE;
 
-public class UpcomingTasksWidget {
+public class UpcomingTasksWidget implements TasksWidget{
 
 	private JPanel widgetPanel;
 	private final int PANEL_WIDTH = 174;
@@ -46,6 +46,11 @@ public class UpcomingTasksWidget {
 		selectedTimeOption = timeOptions[0];
 		initializeUpcomingTasksPanel();
 		setComponentNames();
+	}
+	
+	@Override
+	public void doActionOnClick() {
+		clickUpcoming();
 	}
 	
 	public JPanel getWidgetPanel() {
@@ -130,6 +135,7 @@ public class UpcomingTasksWidget {
 	private void createTimeLengthCombobox() {
 		timeLengthCombobox = new JComboBox<String>(timeOptions);
 		timeLengthCombobox.setSelectedIndex(0);
+		timeLengthCombobox.setFont(new Font("Cambria", Font.PLAIN, 12));
 		timeLengthCombobox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				@SuppressWarnings("unchecked")

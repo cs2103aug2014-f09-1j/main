@@ -19,9 +19,9 @@ import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.VIEWTYPE;
 
-public class FloatingTasksWidget {
+public class FloatingTasksWidget implements TasksWidget {
 	private JPanel widgetPanel;
-	private final int PANEL_WIDTH = 174;
+	private final int PANEL_WIDTH = 150;
 	private final int PANEL_HEIGHT = 210;
 	
 	private JButton buttonFloating;
@@ -32,6 +32,11 @@ public class FloatingTasksWidget {
 	public FloatingTasksWidget() {
 		initializeFloatingTasksPanel();
 		setComponentNames();
+	}
+	
+	@Override
+	public void doActionOnClick() {
+		clickFloating();
 	}
 	
 	public JPanel getWidgetPanel() {
@@ -51,9 +56,9 @@ public class FloatingTasksWidget {
 		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
-		gbl_widgetPanel.columnWidths = new int[]{80, 94};
+		gbl_widgetPanel.columnWidths = new int[]{PANEL_WIDTH};
 		gbl_widgetPanel.rowHeights = new int[]{28, 180};
-		gbl_widgetPanel.columnWeights = new double[]{0.9, 0.1};
+		gbl_widgetPanel.columnWeights = new double[]{1.0};
 		gbl_widgetPanel.rowWeights = new double[]{0.0, 1.0};
 		widgetPanel.setLayout(gbl_widgetPanel);
 		
@@ -82,7 +87,7 @@ public class FloatingTasksWidget {
 	}
 	
 	private void initializeFloatingTasksButton() {
-		buttonFloating = new JButton("Upcoming");
+		buttonFloating = new JButton("Floating Tasks");
 		buttonFloating.setFont(new Font("Cambria", Font.BOLD, 12));
 		buttonFloating.setForeground(new Color(224, 255, 255));
 		buttonFloating.setBackground(new Color(70, 130, 180));
@@ -102,7 +107,7 @@ public class FloatingTasksWidget {
 		widgetPanel.add(buttonFloating, gbc_buttonUpcoming);
 	}
 	
-	private void clickFloating() {
+	public void clickFloating() {
 		Task task = generateTaskForFloating();
 		
 		String feedback;
@@ -125,4 +130,5 @@ public class FloatingTasksWidget {
 		task.setViewType(VIEWTYPE.FLOATING);
 		return task;
 	}
+
 }

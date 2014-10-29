@@ -118,7 +118,7 @@ public class UpcomingTasksWidget {
 		});
 		
 		GridBagConstraints gbc_buttonUpcoming = new GridBagConstraints();
-		gbc_buttonUpcoming.fill = GridBagConstraints.HORIZONTAL;
+		gbc_buttonUpcoming.fill = GridBagConstraints.BOTH;
 		gbc_buttonUpcoming.anchor = GridBagConstraints.WEST;
 		gbc_buttonUpcoming.insets = new Insets(0, 0, 2, 0);
 		gbc_buttonUpcoming.gridx = 0;
@@ -140,7 +140,7 @@ public class UpcomingTasksWidget {
 		});
 		
 		GridBagConstraints gbc_timeLengthCombobox = new GridBagConstraints();
-		gbc_timeLengthCombobox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_timeLengthCombobox.fill = GridBagConstraints.BOTH;
 		gbc_timeLengthCombobox.anchor = GridBagConstraints.EAST;
 		gbc_timeLengthCombobox.insets = new Insets(0, 0, 2, 0);
 		gbc_timeLengthCombobox.gridx = 1;

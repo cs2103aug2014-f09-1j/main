@@ -11,6 +11,7 @@ import whatsupnext.structure.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class StorageTest {
 	Storage obj;
@@ -21,6 +22,8 @@ public class StorageTest {
 	ArrayList<Task> taskArray1;
 	ArrayList<Task> taskArray2;
 	ArrayList<Task> taskArray3;
+	
+	public final static String DELIMITER = "%#";	
 	
 	@Before
 	public void initialize() {
@@ -66,12 +69,12 @@ public class StorageTest {
 	}
 	
 	private void setUpDummyTasks() {
-		dummyTask1 = obj.stringToTask("DummyTaskID1" + Storage.DELIMITER + "DummyDescription1" + Storage.DELIMITER + 
-				"DummyStartTime1" + Storage.DELIMITER + "DummyEndTime1" + Storage.DELIMITER + "true" + Storage.DELIMITER);
-		dummyTask2 = obj.stringToTask("DummyTaskID2" + Storage.DELIMITER + "DummyDescription2" + Storage.DELIMITER + 
-				"DummyStartTime2" + Storage.DELIMITER + "DummyEndTime2" + Storage.DELIMITER + "false" + Storage.DELIMITER);
-		dummyTask3 = obj.stringToTask("DummyTaskID3" + Storage.DELIMITER + "DummyDescription3" + Storage.DELIMITER + 
-				"DummyStartTime3" + Storage.DELIMITER + "DummyEndTime3" + Storage.DELIMITER + "true" + Storage.DELIMITER);
+		dummyTask1 = stringToTask("DummyTaskID1" + DELIMITER + "DummyDescription1" + DELIMITER + 
+				"DummyStartTime1" + DELIMITER + "DummyEndTime1" + DELIMITER + "true" + DELIMITER);
+		dummyTask2 = stringToTask("DummyTaskID2" + DELIMITER + "DummyDescription2" + DELIMITER + 
+				"DummyStartTime2" + DELIMITER + "DummyEndTime2" + DELIMITER + "false" + DELIMITER);
+		dummyTask3 = stringToTask("DummyTaskID3" + DELIMITER + "DummyDescription3" + DELIMITER + 
+				"DummyStartTime3" + DELIMITER + "DummyEndTime3" + DELIMITER + "true" + DELIMITER);
 	}
 	
 	private void setUpTaskArrays() {
@@ -130,5 +133,30 @@ public class StorageTest {
 		assertTrue(obj.goToPreviousVersion());
 		assertTrue(obj.goToPreviousVersion());
 		assertFalse(obj.goToPreviousVersion());
+	}
+	
+	private Task stringToTask(String taskInString) {
+		Scanner extractFromString = new Scanner(taskInString);
+		extractFromString.useDelimiter(DELIMITER);
+		
+		String taskID = extractFromString.next();
+		String description = extractFromString.next();
+		String startTime = extractFromString.next();
+		String endTime = extractFromString.next();
+		String booleanString = extractFromString.next();
+		
+		assertTrue(booleanString.equals("true") || booleanString.equals("false"));		
+		boolean isDone = Boolean.parseBoolean(booleanString);
+		
+		Task taskFromString = new Task();
+		taskFromString.setTaskID(taskID);
+		taskFromString.setDescription(description);
+		taskFromString.setStartTime(startTime);
+		taskFromString.setEndTime(endTime);
+		taskFromString.setDone(isDone);
+		
+		extractFromString.close();
+		
+		return taskFromString;
 	}
 }

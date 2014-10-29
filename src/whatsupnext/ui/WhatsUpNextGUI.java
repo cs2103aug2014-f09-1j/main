@@ -5,7 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Window.Type;
 import java.awt.Toolkit;
-import java.awt.SystemColor;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -105,20 +106,19 @@ public class WhatsUpNextGUI {
 		frameMain.setResizable(true);
 		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/whatsupnext/ui/iconGUI.png")));
 		frameMain.setType(Type.POPUP);
-		frameMain.setForeground(SystemColor.controlShadow);
-		frameMain.setBackground(Color.GRAY);
 		frameMain.setFont(new Font("Cambria", Font.BOLD, 12));
 		frameMain.setTitle("WhatsUpNext");
 		frameMain.getContentPane().setBackground(new Color(204, 224, 250));
 		frameMain.getContentPane().setLayout(null);
 		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMain.setBounds(0, 0, FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT);
-//		frameMain.addComponentListener(new ComponentAdapter() {
-//			@Override
-//			public void componentResized(ComponentEvent arg0) {
+		frameMain.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent arg0) {
 //				resetComponentSizes();
-//			}
-//		});
+				mainDisplayWidget.resize();
+			}
+		});
 		frameMain.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				deleteRevisions();

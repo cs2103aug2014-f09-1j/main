@@ -353,5 +353,19 @@ public class ParseDate {
 
 		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
 	}
+	
+	/**
+	 * This function reports the date string of the provided Calendar object
+	 * In format of : yyyymmdd
+	 * @return
+	 */
+	public String getDateString(Calendar cal) {
+		int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH)+1;
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        String twoDigitMonth = convertToTwoDigitMonth(month);
+		String twoDigitDayOfMonth = convertToTwoDigitDayOfMonth(dayOfMonth);       
+		return year + twoDigitMonth + twoDigitDayOfMonth;
+	}
 
 }

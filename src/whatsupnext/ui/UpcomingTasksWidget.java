@@ -31,11 +31,8 @@ public class UpcomingTasksWidget {
 	private final int[] PANEL_DIMENSIONS = {356, 5, 174, 210};
 	
 	private JButton buttonUpcoming;
-	private final int[] BUTTON_UPCOMING_DIMENSIONS = {356, 5, 174, 28};
 	private JScrollPane textDisplayUpcomingScrollPane;
-	private final int[] TEXT_DISPLAY_UPCOMING_SCROLL_PANE_DIMENSIONS = {356, 35, 174, 180};
 	private JTextArea textDisplayUpcoming;
-	private final int[] TEXT_DISPLAY_UPCOMING_DIMENSIONS = {0, 0, 174, 180};
 	
 	private String currentYear;
 	
@@ -52,6 +49,7 @@ public class UpcomingTasksWidget {
 	}
 	
 	private void setComponentNames() {
+		widgetPanel.setName("upcomingTasksWidgetPanel");
 		buttonUpcoming.setName("buttonUpcoming");
 		textDisplayUpcomingScrollPane.setName("textDisplayUpcomingScrollPane");
 		textDisplayUpcoming.setName("textDisplayUpcoming");

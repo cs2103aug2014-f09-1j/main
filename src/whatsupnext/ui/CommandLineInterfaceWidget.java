@@ -2,6 +2,9 @@ package whatsupnext.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -13,6 +16,7 @@ import java.util.ListIterator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import whatsupnext.parser.api.Parser;
@@ -24,13 +28,13 @@ public class CommandLineInterfaceWidget {
 	private MainDisplayWidget linkedDisplay;
 	private UpcomingTasksWidget linkedUpcomingOptional;
 
+	private JPanel widgetPanel;
+	private final int[] PANEL_DIMENSIONS = {10, 225, 520, 25};
+	
 	private JTextField textInput;
-	private final int[] TEXT_INPUT_DIMENSIONS = {10, 225, 423, 25};
 	private JButton buttonEnter;
-	private final int[] BUTTON_ENTER_DIMENSIONS = {440, 225, 90, 25};
 
 	private final ArrayList<String> STRINGS_CLEAR = new ArrayList<String>(Arrays.asList("clear", "Clear", "CLEAR", "clc"));
-
 	private final LinkedList<String> usedCommands = new LinkedList<String>();
 	private ListIterator<String> commandIterator;
 	private boolean upLastPressed;
@@ -58,13 +62,32 @@ public class CommandLineInterfaceWidget {
 	}
 
 	private void setComponentNames() {
+		widgetPanel.setName("commandLineInterfaceWidgetPanel");
 		textInput.setName("textInput");
 		buttonEnter.setName("buttonEnter");
 	}
 
 	private void initializeCLIPanel() {
+		widgetPanel = new JPanel();
+//		widgetPanel.setBackground(new Color(204, 224, 250));
+		widgetPanel.setBounds(
+				PANEL_DIMENSIONS[0],
+				PANEL_DIMENSIONS[1],
+				PANEL_DIMENSIONS[2],
+				PANEL_DIMENSIONS[3]);
+//		widgetPanel.setPreferredSize(new Dimension(PANEL_DIMENSIONS[2], PANEL_DIMENSIONS[3]));
+		
+		GridBagLayout gbl_widgetPanel = new GridBagLayout();
+		gbl_widgetPanel.columnWidths = new int[]{430, 90};
+		gbl_widgetPanel.rowHeights = new int[]{PANEL_DIMENSIONS[3]};
+		gbl_widgetPanel.columnWeights = new double[]{1.0, 0.0};
+		gbl_widgetPanel.rowWeights = new double[]{1.0};
+		widgetPanel.setLayout(gbl_widgetPanel);
+		
 		initializeMainEnterButton();
 		initializeMainUserCLI();
+		
+		frameMain.getContentPane().add(widgetPanel);
 	}
 
 	private void initializeMainEnterButton() {
@@ -77,24 +100,29 @@ public class CommandLineInterfaceWidget {
 				clickEnter();
 			}
 		});
-		buttonEnter.setBounds(
-				BUTTON_ENTER_DIMENSIONS[0],
-				BUTTON_ENTER_DIMENSIONS[1],
-				BUTTON_ENTER_DIMENSIONS[2],
-				BUTTON_ENTER_DIMENSIONS[3]);
-		frameMain.getContentPane().add(buttonEnter);
+		
+		GridBagConstraints gbc_buttonEnter = new GridBagConstraints();
+		gbc_buttonEnter.fill = GridBagConstraints.HORIZONTAL;
+		gbc_buttonEnter.anchor = GridBagConstraints.WEST;
+		gbc_buttonEnter.gridx = 1;
+		gbc_buttonEnter.gridy = 0;
+		
+		widgetPanel.add(buttonEnter, gbc_buttonEnter);
 	}
 
 	private void initializeMainUserCLI() {
 		textInput = new JTextField();
 		textInput.setBackground(new Color(240, 255, 255));
 		textInput.setFont(new Font("Courier New", Font.PLAIN, 12));
-		textInput.setBounds(
-				TEXT_INPUT_DIMENSIONS[0],
-				TEXT_INPUT_DIMENSIONS[1],
-				TEXT_INPUT_DIMENSIONS[2],
-				TEXT_INPUT_DIMENSIONS[3]);
-		frameMain.getContentPane().add(textInput);
+		
+		GridBagConstraints gbc_textInput = new GridBagConstraints();
+		gbc_textInput.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textInput.anchor = GridBagConstraints.WEST;
+		gbc_textInput.insets = new Insets(0, 0, 0, 10);
+		gbc_textInput.gridx = 0;
+		gbc_textInput.gridy = 0;
+		
+		widgetPanel.add(textInput, gbc_textInput);
 
 		// Pressing 'enter' key causes the command to be executed
 		textInput.addActionListener(new ActionListener() {

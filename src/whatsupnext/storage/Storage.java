@@ -262,9 +262,7 @@ public class Storage {
 	public void deleteFileVersions() throws IOException{
 		for (int x = 0; x < fileVersions.size(); x++) {
 			File toBeDeleted = fileVersions.get(x);
-			System.out.println(toBeDeleted.getName() + " inside delete");
-			if (!toBeDeleted.getName().equals(currentFile.getName())) {
-				System.out.println(toBeDeleted.getName() + " is deleted");
+			if (!toBeDeleted.getName().equals(currentFile.getName())) {				
 				fileVersions.remove(x);
 				toBeDeleted.delete();
 			}			

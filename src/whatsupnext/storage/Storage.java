@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.LinkedList;
 
@@ -103,6 +104,7 @@ public class Storage {
 		writer.close();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String taskToJSONString(Task task) {
 		assertNotNull(task.getTaskID());
 		assertNotNull(task.getDescription());
@@ -231,8 +233,10 @@ public class Storage {
 	
 
 	private void deleteLaterVersions() throws IOException{
-		for (int x = currentFileVersionNumber + 1; x < fileVersions.size(); x++) {
-			File f = fileVersions.remove(x);
+		Iterator<File> versionIterator = fileVersions.listIterator(currentFileVersionNumber + 1);
+		while (versionIterator.hasNext()) {
+			File f = versionIterator.next();
+			versionIterator.remove();
 			f.delete();			
 		}
 	}
@@ -260,17 +264,18 @@ public class Storage {
 	}
 	
 	public void deleteFileVersions() throws IOException{
-		for (int x = 0; x < fileVersions.size(); x++) {
-			File toBeDeleted = fileVersions.get(x);
-			if (!toBeDeleted.getName().equals(currentFile.getName())) {				
-				fileVersions.remove(x);
+		Iterator<File> versionIterator = fileVersions.iterator();
+		while (versionIterator.hasNext()) {
+			File toBeDeleted = versionIterator.next();
+			if (!toBeDeleted.getName().equals(currentFile.getName())) {
+				versionIterator.remove();
 				toBeDeleted.delete();
-			}			
+			}
 		}
+		
 		currentFileVersionNumber = 0;
 		File newNameFile = new File(FILE_NAME + EXTENSION);
 		currentFile.renameTo(newNameFile);
-		
 	}
 	
 	private void transferData(String fromFile, String toFile) throws IOException{

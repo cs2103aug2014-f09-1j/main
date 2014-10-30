@@ -76,7 +76,6 @@ public class Logic {
 		try {
 			storage.deleteFileVersions();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

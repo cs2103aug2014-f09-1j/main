@@ -16,17 +16,52 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import whatsupnext.logic.Logic;
+import whatsupnext.storage.Storage;
+import whatsupnext.structure.OPCODE;
+import whatsupnext.structure.Task;
+import whatsupnext.structure.Types.DELETETYPE;
 import whatsupnext.ui.WhatsUpNextGUI;
 
 public class GUIVisualTest {
-	private WhatsUpNextGUI gui;
+	private WhatsUpNextGUIStub gui;
+	
+	private class WhatsUpNextGUIStub extends WhatsUpNextGUI {
+		private Logic logic;
+		
+		public WhatsUpNextGUIStub(String fileName) {
+			super(fileName);
+			logic = new Logic(fileName);
+		}
+		
+		public void clearFile() {
+			Task delete = new Task();
+			delete.setOpcode(OPCODE.DELETE);
+			delete.setDeleteType(DELETETYPE.ALL);
+			logic.executeTask(delete);
+			
+			Storage storage = Storage.getInstance();
+			try {
+				storage.clearFile();
+				storage.deleteFileVersions();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	@Before
 	public void setUpGUI() {
-		gui = new WhatsUpNextGUI();
+		gui = new WhatsUpNextGUIStub("guiTest");
+	}
+	
+	@After
+	public void clearTestFile() {
+		gui.clearFile();
 	}
 	
 	@Test

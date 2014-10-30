@@ -37,14 +37,15 @@ public class LogicTest {
 	
 	private String getLastYearTodayDate() {
 		Calendar cal = Calendar.getInstance();
-		String lastYear = Integer.toString(cal.get(Calendar.YEAR) - 1);
+		cal.add(Calendar.YEAR, -1);
+		String lastYear = Integer.toString(cal.get(Calendar.YEAR));
 		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
 		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));
 		
 		return lastYear + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
-	public String getTodayDate() {
+	private String getTodayDate() {
 		Calendar cal = Calendar.getInstance();
 		String year = Integer.toString(cal.get(Calendar.YEAR));
 		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
@@ -52,7 +53,7 @@ public class LogicTest {
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
-	public String getTodayDateTime() {
+	private String getTodayDateTime() {
 		Calendar cal = Calendar.getInstance();
 		String year = Integer.toString(cal.get(Calendar.YEAR));
 		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);

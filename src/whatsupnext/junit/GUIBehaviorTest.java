@@ -3,18 +3,25 @@ package whatsupnext.junit;
 import static org.junit.Assert.*;
 
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import whatsupnext.logic.Logic;
+import whatsupnext.storage.Storage;
+import whatsupnext.structure.OPCODE;
+import whatsupnext.structure.Task;
+import whatsupnext.structure.Types.DELETETYPE;
 import whatsupnext.ui.WhatsUpNextGUI;
 
 public class GUIBehaviorTest {
-	private WhatsUpNextGUI gui;
+	private WhatsUpNextGUIStub gui;
 	private JTextArea textDisplayMain;
 	private JTextArea textDisplayUpcoming;
 	private JTextArea textDisplayFloating;
@@ -23,9 +30,64 @@ public class GUIBehaviorTest {
 	private JButton buttonFloating;
 	private JTextField textInput;
 	
+	private class WhatsUpNextGUIStub extends WhatsUpNextGUI {
+		private Logic logic;
+		
+		public WhatsUpNextGUIStub(String fileName) {
+			super(fileName);
+			logic = new Logic(fileName);
+		}
+		
+		public void clearFile() {
+			Task delete = new Task();
+			delete.setOpcode(OPCODE.DELETE);
+			delete.setDeleteType(DELETETYPE.ALL);
+			logic.executeTask(delete);
+			
+			Storage storage = Storage.getInstance();
+			try {
+				storage.clearFile();
+				storage.deleteFileVersions();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Returns in ddmmyyyy
+	 */
+	private String getTodayDate() {
+		Calendar cal = Calendar.getInstance();
+		String year = Integer.toString(cal.get(Calendar.YEAR));
+		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
+		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));     
+		return twoDigitDayOfMonth + twoDigitMonth + year;
+	}
+	
+	/**
+	 * Returns in ddmmyyyy
+	 */
+	private String getTomorrowDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+		String year = Integer.toString(cal.get(Calendar.YEAR));
+		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
+		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));     
+		return twoDigitDayOfMonth + twoDigitMonth + year;
+	}
+	
+	private String convertToTwoDigits(int possibleSingleDigit) {
+		if (possibleSingleDigit < 10) {
+        	return "0" + possibleSingleDigit;
+		} else {
+			return "" + possibleSingleDigit;
+		}
+	}
+	
 	@Before
 	public void setupGUI() {
-		gui = new WhatsUpNextGUI("guiTest");
+		gui = new WhatsUpNextGUIStub("guiTest");
 	}
 	
 	@Before
@@ -46,6 +108,11 @@ public class GUIBehaviorTest {
 		
 		textInput = (JTextField)GUITestUtils.getChildNamed(gui.getMainFrame(), "textInput");
 		assertNotNull("Can't acess the user CLI JTextField", textInput);
+	}
+	
+	@After
+	public void clearTestFile() {
+		gui.clearFile();
 	}
 
 	@Test
@@ -88,12 +155,33 @@ public class GUIBehaviorTest {
 	
 	@Test
 	public void AddTaskTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
 		
+		assertEquals("---Please enter command below:\r\n\nA task is successfully added.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\nNot done.", textDisplayFloating.getText());
 	}
 	
 	@Test
 	public void AddTaskByTest() {
+		textInput.setText("add byTaskTest by " + getTomorrowDate());
+		buttonEnter.doClick();
 		
+		assertEquals(
+				"---Please enter command below:\r\n\nA task is successfully added.\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add byTaskTest by " + getTodayDate());
+		buttonEnter.doClick();
+		
+		assertEquals(
+				"---Please enter command below:\r\n\nA task is successfully added.\n\nA task is successfully added.\n",
+				textDisplayMain.getText());
+		assertEquals("2: byTaskTest\n\tEnd Time: Oct 30 23:59\nNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 	
 	@Test

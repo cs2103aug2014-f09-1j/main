@@ -22,31 +22,33 @@ public class DeleteCommand extends Command {
 	}
 
 	public String executeCommand() {
-		switch (deleteType) {
-			case ALL:
-				deleteAll();
-				break;
-			case ID:
-				deleteById();
-				break;
-			case DEADLINE:
-				deleteByDeadline();
-				break;
-			case DATE:
-				deleteByDate();
-				break;
-			case TIMEFRAME:
-				deleteByTimeFrame();
-				break;
-			default:
-				break;
-		}
-
 		String feedbackDelete;
+		
 		try {
+			switch (deleteType) {
+				case ALL:
+					deleteAll();
+					break;
+				case ID:
+					deleteById();
+					break;
+				case DEADLINE:
+					deleteByDeadline();
+					break;
+				case DATE:
+					deleteByDate();
+					break;
+				case TIMEFRAME:
+					deleteByTimeFrame();
+					break;
+				default:
+					break;
+			}
+		
 			storage.inputTasks(list);
 			feedbackDelete = MESSAGE_DELETED;
-		} catch (IOException e) {
+			
+		} catch (Exception e) {
 			feedbackDelete = e.getMessage();
 		}
 
@@ -59,9 +61,13 @@ public class DeleteCommand extends Command {
 	}
 	
 	private void deleteById() {
-		int index = LogicUtilities.getTaskIndexInArray(taskID);		
-		Task removed = list.remove(index);
-		availableIDs.add(Integer.parseInt(removed.getTaskID()));
+		int index = LogicUtilities.getTaskIndexInArray(taskID);
+		try {
+			Task removed = list.remove(index);
+			availableIDs.add(Integer.parseInt(removed.getTaskID()));
+		} catch (IndexOutOfBoundsException e) {
+			throw new IndexOutOfBoundsException("Task ID is not valid.");
+		}
 	}
 	
 	private void deleteByDeadline() {
@@ -102,6 +108,4 @@ public class DeleteCommand extends Command {
 		}
 	}
 	
-	
-
 }

@@ -140,7 +140,7 @@ public class ViewCommand extends Command {
 		Iterator<Task> taskIterator = list.iterator();
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (task.getStartTime().isEmpty() && task.getEndTime().isEmpty()) {
+			if (task.getStartTime().isEmpty() && task.getEndTime().isEmpty() && task.getDone() == false) {
 				String taskInfo = LogicUtilities.getFormattedOutput(task);
 			    output.add(taskInfo);
 			}			

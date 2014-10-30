@@ -15,19 +15,41 @@ import whatsupnext.ui.WhatsUpNextGUI;
 
 public class GUIBehaviorTest {
 	private WhatsUpNextGUI gui;
+	private JTextArea textDisplayMain;
+	private JTextArea textDisplayUpcoming;
+	private JTextArea textDisplayFloating;
+	private JButton buttonEnter;
+	private JButton buttonUpcoming;
+	private JButton buttonFloating;
+	private JTextField textInput;
 	
 	@Before
-	public void setUpGUI() {
+	public void setupGUI() {
 		gui = new WhatsUpNextGUI("guiTest");
+	}
+	
+	@Before
+	public void initializeWidgets() {
+		textDisplayMain = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
+		textDisplayUpcoming = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
+		textDisplayFloating = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayFloating");
+		assertNotNull("Can't acess the main text display JTextField", textDisplayMain);
+		assertNotNull("Can't acess the upcoming task text area JTextArea", textDisplayUpcoming);
+		assertNotNull("Can't acess the floating task text area JTextArea", textDisplayFloating);
+		
+		buttonEnter = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonEnter");
+		buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonUpcoming");
+		buttonFloating = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonFloating");
+		assertNotNull("Can't acess the main enter button JButton", buttonEnter);
+		assertNotNull("Can't acess the upcoming task button JButton", buttonUpcoming);
+		assertNotNull("Can't acess the floating task button JButton", buttonFloating);
+		
+		textInput = (JTextField)GUITestUtils.getChildNamed(gui.getMainFrame(), "textInput");
+		assertNotNull("Can't acess the user CLI JTextField", textInput);
 	}
 
 	@Test
 	public void ClickUpcomingTasksButtonWhenEmptyTest() {
-		JTextArea textDisplayUpcoming = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
-		JButton buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonUpcoming");
-		assertNotNull("Can't acess the upcoming task text area JTextArea", textDisplayUpcoming);
-		assertNotNull("Can't acess the upcoming task button JButton", buttonUpcoming);
-		
 		ActionListener[] als = (ActionListener[])(buttonUpcoming.getListeners(ActionListener.class));
 		assertEquals(1, als.length);
 		
@@ -38,13 +60,6 @@ public class GUIBehaviorTest {
 	
 	@Test
 	public void ClickEnterButtonWhenEmptyTest() {
-		JTextArea textDisplayMain = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
-		JButton buttonEnter = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonEnter");
-		JTextArea textDisplayUpcoming = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
-		assertNotNull("Can't acess the main text display JTextField", textDisplayMain);
-		assertNotNull("Can't acess the main enter button JButton", buttonEnter);
-		assertNotNull("Can't acess the upcoming task text area JTextArea", textDisplayUpcoming);
-		
 		ActionListener[] als = (ActionListener[])(buttonEnter.getListeners(ActionListener.class));
 		assertEquals(1, als.length);
 		
@@ -56,13 +71,6 @@ public class GUIBehaviorTest {
 	
 	@Test
 	public void PressEnterOnCLIWhenEmptyTest() {
-		JTextArea textDisplayMain = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
-		JTextField textInput = (JTextField)GUITestUtils.getChildNamed(gui.getMainFrame(), "textInput");
-		JTextArea textDisplayUpcoming = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
-		assertNotNull("Can't acess the main text display JTextField", textDisplayMain);
-		assertNotNull("Can't acess the user CLI JTextField", textInput);
-		assertNotNull("Can't acess the upcoming task text area JTextArea", textDisplayUpcoming);
-		
 		ActionListener[] als = (ActionListener[])(textInput.getListeners(ActionListener.class));
 		assertEquals(1, als.length);
 		
@@ -74,11 +82,7 @@ public class GUIBehaviorTest {
 	
 	@Test
 	public void UserInputTextFieldTest() {
-		JTextField textInput = (JTextField)GUITestUtils.getChildNamed(gui.getMainFrame(), "textInput");
-		assertNotNull("Can't acess the text input JTextField", textInput);
-		
 		textInput.setText("test input text");
-		
 		assertEquals("test input text", textInput.getText());
 	}
 	

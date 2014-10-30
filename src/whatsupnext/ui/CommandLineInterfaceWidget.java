@@ -1,25 +1,30 @@
 package whatsupnext.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import whatsupnext.parser.api.Parser;
+import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 
 public class CommandLineInterfaceWidget {
@@ -163,6 +168,13 @@ public class CommandLineInterfaceWidget {
 					usedCommands.addFirst(commandInput);
 					Parser parser = new Parser(commandInput);
 					Task currentTask = parser.parseInput();
+					
+					if (currentTask.getOpCode() == OPCODE.EXIT) {
+						Window frame = findWindow(widgetPanel);
+						frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+						frame.dispose();
+					}
+					
 					feedback = WhatsUpNextGUI.logic.executeTask(currentTask);
 				} catch (Exception e) {
 					feedback = e.getMessage();
@@ -232,5 +244,15 @@ public class CommandLineInterfaceWidget {
 
 	private void pressKeyFromCLI() {
 		commandIterator = usedCommands.listIterator();
+	}
+	
+	private Window findWindow(Component c) {
+		if (c == null) {
+			return JOptionPane.getRootFrame();
+		} else if (c instanceof Window) {
+			return (Window) c;
+		} else {
+			return findWindow(c.getParent());
+		}
 	}
 }

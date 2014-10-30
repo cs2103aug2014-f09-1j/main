@@ -81,7 +81,7 @@ public class Parser {
 			case REDO:
 				break;
 			case EXIT:
-				System.exit(0);
+				break;
 			default:
 				throw new IllegalArgumentException(MESSAGE_INVALID_OPCODE);
 		}

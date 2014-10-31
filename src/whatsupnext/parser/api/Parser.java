@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.DeleteExtractor;
 import whatsupnext.parser.extractor.DoneExtractor;
+import whatsupnext.parser.extractor.HelpExtractor;
 import whatsupnext.parser.extractor.SearchExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
@@ -79,6 +80,10 @@ public class Parser {
 			case UNDO:
 				break;
 			case REDO:
+				break;
+			case HELP:
+				HelpExtractor exHelp = new HelpExtractor();
+				exHelp.extract(task, input);
 				break;
 			case EXIT:
 				break;

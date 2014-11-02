@@ -33,6 +33,7 @@ public class ParseDate {
 	private final ArrayList<String> ALIASES_SATURDAY = new ArrayList<String>(Arrays.asList("Saturday", "Sat",
 																							"saturday", "sat"));
 	
+	private final String NOW = "now";
 	private final String FIRST_MINUTE = "0000";
 	private final String LAST_MINUTE = "2359";
 	private final String SINGLE_QUOTE = "'";
@@ -53,7 +54,12 @@ public class ParseDate {
 	
 	public String parseInput(String input) {
 		String formattedDate = "";
-		formattedDate = parseAllTimeDateFormats(input);
+		if(input.equalsIgnoreCase(NOW)){
+			formattedDate = getCurrentTime();
+		}
+		if(formattedDate.isEmpty()){
+			formattedDate = parseAllTimeDateFormats(input);
+		}
 		if(formattedDate.isEmpty()){
 			formattedDate = parseAllDayFormats(input);
 		}
@@ -177,7 +183,21 @@ public class ParseDate {
 		return formattedDate;
 	}
 	
+	public String getCurrentTime() {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH)+1;
+		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+		int hour = cal.get(Calendar.HOUR_OF_DAY);
+		int minute = cal.get(Calendar.MINUTE);
+		String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
+		String twoDigitHour = convertToTwoDigits(hour);
+		String twoDigitMinute = convertToTwoDigits(minute);
 
+		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
+	}
+	
 	private String getToday() {
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);

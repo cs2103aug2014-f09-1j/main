@@ -325,6 +325,20 @@ public class ParseDateTest {
 	}
 	
 	@Test
+	/* This is a test case for the 'now' partition */
+	public void testParseCurrentTime() {
+		ParseDate parseDate = new ParseDate();
+		String formattedDate = "";
+		
+		formattedDate = parseDate.parseInput("now");
+		assertEquals("Today", getCurrentTime(), formattedDate);
+		
+		formattedDate = parseDate.parseInput("Now");
+		assertEquals("Today", getCurrentTime(), formattedDate);
+		
+	}
+	
+	@Test
 	public void testParseInvalid() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
@@ -360,6 +374,21 @@ public class ParseDateTest {
 		/* This is a boundary case for the 'MAX_DAYOFMONTH+1' partition */
 		formattedDate = parseDate.parseInput("320314");
 		assertEquals("Invalid", "", formattedDate);
+	}
+	
+	public String getCurrentTime() {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH)+1;
+		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+		int hour = cal.get(Calendar.HOUR_OF_DAY);
+		int minute = cal.get(Calendar.MINUTE);
+		String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
+		String twoDigitHour = convertToTwoDigits(hour);
+		String twoDigitMinute = convertToTwoDigits(minute);
+
+		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
 	}
 	
 	private String getToday() {

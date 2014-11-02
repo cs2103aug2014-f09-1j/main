@@ -2,6 +2,9 @@ package whatsupnext.structure;
 
 public class Help { 
 	
+	public static final String DEFAULT_HELP_MESSAGE = "Supported Command: add, view, update, delete, search, done, undo, redo, exit" + "\n"
+			+ "Type \"help <command>\" or \"help <command> [verbose|v]\" to find out more.";
+
 	public static final String ADD_HELP_MESSAGE_BRIEF = "Add a task by specifying the task description only or" + "\n" 
 			+ " a specific deadline or a time period."; 
 	
@@ -46,5 +49,7 @@ public class Help {
 	
 	public static final String REDO_HELP_MESSAGE = "Redo works for a maximum of " + "\n"
 			+ "the number of consecutive undo commands, ";
+	
+	public static final String EXIT_HELP_MESSAGE = "Exit WhatsUpNext.";
 	
 }

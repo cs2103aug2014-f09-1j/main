@@ -51,6 +51,11 @@ public class HelpExtractor {
 					task.setHelpMessage(Help.SEARCH_HELP_MESSAGE);
 					break;
 				case "done":
+					if(ALIASES_VERBOSE.contains(option.toLowerCase())) {
+						task.setHelpMessage(Help.DONE_HELP_MESSAGE_DETAILED);
+					} else {
+						task.setHelpMessage(Help.DONE_HELP_MESSAGE_BRIEF);
+					}
 					break;
 				case "undo":
 					task.setHelpMessage(Help.UNDO_HELP_MESSAGE);

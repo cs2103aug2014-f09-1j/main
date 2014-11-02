@@ -43,6 +43,12 @@ public class Help {
 			+ "	delete [date]" + "\n"
 			+ "	delete from [start_time] to [end_time]";
 	
+	public static final String DONE_HELP_MESSAGE_BRIEF = "Label a task as done.";
+	
+	public static final String DONE_HELP_MESSAGE_DETAILED = "Label a task as done." + "\n"
+			+ "Formats supported:" + "\n"
+			+ " done [task_id]";
+	
 	public static final String SEARCH_HELP_MESSAGE = "Formats supported:" + "\n" + "	search [keywords]";
 	
 	public static final String UNDO_HELP_MESSAGE = "Undo works for a maximum of two times.";

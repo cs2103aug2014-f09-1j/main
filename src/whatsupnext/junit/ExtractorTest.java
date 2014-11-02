@@ -9,6 +9,7 @@ import org.junit.Test;
 import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.DeleteExtractor;
 import whatsupnext.parser.extractor.DoneExtractor;
+import whatsupnext.parser.extractor.HelpExtractor;
 import whatsupnext.parser.extractor.SearchExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
@@ -529,6 +530,56 @@ public class ExtractorTest {
 			ex.extract(task, "from 0800 to 0100");
 		} catch (Exception e) {
 			assertEquals("Test invalid start end time", MESSAGE_INVALID_START_END_TIME, e.getMessage());
+		}	
+	}
+	
+	@Test
+	/* This test case is equivalent partitioning of help default*/
+	public void testHelpDefault() {
+		String DEFAULT_HELP_MESSAGE = "Supported Command: add, view, update, delete, search, done, undo, redo, exit" + "\n"
+				+ "Type \"help <command>\" or \"help <command> [verbose|v]\" to find out more.";
+		Task task = new Task();
+		HelpExtractor ex = new HelpExtractor();
+		ex.extract(task, "");
+		assertEquals("Help Message", DEFAULT_HELP_MESSAGE, task.getHelpMessage());
+	}
+	
+	@Test
+	/* This test case is equivalent partitioning of help brief*/
+	public void testHelpBrief() {
+		String ADD_HELP_MESSAGE_BRIEF = "Add a task by specifying the task description only or" + "\n" 
+				+ " a specific deadline or a time period."; 
+		Task task = new Task();
+		HelpExtractor ex = new HelpExtractor();
+		ex.extract(task, "add");
+		assertEquals("Help Message", ADD_HELP_MESSAGE_BRIEF, task.getHelpMessage());
+	}
+	
+	@Test
+	/* This test case is equivalent partitioning of help detailed*/
+	public void testHelpDetailed() {
+		String ADD_HELP_MESSAGE_DETAILED = "Add a task by specifying the task description only or" + "\n"
+				+ " a specific deadline or a time period." + "\n"
+				+ "Formats supported:" + "\n"
+				+ "	add [task]" + "\n"
+				+ "	add [task] by [end_time]" + "\n" 
+				+ "	add [task] from [start_time] to [end_time]";
+		Task task = new Task();
+		HelpExtractor ex = new HelpExtractor();
+		ex.extract(task, "add verbose");
+		assertEquals("Help Message", ADD_HELP_MESSAGE_DETAILED, task.getHelpMessage());
+	}
+	
+	@Test
+	/* testing invalid case one by one*/
+	public void testHelpInvalid() {
+		String MESSAGE_INVALID_ARGUMENT = "Invalid Argument.";
+		Task task = new Task();
+		HelpExtractor ex = new HelpExtractor();
+		try{
+			ex.extract(task, "invalid verbose");
+		} catch (Exception e) {
+			assertEquals("Invalid Arguement", MESSAGE_INVALID_ARGUMENT, e.getMessage());
 		}	
 	}
 }

@@ -174,8 +174,11 @@ public class CommandLineInterfaceWidget {
 						frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 						frame.dispose();
 					}
-					
-					feedback = WhatsUpNextGUI.logic.executeTask(currentTask);
+					if (currentTask.getOpCode() == OPCODE.HELP) {
+						feedback = currentTask.getHelpMessage();
+					} else {
+						feedback = WhatsUpNextGUI.logic.executeTask(currentTask);
+					}
 				} catch (Exception e) {
 					feedback = e.getMessage();
 				}

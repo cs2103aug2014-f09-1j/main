@@ -61,10 +61,10 @@ public class ExtractorTest {
 	public void testAdd() {
 		Task task = new Task();
 		AddExtractor ex = new AddExtractor();
-		ex.extract(task, "dine from 0200 301014 to 21:00 301014");
+		ex.extract(task, "dine from 1800 tml to 2200 tml");
 		assertEquals("Test Add - description", "dine", task.getDescription());
-		assertEquals("Test Add - startTime", "201410300200", task.getStartTime());
-		assertEquals("Test Add - endTime", "201410302100", task.getEndTime());
+		assertEquals("Test Add - startTime", getTomorrowDate()+"1800", task.getStartTime());
+		assertEquals("Test Add - endTime", getTomorrowDate()+"2200", task.getEndTime());
 		assertEquals("Test Add - addType",ADDTYPE.TIMEFRAME,task.getAddType());
 	}
 	

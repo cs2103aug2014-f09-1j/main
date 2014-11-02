@@ -367,19 +367,9 @@ public class ParseDateTest {
 		int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH)+1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = "";
-		String twoDigitDayOfMonth = ""; 
-        if (month < 10) {
-        	twoDigitMonth = "0" + month;
- 		} else {
- 			twoDigitMonth = "" + month;
- 		}
- 		if (dayOfMonth < 10) {
- 			twoDigitDayOfMonth = "0" + dayOfMonth;
- 		} else {
- 			twoDigitDayOfMonth = "" + dayOfMonth;
- 		}
-         
+        String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth); 
+          
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
@@ -389,19 +379,9 @@ public class ParseDateTest {
 		int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH)+1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = "";
-		String twoDigitDayOfMonth = ""; 
-        if (month < 10) {
-        	twoDigitMonth = "0" + month;
- 		} else {
- 			twoDigitMonth = "" + month;
- 		}
- 		if (dayOfMonth < 10) {
- 			twoDigitDayOfMonth = "0" + dayOfMonth;
- 		} else {
- 			twoDigitDayOfMonth = "" + dayOfMonth;
- 		}
-         
+        String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth); 
+          
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
@@ -413,19 +393,9 @@ public class ParseDateTest {
 		int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH)+1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = "";
-		String twoDigitDayOfMonth = ""; 
-        if (month < 10) {
-        	twoDigitMonth = "0" + month;
- 		} else {
- 			twoDigitMonth = "" + month;
- 		}
- 		if (dayOfMonth < 10) {
- 			twoDigitDayOfMonth = "0" + dayOfMonth;
- 		} else {
- 			twoDigitDayOfMonth = "" + dayOfMonth;
- 		}
-         
+        String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth); 
+          
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
@@ -444,6 +414,14 @@ public class ParseDateTest {
 		}
 		
 		return numOfDay;
+	}
+	
+	private String convertToTwoDigits(int value){
+		if(value < 10) {
+			return "0" + value;
+		} else {
+			return "" + value;
+		}
 	}
 	
 	

@@ -183,8 +183,8 @@ public class ParseDate {
 		int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH)+1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = convertToTwoDigitMonth(month);
-		String twoDigitDayOfMonth = convertToTwoDigitDayOfMonth(dayOfMonth); 
+        String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth); 
           
 		return twoDigitDayOfMonth + twoDigitMonth + year;
 	}
@@ -279,43 +279,19 @@ public class ParseDate {
 		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
 		int minute = cal.get(Calendar.MINUTE);
-		String twoDigitMonth = convertToTwoDigitMonth(month);
-		String twoDigitDayOfMonth = convertToTwoDigitDayOfMonth(dayOfMonth);
-		String twoDigitHour = convertToTwoDigitHour(hour);
-		String twoDigitMinute = convertToTwoDigitMinute(minute);
+		String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
+		String twoDigitHour = convertToTwoDigits(hour);
+		String twoDigitMinute = convertToTwoDigits(minute);
 
 		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
 	}
 	
-	private String convertToTwoDigitMonth(int month){
-		if (month < 10) {
-			return "0" + month;
+	private String convertToTwoDigits(int value){
+		if(value < 10) {
+			return "0" + value;
 		} else {
-			return "" + month;
-		}
-	}
-	
-	private String convertToTwoDigitDayOfMonth(int dayOfMonth){
-		if (dayOfMonth < 10) {
-			return "0" + dayOfMonth;
-		} else {
-			return "" + dayOfMonth;
-		}
-	}
-	
-	private String convertToTwoDigitHour(int hour){
-		if (hour < 10) {
-			return "0" + hour;
-		} else {
-			return "" + hour;
-		}
-	}
-	
-	private String convertToTwoDigitMinute(int minute){
-		if (minute < 10) {
-			return "0" + minute;
-		} else {
-			return "" + minute;
+			return "" + value;
 		}
 	}
 	
@@ -329,8 +305,8 @@ public class ParseDate {
 		int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH)+1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = convertToTwoDigitMonth(month);
-		String twoDigitDayOfMonth = convertToTwoDigitDayOfMonth(dayOfMonth);       
+        String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
@@ -346,10 +322,10 @@ public class ParseDate {
 		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
 		int minute = cal.get(Calendar.MINUTE);
-		String twoDigitMonth = convertToTwoDigitMonth(month);
-		String twoDigitDayOfMonth = convertToTwoDigitDayOfMonth(dayOfMonth);
-		String twoDigitHour = convertToTwoDigitHour(hour);
-		String twoDigitMinute = convertToTwoDigitMinute(minute);
+		String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
+		String twoDigitHour = convertToTwoDigits(hour);
+		String twoDigitMinute = convertToTwoDigits(minute);
 
 		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
 	}
@@ -363,8 +339,8 @@ public class ParseDate {
 		int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH)+1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = convertToTwoDigitMonth(month);
-		String twoDigitDayOfMonth = convertToTwoDigitDayOfMonth(dayOfMonth);       
+        String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 

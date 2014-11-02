@@ -69,6 +69,7 @@ public class ParseDate {
 	public void setParsingStartTime(boolean isParsingStartTime) {
 		this.isParsingStartTime = isParsingStartTime;
 	}
+	
 	private ArrayList<String> getTimeDateFormats() {
 		ArrayList<String> allFormats = new ArrayList<String>();
 		for (String time : FORMATS_TIME) {
@@ -183,7 +184,7 @@ public class ParseDate {
 		return formattedDate;
 	}
 	
-	public String getCurrentTime() {
+	private String getCurrentTime() {
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH)+1;

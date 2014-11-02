@@ -376,7 +376,7 @@ public class ParseDateTest {
 		assertEquals("Invalid", "", formattedDate);
 	}
 	
-	public String getCurrentTime() {
+	private String getCurrentTime() {
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH)+1;

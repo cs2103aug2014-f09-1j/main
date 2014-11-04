@@ -30,7 +30,10 @@ public class Help {
 			+ NEWLINE + "Formats supported:"
 			+ NEWLINE + "add [task]"
 			+ NEWLINE + "add [task] by [end_time]" 
-			+ NEWLINE + "add [task] from [start_time] to [end_time]";
+			+ NEWLINE + "add [task] from [start_time] to [end_time]"
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'add\', \'a\'";
 	
 	public static final String VIEW_HELP_MESSAGE = "view" + INDENT + "Display the upcoming task or the"
 			+ NEWLINE + INDENT + "tasks for the day. A time frame can" 
@@ -40,7 +43,10 @@ public class Help {
 			+ NEWLINE + "view all"
 			+ NEWLINE + "view next"
 			+ NEWLINE + "view [day|date]"
-			+ NEWLINE + "view from [start_time] to [end_time]";
+			+ NEWLINE + "view from [start_time] to [end_time]"
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'view\', \'v\', \'list\', \'ls\', \'l\'";
 	
 	public static final String UPDATE_HELP_MESSAGE =  "update" + INDENT + "Update the description, deadline,"
 			+ NEWLINE + INDENT + "start or end time of a task."
@@ -48,8 +54,11 @@ public class Help {
 			+ NEWLINE + "Formats supported:"
 			+ NEWLINE + "update [task_id] [new_description]"
 			+ NEWLINE + "update [task_id] by [end_time]"
-			+ NEWLINE + "update [task_id] from [start_time] to [end_time]";
-	
+			+ NEWLINE + "update [task_id] from [start_time] to [end_time]"
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'update\', \'u\', \'edit\', \'e\', \'modify\', \'m\'";
+			
 	public static final String DELETE_HELP_MESSAGE = "delete" + INDENT + "Delete by id, date, deadline, or"
 			+ NEWLINE + INDENT + "time frame."
 			+ NEWLINE
@@ -57,17 +66,23 @@ public class Help {
 			+ NEWLINE + "delete [task_id]"
 			+ NEWLINE + "delete deadline"
 			+ NEWLINE + "delete [date]"
-			+ NEWLINE + "delete from [start_time] to [end_time]";
+			+ NEWLINE + "delete from [start_time] to [end_time]"
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'delete\', \'del\', \'d\'";
+
+	public static final String SEARCH_HELP_MESSAGE = "search" + INDENT + "Search for a task by its keyword."
+			+ NEWLINE
+			+ NEWLINE + "Formats supported:" 
+			+ NEWLINE + "search [keywords]"
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'search\', \'s\', \'find\', \'f\'";
 	
 	public static final String DONE_HELP_MESSAGE = "done" + INDENT + "Label a task as done."
 			+ NEWLINE
 			+ NEWLINE + "Formats supported:"
 			+ NEWLINE + "done [task_id]";
-	
-	public static final String SEARCH_HELP_MESSAGE = "search" + INDENT + "Search for a task by its keyword."
-			+ NEWLINE
-			+ NEWLINE + "Formats supported:" 
-			+ NEWLINE + "search [keywords]";
 	
 	public static final String UNDO_HELP_MESSAGE = "undo" + INDENT + "Undo most recent add/update/delete.";
 	

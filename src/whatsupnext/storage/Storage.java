@@ -205,12 +205,17 @@ public class Storage {
 		if (currentVersionNumber < arrayOfVersions.size() - 1) {
 			deleteLaterVersions();
 		}
-		currentVersionNumber++;			
-		arrayOfVersions.add(tasks);
+		currentVersionNumber++;		
+		ArrayList<Task> tasksCopy = new ArrayList<Task>();
+		for (int x = 0; x < tasks.size(); x++) {
+			tasksCopy.add(tasks.get(x));
+		}
+		arrayOfVersions.add(tasksCopy);
 	}	
 	
 	private void deleteLaterVersions() throws IOException {
-		for (int x = 0; x < arrayOfVersions.size() - currentVersionNumber - 1; x++) {
+		int initialSize = arrayOfVersions.size();
+		for (int x = 0; x < initialSize - currentVersionNumber - 1; x++) {
 			arrayOfVersions.remove(currentVersionNumber + 1);
 		}
 	}

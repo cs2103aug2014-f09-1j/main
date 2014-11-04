@@ -72,7 +72,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 
 	private void initializeUpcomingTasksPanel() {
 		widgetPanel = new JPanel();
-		widgetPanel.setBackground(new Color(204, 224, 250));
+		widgetPanel.setBackground(new Color(204, 224, 250, 0));
 		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();

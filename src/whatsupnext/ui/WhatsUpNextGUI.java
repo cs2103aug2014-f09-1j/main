@@ -123,6 +123,8 @@ public class WhatsUpNextGUI {
 	 */
 	private void setComponentsNames() {
 		frameMain.setName("frameMain");
+		frameFloating.setName("frameFloating");
+		frameUpcoming.setName("frameUpcoming");
 	}
 	
 	private void displayWidgetTasks() {
@@ -171,7 +173,7 @@ public class WhatsUpNextGUI {
 		if (!isPerPixelTranslucencySupported) {
 			frameFloating = new JFrame();
 		} else {
-			frameFloating = new TranslucentJFrame();
+			frameFloating = new TransparentJFrame();
 		}
 		frameFloating.setResizable(true);
 		frameFloating.setType(Type.POPUP);
@@ -185,6 +187,11 @@ public class WhatsUpNextGUI {
 				deleteRevisions();
 			}
 		});
+		
+		ComponentResizer resizer = new ComponentResizer();
+		resizer.setSnapSize(new Dimension(2, 2));
+		resizer.setMinimumSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
+		resizer.registerComponent(frameFloating);
 	}
 
 
@@ -192,7 +199,7 @@ public class WhatsUpNextGUI {
 		if (!isPerPixelTranslucencySupported) {
 			frameUpcoming = new JFrame();
 		} else {
-			frameUpcoming = new TranslucentJFrame();
+			frameUpcoming = new TransparentJFrame();
 		}
 		frameUpcoming.setResizable(true);
 		frameUpcoming.setType(Type.POPUP);
@@ -206,6 +213,11 @@ public class WhatsUpNextGUI {
 				deleteRevisions();
 			}
 		});
+		
+		ComponentResizer resizer = new ComponentResizer();
+		resizer.setSnapSize(new Dimension(2, 2));
+		resizer.setMinimumSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
+		resizer.registerComponent(frameUpcoming);
 	}
 
 	
@@ -228,7 +240,7 @@ public class WhatsUpNextGUI {
 	
 	private void initializeMainPanel() {
 		mainPanel = new JPanel();
-		mainPanel.setBackground(new Color(204, 224, 250, 150));
+		mainPanel.setBackground(new Color(204, 224, 250));
 		mainPanel.setPreferredSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
 		mainPanel.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
 		
@@ -260,7 +272,7 @@ public class WhatsUpNextGUI {
 	
 	private void initializeFloatingPanel() {
 		floatingPanel = new JPanel();
-		floatingPanel.setBackground(new Color(204, 224, 250, 150));
+		floatingPanel.setBackground(new Color(204, 224, 250, 170));
 		floatingPanel.setPreferredSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
 		floatingPanel.setMinimumSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
 		
@@ -274,7 +286,7 @@ public class WhatsUpNextGUI {
 		GridBagConstraints gbc_floatingWidget = new GridBagConstraints();
 		gbc_floatingWidget.fill = GridBagConstraints.BOTH;
 		gbc_floatingWidget.anchor = GridBagConstraints.CENTER;
-		gbc_floatingWidget.insets = new Insets(10, 10, 10, 10);
+		gbc_floatingWidget.insets = new Insets(15, 15, 15, 15);
 		gbc_floatingWidget.gridx = 0;
 		gbc_floatingWidget.gridy = 0;
 		floatingPanel.add(floatingWidget.getWidgetPanel(), gbc_floatingWidget);
@@ -284,7 +296,7 @@ public class WhatsUpNextGUI {
 	
 	private void initializeUpcomingPanel() {
 		upcomingPanel = new JPanel();
-		upcomingPanel.setBackground(new Color(204, 224, 250, 150));
+		upcomingPanel.setBackground(new Color(204, 224, 250, 170));
 		upcomingPanel.setPreferredSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
 		upcomingPanel.setMinimumSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
 		
@@ -298,7 +310,7 @@ public class WhatsUpNextGUI {
 		GridBagConstraints gbc_upcomingWidget = new GridBagConstraints();
 		gbc_upcomingWidget.fill = GridBagConstraints.BOTH;
 		gbc_upcomingWidget.anchor = GridBagConstraints.CENTER;
-		gbc_upcomingWidget.insets = new Insets(10, 10, 10, 10);
+		gbc_upcomingWidget.insets = new Insets(15, 15, 15, 15);
 		gbc_upcomingWidget.gridx = 0;
 		gbc_upcomingWidget.gridy = 0;
 		upcomingPanel.add(upcomingWidget.getWidgetPanel(), gbc_upcomingWidget);

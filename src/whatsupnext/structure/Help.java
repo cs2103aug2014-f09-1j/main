@@ -5,8 +5,7 @@ public class Help {
 	private static final String INDENT = "\t";
 	private static final String NEWLINE = "\n";
 	
-	public static final String DEFAULT_HELP_MESSAGE = "Type \"help <command>\" to find out more."
-			+ NEWLINE + "Supported Commands:"
+	public static final String DEFAULT_HELP_MESSAGE = "Supported Commands:"
 			+ NEWLINE + "add" + INDENT + "Add a task by with description only"
 			+ NEWLINE + INDENT + "or append it with a deadline or time"
 			+ NEWLINE + INDENT + "period."
@@ -21,7 +20,10 @@ public class Help {
 			+ NEWLINE + "done" + INDENT + "Label a task as done."
 			+ NEWLINE + "undo" + INDENT + "Undo most recent add/update/delete."
 			+ NEWLINE + "redo" + INDENT + "Redo the most recent undo."
-			+ NEWLINE + "exit" + INDENT + "Close WhatsUpNext.";
+			+ NEWLINE + "exit" + INDENT + "Close WhatsUpNext."
+			+ NEWLINE
+			+ NEWLINE + "Type \"help <command>\" to find out more."
+			+ NEWLINE + "Type \"help time\" to see time/date formats.";
 	
 	public static final String ADD_HELP_MESSAGE = "add" + INDENT + "Add a task by with description only"
 			+ NEWLINE + INDENT + "or append it with a deadline or time"
@@ -89,5 +91,31 @@ public class Help {
 	public static final String REDO_HELP_MESSAGE = "redo" + INDENT + "Redo the most recent undo.";
 	
 	public static final String EXIT_HELP_MESSAGE = "exit" + INDENT + "Close WhatsUpNext.";
+	
+	public static final String TIME_HELP_MESSAGE = "Time formats supported:"
+			+ NEWLINE + "24-hour clock" + INDENT + "\'09:00\', \'2359\'" 
+			+ NEWLINE + "12-hour clock" + INDENT + "\'9:00 am, \'11 pm"
+			+ NEWLINE
+			+ NEWLINE + "Date formats supported:"
+			+ NEWLINE + "DayMonthYear" + INDENT + "\'021114\', \'31102014\'"
+			+ NEWLINE + "Day/Month/Year" + INDENT + "\'02/11/14\', \'31/10/2014\'"
+			+ NEWLINE + "Day-Month-Year" + INDENT + "\'02-11-14\', \'31-10-2014\'"
+			+ NEWLINE
+			+ NEWLINE + "Special formats supported:"
+			+ NEWLINE + "Day of Week" + INDENT + "\'monday\', \'mon\'"
+			+ NEWLINE + "Today date" + INDENT + INDENT + "\'today\'"
+			+ NEWLINE + "Tomorrow date" + INDENT + "\'tomorrow\', \'tml\'"
+			+ NEWLINE + "Current Time" + INDENT + "\'now\'"
+			+ NEWLINE
+			+ NEWLINE + "Valid examples:"
+			+ NEWLINE + "\'0000 010114\', \'31/12/2014 23:59\'"
+			+ NEWLINE + "\'7:30 am sunday\', \'tml 12 pm\'"
+			+ NEWLINE + "\'0930 10-11-14\', \'11:30 am today\'"
+			+ NEWLINE +  "\'now\'"
+			+ NEWLINE
+			+ NEWLINE + "Things to note:"
+			+ NEWLINE + "When day of week is specified, it is referring to the upcoming day of week."
+			+ NEWLINE + "When only time is specified, it will be assigned with today date."
+			+ NEWLINE + "When only date is specified, it will be assigned either 0000 for start time or 2359 for end time.";
 	
 }

@@ -11,13 +11,19 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import whatsupnext.parser.extractor.ParseDate;
 import whatsupnext.structure.OPCODE;
@@ -36,9 +42,18 @@ public class UpcomingTasksWidget implements TasksWidget{
 	private JButton buttonUpcoming;
 	
 	private JScrollPane textDisplayUpcomingScrollPane;
-	private JTextArea textDisplayUpcoming;
+	private JTextPane textDisplayUpcoming;
 	
 	private String currentYear;
+	
+	private Random random = new Random();
+	private int currentColorIndex;
+	private Color[] colors = {new Color(220,20,60),new Color(184,134,11),
+                              new Color(139,0,139),new Color(188,143,143)};
+	private Color titleBackground = new Color(240,255,240);
+	private Color titleForeground = new Color(46,139,87);
+
+	private StyledDocument  doc = new DefaultStyledDocument();
 	
 	
 	public UpcomingTasksWidget() {
@@ -87,7 +102,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 	}
 	
 	private void initializeUpcomingTasksTextDisplay() {
-		textDisplayUpcoming = new JTextArea();
+		textDisplayUpcoming = new JTextPane(doc);
 		textDisplayUpcoming.setFont(new Font("Courier New", Font.BOLD, 12));
 		textDisplayUpcoming.setForeground(new Color(25, 25, 112));
 		textDisplayUpcoming.setEditable(false);
@@ -157,7 +172,8 @@ public class UpcomingTasksWidget implements TasksWidget{
 
 	private void displayUpcomingFeedback(String feedback) {
 		feedback = feedback.replaceAll(currentYear, "");
-		textDisplayUpcoming.setText(feedback);
+		//textDisplayUpcoming.setText(feedback);
+		appendToPane(feedback);
 	}
 	
 	public void clickUpcoming() {
@@ -211,5 +227,93 @@ public class UpcomingTasksWidget implements TasksWidget{
 		
 		return task;
 	}
+	
+	
+	
+	
+	/**
+	 * This function displays feedback with customized coloring
+	 * @param feedback
+	 */
+	private void appendToPane(String feedback) {
+		textDisplayUpcoming.setText(feedback);
+		int numOfNewline = countSubstring("\n", feedback);
+		String[] subStrings = feedback.trim().split("\n");
+		int currentStart = 0;
+		int currentEnd = feedback.indexOf("\n",1);
+		String subString;
+		boolean newtask=true;
+		Color lastColor = generateNewColor();
+      			
+	     for (int i = 0; i <= numOfNewline; i++) {
+	    	 currentEnd = feedback.indexOf("\n",currentStart+1);
+	    	 if (currentEnd<0) {
+	    		 currentEnd=doc.getLength();
+	    	 }
+             SimpleAttributeSet set = new SimpleAttributeSet();
+ 
+             subString = subStrings[i]; 
+             // This line is a task title
+             if (isnewTask(subString)){
+            	 StyleConstants.setBold(set, true); 
+            	 StyleConstants.setFontSize(set, 12);      
+            	 StyleConstants.setBackground(set, titleBackground);
+            	 StyleConstants.setForeground(set, titleForeground);
+            	 newtask=true;
+             } else {
+            	 StyleConstants.setBold(set, false); 
+            	 StyleConstants.setFontSize(set, 11);
+            	 if (newtask){
+                    lastColor = generateNewColor();
+                    newtask = false;
+            	 } 
+            	 StyleConstants.setForeground(set, lastColor);
+             }
+             doc.setCharacterAttributes(currentStart, currentEnd-currentStart+1, set, true);
+             currentStart = currentEnd + 1;
+         }
+	}
+	
+		
+	/**
+	 * This function generates a new font color without repeating last one
+	 * @return
+	 */
+	private Color generateNewColor(){
+		int newColorIndex = random.nextInt(colors.length-1);
+		while (newColorIndex == currentColorIndex){
+			newColorIndex = random.nextInt(colors.length-1);
+		}
+		currentColorIndex = newColorIndex;
+		return colors[newColorIndex];
+	}
+	
+	/**
+	 * This function judges if a string is title of a task
+	 * based on if it starts with "<taskID:>"
+	 * @param subString
+	 * @return
+	 */
+	private boolean isnewTask(String subString) {
+		subString = subString.trim().split("\n")[0];
+		String taskID = subString.trim().split(":")[0];
+		try {
+			Integer.parseInt(taskID); 
+			return true;
+		}  catch (NumberFormatException e) {
+			return false;
+		}	
+	}
+
+	/**
+	 * This function counts the number of lines inside a string
+	 * @param subStr
+	 * @param str
+	 * @return
+	 */
+	public static int countSubstring(String subStr, String str){
+		return (str.length() - str.replace(subStr, "").length()) / subStr.length();
+	}
+	
 	
 }

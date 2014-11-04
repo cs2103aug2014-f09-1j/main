@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
-import java.util.LinkedList;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -23,12 +21,10 @@ public class Storage {
 	private String FILE_NAME;
 	private final static String EXTENSION = ".txt";
 	private final boolean SUCCESS = true;
-	private final boolean FAILURE = false;	
-	private final static int NUMBER_OF_VERSIONS = 3; 
-	
-	private LinkedList<File> fileVersions;
-	private static File currentFile; 
-	private static int currentFileVersionNumber;
+	private final boolean FAILURE = false;	 
+		
+	private static ArrayList<ArrayList<Task>> arrayOfVersions;
+	private static int currentVersionNumber;
 	
 	/**
 	 * Tries to initialize the Storage singleton with the file name
@@ -36,7 +32,7 @@ public class Storage {
 	 * @return
 	 * 		True if successful or False otherwise
 	 */
-	public static boolean tryInitialize(String fileName) {
+	public static boolean tryInitialize(String fileName) {		
 		if (storageSingleton == null) {
 			storageSingleton = new Storage(fileName);
 			return true;
@@ -52,8 +48,7 @@ public class Storage {
 	}
 	
 	private Storage(String fileName) {
-		FILE_NAME = fileName;
-		currentFileVersionNumber = 0;		
+		FILE_NAME = fileName;		
 		File textFile = new File(FILE_NAME + EXTENSION);
 		if (!textFile.exists()) {
 			try {
@@ -62,9 +57,16 @@ public class Storage {
 				e.printStackTrace();
 			}
 		}
-		fileVersions = new LinkedList<File>();
-		fileVersions.add(textFile);
-		currentFile = textFile;
+			
+		arrayOfVersions = new ArrayList<ArrayList<Task>>();
+		currentVersionNumber = 0;
+		
+		try {
+			arrayOfVersions.add(readTasks());
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -76,7 +78,8 @@ public class Storage {
 	 * @throws IOException
 	 */
 	public boolean inputTasks(ArrayList<Task> tasks) throws IOException {
-		if (isValidInput(tasks)) {			
+		if (isValidInput(tasks)) {
+			setNewVersion(tasks);
 			writeTasksToFile(tasks);
 			return SUCCESS;
 		} else if (tasks.size() == 0) {
@@ -93,8 +96,8 @@ public class Storage {
 	 * @throws IOException
 	 */
 	private void writeTasksToFile(ArrayList<Task> tasks) throws IOException {
-		setNewVersion();	
-		BufferedWriter writer = new BufferedWriter(new FileWriter(currentFile));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME + EXTENSION));
+		
 		for (int x = 0; x < tasks.size(); x++) {
 			Task taskToBeWritten = tasks.get(x);
 			writer.write(taskToJSONString(taskToBeWritten));
@@ -159,7 +162,7 @@ public class Storage {
 	 * @throws IOException
 	 */
 	private ArrayList<Task> readFromFile() throws IOException {
-		Scanner reader = new Scanner(currentFile);
+		Scanner reader = new Scanner(new File(FILE_NAME + EXTENSION));
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		
 		try {
@@ -193,100 +196,60 @@ public class Storage {
 	}
 	
 	public void clearFile() throws IOException {
-		BufferedWriter clearingWriter = new BufferedWriter(new FileWriter(currentFile, false));
+		BufferedWriter clearingWriter = new BufferedWriter(new FileWriter(FILE_NAME + EXTENSION, false));
+		
 		clearingWriter.close();
 	}
 	
-	private void setNewVersion() throws IOException {
-		if (currentFileVersionNumber < fileVersions.size() - 1) {
+	private void setNewVersion(ArrayList<Task> tasks) throws IOException {
+		if (currentVersionNumber < arrayOfVersions.size() - 1) {
 			deleteLaterVersions();
 		}
-		if (fileVersions.size() < NUMBER_OF_VERSIONS) {
-			addNewVersion();
-		}
-		else if (fileVersions.size() == NUMBER_OF_VERSIONS) {
-			deleteAndAddNewVersion();
-		}
-	}
+		currentVersionNumber++;			
+		arrayOfVersions.add(tasks);
+	}	
 	
-	private void addNewVersion() throws IOException {
-		File newNameFile = new File(FILE_NAME + (fileVersions.size() - 1) + EXTENSION);
-		transferData(currentFile.getName(), newNameFile.getName());
-		fileVersions.remove(currentFileVersionNumber);
-		
-		fileVersions.add(newNameFile);
-		currentFile = new File(FILE_NAME + EXTENSION);
-		fileVersions.add(currentFile);
-		currentFileVersionNumber = currentFileVersionNumber + 1;
-	}
-	
-	private void deleteAndAddNewVersion() throws IOException {
-		File oldFile = fileVersions.remove();
-		oldFile.delete();
-		for (int x = 0; x < fileVersions.size(); x++) {
-			File f = fileVersions.get(x);
-			transferData(f.getName(), FILE_NAME + x + EXTENSION);
-		}
-		File newNameFile = new File(FILE_NAME + 0 + EXTENSION);
-		fileVersions.addFirst(newNameFile);
-	}
-	
-
-	private void deleteLaterVersions() throws IOException{
-		Iterator<File> versionIterator = fileVersions.listIterator(currentFileVersionNumber + 1);
-		while (versionIterator.hasNext()) {
-			File f = versionIterator.next();
-			versionIterator.remove();
-			f.delete();			
+	private void deleteLaterVersions() throws IOException {
+		for (int x = 0; x < arrayOfVersions.size() - currentVersionNumber - 1; x++) {
+			arrayOfVersions.remove(currentVersionNumber + 1);
 		}
 	}
 	
 	public boolean goToPreviousVersion() {
-		if (currentFileVersionNumber > 0) {
-			currentFile = fileVersions.get(currentFileVersionNumber - 1);
-			currentFileVersionNumber = currentFileVersionNumber - 1;
-			return SUCCESS;
+		try {
+			if (arrayOfVersions.size() > 1 && currentVersionNumber > 0) {
+				writeTasksToFile(arrayOfVersions.get(currentVersionNumber - 1));
+				currentVersionNumber = currentVersionNumber - 1;
+				return SUCCESS;
+			}
+			else {
+				return FAILURE;
+			}
 		}
-		else {
+		catch (IOException e) {
 			return FAILURE;
 		}
 	}	
 	
 	public boolean goToNextVersion() {
-		if (currentFileVersionNumber < fileVersions.size() - 1) {
-			currentFile = fileVersions.get(currentFileVersionNumber + 1);
-			currentFileVersionNumber = currentFileVersionNumber + 1;
-			return SUCCESS;
-		}
-		else {
-			return FAILURE;
-		}
-	}
-	
-	public void deleteFileVersions() throws IOException{
-		Iterator<File> versionIterator = fileVersions.iterator();
-		while (versionIterator.hasNext()) {
-			File toBeDeleted = versionIterator.next();
-			if (!toBeDeleted.getName().equals(currentFile.getName())) {
-				versionIterator.remove();
-				toBeDeleted.delete();
+		try {
+			if (currentVersionNumber < arrayOfVersions.size() - 1) {
+				writeTasksToFile(arrayOfVersions.get(currentVersionNumber + 1));
+				currentVersionNumber = currentVersionNumber + 1;
+				return SUCCESS;
+			}
+			else {
+				return FAILURE;
 			}
 		}
-		
-		currentFileVersionNumber = 0;
-		File newNameFile = new File(FILE_NAME + EXTENSION);
-		currentFile.renameTo(newNameFile);
-	}
-	
-	private void transferData(String fromFile, String toFile) throws IOException{
-		Scanner sc = new Scanner(new File(fromFile));
-		BufferedWriter bw = new BufferedWriter(new FileWriter(toFile));
-		while (sc.hasNextLine()) {
-			bw.write(sc.nextLine());
-			bw.newLine();
+		catch (IOException e) {
+			return FAILURE;
 		}
-		bw.flush();
-		bw.close();
-		sc.close();
-	}
+	}	
+	
+	public void deleteFileVersions() throws IOException {
+		currentVersionNumber = 0;
+		arrayOfVersions = new ArrayList<ArrayList<Task>>();
+		arrayOfVersions.add(readTasks());
+	} 
 }

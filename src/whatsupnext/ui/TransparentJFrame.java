@@ -13,7 +13,7 @@ public class TransparentJFrame extends JFrame {
 	private LineBorder border = new LineBorder(new Color(204, 224, 250, 150), 2);
 
 	public TransparentJFrame() {
-		super("GradientTranslucentWindow");
+		super();
 		setUndecorated(true);
 		setBackground(new Color(0, 0, 0, 0));
 		this.getRootPane().setBorder(border);

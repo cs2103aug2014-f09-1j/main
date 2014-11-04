@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+
 import whatsupnext.logic.Logic;
 
 /*
@@ -44,9 +45,10 @@ public class WhatsUpNextGUI {
 	private FloatingTasksWidget floatingWidget;
 	private UpcomingTasksWidget upcomingWidget;
 	
+	private boolean movingAllFramesToFront = false;
 	static Logic logic;
 	private static boolean isPerPixelTranslucencySupported;
-	
+
 	
 	/**
 	 * Launch the application.
@@ -76,17 +78,19 @@ public class WhatsUpNextGUI {
 			public void run() {
 				try {
 					WhatsUpNextGUI gui = new WhatsUpNextGUI();
-					gui.frameMain.setLocationByPlatform(true);
-					gui.frameMain.setVisible(true);
-					gui.frameMain.pack();
 					
-					gui.frameFloating.setLocationByPlatform(true);
+					gui.frameFloating.setLocation(750, 15);
 					gui.frameFloating.setVisible(true);
 					gui.frameFloating.pack();
 					
-					gui.frameUpcoming.setLocationByPlatform(true);
+					gui.frameUpcoming.setLocation(750, 385);
 					gui.frameUpcoming.setVisible(true);
 					gui.frameUpcoming.pack();
+					
+					gui.frameMain.setLocation(200, 150);
+					gui.frameMain.setVisible(true);
+					gui.frameMain.pack();
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -162,9 +166,31 @@ public class WhatsUpNextGUI {
 		frameMain.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
 		
 		frameMain.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				deleteRevisions();
 			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				if (movingAllFramesToFront) {
+			        return;
+			    }
+
+			    movingAllFramesToFront = true;
+
+			    frameFloating.toFront();
+				frameUpcoming.toFront();
+
+			    e.getWindow().toFront();
+			    e.getWindow().requestFocus();
+
+			    EventQueue.invokeLater(new Runnable() {
+			        public void run() {
+			            movingAllFramesToFront = false;
+			        }
+			    });
+			};
 		});
 	}
 
@@ -183,8 +209,30 @@ public class WhatsUpNextGUI {
 		frameFloating.setMinimumSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
 		
 		frameFloating.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				deleteRevisions();
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				if (movingAllFramesToFront) {
+			        return;
+			    }
+
+			    movingAllFramesToFront = true;
+
+				frameUpcoming.toFront();
+				frameMain.toFront();
+
+			    e.getWindow().toFront();
+			    e.getWindow().requestFocus();
+
+			    EventQueue.invokeLater(new Runnable() {
+			        public void run() {
+			            movingAllFramesToFront = false;
+			        }
+			    });
 			}
 		});
 		
@@ -192,6 +240,11 @@ public class WhatsUpNextGUI {
 		resizer.setSnapSize(new Dimension(2, 2));
 		resizer.setMinimumSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
 		resizer.registerComponent(frameFloating);
+		
+		ComponentMover mover = new ComponentMover();
+		mover.setDragInsets(new Insets(2, 4, 4, 4));
+		mover.setEdgeInsets(new Insets(0, 0, 0, -65));
+		mover.registerComponent(frameFloating);
 	}
 
 
@@ -209,8 +262,30 @@ public class WhatsUpNextGUI {
 		frameUpcoming.setMinimumSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
 		
 		frameUpcoming.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				deleteRevisions();
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				if (movingAllFramesToFront) {
+			        return;
+			    }
+
+			    movingAllFramesToFront = true;
+
+			    frameFloating.toFront();
+				frameMain.toFront();
+
+			    e.getWindow().toFront();
+			    e.getWindow().requestFocus();
+
+			    EventQueue.invokeLater(new Runnable() {
+			        public void run() {
+			            movingAllFramesToFront = false;
+			        }
+			    });
 			}
 		});
 		
@@ -218,6 +293,11 @@ public class WhatsUpNextGUI {
 		resizer.setSnapSize(new Dimension(2, 2));
 		resizer.setMinimumSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
 		resizer.registerComponent(frameUpcoming);
+		
+		ComponentMover mover = new ComponentMover();
+		mover.setDragInsets(new Insets(2, 4, 4, 4));
+		mover.setEdgeInsets(new Insets(0, 0, 0, -65));
+		mover.registerComponent(frameUpcoming);
 	}
 
 	
@@ -286,7 +366,7 @@ public class WhatsUpNextGUI {
 		GridBagConstraints gbc_floatingWidget = new GridBagConstraints();
 		gbc_floatingWidget.fill = GridBagConstraints.BOTH;
 		gbc_floatingWidget.anchor = GridBagConstraints.CENTER;
-		gbc_floatingWidget.insets = new Insets(15, 15, 15, 15);
+		gbc_floatingWidget.insets = new Insets(22, 15, 15, 15);
 		gbc_floatingWidget.gridx = 0;
 		gbc_floatingWidget.gridy = 0;
 		floatingPanel.add(floatingWidget.getWidgetPanel(), gbc_floatingWidget);
@@ -310,7 +390,7 @@ public class WhatsUpNextGUI {
 		GridBagConstraints gbc_upcomingWidget = new GridBagConstraints();
 		gbc_upcomingWidget.fill = GridBagConstraints.BOTH;
 		gbc_upcomingWidget.anchor = GridBagConstraints.CENTER;
-		gbc_upcomingWidget.insets = new Insets(15, 15, 15, 15);
+		gbc_upcomingWidget.insets = new Insets(22, 15, 15, 15);
 		gbc_upcomingWidget.gridx = 0;
 		gbc_upcomingWidget.gridy = 0;
 		upcomingPanel.add(upcomingWidget.getWidgetPanel(), gbc_upcomingWidget);

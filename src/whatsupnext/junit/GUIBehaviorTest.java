@@ -8,6 +8,7 @@ import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,9 +24,9 @@ import whatsupnext.ui.WhatsUpNextGUI;
 
 public class GUIBehaviorTest {
 	private WhatsUpNextGUIStub gui;
-	private JTextArea textDisplayMain;
-	private JTextArea textDisplayUpcoming;
-	private JTextArea textDisplayFloating;
+	private JTextPane textDisplayMain;
+	private JTextPane textDisplayUpcoming;
+	private JTextPane textDisplayFloating;
 	private JButton buttonEnter;
 	private JButton buttonUpcoming;
 	private JButton buttonFloating;
@@ -106,9 +107,9 @@ public class GUIBehaviorTest {
 
 	@Before
 	public void initializeWidgets() {
-		textDisplayMain = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
-		textDisplayUpcoming = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
-		textDisplayFloating = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayFloating");
+		textDisplayMain = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
+		textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
+		textDisplayFloating = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayFloating");
 		assertNotNull("Can't acess the main text display JTextField", textDisplayMain);
 		assertNotNull("Can't acess the upcoming task text area JTextArea", textDisplayUpcoming);
 		assertNotNull("Can't acess the floating task text area JTextArea", textDisplayFloating);

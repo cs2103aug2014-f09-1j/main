@@ -52,7 +52,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 	private Color titleBackground = new Color(240,255,240);
 	private Color titleForeground = new Color(46,139,87);
 
-	private StyledDocument  doc = new DefaultStyledDocument();
+	private StyledDocument doc = new DefaultStyledDocument();
 	
 	
 	public UpcomingTasksWidget() {
@@ -80,6 +80,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 	private void setComponentNames() {
 		widgetPanel.setName("upcomingTasksWidgetPanel");
 		buttonUpcoming.setName("buttonUpcoming");
+		timeLengthCombobox.setName("timeLengthCombobox");
 		textDisplayUpcomingScrollPane.setName("textDisplayUpcomingScrollPane");
 		textDisplayUpcoming.setName("textDisplayUpcoming");
 	}

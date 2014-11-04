@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.util.Calendar;
 
 import javax.swing.JButton;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
@@ -108,15 +107,15 @@ public class GUIBehaviorTest {
 	@Before
 	public void initializeWidgets() {
 		textDisplayMain = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
-		textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
-		textDisplayFloating = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayFloating");
-		assertNotNull("Can't acess the main text display JTextField", textDisplayMain);
-		assertNotNull("Can't acess the upcoming task text area JTextArea", textDisplayUpcoming);
-		assertNotNull("Can't acess the floating task text area JTextArea", textDisplayFloating);
+		textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "textDisplayUpcoming");
+		textDisplayFloating = (JTextPane)GUITestUtils.getChildNamed(gui.getFloatingFrame(), "textDisplayFloating");
+		assertNotNull("Can't acess the main text display JTextPane", textDisplayMain);
+		assertNotNull("Can't acess the upcoming task text area JTextPane", textDisplayUpcoming);
+		assertNotNull("Can't acess the floating task text area JTextPane", textDisplayFloating);
 
 		buttonEnter = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonEnter");
-		buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonUpcoming");
-		buttonFloating = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonFloating");
+		buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "buttonUpcoming");
+		buttonFloating = (JButton)GUITestUtils.getChildNamed(gui.getFloatingFrame(), "buttonFloating");
 		assertNotNull("Can't acess the main enter button JButton", buttonEnter);
 		assertNotNull("Can't acess the upcoming task button JButton", buttonUpcoming);
 		assertNotNull("Can't acess the floating task button JButton", buttonFloating);
@@ -147,7 +146,7 @@ public class GUIBehaviorTest {
 
 		buttonEnter.doClick();
 
-		assertEquals("---Please enter command below:\r\n\nEmpty command\n", textDisplayMain.getText());
+		assertEquals("\nEmpty command\n", textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 	}
 
@@ -158,7 +157,7 @@ public class GUIBehaviorTest {
 
 		textInput.postActionEvent();
 
-		assertEquals("---Please enter command below:\r\n\nEmpty command\n", textDisplayMain.getText());
+		assertEquals("\nEmpty command\n", textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 	}
 
@@ -173,7 +172,7 @@ public class GUIBehaviorTest {
 		textInput.setText("add floating task test");
 		buttonEnter.doClick();
 
-		assertEquals("---Please enter command below:\r\n\nA task is successfully added.\n", textDisplayMain.getText());
+		assertEquals("\nA task is successfully added.\n", textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 		assertEquals("1: floating task test\nNot done.", textDisplayFloating.getText());
 	}
@@ -184,7 +183,7 @@ public class GUIBehaviorTest {
 		buttonEnter.doClick();
 
 		assertEquals(
-				"---Please enter command below:\r\n\nA task is successfully added.\n",
+				"\nA task is successfully added.\n",
 				textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
@@ -193,7 +192,7 @@ public class GUIBehaviorTest {
 		buttonEnter.doClick();
 
 		assertEquals(
-				"---Please enter command below:\r\n\nA task is successfully added.\n\nA task is successfully added.\n",
+				"\nA task is successfully added.\n",
 				textDisplayMain.getText());
 		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat()).replaceAll(currentYear, "");
 		assertEquals("2: byTaskTest2\n\tEnd Time:" + formattedUpcomingTime + " 23:59\nNot done.", textDisplayUpcoming.getText());
@@ -209,7 +208,7 @@ public class GUIBehaviorTest {
 		buttonEnter.doClick();
 
 		assertEquals(
-				"---Please enter command below:\r\n\nA task is successfully added.\n",
+				"\nA task is successfully added.\n",
 				textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
@@ -221,7 +220,7 @@ public class GUIBehaviorTest {
 		buttonEnter.doClick();
 
 		assertEquals(
-				"---Please enter command below:\r\n\nA task is successfully added.\n\nA task is successfully added.\n",
+				"\nA task is successfully added.\n",
 				textDisplayMain.getText());
 		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat()).replaceAll(currentYear, "");
 		assertEquals(

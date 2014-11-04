@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
@@ -72,10 +72,10 @@ public class GUIVisualTest {
 		assertTrue(frameMain.isResizable());
 		
 		Dimension prefSize = frameMain.getPreferredSize();
-		assertEquals(830, prefSize.width);
+		assertEquals(530, prefSize.width);
 		assertEquals(360, prefSize.height);
 		Dimension minSize = frameMain.getMinimumSize();
-		assertEquals(830, minSize.width);
+		assertEquals(530, minSize.width);
 		assertEquals(360, minSize.height);
 		
 		assertEquals("Cambria", frameMain.getFont().getName());
@@ -105,12 +105,12 @@ public class GUIVisualTest {
 	
 	@Test
 	public void UpcomingTasksTextDisplayTest() {
-		JScrollPane textDisplayUpcomingScrollPane = (JScrollPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcomingScrollPane");
+		JScrollPane textDisplayUpcomingScrollPane = (JScrollPane)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "textDisplayUpcomingScrollPane");
 		assertNotNull("Can't acess the upcoming task text display scrolling pane JScrollPane", textDisplayUpcomingScrollPane);
 		
 		assertEquals(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, textDisplayUpcomingScrollPane.getVerticalScrollBarPolicy());
 		
-		JTextArea textDisplayUpcoming = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
+		JTextPane textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "textDisplayUpcoming");
 		assertNotNull("Can't acess the upcoming task text area JTextArea", textDisplayUpcoming);
 		
 		assertEquals("Courier New", textDisplayUpcoming.getFont().getName());
@@ -122,7 +122,7 @@ public class GUIVisualTest {
 	
 	@Test
 	public void UpcomingTasksButtonTest() {
-		JButton buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonUpcoming");
+		JButton buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "buttonUpcoming");
 		assertNotNull("Can't acess the upcoming task button JButton", buttonUpcoming);
 		
 		assertEquals("Cambria", buttonUpcoming.getFont().getName());
@@ -163,7 +163,7 @@ public class GUIVisualTest {
 		
 		assertEquals(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, textDisplayMainScrollPane.getVerticalScrollBarPolicy());
 		
-		JTextArea textDisplayMain = (JTextArea)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
+		JTextPane textDisplayMain = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
 		assertNotNull("Can't acess the main text display JTextField", textDisplayMain);
 		
 		assertFalse(textDisplayMain.isEditable());

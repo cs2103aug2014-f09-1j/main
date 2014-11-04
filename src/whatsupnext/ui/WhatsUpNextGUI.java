@@ -122,6 +122,14 @@ public class WhatsUpNextGUI {
 		return frameMain;
 	}
 	
+	public JFrame getFloatingFrame() {
+		return frameFloating;
+	}
+	
+	public JFrame getUpcomingFrame() {
+		return frameUpcoming;
+	}
+	
 	/**
 	 * Names every component used in the GUI
 	 */

@@ -15,7 +15,7 @@ public class Types {
 	}
 	
 	public enum VIEWTYPE {
-		ALL, NEXT, DATE, TIMEFRAME, UNDONE, FLOATING
+		ALL, NEXT, DATE, TIMEFRAME, UNDONE, FLOATING, OVERDUE
 	}
 	
 }

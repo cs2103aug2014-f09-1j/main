@@ -40,6 +40,9 @@ public class ViewCommand extends Command {
 			case FLOATING:
 				viewFloating();
 				break;
+			case OVERDUE:
+				viewOverDue();
+				break;
 			default:
 				break;
 		}
@@ -141,6 +144,17 @@ public class ViewCommand extends Command {
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
 			if (task.getStartTime().isEmpty() && task.getEndTime().isEmpty() && task.getDone() == false) {
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
+			    output.add(taskInfo);
+			}			
+		}
+	}
+	
+	private void viewOverDue() {
+		Iterator<Task> taskIterator = list.iterator();
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (LogicUtilities.endsBeforeDeadline(task, endTime) && task.getDone() == false) {
 				String taskInfo = LogicUtilities.getFormattedOutput(task);
 			    output.add(taskInfo);
 			}			

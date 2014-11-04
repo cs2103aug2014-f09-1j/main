@@ -13,6 +13,7 @@ import whatsupnext.parser.extractor.HelpExtractor;
 import whatsupnext.parser.extractor.SearchExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
+import whatsupnext.structure.Help;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.ADDTYPE;
 import whatsupnext.structure.Types.DELETETYPE;
@@ -536,38 +537,19 @@ public class ExtractorTest {
 	@Test
 	/* This test case is equivalent partitioning of help default*/
 	public void testHelpDefault() {
-		String DEFAULT_HELP_MESSAGE = "Supported Command: add, view, update, delete, search, done, undo, redo, exit" + "\n"
-				+ "Type \"help <command>\" or \"help <command> [verbose|v]\" to find out more.";
 		Task task = new Task();
 		HelpExtractor ex = new HelpExtractor();
 		ex.extract(task, "");
-		assertEquals("Help Message", DEFAULT_HELP_MESSAGE, task.getHelpMessage());
-	}
-	
-	@Test
-	/* This test case is equivalent partitioning of help brief*/
-	public void testHelpBrief() {
-		String ADD_HELP_MESSAGE_BRIEF = "Add a task by specifying the task description only or" + "\n" 
-				+ " a specific deadline or a time period."; 
-		Task task = new Task();
-		HelpExtractor ex = new HelpExtractor();
-		ex.extract(task, "add");
-		assertEquals("Help Message", ADD_HELP_MESSAGE_BRIEF, task.getHelpMessage());
+		assertEquals("Help Message", Help.DEFAULT_HELP_MESSAGE, task.getHelpMessage());
 	}
 	
 	@Test
 	/* This test case is equivalent partitioning of help detailed*/
 	public void testHelpDetailed() {
-		String ADD_HELP_MESSAGE_DETAILED = "Add a task by specifying the task description only or" + "\n"
-				+ " a specific deadline or a time period." + "\n"
-				+ "Formats supported:" + "\n"
-				+ "	add [task]" + "\n"
-				+ "	add [task] by [end_time]" + "\n" 
-				+ "	add [task] from [start_time] to [end_time]";
 		Task task = new Task();
 		HelpExtractor ex = new HelpExtractor();
-		ex.extract(task, "add verbose");
-		assertEquals("Help Message", ADD_HELP_MESSAGE_DETAILED, task.getHelpMessage());
+		ex.extract(task, "add");
+		assertEquals("Help Message", Help.ADD_HELP_MESSAGE, task.getHelpMessage());
 	}
 	
 	@Test

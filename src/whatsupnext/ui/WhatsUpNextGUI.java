@@ -149,11 +149,7 @@ public class WhatsUpNextGUI {
 	}
 	
 	private void createCLIFrame() {
-		if (!isPerPixelTranslucencySupported) {
-			frameMain = new JFrame();
-		} else {
-			frameMain = new GradientTranslucentWindowDemo();
-		}
+		frameMain = new JFrame();
 		frameMain.setResizable(true);
 		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/whatsupnext/ui/iconGUI.png")));
 		frameMain.setType(Type.POPUP);
@@ -175,7 +171,7 @@ public class WhatsUpNextGUI {
 		if (!isPerPixelTranslucencySupported) {
 			frameFloating = new JFrame();
 		} else {
-			frameFloating = new GradientTranslucentWindowDemo();
+			frameFloating = new TranslucentJFrame();
 		}
 		frameFloating.setResizable(true);
 		frameFloating.setType(Type.POPUP);
@@ -196,7 +192,7 @@ public class WhatsUpNextGUI {
 		if (!isPerPixelTranslucencySupported) {
 			frameUpcoming = new JFrame();
 		} else {
-			frameUpcoming = new GradientTranslucentWindowDemo();
+			frameUpcoming = new TranslucentJFrame();
 		}
 		frameUpcoming.setResizable(true);
 		frameUpcoming.setType(Type.POPUP);

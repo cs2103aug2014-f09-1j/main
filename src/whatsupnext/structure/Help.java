@@ -1,9 +1,26 @@
 package whatsupnext.structure;
 
-public class Help { 
+public class Help {
 	
-	public static final String DEFAULT_HELP_MESSAGE = "Supported Command: add, view, update, delete, search, done, undo, redo, exit" + "\n"
-			+ "Type \"help <command>\" or \"help <command> [verbose|v]\" to find out more.";
+	private static final String INDENT = "\t";
+	private static final String NEWLINE = "\n";
+	
+	public static final String DEFAULT_HELP_MESSAGE = "Type \"help <command>\" to find out more."
+			+ NEWLINE + "Supported Commands:"
+			+ NEWLINE + "add" + INDENT + "Add a task by with description only or"
+			+ NEWLINE + INDENT + "append it with a deadline or time period."
+			+ NEWLINE + "view" + INDENT + "Display the upcoming task or the tasks"
+			+ NEWLINE + INDENT + "for the day. A time frame can be" 
+			+ NEWLINE + INDENT + "specified too."
+			+ NEWLINE + "update" + INDENT + "Update the description, deadline, start"
+			+ NEWLINE + INDENT + "or end time of a task."
+			+ NEWLINE + "delete" + INDENT + "Delete by id, date, deadline, or time"
+			+ NEWLINE + INDENT + "frame."
+			+ NEWLINE + "search" + INDENT + "Search for a task by its keyword."
+			+ NEWLINE + "done" + INDENT + "Label a task as done."
+			+ NEWLINE + "undo" + INDENT + "Undo most recent add/update/delete."
+			+ NEWLINE + "redo" + INDENT + "Redo the most recent undo."
+			+ NEWLINE + "exit" + INDENT + "Close WhatsUpNext.";
 
 	public static final String ADD_HELP_MESSAGE_BRIEF = "Add a task by specifying the task description only or" + "\n" 
 			+ " a specific deadline or a time period."; 

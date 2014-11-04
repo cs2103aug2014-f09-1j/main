@@ -42,6 +42,9 @@ public class HelpExtractor {
 				case "exit":
 					task.setHelpMessage(Help.EXIT_HELP_MESSAGE);
 					break;
+				case "time":
+					task.setHelpMessage(Help.TIME_HELP_MESSAGE);
+					break;
 				default:
 					throw new IllegalArgumentException(MESSAGE_INVALID_ARGUMENT);
 			}

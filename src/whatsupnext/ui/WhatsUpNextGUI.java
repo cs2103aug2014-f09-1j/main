@@ -4,9 +4,12 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.GraphicsDevice.WindowTranslucency;
 import java.awt.Window.Type;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -15,8 +18,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
+import javax.swing.UIManager.LookAndFeelInfo;
 import whatsupnext.logic.Logic;
 
 /*
@@ -25,32 +27,49 @@ import whatsupnext.logic.Logic;
 public class WhatsUpNextGUI {
 	
 	private JFrame frameMain;
-	private final int FRAME_MAIN_WIDTH = 830;
+	private final int FRAME_MAIN_WIDTH = 530;
 	private final int FRAME_MAIN_HEIGHT = 360;
+	private JFrame frameFloating;
+	private final int FRAME_FLOATING_WIDTH = 380;
+	private final int FRAME_FLOATING_HEIGHT = 350;
+	private JFrame frameUpcoming;
+	private final int FRAME_UPCOMING_WIDTH = 380;
+	private final int FRAME_UPCOMING_HEIGHT = 350;
 	
 	private JPanel mainPanel;
+	private JPanel floatingPanel;
+	private JPanel upcomingPanel;
 	private MainDisplayWidget mainDisplayWidget;
 	private CommandLineInterfaceWidget cliWidget;
 	private FloatingTasksWidget floatingWidget;
 	private UpcomingTasksWidget upcomingWidget;
 	
 	static Logic logic;
+	private static boolean isPerPixelTranslucencySupported;
+	
 	
 	/**
 	 * Launch the application.
 	 * Sets window visibility and size.
 	 */
 	public static void main(String[] args) {
+		// Determine what the GraphicsDevice can support.
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice gd = ge.getDefaultScreenDevice();
+		isPerPixelTranslucencySupported = 
+				gd.isWindowTranslucencySupported(WindowTranslucency.PERPIXEL_TRANSLUCENT);
+
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		
 		try {
-		    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+		    // If Nimbus is not available, you can set the GUI to another look and feel.
 		}
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -60,6 +79,14 @@ public class WhatsUpNextGUI {
 					gui.frameMain.setLocationByPlatform(true);
 					gui.frameMain.setVisible(true);
 					gui.frameMain.pack();
+					
+					gui.frameFloating.setLocationByPlatform(true);
+					gui.frameFloating.setVisible(true);
+					gui.frameFloating.pack();
+					
+					gui.frameUpcoming.setLocationByPlatform(true);
+					gui.frameUpcoming.setVisible(true);
+					gui.frameUpcoming.pack();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -68,10 +95,6 @@ public class WhatsUpNextGUI {
 	}
 
 	
-	/**
-	 * Create the application.
-	 * Be sure to initialize the GUIComponents before the GUIFunctionality
-	 */
 	public WhatsUpNextGUI() {
 		logic = new Logic();
 		initGUIComponents();
@@ -111,22 +134,26 @@ public class WhatsUpNextGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initGUIComponents() {
-		initializeApplicationFrame();
-		mainDisplayWidget = new MainDisplayWidget();
-		floatingWidget = new FloatingTasksWidget();
-		upcomingWidget = new UpcomingTasksWidget();
-		
-		cliWidget = new CommandLineInterfaceWidget(mainDisplayWidget);
-		cliWidget.linkToWidget(floatingWidget);
-		cliWidget.linkToWidget(upcomingWidget);
-		initializeMainPanel();
+		initializeApplicationFrames();
+		initializeWidgets();
+		initializeWindowPanels();
 	}
 	
 	/**
 	 * Initialize frame of the application
 	 */
-	private void initializeApplicationFrame() {
-		frameMain = new JFrame();
+	private void initializeApplicationFrames() {
+		createCLIFrame();
+		createFloatingFrame();
+		createUpcomingFrame();
+	}
+	
+	private void createCLIFrame() {
+		if (!isPerPixelTranslucencySupported) {
+			frameMain = new JFrame();
+		} else {
+			frameMain = new GradientTranslucentWindowDemo();
+		}
 		frameMain.setResizable(true);
 		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/whatsupnext/ui/iconGUI.png")));
 		frameMain.setType(Type.POPUP);
@@ -142,55 +169,145 @@ public class WhatsUpNextGUI {
 			}
 		});
 	}
+
+
+	private void createFloatingFrame() {
+		if (!isPerPixelTranslucencySupported) {
+			frameFloating = new JFrame();
+		} else {
+			frameFloating = new GradientTranslucentWindowDemo();
+		}
+		frameFloating.setResizable(true);
+		frameFloating.setType(Type.POPUP);
+		frameFloating.setFont(new Font("Cambria", Font.BOLD, 12));
+		frameFloating.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameFloating.setPreferredSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
+		frameFloating.setMinimumSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
+		
+		frameFloating.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				deleteRevisions();
+			}
+		});
+	}
+
+
+	private void createUpcomingFrame() {
+		if (!isPerPixelTranslucencySupported) {
+			frameUpcoming = new JFrame();
+		} else {
+			frameUpcoming = new GradientTranslucentWindowDemo();
+		}
+		frameUpcoming.setResizable(true);
+		frameUpcoming.setType(Type.POPUP);
+		frameUpcoming.setFont(new Font("Cambria", Font.BOLD, 12));
+		frameUpcoming.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameUpcoming.setPreferredSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
+		frameUpcoming.setMinimumSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
+		
+		frameUpcoming.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				deleteRevisions();
+			}
+		});
+	}
+
+	
+	private void initializeWidgets() {
+		mainDisplayWidget = new MainDisplayWidget();
+		floatingWidget = new FloatingTasksWidget();
+		upcomingWidget = new UpcomingTasksWidget();
+		
+		cliWidget = new CommandLineInterfaceWidget(mainDisplayWidget);
+		cliWidget.linkToWidget(floatingWidget);
+		cliWidget.linkToWidget(upcomingWidget);
+	}
+	
+
+	private void initializeWindowPanels() {
+		initializeMainPanel();
+		initializeFloatingPanel();
+		initializeUpcomingPanel();
+	}
 	
 	private void initializeMainPanel() {
 		mainPanel = new JPanel();
-		mainPanel.setBackground(new Color(204, 224, 250));
+		mainPanel.setBackground(new Color(204, 224, 250, 150));
 		mainPanel.setPreferredSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
 		mainPanel.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
 		
 		GridBagLayout gbl_mainPanel = new GridBagLayout();
-		gbl_mainPanel.columnWidths = new int[]{400, 180, 250};
-		gbl_mainPanel.rowHeights = new int[]{210, 25};
-		gbl_mainPanel.columnWeights = new double[]{0.7, 0.1, 0.2};
-		gbl_mainPanel.rowWeights = new double[]{1.0, 0.0};
+		gbl_mainPanel.columnWidths = new int[]{400};
+		gbl_mainPanel.rowHeights = new int[]{235};
+		gbl_mainPanel.columnWeights = new double[]{1.0};
+		gbl_mainPanel.rowWeights = new double[]{1.0};
 		mainPanel.setLayout(gbl_mainPanel);
 		
 		GridBagConstraints gbc_mainDisplayWidget = new GridBagConstraints();
 		gbc_mainDisplayWidget.fill = GridBagConstraints.BOTH;
-		gbc_mainDisplayWidget.anchor = GridBagConstraints.NORTHWEST;
-		gbc_mainDisplayWidget.insets = new Insets(5, 10, 10, 10);
+		gbc_mainDisplayWidget.anchor = GridBagConstraints.CENTER;
+		gbc_mainDisplayWidget.insets = new Insets(5, 10, 5, 10);
 		gbc_mainDisplayWidget.gridx = 0;
 		gbc_mainDisplayWidget.gridy = 0;
 		mainPanel.add(mainDisplayWidget.getWidgetPanel(), gbc_mainDisplayWidget);
 		
-		GridBagConstraints gbc_floatingWidget = new GridBagConstraints();
-		gbc_floatingWidget.fill = GridBagConstraints.BOTH;
-		gbc_floatingWidget.anchor = GridBagConstraints.NORTHWEST;
-		gbc_floatingWidget.insets = new Insets(5, 0, 10, 10);
-		gbc_floatingWidget.gridx = 1;
-		gbc_floatingWidget.gridy = 0;
-		mainPanel.add(floatingWidget.getWidgetPanel(), gbc_floatingWidget);
-		
-		GridBagConstraints gbc_upcomingWidget = new GridBagConstraints();
-		gbc_upcomingWidget.fill = GridBagConstraints.BOTH;
-		gbc_upcomingWidget.anchor = GridBagConstraints.NORTHWEST;
-		gbc_upcomingWidget.insets = new Insets(5, 0, 10, 10);
-		gbc_upcomingWidget.gridx = 2;
-		gbc_upcomingWidget.gridy = 0;
-		gbc_upcomingWidget.gridheight = 2;
-		mainPanel.add(upcomingWidget.getWidgetPanel(), gbc_upcomingWidget);
-		
 		GridBagConstraints gbc_cliWidget = new GridBagConstraints();
 		gbc_cliWidget.fill = GridBagConstraints.HORIZONTAL;
-		gbc_cliWidget.anchor = GridBagConstraints.WEST;
+		gbc_cliWidget.anchor = GridBagConstraints.CENTER;
 		gbc_cliWidget.insets = new Insets(0, 10, 10, 10);
 		gbc_cliWidget.gridx = 0;
 		gbc_cliWidget.gridy = 1;
-		gbc_cliWidget.gridwidth = 2;
 		mainPanel.add(cliWidget.getWidgetPanel(), gbc_cliWidget);
 		
 		frameMain.getContentPane().add(mainPanel);
+	}
+	
+	private void initializeFloatingPanel() {
+		floatingPanel = new JPanel();
+		floatingPanel.setBackground(new Color(204, 224, 250, 150));
+		floatingPanel.setPreferredSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
+		floatingPanel.setMinimumSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
+		
+		GridBagLayout gbl_floatingPanel = new GridBagLayout();
+		gbl_floatingPanel.columnWidths = new int[]{300};
+		gbl_floatingPanel.rowHeights = new int[]{235};
+		gbl_floatingPanel.columnWeights = new double[]{1.0};
+		gbl_floatingPanel.rowWeights = new double[]{1.0};
+		floatingPanel.setLayout(gbl_floatingPanel);
+		
+		GridBagConstraints gbc_floatingWidget = new GridBagConstraints();
+		gbc_floatingWidget.fill = GridBagConstraints.BOTH;
+		gbc_floatingWidget.anchor = GridBagConstraints.CENTER;
+		gbc_floatingWidget.insets = new Insets(10, 10, 10, 10);
+		gbc_floatingWidget.gridx = 0;
+		gbc_floatingWidget.gridy = 0;
+		floatingPanel.add(floatingWidget.getWidgetPanel(), gbc_floatingWidget);
+		
+		frameFloating.getContentPane().add(floatingPanel);
+	}
+	
+	private void initializeUpcomingPanel() {
+		upcomingPanel = new JPanel();
+		upcomingPanel.setBackground(new Color(204, 224, 250, 150));
+		upcomingPanel.setPreferredSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
+		upcomingPanel.setMinimumSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
+		
+		GridBagLayout gbl_upcomingPanel = new GridBagLayout();
+		gbl_upcomingPanel.columnWidths = new int[]{350};
+		gbl_upcomingPanel.rowHeights = new int[]{235};
+		gbl_upcomingPanel.columnWeights = new double[]{1.0};
+		gbl_upcomingPanel.rowWeights = new double[]{1.0};
+		upcomingPanel.setLayout(gbl_upcomingPanel);
+		
+		GridBagConstraints gbc_upcomingWidget = new GridBagConstraints();
+		gbc_upcomingWidget.fill = GridBagConstraints.BOTH;
+		gbc_upcomingWidget.anchor = GridBagConstraints.CENTER;
+		gbc_upcomingWidget.insets = new Insets(10, 10, 10, 10);
+		gbc_upcomingWidget.gridx = 0;
+		gbc_upcomingWidget.gridy = 0;
+		upcomingPanel.add(upcomingWidget.getWidgetPanel(), gbc_upcomingWidget);
+		
+		frameUpcoming.getContentPane().add(upcomingPanel);
 	}
 	
 	private void deleteRevisions() {

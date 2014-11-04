@@ -29,6 +29,7 @@ public class StorageTest {
 	public void initialize() {
 		Storage.tryInitialize("storageTest");
 		obj = Storage.getInstance();
+		
 		setUpDummyTasks();
 		setUpTaskArrays();
 	}
@@ -132,6 +133,8 @@ public class StorageTest {
 	private void undoBeyondExistingVersions() throws IOException {
 		assertTrue(obj.goToPreviousVersion());
 		assertTrue(obj.goToPreviousVersion());
+		assertTrue(obj.goToPreviousVersion());
+		assertFalse(obj.goToPreviousVersion());
 		assertFalse(obj.goToPreviousVersion());
 	}
 	

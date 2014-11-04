@@ -21,21 +21,15 @@ public class Help {
 			+ NEWLINE + "undo" + INDENT + "Undo most recent add/update/delete."
 			+ NEWLINE + "redo" + INDENT + "Redo the most recent undo."
 			+ NEWLINE + "exit" + INDENT + "Close WhatsUpNext.";
-
-	public static final String ADD_HELP_MESSAGE_BRIEF = "Add a task by specifying the task description only or" + "\n" 
-			+ " a specific deadline or a time period."; 
 	
-	public static final String ADD_HELP_MESSAGE_DETAILED = "add" + INDENT + "Add a task by with description only or"
+	public static final String ADD_HELP_MESSAGE = "add" + INDENT + "Add a task by with description only or"
 			+ NEWLINE + INDENT + "append it with a deadline or time period."
 			+ NEWLINE + "Formats supported:"
 			+ NEWLINE + "add [task]"
 			+ NEWLINE + "add [task] by [end_time]" 
 			+ NEWLINE + "add [task] from [start_time] to [end_time]";
 	
-	public static final String VIEW_HELP_MESSAGE_BRIEF = "Displays the upcoming task or the tasks for the day." + "\n"
-			+ "A time frame can be specified to manage your schedule better within that period.";
-	
-	public static final String VIEW_HELP_MESSAGE_DETAILED = "view" + INDENT + "Display the upcoming task or the tasks"
+	public static final String VIEW_HELP_MESSAGE = "view" + INDENT + "Display the upcoming task or the tasks"
 			+ NEWLINE + INDENT + "for the day. A time frame can be" 
 			+ NEWLINE + INDENT + "specified too."
 			+ NEWLINE + "Formats supported:"
@@ -44,27 +38,21 @@ public class Help {
 			+ NEWLINE + "view [day|date]"
 			+ NEWLINE + "view from [start_time] to [end_time]";
 	
-	public static final String UPDATE_HELP_MESSAGE_BRIEF = "Update the description, deadline, start, or end time of a task.";
-	
-	public static final String UPDATE_HELP_MESSAGE_DETAILED =  "update" + INDENT + "Update the description, deadline, start"
+	public static final String UPDATE_HELP_MESSAGE =  "update" + INDENT + "Update the description, deadline, start"
 			+ NEWLINE + INDENT + "or end time of a task."
 			+ NEWLINE + "Formats supported:"
 			+ NEWLINE + "update [task_id] [new_description]"
 			+ NEWLINE + "update [task_id] by [end_time]"
 			+ NEWLINE + "update [task_id] from [start_time] to [end_time]";
 	
-	public static final String DELETE_HELP_MESSAGE_BRIEF = "Delete by id, date, deadline, or time frame.";
-	
-	public static final String DELETE_HELP_MESSAGE_DETAILED = "Delete by id, date, deadline, or time frame."
+	public static final String DELETE_HELP_MESSAGE = "Delete by id, date, deadline, or time frame."
 			+ NEWLINE + "Formats supported:"
 			+ NEWLINE + "delete [task_id]"
 			+ NEWLINE + "delete deadline"
 			+ NEWLINE + "delete [date]"
 			+ NEWLINE + "delete from [start_time] to [end_time]";
 	
-	public static final String DONE_HELP_MESSAGE_BRIEF = "Label a task as done.";
-	
-	public static final String DONE_HELP_MESSAGE_DETAILED = "Label a task as done."
+	public static final String DONE_HELP_MESSAGE = "Label a task as done."
 			+ NEWLINE + "Formats supported:"
 			+ NEWLINE + "done [task_id]";
 	

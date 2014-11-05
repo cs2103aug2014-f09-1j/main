@@ -7,12 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import whatsupnext.structure.Task;
-import static org.junit.Assert.assertNotNull;
 
 
 public class Storage {
@@ -25,6 +20,8 @@ public class Storage {
 		
 	private static ArrayList<ArrayList<Task>> arrayOfVersions;
 	private static int currentVersionNumber;
+	
+	private static JSONHelper JSONWrapper;
 	
 	/**
 	 * Tries to initialize the Storage singleton with the file name
@@ -68,6 +65,8 @@ public class Storage {
 			e.printStackTrace();
 		}
 		
+		JSONWrapper = new JSONHelper();
+		
 	}
 	
 	/**
@@ -100,32 +99,13 @@ public class Storage {
 		
 		for (int x = 0; x < tasks.size(); x++) {
 			Task taskToBeWritten = tasks.get(x);
-			writer.write(taskToJSONString(taskToBeWritten));
+			writer.write(JSONWrapper.taskToJSONString(taskToBeWritten));
 			writer.newLine();
 			writer.flush();
 		}		
 		writer.close();
 	}
-	
-	@SuppressWarnings("unchecked")
-	public String taskToJSONString(Task task) {
-		assertNotNull(task.getTaskID());
-		assertNotNull(task.getDescription());
-		assertNotNull(task.getStartTime());
-		assertNotNull(task.getEndTime());
-		assertNotNull(task.getDone());
 		
-		JSONArray taskDetailsArray = new JSONArray();
-		
-		taskDetailsArray.add(task.getTaskID());
-		taskDetailsArray.add(task.getDescription());
-		taskDetailsArray.add(task.getStartTime());
-		taskDetailsArray.add(task.getEndTime());
-		taskDetailsArray.add(task.getDone());
-		
-		return taskDetailsArray.toJSONString();
-	}
-	
 	/**
 	 * Checks if the ArrayList of tasks is valid, namely that the tasks field is not empty.
 	 * @param tasks
@@ -164,32 +144,8 @@ public class Storage {
 	private ArrayList<Task> readFromFile() throws IOException {
 		Scanner reader = new Scanner(new File(FILE_NAME + EXTENSION));
 		ArrayList<Task> tasks = new ArrayList<Task>();
-		
-		try {
-		
-		    while (reader.hasNextLine()) {
-		    	JSONParser parser=new JSONParser();
-			    Object parsedJSON = parser.parse(reader.nextLine());
-			    JSONArray arr = (JSONArray) parsedJSON;
-			    
-			    String taskID = (String) arr.get(0);
-		    	String description = (String) arr.get(1);
-		    	String startTime = (String) arr.get(2);
-		    	String endTime = (String) arr.get(3);
-		    	boolean isDone = (boolean) arr.get(4);
-		    	
-		    	Task taskFromJSON = new Task();
-		    	taskFromJSON.setTaskID(taskID);
-		    	taskFromJSON.setDescription(description);
-		    	taskFromJSON.setStartTime(startTime);
-		    	taskFromJSON.setEndTime(endTime);
-		    	taskFromJSON.setDone(isDone);
-	
-		    	tasks.add(taskFromJSON);
-		    }
-		}
-		catch (ParseException p) {
-			p.printStackTrace();
+		while (reader.hasNextLine()) {
+			tasks.add(JSONWrapper.JSONStringToTask(reader.nextLine()));
 		}
 		reader.close();
 		return tasks;

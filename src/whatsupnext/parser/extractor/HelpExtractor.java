@@ -1,7 +1,5 @@
+//@author A0111773L
 package whatsupnext.parser.extractor;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import whatsupnext.structure.Help;
 import whatsupnext.structure.Task;

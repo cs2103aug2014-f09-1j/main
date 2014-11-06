@@ -1,3 +1,4 @@
+//@author A0111773L
 /*
  *  This is the Parser API for WhatsUpNext
  */

@@ -5,24 +5,25 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.ADDTYPE;
 
 public class AddCommand extends Command {
 	
-	private final String MESSAGE_ADDED = "A task is successfully added.";
-	private ADDTYPE addType;
-	
+	private String MESSAGE_ADDED;
 	private ArrayList<Task> list = LogicUtilities.list;
 	private PriorityQueue<Integer> availableIDs = LogicUtilities.availableIDs;
 	
 	public AddCommand(Task task) {
 		super(task);
-		addType = task.getAddType();
+		task.getAddType();
 	}
 
 	public String executeCommand() {
 		taskID = Integer.toString(availableIDs.remove());
 		list.add(this.toTask());
+		MESSAGE_ADDED = "Successfully added to task " + taskID + " .";
+		if (!endTime.isEmpty()) {
+			MESSAGE_ADDED = MESSAGE_ADDED + "\n     Deadline: " + LogicUtilities.getFormattedTime(endTime);
+		}
 		
 		LogicUtilities.sortTasks(list);
 

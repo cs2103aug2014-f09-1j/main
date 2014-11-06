@@ -20,7 +20,7 @@ public class AddCommand extends Command {
 	public String executeCommand() {
 		taskID = Integer.toString(availableIDs.remove());
 		list.add(this.toTask());
-		MESSAGE_ADDED = "Successfully added to task " + taskID + " .";
+		MESSAGE_ADDED = "Successfully added to task " + taskID + ".";
 		if (!endTime.isEmpty()) {
 			MESSAGE_ADDED = MESSAGE_ADDED + "\n     Deadline: " + LogicUtilities.getFormattedTime(endTime);
 		}

@@ -21,15 +21,15 @@ public class UpdateCommand extends Command{
 		switch (updateType) {
 			case DESCRIPTION:
 				updateInfo();
-				MESSAGE_UPDATED = "Successfully updated the description of task " + taskID + " .";
+				MESSAGE_UPDATED = "Successfully updated the description of task " + taskID + ".";
 				break;
 			case DEADLINE:
 				updateDeadline();
-				MESSAGE_UPDATED = "Successfully updated the deadline of task " + taskID + " .";
+				MESSAGE_UPDATED = "Successfully updated the deadline of task " + taskID + ".";
 				break;
 			case TIMEFRAME:
 				updateTimeFrame();
-				MESSAGE_UPDATED = "Successfully updated the time frame of task " + taskID + " .";
+				MESSAGE_UPDATED = "Successfully updated the time frame of task " + taskID + ".";
 				break;
 			default:
 				break;

@@ -58,14 +58,14 @@ public class Storage {
 		arrayOfVersions = new ArrayList<ArrayList<Task>>();
 		currentVersionNumber = 0;
 		
+		JSONWrapper = new JSONHelper();
+		
 		try {
 			arrayOfVersions.add(readTasks());
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		JSONWrapper = new JSONHelper();
 		
 	}
 	

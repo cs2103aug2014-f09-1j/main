@@ -25,8 +25,8 @@ public class ParserTest {
         assertEquals("OPCODE",OPCODE.ADD,task.getOpCode());
         assertEquals("addType",ADDTYPE.TIMEFRAME,task.getAddType());
 		assertEquals("description", "dine with Amy", task.getDescription());
-		assertEquals("startTime", getTomorrow()+"0700", task.getStartTime());
-		assertEquals("endTime", getTomorrow()+"0900", task.getEndTime());
+		assertEquals("startTime", getTomorrowDate()+"0700", task.getStartTime());
+		assertEquals("endTime", getTomorrowDate()+"0900", task.getEndTime());
 	}
 	
 	@Test
@@ -39,7 +39,7 @@ public class ParserTest {
         assertEquals("addType",ADDTYPE.DEADLINE,task.getAddType());
 		assertEquals("description", "submit report", task.getDescription());
 		assertEquals("startTime", "", task.getStartTime());
-		assertEquals("endTime", getTomorrow()+"2200", task.getEndTime());
+		assertEquals("endTime", getTomorrowDate()+"2200", task.getEndTime());
 	}
 	
 	@Test
@@ -117,8 +117,8 @@ public class ParserTest {
 		assertEquals("updateType", UPDATETYPE.TIMEFRAME, task.getUpdateType());
         assertEquals("taskID", "19", task.getTaskID());
 		assertEquals("description", "", task.getDescription());
-		assertEquals("startTime", getTomorrow()+"0900", task.getStartTime());
-		assertEquals("endTime", getTomorrow()+"1200", task.getEndTime());
+		assertEquals("startTime", getTomorrowDate()+"0900", task.getStartTime());
+		assertEquals("endTime", getTomorrowDate()+"1200", task.getEndTime());
 	}
 	
 	@Test
@@ -132,7 +132,7 @@ public class ParserTest {
         assertEquals("taskID", "19", task.getTaskID());
 		assertEquals("description", "", task.getDescription());
 		assertEquals("startTime", "", task.getStartTime());
-		assertEquals("endTime", getTomorrow()+"1800", task.getEndTime());	
+		assertEquals("endTime", getTomorrowDate()+"1800", task.getEndTime());	
 	}
 	
 	@Test
@@ -501,7 +501,7 @@ public class ParserTest {
         assertEquals("OPCODE", OPCODE.REDO, task.getOpCode());
 	}
 	
-	private String getTomorrow() {
+	private String getTomorrowDate() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_YEAR, 1);
 		int year = cal.get(Calendar.YEAR);

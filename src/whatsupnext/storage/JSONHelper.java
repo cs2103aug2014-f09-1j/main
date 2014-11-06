@@ -1,3 +1,4 @@
+//@author A0118897J
 package whatsupnext.storage;
 
 import static org.junit.Assert.assertNotNull;
@@ -7,11 +8,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
-
-
 public class JSONHelper {
 	
+	/**
+	 * Converts a String in JSON format to a Task object
+	 * @param input
+	 * @return
+	 */
 	public Task JSONStringToTask(String input) {
 		
 		try {
@@ -39,6 +42,11 @@ public class JSONHelper {
 		}
 	}
 	
+	/**
+	 * Converts a Task object to a String in JSON format
+	 * @param task
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public String taskToJSONString(Task task) {
 		assertNotNull(task.getTaskID());

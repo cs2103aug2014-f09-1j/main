@@ -1,3 +1,4 @@
+//@author A0118897J
 package whatsupnext.junit;
 
 import static org.junit.Assert.*;
@@ -44,6 +45,9 @@ public class StorageTest {
 		}
 	}
 	
+	/**
+	 * Testing the helper code to make sure it's working
+	 */
 	@Test
 	public void testStringToTask() {
 		assertEquals(dummyTask1.getTaskID(), "DummyTaskID1");
@@ -53,6 +57,11 @@ public class StorageTest {
 		assertEquals(dummyTask1.getDone(), true);		
 	}
 	
+	/**
+	 * Tests whether entering tasks into the storage file and reading from the storage file
+	 * is working or not
+	 * @throws IOException
+	 */
 	@Test
 	public void testInputAndReadTasks() throws IOException {
 		assertTrue(obj.inputTasks(taskArray3));
@@ -60,6 +69,10 @@ public class StorageTest {
 		assertEquals(taskArray3, tasksToCompare);
 	}
 	
+	/**
+	 * Runs a series of tests in a certain order
+	 * @throws IOException
+	 */
 	@Test
 	public void testUndoRedo() throws IOException {
 		undo();
@@ -69,6 +82,9 @@ public class StorageTest {
 		undoBeyondExistingVersions();
 	}
 	
+	/**
+	 * Creates dummy tasks that will later be written to the file for testing
+	 */
 	private void setUpDummyTasks() {
 		dummyTask1 = stringToTask("DummyTaskID1" + DELIMITER + "DummyDescription1" + DELIMITER + 
 				"DummyStartTime1" + DELIMITER + "DummyEndTime1" + DELIMITER + "true" + DELIMITER);
@@ -78,6 +94,9 @@ public class StorageTest {
 				"DummyStartTime3" + DELIMITER + "DummyEndTime3" + DELIMITER + "true" + DELIMITER);
 	}
 	
+	/**
+	 * Creates ArrayLists of tasks for common use in functions
+	 */
 	private void setUpTaskArrays() {
 		taskArray1 = new ArrayList<Task>();
 		taskArray1.add(dummyTask1);
@@ -92,6 +111,10 @@ public class StorageTest {
 		taskArray3.add(dummyTask3);
 	}
 	
+	/**
+	 * Attempts a single undo after two entries to the file
+	 * @throws IOException
+	 */
 	private void undo() throws IOException {
 		assertTrue(obj.inputTasks(taskArray1));
 		tasksToCompare = obj.readTasks();		
@@ -106,12 +129,20 @@ public class StorageTest {
 		assertEquals(taskArray1, tasksToCompare);
 	}
 	
+	/**
+	 * Attempts a single redo as a continuation of the method above
+	 * @throws IOException
+	 */
 	private void redo() throws IOException {
 		assertTrue(obj.goToNextVersion());
 		tasksToCompare = obj.readTasks();
 		assertEquals(taskArray2, tasksToCompare);
 	}
 	
+	/**
+	 * Attempts an undo right after a redo
+	 * @throws IOException
+	 */
 	private void undoBoundary() throws IOException {
 		assertTrue(obj.inputTasks(taskArray3));
 		tasksToCompare = obj.readTasks();
@@ -122,6 +153,10 @@ public class StorageTest {
 		assertEquals(taskArray2, tasksToCompare);
 	}
 	
+	/** 
+	 * Attempts to redo right after a change has been made following an undo
+	 * @throws IOException
+	 */
 	private void redoAfterChange() throws IOException {
 		assertTrue(obj.inputTasks(taskArray2));
 		tasksToCompare = obj.readTasks();
@@ -129,7 +164,11 @@ public class StorageTest {
 		
 		assertFalse(obj.goToNextVersion());
 	}
-		
+	
+	/**
+	 * Attempts to access a version of tasks list beyond the ones which exist
+	 * @throws IOException
+	 */
 	private void undoBeyondExistingVersions() throws IOException {
 		assertTrue(obj.goToPreviousVersion());
 		assertTrue(obj.goToPreviousVersion());
@@ -138,6 +177,11 @@ public class StorageTest {
 		assertFalse(obj.goToPreviousVersion());
 	}
 	
+	/**
+	 * A helper function that converts a String in a specific format to a Task object
+	 * @param taskInString
+	 * @return
+	 */
 	private Task stringToTask(String taskInString) {
 		Scanner extractFromString = new Scanner(taskInString);
 		extractFromString.useDelimiter(DELIMITER);

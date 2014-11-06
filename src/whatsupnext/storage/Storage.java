@@ -1,3 +1,4 @@
+//@author A0118897J
 package whatsupnext.storage;
 
 import java.io.BufferedWriter;
@@ -37,6 +38,10 @@ public class Storage {
 		return false;
 	}
 	
+	/**
+	 * Provides reference of the Storage singleton if it exists, or returns it after creating it
+	 * @return
+	 */
 	public static Storage getInstance() {
 		if (storageSingleton == null) {
 			storageSingleton = new Storage("tasks");
@@ -44,6 +49,10 @@ public class Storage {
 		return storageSingleton;
 	}
 	
+	/**
+	 * A private constructor to enable Singleton Pattern
+	 * @param fileName
+	 */
 	private Storage(String fileName) {
 		FILE_NAME = fileName;		
 		File textFile = new File(FILE_NAME + EXTENSION);
@@ -90,7 +99,7 @@ public class Storage {
 	}	
 	
 	/**
-	 * Writes the tasks to the file, one on each line, separating tokens in each line with "%#".
+	 * Writes the tasks to the file, one on each line, in JSON format.
 	 * @param tasks
 	 * @throws IOException
 	 */
@@ -113,10 +122,10 @@ public class Storage {
 	 */
 	private boolean isValidInput(ArrayList<Task> tasks) {
 		if (tasks == null || tasks.size() == 0) {
-			return false;
+			return FAILURE;
 		}
 		else {
-			return true;
+			return SUCCESS;
 		}
 	}
 	
@@ -151,12 +160,22 @@ public class Storage {
 		return tasks;
 	}
 	
+	/**
+	 * Empties the file by overwriting previous data
+	 * @throws IOException
+	 */
 	public void clearFile() throws IOException {
 		BufferedWriter clearingWriter = new BufferedWriter(new FileWriter(FILE_NAME + EXTENSION, false));
 		
 		clearingWriter.close();
 	}
 	
+	/**
+	 * Initializes a new version of tasks list and stores it in the 
+	 * ArrayList of ArrayList of tasks so as to enable undo/redo
+	 * @param tasks
+	 * @throws IOException
+	 */
 	private void setNewVersion(ArrayList<Task> tasks) throws IOException {
 		if (currentVersionNumber < arrayOfVersions.size() - 1) {
 			deleteLaterVersions();
@@ -169,6 +188,11 @@ public class Storage {
 		arrayOfVersions.add(tasksCopy);
 	}	
 	
+	/**
+	 * Deletes the old branch of versions after changes have been made
+	 * following an undo
+	 * @throws IOException
+	 */
 	private void deleteLaterVersions() throws IOException {
 		int initialSize = arrayOfVersions.size();
 		for (int x = 0; x < initialSize - currentVersionNumber - 1; x++) {
@@ -176,6 +200,11 @@ public class Storage {
 		}
 	}
 	
+	/**
+	 * Migrates to the preceding tasks list version if it exists
+	 * and writes it to the file 
+	 * @return
+	 */
 	public boolean goToPreviousVersion() {
 		try {
 			if (arrayOfVersions.size() > 1 && currentVersionNumber > 0) {
@@ -192,6 +221,11 @@ public class Storage {
 		}
 	}	
 	
+	/**
+	 * Migrates to the succeeding tasks list version if it exists
+	 * and writes it to the file
+	 * @return
+	 */
 	public boolean goToNextVersion() {
 		try {
 			if (currentVersionNumber < arrayOfVersions.size() - 1) {
@@ -208,6 +242,10 @@ public class Storage {
 		}
 	}	
 	
+	/**
+	 * Clears the different versions of the tasks list 
+	 * @throws IOException
+	 */
 	public void deleteFileVersions() throws IOException {
 		currentVersionNumber = 0;
 		arrayOfVersions = new ArrayList<ArrayList<Task>>();

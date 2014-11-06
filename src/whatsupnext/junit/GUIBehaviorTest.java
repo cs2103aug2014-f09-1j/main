@@ -174,7 +174,7 @@ public class GUIBehaviorTest {
 
 		assertEquals("\nA task is successfully added.\n", textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
-		assertEquals("1: floating task test\nNot done.", textDisplayFloating.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
 	}
 
 	@Test
@@ -195,7 +195,7 @@ public class GUIBehaviorTest {
 				"\nA task is successfully added.\n",
 				textDisplayMain.getText());
 		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat()).replaceAll(currentYear, "");
-		assertEquals("2: byTaskTest2\n\tEnd Time:" + formattedUpcomingTime + " 23:59\nNot done.", textDisplayUpcoming.getText());
+		assertEquals("2: byTaskTest2\n\tEnd Time:" + formattedUpcomingTime + " 23:59\n\tNot done.", textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
@@ -226,7 +226,7 @@ public class GUIBehaviorTest {
 		assertEquals(
 				"2: fromToTaskTest2" +
 						"\n\tStart Time:" + formattedUpcomingTime + " 23:59" +
-						"\n\tEnd Time:" + formattedUpcomingTime + " 23:59\nNot done.",
+						"\n\tEnd Time:" + formattedUpcomingTime + " 23:59\n\tNot done.",
 						textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}

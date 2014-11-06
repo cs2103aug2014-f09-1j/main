@@ -92,9 +92,9 @@ public class LogicUtilities {
 			task_Info = task_Info + "\n\tEnd Time: " + getFormattedTime(task.getEndTime());
 		}
 		if (task.getDone()) {
-			task_Info = task_Info + "\nDone.";
+			task_Info = task_Info + "\n\tDone.";
 		} else {
-			task_Info = task_Info + "\nNot done.";
+			task_Info = task_Info + "\n\tNot done.";
 		}
 		return task_Info;
 	}

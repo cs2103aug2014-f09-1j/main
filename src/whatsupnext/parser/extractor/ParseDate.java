@@ -16,22 +16,14 @@ public class ParseDate {
 																						"dd/MM/yy", "dd/MM/yyyy", 
 																						"dd-MM-yy", "dd-MM-yyyy"));
 	private final ArrayList<String> ALIASES_TODAY = new ArrayList<String>(Arrays.asList("Today", "today"));
-	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("Tomorrow", "Tml",
-																							"tomorrow", "tml"));
-	private final ArrayList<String> ALIASES_SUNDAY = new ArrayList<String>(Arrays.asList("Sunday", "Sun",
-																						  "sunday", "sun"));
-	private final ArrayList<String> ALIASES_MONDAY = new ArrayList<String>(Arrays.asList("Monday", "Mon",
-																						  "monday", "mon"));
-	private final ArrayList<String> ALIASES_TUESDAY = new ArrayList<String>(Arrays.asList("Tuesday", "Tue",
-																						   "tuesday", "tue"));
-	private final ArrayList<String> ALIASES_WEDNESDAY = new ArrayList<String>(Arrays.asList("Wednesday", "Wed",
-																							 "wednesday", "wed"));
-	private final ArrayList<String> ALIASES_THURSDAY = new ArrayList<String>(Arrays.asList("Thursday", "Thu",
-																							"thursday", "thu"));
-	private final ArrayList<String> ALIASES_FRIDAY = new ArrayList<String>(Arrays.asList("Friday", "Fri",
-																						  "friday", "fri"));
-	private final ArrayList<String> ALIASES_SATURDAY = new ArrayList<String>(Arrays.asList("Saturday", "Sat",
-																							"saturday", "sat"));
+	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("tomorrow", "tml"));
+	private final ArrayList<String> ALIASES_SUNDAY = new ArrayList<String>(Arrays.asList("sunday", "sun"));
+	private final ArrayList<String> ALIASES_MONDAY = new ArrayList<String>(Arrays.asList("monday", "mon"));
+	private final ArrayList<String> ALIASES_TUESDAY = new ArrayList<String>(Arrays.asList("tuesday", "tue"));
+	private final ArrayList<String> ALIASES_WEDNESDAY = new ArrayList<String>(Arrays.asList("wednesday", "wed"));
+	private final ArrayList<String> ALIASES_THURSDAY = new ArrayList<String>(Arrays.asList("thursday", "thu"));
+	private final ArrayList<String> ALIASES_FRIDAY = new ArrayList<String>(Arrays.asList("friday", "fri"));
+	private final ArrayList<String> ALIASES_SATURDAY = new ArrayList<String>(Arrays.asList("saturday", "sat"));
 	
 	private final String NOW = "now";
 	private final String FIRST_MINUTE = "0000";
@@ -54,6 +46,8 @@ public class ParseDate {
 	
 	public String parseInput(String input) {
 		String formattedDate = "";
+		input = input.toLowerCase();
+		
 		if(input.equalsIgnoreCase(NOW)){
 			formattedDate = getCurrentTime();
 		}

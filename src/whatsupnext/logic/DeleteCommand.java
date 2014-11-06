@@ -9,11 +9,12 @@ import whatsupnext.structure.Types.DELETETYPE;
 
 public class DeleteCommand extends Command {
 
-	private final String MESSAGE_DELETED = "Tasks are successfully deleted.";
+	private String MESSAGE_DELETED;
 	private DELETETYPE deleteType;
 	
 	private ArrayList<Task> list = LogicUtilities.list;
 	private PriorityQueue<Integer> availableIDs = LogicUtilities.availableIDs;
+	private int deletedNumbers = 0;
 	
 	public DeleteCommand(Task task) {
 		super(task);
@@ -27,18 +28,23 @@ public class DeleteCommand extends Command {
 			switch (deleteType) {
 				case ALL:
 					deleteAll();
+					MESSAGE_DELETED = "All tasks are deleted.";
 					break;
 				case ID:
 					deleteById();
+					MESSAGE_DELETED = "Task " + taskID + " is deleted.";
 					break;
 				case DEADLINE:
 					deleteByDeadline();
+					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
 					break;
 				case DATE:
 					deleteByDate();
+					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
 					break;
 				case TIMEFRAME:
 					deleteByTimeFrame();
+					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
 					break;
 				default:
 					break;
@@ -77,6 +83,7 @@ public class DeleteCommand extends Command {
 			if (!task.getEndTime().isEmpty() && LogicUtilities.endsBeforeDeadline(task, endTime)) {
 				availableIDs.add(Integer.parseInt(task.getTaskID()));
 				taskIterator.remove();
+				deletedNumbers++;
 			}
 		}
 	}
@@ -89,6 +96,7 @@ public class DeleteCommand extends Command {
 			if (!task.getEndTime().isEmpty() && LogicUtilities.endsOnGivenDate(task, endTime)) {
 				availableIDs.add(Integer.parseInt(task.getTaskID()));
 				taskIterator.remove();
+				deletedNumbers++;
 			}
 		}
 	}
@@ -103,6 +111,7 @@ public class DeleteCommand extends Command {
 					LogicUtilities.endsBeforeDeadline(task, endTime)) {
 				availableIDs.add(Integer.parseInt(task.getTaskID()));
 				taskIterator.remove();
+				deletedNumbers++;
 			}
 		}
 	}

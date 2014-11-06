@@ -1,3 +1,4 @@
+//@author A0126730M
 package whatsupnext.structure;
 
 public class Types {

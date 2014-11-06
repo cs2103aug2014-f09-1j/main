@@ -1,5 +1,7 @@
+//@author A0126730M-reused
+
 /*
- * @author Rob Camick
+ * Rob Camick
  * Provided from http://tips4java.wordpress.com/2009/06/14/moving-windows/
  */
 package whatsupnext.ui;

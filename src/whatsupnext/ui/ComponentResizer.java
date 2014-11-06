@@ -1,5 +1,7 @@
+//@author A0126730M-reused
+
 /*
- * @author Rob Camick
+ * Rob Camick
  * Provided from http://tips4java.wordpress.com/2009/09/13/resizing-components/
  */
 package whatsupnext.ui;

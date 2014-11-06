@@ -11,7 +11,7 @@ public class LogicUtilities {
 	
 	static final ArrayList<Task> list = new ArrayList<Task>();
 	static final ArrayList<String> output = new ArrayList<String>();
-	static final int maxTasks = 1000000;
+	static final int maxTasks = 999;
 	static final PriorityQueue<Integer> availableIDs = new PriorityQueue<Integer>(maxTasks);
 	
 	

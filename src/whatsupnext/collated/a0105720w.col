@@ -1,0 +1,1549 @@
+//@author: a0105720w
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\LogicTest.java
+	 */
+
+package whatsupnext.junit;
+
+import static org.junit.Assert.*;
+
+import java.util.Calendar;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import whatsupnext.logic.Logic;
+import whatsupnext.logic.LogicUtilities;
+import whatsupnext.storage.Storage;
+import whatsupnext.structure.OPCODE;
+import whatsupnext.structure.Task;
+import whatsupnext.structure.Types.ADDTYPE;
+import whatsupnext.structure.Types.DELETETYPE;
+import whatsupnext.structure.Types.UPDATETYPE;
+import whatsupnext.structure.Types.VIEWTYPE;
+
+public class LogicTest {
+	
+	private LogicStub logic;
+	private Task task;
+	private static Task viewAllTask;	
+	
+	private class LogicStub extends Logic {
+		public LogicStub(String fileName) {
+			super(fileName);
+		}
+		
+		public String formatTime(String time){
+			return LogicUtilities.getFormattedTime(time);
+		}
+	}
+	
+	private String getLastYearTodayDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.YEAR, -1);
+		String lastYear = Integer.toString(cal.get(Calendar.YEAR));
+		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
+		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));
+		
+		return lastYear + twoDigitMonth + twoDigitDayOfMonth;
+	}
+	
+	private String getTodayDate() {
+		Calendar cal = Calendar.getInstance();
+		String year = Integer.toString(cal.get(Calendar.YEAR));
+		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
+		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));     
+		return year + twoDigitMonth + twoDigitDayOfMonth;
+	}
+	
+	private String getTodayDateTime() {
+		Calendar cal = Calendar.getInstance();
+		String year = Integer.toString(cal.get(Calendar.YEAR));
+		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
+		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));
+		String twoDigitHour = convertToTwoDigits(cal.get(Calendar.HOUR_OF_DAY));
+		String twoDigitMinute = convertToTwoDigits(cal.get(Calendar.MINUTE));
+		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute;
+	}
+	
+	private String convertToTwoDigits(int possibleSingleDigit) {
+		if (possibleSingleDigit < 10) {
+        	return "0" + possibleSingleDigit;
+		} else {
+			return "" + possibleSingleDigit;
+		}
+	}
+	
+	@BeforeClass
+	public static void createViewAllTask() {
+		viewAllTask = new Task();
+		viewAllTask.setOpcode(OPCODE.VIEW);
+		viewAllTask.setViewType(VIEWTYPE.ALL);
+	}
+	
+	@Before
+	public void init() {
+		logic = new LogicStub("logicTest");
+	}
+	
+	@After
+	public void deleteAllTasks() {
+		Task delete = new Task();
+		delete.setOpcode(OPCODE.DELETE);
+		delete.setDeleteType(DELETETYPE.ALL);
+		logic.executeTask(delete);
+		
+		Storage storage = Storage.getInstance();
+		try {
+			storage.clearFile();
+			storage.deleteFileVersions();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@After
+	public void deleteAllFileVersions() {
+		Storage storage = Storage.getInstance();
+		try {
+			storage.clearFile();
+			storage.deleteFileVersions();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testAddFloatingTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.FLOATING);
+		task.setDescription("testing");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals("Test Add Floating - Successful ", feedback, "Successfully added to task 1.");
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback, "1: testing\n\tNot done.");
+	}
+	
+	@Test
+	public void testAddDeadlineTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.DEADLINE);
+		task.setDescription("testing");
+		task.setEndTime("201410101200");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals("Test Add Deadline - Successful ",
+				"Successfully added to task 1.\n\tDeadline: 2014 Oct 10 12:00", feedback);
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback, "1: testing\n\tEnd Time: 2014 Oct 10 12:00\n\tNot done.");
+	}
+	
+	@Test
+	public void testAddTimeFrameTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410101200");
+		task.setEndTime("201410111200");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals("Test Add Time Frame - Successful ",
+				"Successfully added to task 1.\n\tDeadline: 2014 Oct 11 12:00", feedback);
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback, "1: testing\n\tStart Time: 2014 Oct 10 12:00\n\tEnd Time: 2014 Oct 11 12:00\n\tNot done.");
+	}
+	
+	@Test
+	public void testDeleteIdTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.FLOATING);
+		task.setTaskID("1");
+		task.setDescription("testing");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.FLOATING);
+		task.setTaskID("2");
+		task.setDescription("testing");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DELETE);
+		task.setDeleteType(DELETETYPE.ID);
+		task.setTaskID("2");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals("Test Delete Id - Successful ", "Task 2 is deleted.", feedback);
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback, "1: testing\n\tNot done.");
+	}
+	
+	@Test
+	public void testDeleteDateTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.DEADLINE);
+		task.setDescription("testing");
+		task.setEndTime("201410101200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410111000");
+		task.setEndTime("201410111200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DELETE);
+		task.setDeleteType(DELETETYPE.DATE);
+		task.setEndTime("201410102359");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals("Test Delete Date - Successful ", "1 tasks are deleted.", feedback);
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback, "2: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:00\n\tNot done.");
+	}
+	
+	@Test
+	public void testDeleteDeadlineTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.DEADLINE);
+		task.setDescription("testing");
+		task.setEndTime("201410101200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410111000");
+		task.setEndTime("201410111200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410111000");
+		task.setEndTime("201410111230");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DELETE);
+		task.setDeleteType(DELETETYPE.DEADLINE);
+		task.setEndTime("201410111200");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals("Test Delete Deadline - Successful ", "2 tasks are deleted.", feedback);
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback, "3: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:30\n\tNot done.");
+	}
+	
+	@Test
+	public void testDeleteTimeFrameTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.DEADLINE);
+		task.setDescription("testing");
+		task.setEndTime("201410101200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410111000");
+		task.setEndTime("201410111200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410111000");
+		task.setEndTime("201410111230");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DELETE);
+		task.setDeleteType(DELETETYPE.TIMEFRAME);
+		task.setStartTime("201410100000");
+		task.setEndTime("201410111220");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals("Test Delete Time Frame - Successful ", "2 tasks are deleted.", feedback);
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback, "3: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:30\n\tNot done.");
+	}
+	
+	@Test
+	public void testUpdateDescriptionTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.FLOATING);
+		task.setDescription("testing");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.UPDATE);
+		task.setUpdateType(UPDATETYPE.DESCRIPTION);
+		task.setTaskID("1");
+		task.setDescription("new description");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals("Test Update Description - Successful ", "Successfully updated the description of task 1.", feedback);
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback, "1: new description\n\tNot done.");
+	}
+	
+	@Test
+	public void testUpdateDeadlineTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.DEADLINE);
+		task.setDescription("testing");
+		task.setEndTime("201410101200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.UPDATE);
+		task.setUpdateType(UPDATETYPE.DEADLINE);
+		task.setTaskID("1");
+		task.setEndTime("201411111111");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals("Test Update Deadline - Successful ", "Successfully updated the deadline of task 1.", feedback);
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback, "1: testing\n\tEnd Time: 2014 Nov 11 11:11\n\tNot done.");
+	}
+	
+	@Test
+	public void testUpdateTimeFrameTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410101000");
+		task.setEndTime("201410101200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.UPDATE);
+		task.setUpdateType(UPDATETYPE.TIMEFRAME);
+		task.setTaskID("1");
+		task.setStartTime("201410101010");
+		task.setEndTime("201411111111");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals("Test Update Deadline - Successful ", "Successfully updated the time frame of task 1.", feedback);
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback, "1: testing\n\tStart Time: 2014 Oct 10 10:10\n\tEnd Time: 2014 Nov 11 11:11\n\tNot done.");
+	}
+	
+	@Test
+	public void testViewAllTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.FLOATING);
+		task.setDescription("testing");
+		logic.executeTask(task);
+		
+		String feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback, "1: testing\n\tNot done.");
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.DEADLINE);
+		task.setDescription("testing2");
+		task.setEndTime("201410101200");
+		logic.executeTask(task);
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback,
+				"1: testing\n\tNot done.\n" +
+				"2: testing2\n\tEnd Time: 2014 Oct 10 12:00\n\tNot done."
+		);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing3");
+		task.setStartTime("201410102000");
+		task.setEndTime("201411111200");
+		logic.executeTask(task);
+		
+		feedback = logic.executeTask(viewAllTask);
+		assertEquals(feedback,
+				"1: testing\n\tNot done.\n" +
+				"2: testing2\n\tEnd Time: 2014 Oct 10 12:00\n\tNot done.\n" + 
+				"3: testing3\n\tStart Time: 2014 Oct 10 20:00\n\tEnd Time: 2014 Nov 11 12:00\n\tNot done."
+		);
+	}
+	
+	@Test
+	public void testViewNextTask() {		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime(getLastYearTodayDate() + "0000");
+		task.setEndTime(getLastYearTodayDate() + "2359");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime(getLastYearTodayDate() + "0000");
+		task.setEndTime(getTodayDate() + "2359");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime(getTodayDate() + "0000");
+		task.setEndTime(getTodayDate() + "2359");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.VIEW);
+		task.setViewType(VIEWTYPE.NEXT);
+		task.setEndTime(getTodayDateTime());
+		
+		String feedback = logic.executeTask(task);
+		assertEquals(feedback,
+				"2: testing\n\t" +
+				"Start Time: " + logic.formatTime(getLastYearTodayDate() + "0000") + "\n\t" +
+				"End Time: " + logic.formatTime(getTodayDate() + "2359") + "\n\tNot done.\n" +
+				"3: testing\n\t" +
+				"Start Time: " + logic.formatTime(getTodayDate() + "0000") + "\n\t" +
+				"End Time: " + logic.formatTime(getTodayDate() + "2359")+ "\n\tNot done."
+		);
+	}
+	
+	@Test
+	public void testViewDateTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.DEADLINE);
+		task.setDescription("testing");
+		task.setEndTime("201410101200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410111000");
+		task.setEndTime("201410111200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.VIEW);
+		task.setViewType(VIEWTYPE.DATE);
+		task.setEndTime("201410102359");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals(feedback, "1: testing\n\tEnd Time: 2014 Oct 10 12:00\n\tNot done.");
+	}
+	
+	@Test
+	public void testViewTimeFrameTask() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410101100");
+		task.setEndTime("201410101200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410111000");
+		task.setEndTime("201410111200");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.VIEW);
+		task.setViewType(VIEWTYPE.TIMEFRAME);
+		task.setStartTime("201410110900");
+		task.setEndTime("201410112359");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals(feedback,
+				"2: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:00\n\tNot done."
+		);
+	}
+
+	@Test
+	public void testSearch() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.FLOATING);
+		task.setDescription("task");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.FLOATING);
+		task.setDescription("task a b");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.FLOATING);
+		task.setDescription("a b");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.SEARCH);
+		task.setDescription("a");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals(feedback,
+				"3: a b\n\tNot done." + "\n" +
+		        "2: task a b\n\tNot done." + "\n" +
+		        "1: task\n\tNot done."
+		);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.SEARCH);
+		task.setDescription("task b");
+		
+		feedback = logic.executeTask(task);
+		assertEquals(feedback,
+				"2: task a b\n\tNot done."
+		);
+	}
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\LogicTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\AddCommand.java
+	 */
+
+package whatsupnext.logic;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+
+import whatsupnext.structure.Task;
+
+public class AddCommand extends Command {
+	
+	private String MESSAGE_ADDED;
+	private ArrayList<Task> list = LogicUtilities.list;
+	private PriorityQueue<Integer> availableIDs = LogicUtilities.availableIDs;
+	
+	public AddCommand(Task task) {
+		super(task);
+		task.getAddType();
+	}
+
+	public String executeCommand() {
+		taskID = Integer.toString(availableIDs.remove());
+		list.add(this.toTask());
+		MESSAGE_ADDED = "Successfully added to task " + taskID + ".";
+		if (!endTime.isEmpty()) {
+			MESSAGE_ADDED = MESSAGE_ADDED + "\n\tDeadline: " + LogicUtilities.getFormattedTime(endTime);
+		}
+		
+		LogicUtilities.sortTasks(list);
+
+		String feedbackAdd;
+		try {
+			storage.inputTasks(list);
+			feedbackAdd = MESSAGE_ADDED;
+		} catch (IOException e) {
+			feedbackAdd = e.getMessage();
+		}
+
+		return feedbackAdd;
+	}
+	
+	private Task toTask() {
+		Task task = new Task();
+		task.setTaskID(taskID);
+		task.setDescription(description);
+		task.setStartTime(startTime);
+		task.setEndTime(endTime);
+		return task;
+	}
+	
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\AddCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\Command.java
+	 */
+
+package whatsupnext.logic;
+
+import whatsupnext.storage.Storage;
+import whatsupnext.structure.Task;
+
+public abstract class Command {
+	
+	protected String taskID;
+	protected String description;
+	protected String startTime;
+	protected String endTime;
+	
+	protected Storage storage;
+	
+	public Command(Task info) {
+		taskID = info.getTaskID();
+		description = info.getDescription();
+		startTime = info.getStartTime();
+		endTime = info.getEndTime();
+		
+		storage = Storage.getInstance();
+	}
+	
+	public abstract String executeCommand();
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\Command.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\DeleteCommand.java
+	 */
+
+package whatsupnext.logic;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.PriorityQueue;
+
+import whatsupnext.structure.Task;
+import whatsupnext.structure.Types.DELETETYPE;
+
+public class DeleteCommand extends Command {
+
+	private String MESSAGE_DELETED;
+	private DELETETYPE deleteType;
+	
+	private ArrayList<Task> list = LogicUtilities.list;
+	private PriorityQueue<Integer> availableIDs = LogicUtilities.availableIDs;
+	private int deletedNumbers = 0;
+	
+	public DeleteCommand(Task task) {
+		super(task);
+		deleteType = task.getDeleteType();
+	}
+
+	public String executeCommand() {
+		String feedbackDelete;
+		
+		try {
+			switch (deleteType) {
+				case ALL:
+					deleteAll();
+					MESSAGE_DELETED = "All tasks are deleted.";
+					break;
+				case ID:
+					deleteById();
+					MESSAGE_DELETED = "Task " + taskID + " is deleted.";
+					break;
+				case DEADLINE:
+					deleteByDeadline();
+					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
+					break;
+				case DATE:
+					deleteByDate();
+					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
+					break;
+				case TIMEFRAME:
+					deleteByTimeFrame();
+					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
+					break;
+				default:
+					break;
+			}
+		
+			storage.inputTasks(list);
+			feedbackDelete = MESSAGE_DELETED;
+			
+		} catch (Exception e) {
+			feedbackDelete = e.getMessage();
+		}
+
+		return feedbackDelete;
+	}
+	
+	private void deleteAll() {
+		list.clear();
+		LogicUtilities.setupAvailableIDs();
+	}
+	
+	private void deleteById() {
+		int index = LogicUtilities.getTaskIndexInArray(taskID);
+		try {
+			Task removed = list.remove(index);
+			availableIDs.add(Integer.parseInt(removed.getTaskID()));
+		} catch (IndexOutOfBoundsException e) {
+			throw new IndexOutOfBoundsException("Task ID is not valid.");
+		}
+	}
+	
+	private void deleteByDeadline() {
+		Iterator<Task> taskIterator = list.iterator();
+		
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (!task.getEndTime().isEmpty() && LogicUtilities.endsBeforeDeadline(task, endTime)) {
+				availableIDs.add(Integer.parseInt(task.getTaskID()));
+				taskIterator.remove();
+				deletedNumbers++;
+			}
+		}
+	}
+	
+	private void deleteByDate() {
+		Iterator<Task> taskIterator = list.iterator();
+		
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (!task.getEndTime().isEmpty() && LogicUtilities.endsOnGivenDate(task, endTime)) {
+				availableIDs.add(Integer.parseInt(task.getTaskID()));
+				taskIterator.remove();
+				deletedNumbers++;
+			}
+		}
+	}
+	
+	private void deleteByTimeFrame() {
+		Iterator<Task> taskIterator = list.iterator();
+		
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (!task.getEndTime().isEmpty() &&
+					!LogicUtilities.endsBeforeDeadline(task, startTime) &&
+					LogicUtilities.endsBeforeDeadline(task, endTime)) {
+				availableIDs.add(Integer.parseInt(task.getTaskID()));
+				taskIterator.remove();
+				deletedNumbers++;
+			}
+		}
+	}
+	
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\DeleteCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\DoneCommand.java
+	 */
+
+package whatsupnext.logic;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import whatsupnext.structure.Task;
+
+public class DoneCommand extends Command {
+
+	private ArrayList<Task> list = LogicUtilities.list;
+	
+	public DoneCommand(Task task) {
+		super(task);
+	}
+
+	@Override
+	public String executeCommand() {	
+		String feedbackDone;
+		try {		
+			feedbackDone = labelTask(taskID);
+			storage.inputTasks(list);
+		} catch (IOException e) {
+			feedbackDone = e.getMessage();
+		}
+
+		return feedbackDone;
+	}
+	
+	private String labelTask(String id) {
+		int index = LogicUtilities.getTaskIndexInArray(id);
+		Task temp = list.get(index);
+		temp.setDone(true);
+		String MESSAGE_DONE = "Task " + id + " is successfully labeled as done.";
+		return MESSAGE_DONE;		
+	}
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\DoneCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\Logic.java
+	 */
+
+/*
+ * This is the Logic class.
+ */
+package whatsupnext.logic;
+
+import java.io.IOException;
+import java.util.Iterator;
+
+import whatsupnext.structure.Task;
+import whatsupnext.storage.Storage;
+
+public class Logic {
+	
+	public Logic() {
+		Storage.tryInitialize("tasks");
+		readTasksIntoInternalList();
+		LogicUtilities.setupAvailableIDs();
+	}
+	
+	public Logic(String fileName) {
+		Storage.tryInitialize(fileName);
+		readTasksIntoInternalList();
+		LogicUtilities.setupAvailableIDs();
+	}
+	
+	public String executeTask(Task task) {
+		Command userCommand;
+		
+		switch (task.getOpCode()) {
+			case ADD:
+				userCommand = new AddCommand(task);
+				break;
+			case DELETE:
+				userCommand = new DeleteCommand(task);
+				break;
+			case UPDATE:
+				userCommand = new UpdateCommand(task);
+				break;
+			case VIEW:
+				userCommand = new ViewCommand(task);
+				break;
+			case DONE:
+				userCommand = new DoneCommand(task);
+				break;
+			case SEARCH:
+				userCommand = new SearchCommand(task);
+				break;
+			case UNDO:
+				userCommand = new UndoCommand(task);
+				break;
+			case REDO:
+				userCommand = new RedoCommand(task);
+				break;
+			default:
+				return "Unable to execute the command";
+		}
+		
+		return userCommand.executeCommand();
+	}
+	
+	public static void readTasksIntoInternalList() {
+		Storage storage = Storage.getInstance();
+		try {
+			Iterator<Task> readIterator = storage.readTasks().iterator();
+			while (readIterator.hasNext()) {
+				Task readTask = readIterator.next();
+				LogicUtilities.list.add(readTask);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void clearRevisionFiles() {
+		Storage storage = Storage.getInstance();
+		try {
+			storage.deleteFileVersions();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\LogicUtilities.java
+	 */
+
+package whatsupnext.logic;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.PriorityQueue;
+
+import whatsupnext.structure.Task;
+import whatsupnext.structure.TaskComparators.TaskDefaultComparator;
+
+public class LogicUtilities {
+	
+	static final ArrayList<Task> list = new ArrayList<Task>();
+	static final ArrayList<String> output = new ArrayList<String>();
+	static final int maxTasks = 999;
+	static final PriorityQueue<Integer> availableIDs = new PriorityQueue<Integer>(maxTasks);
+	
+	
+	/*
+	 * Return the index of a task in the list.
+	 */
+	static int getTaskIndexInArray(String id) {
+		for (int i = 0; i < list.size(); i++) {
+			Task task = list.get(i);
+			if (task.getTaskID().equalsIgnoreCase(id)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	static void setupAvailableIDs() {
+		availableIDs.clear();
+		
+		// Populate the available ID list
+		for (int i = 1; i < maxTasks; i++) {
+			availableIDs.add(i);
+		}
+		
+		// Remove the IDs that are already in use
+		for (int i = 0; i < list.size(); i++) {
+			int usedID = Integer.parseInt(list.get(i).getTaskID());
+			availableIDs.remove(usedID);
+		}
+	}
+
+	public static String formatArrayAsString(ArrayList<String> taskNumberedArray) {
+		if (taskNumberedArray.isEmpty()) {
+			return "No tasks to display!";
+		}
+		
+		String arrayAsString = taskNumberedArray.get(0);
+		for (int i = 1; i < taskNumberedArray.size(); i++) {
+			arrayAsString = arrayAsString.concat("\n" + taskNumberedArray.get(i));
+		}
+		return arrayAsString;
+	}
+	
+	/*
+	 * This check function is to check whether the end time of task(i) is before a given time.
+	 */
+	public static boolean endsBeforeDeadline(Task task, String deadline) {	
+		assert(!task.getEndTime().isEmpty());
+		
+		long endTime = Long.parseLong(task.getEndTime());
+		long deadlineTime = Long.parseLong(deadline);
+		
+		return endTime <= deadlineTime;
+	}
+	
+	public static boolean endsOnGivenDate(Task task, String date) {
+		assert(!task.getEndTime().isEmpty());
+		
+		long endTime = Long.parseLong(task.getEndTime());
+		long givenDate = Long.parseLong(date);
+		
+		long endTimeDay = endTime / 10000;
+		long givenDateDay = givenDate / 10000;
+		long endTimeHrMin = endTime % 10000;
+		
+		return (endTimeDay == givenDateDay) && (endTimeHrMin >= 0000) && (endTimeHrMin <= 2359);
+	}
+	
+	/*
+	 * Methods for getting a formatted task information and its formatted time.
+	 */
+	public static String getFormattedOutput(Task task) {
+		String task_Info = task.getTaskID() + ": " + task.getDescription();
+		if (!task.getStartTime().isEmpty()) {
+			task_Info = task_Info + "\n\tStart Time: " + getFormattedTime(task.getStartTime());
+		}
+		if (!task.getEndTime().isEmpty()) {
+			task_Info = task_Info + "\n\tEnd Time: " + getFormattedTime(task.getEndTime());
+		}
+		if (task.getDone()) {
+			task_Info = task_Info + "\n\tDone.";
+		} else {
+			task_Info = task_Info + "\n\tNot done.";
+		}
+		return task_Info;
+	}
+	
+	public static String getFormattedTime(String time) {
+		String year = time.substring(0, 4);
+		String month = time.substring(4, 6);
+		String day = time.substring(6, 8);
+		String temp = year + " " + getFormattedMonth(month) + " " + day;
+		
+		if (time.length()==12) {
+			String hour = time.substring(8, 10);
+			String minute = time.substring(10, 12);
+			temp = temp + " " + hour + ":" + minute;
+		}
+		
+		return temp;
+	}
+	
+	private static String getFormattedMonth(String month) {		
+		switch (month) {
+			case "01":
+				return "Jan";
+			case "02":
+				return "Feb";
+			case "03":
+				return "Mar";
+			case "04": 
+				return "Apr";
+			case "05":
+				return "May";
+			case "06":
+				return "Jun";
+			case "07":
+				return "Jul";
+			case "08":
+				return "Aug";
+			case "09":
+				return "Sep";
+			case "10":
+				return "Oct";
+			case "11":
+				return "Nov";
+			case "12":
+				return "Dec";
+			}
+		return null;
+	}
+	
+	/*
+	 * Sort the tasks in the list.
+	 */
+	public static void sortTasks(ArrayList<Task> tasks) {
+		TaskDefaultComparator comparator = new TaskDefaultComparator();
+		Collections.sort(tasks, comparator);
+	}
+	
+	public static void clearList() {
+		list.clear();
+	}
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\LogicUtilities.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\RedoCommand.java
+	 */
+
+package whatsupnext.logic;
+
+import whatsupnext.storage.Storage;
+import whatsupnext.structure.Task;
+
+public class RedoCommand extends Command{
+
+	private final String MESSAGE_REDO = "The execution was re executed.";
+	private final String MESSAGE_REDO_FAIL = "Cannot execute redo command.";
+	
+	public RedoCommand(Task task) {
+		super(task);
+	}
+
+	public String executeCommand() {
+		storage = Storage.getInstance();
+		if (storage.goToNextVersion()) {
+			LogicUtilities.clearList();
+			Logic.readTasksIntoInternalList();
+			LogicUtilities.setupAvailableIDs();
+			return MESSAGE_REDO;
+		} else {
+			return MESSAGE_REDO_FAIL;
+		}
+	}
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\RedoCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\SearchCommand.java
+	 */
+
+package whatsupnext.logic;
+
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import whatsupnext.structure.Task;
+
+public class SearchCommand extends Command {
+
+	private enum RELEVANCE {
+		HIGH, LOW, NO
+	}
+	
+	private final String MESSAGE_NOTFOUND = "No tasks are found.";
+	private ArrayList<Task> list = LogicUtilities.list;
+	private ArrayList<Task> highRelevance = new ArrayList<Task>();
+	private ArrayList<Task> lowRelevance = new ArrayList<Task>();
+	private ArrayList<String> output = LogicUtilities.output;
+	
+	public SearchCommand(Task task) {
+		super(task);
+	}
+	
+	public String executeCommand () {
+		searchByDescription(description);		
+		getOutput();
+		
+		String feedbackSearch = LogicUtilities.formatArrayAsString(output);
+		output.clear();
+		
+		return feedbackSearch;
+	}
+
+	private void searchByDescription(String keywords) {
+			
+		for (int i = 0; i < list.size(); i++) {
+			Task task = list.get(i);
+			String taskDescription = task.getDescription();			
+			
+		    RELEVANCE relevance;
+		    relevance = compareTasks(taskDescription, keywords);	
+		    
+		    if (relevance == RELEVANCE.HIGH) {
+		    	highRelevance.add(task);
+			} else if (relevance == RELEVANCE.LOW) {
+				lowRelevance.add(task);
+			}
+		}	
+	}
+	
+	/*
+	 * Compare the relevance between the current task and the keyword.
+	 */
+	private RELEVANCE compareTasks(String taskDescription, String keywords) {
+		RELEVANCE r = RELEVANCE.NO;
+		StringTokenizer keywordToken = new StringTokenizer(keywords);
+		int number = 0;
+		int keyword = keywordToken.countTokens();
+		
+		while (keywordToken.hasMoreTokens()) {
+			if (taskDescription.contains(keywordToken.nextToken())) {
+				number++;
+			} else {
+				break;
+			}
+		}
+		
+		if (number >= keyword) {
+			r = RELEVANCE.LOW;
+		}
+		
+		number = 0;
+		StringTokenizer keywordToken2 = new StringTokenizer(keywords);
+		while (keywordToken2.hasMoreTokens()) {
+			StringTokenizer descriptionToken = new StringTokenizer(taskDescription);
+			String temp = keywordToken2.nextToken();
+			
+			while (descriptionToken.hasMoreTokens()) {
+				if (descriptionToken.nextToken().equalsIgnoreCase(temp)) {
+					number++;
+				}
+			}
+		}
+		
+		if ((number >= keyword) && (r==RELEVANCE.LOW)) {
+			r = RELEVANCE.HIGH;
+		} 
+			
+		return r;
+	}
+	
+	private void getOutput() {
+		int high_size = highRelevance.size();
+		int low_size = lowRelevance.size();
+		
+		if (high_size > 0) {
+			for (int i = 0; i < high_size; i++) {
+				Task task = highRelevance.get(i);
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
+				output.add(taskInfo);
+			}
+		}
+		
+		if (low_size > 0) {
+			for (int i = 0; i < low_size; i++) {
+				Task task = lowRelevance.get(i);
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
+				output.add(taskInfo);
+			}
+		}
+			
+		if ((high_size == 0) && (low_size == 0)) {
+			output.add(MESSAGE_NOTFOUND);
+		}
+	}
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\SearchCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\UndoCommand.java
+	 */
+
+package whatsupnext.logic;
+
+import whatsupnext.storage.Storage;
+import whatsupnext.structure.Task;
+
+public class UndoCommand extends Command{
+
+	private final String MESSAGE_UNDO = "The execution was canceled.";
+	private final String MESSAGE_UNDO_FAIL = "Cannot execute undo command.";
+	
+	public UndoCommand(Task task) {
+		super(task);
+	}
+
+	public String executeCommand() {
+		storage = Storage.getInstance();
+		if (storage.goToPreviousVersion()) {
+			LogicUtilities.clearList();
+			Logic.readTasksIntoInternalList();
+			LogicUtilities.setupAvailableIDs();
+			return MESSAGE_UNDO;
+		} else {
+			return MESSAGE_UNDO_FAIL;
+		}
+	}
+	
+
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\UndoCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\UpdateCommand.java
+	 */
+
+package whatsupnext.logic;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import whatsupnext.structure.Task;
+import whatsupnext.structure.Types.UPDATETYPE;
+
+public class UpdateCommand extends Command{
+
+	private String MESSAGE_UPDATED;
+	private UPDATETYPE updateType;	
+	private ArrayList<Task> list = LogicUtilities.list;
+
+	public UpdateCommand(Task task) {
+		super(task);
+		updateType = task.getUpdateType();
+	}
+
+	public String executeCommand() {	
+		switch (updateType) {
+			case DESCRIPTION:
+				updateInfo();
+				MESSAGE_UPDATED = "Successfully updated the description of task " + taskID + ".";
+				break;
+			case DEADLINE:
+				updateDeadline();
+				MESSAGE_UPDATED = "Successfully updated the deadline of task " + taskID + ".";
+				break;
+			case TIMEFRAME:
+				updateTimeFrame();
+				MESSAGE_UPDATED = "Successfully updated the time frame of task " + taskID + ".";
+				break;
+			default:
+				break;
+		}
+		
+		LogicUtilities.sortTasks(list);
+		
+		String feedbackUpdate;
+		try {
+			storage.inputTasks(list);
+			feedbackUpdate = MESSAGE_UPDATED;
+		} catch (IOException e) {
+			feedbackUpdate = e.getMessage();
+		}
+
+		return feedbackUpdate;
+	}
+	
+	/*
+	 * Three types of UPDATE functions.
+	 */
+	private void updateInfo() {
+		int index = LogicUtilities.getTaskIndexInArray(taskID);
+		Task task = list.get(index);
+		task.setDescription(description);
+	}
+	
+	private void updateDeadline() {
+		int index = LogicUtilities.getTaskIndexInArray(taskID);	
+		Task task = list.get(index);
+		task.setEndTime(endTime);
+	}
+	
+	private void updateTimeFrame() {
+		int index = LogicUtilities.getTaskIndexInArray(taskID);		
+		Task task = list.get(index);
+		task.setStartTime(startTime);
+		task.setEndTime(endTime);
+	}
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\UpdateCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\ViewCommand.java
+	 */
+
+package whatsupnext.logic;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+
+import whatsupnext.structure.Task;
+import whatsupnext.structure.TaskComparators.TaskDefaultComparator;
+import whatsupnext.structure.Types.VIEWTYPE;
+
+public class ViewCommand extends Command {
+
+	private final String MESSAGE_NOTFOUND = "No tasks are found.";
+	private VIEWTYPE viewType;
+	private ArrayList<Task> list = LogicUtilities.list;
+	private ArrayList<String> output = LogicUtilities.output;
+	
+	public ViewCommand(Task task) {
+		super(task);
+		viewType = task.getViewType();
+	}
+	
+	public String executeCommand() {	
+		switch (viewType) {
+			case ALL:
+				viewAll();
+				break;
+			case NEXT:
+				viewNext();
+				break;
+			case DATE:
+				viewDate();
+				break;
+			case TIMEFRAME:
+				viewTimeFrame();
+				break;
+			case UNDONE:
+				viewUndone();
+				break;
+			case FLOATING:
+				viewFloating();
+				break;
+			case OVERDUE:
+				viewOverDue();
+				break;
+			default:
+				break;
+		}
+		
+		String feedbackView = LogicUtilities.formatArrayAsString(output);
+		output.clear();
+		
+		return feedbackView;
+	}
+	
+	/*
+	 * Four types of VIEW functions.
+	 */
+	private void viewTimeFrame() {
+		Iterator<Task> taskIterator = list.iterator();
+		
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (!task.getEndTime().isEmpty() &&
+					!LogicUtilities.endsBeforeDeadline(task, startTime) &&
+					LogicUtilities.endsBeforeDeadline(task, endTime) && (task.getDone() == false)) {
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
+				output.add(taskInfo);
+			}
+		}
+	}
+
+	private void viewDate() {
+		Iterator<Task> taskIterator = list.iterator();
+		
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (!task.getEndTime().isEmpty() &&
+					LogicUtilities.endsOnGivenDate(task, endTime) &&
+					(task.getDone() == false)) {
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
+				output.add(taskInfo);
+			}
+		}
+	}
+	
+	private void viewNext() {
+		Task currentTask;
+		long nearestEndTime = 999999999999L;
+		ArrayList<Task> sortedList = new ArrayList<Task>(list);
+		Collections.sort(sortedList, new TaskDefaultComparator());
+		Iterator<Task> taskIterator = sortedList.iterator();
+		
+		while (taskIterator.hasNext()) {
+			currentTask = taskIterator.next();
+			if (!currentTask.getEndTime().isEmpty() &&
+					!LogicUtilities.endsBeforeDeadline(currentTask, endTime) &&
+					(currentTask.getDone() == false)) {
+				if (output.isEmpty()) {
+					nearestEndTime = Long.parseLong(currentTask.getEndTime());
+					String taskInfo = LogicUtilities.getFormattedOutput(currentTask);;
+					output.add(taskInfo);
+				} else {
+					if (Long.parseLong(currentTask.getEndTime()) < nearestEndTime) {
+						output.clear();
+						nearestEndTime = Long.parseLong(currentTask.getEndTime());
+						String taskInfo = LogicUtilities.getFormattedOutput(currentTask); 
+						output.add(taskInfo);
+					} else if (Long.parseLong(currentTask.getEndTime()) == nearestEndTime) {
+						String taskInfo = LogicUtilities.getFormattedOutput(currentTask);
+						output.add(taskInfo);
+					}
+				}
+			}				
+		}
+		
+		if (output.isEmpty()) {
+			output.add(MESSAGE_NOTFOUND);
+		}
+	}
+		
+	private void viewAll() {
+		Iterator<Task> taskIterator = list.iterator();
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			String taskInfo = LogicUtilities.getFormattedOutput(task);
+			output.add(taskInfo);
+		}
+	}	
+	
+	private void viewUndone() {
+		Iterator<Task> taskIterator = list.iterator();
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (!task.getDone()) {
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
+			    output.add(taskInfo);
+			}			
+		}
+	}
+	
+	private void viewFloating() {
+		Iterator<Task> taskIterator = list.iterator();
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (task.getStartTime().isEmpty() && task.getEndTime().isEmpty() && task.getDone() == false) {
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
+			    output.add(taskInfo);
+			}			
+		}
+	}
+	
+	private void viewOverDue() {
+		Iterator<Task> taskIterator = list.iterator();
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if (LogicUtilities.endsBeforeDeadline(task, endTime) && task.getDone() == false) {
+				String taskInfo = LogicUtilities.getFormattedOutput(task);
+			    output.add(taskInfo);
+			}			
+		}
+	}
+}
+
+	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\ViewCommand.java
+
+
+
+
+

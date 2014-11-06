@@ -8,9 +8,8 @@ import whatsupnext.structure.Types.UPDATETYPE;
 
 public class UpdateCommand extends Command{
 
-	private final String MESSAGE_UPDATED = "A task is successfully updated.";
-	private UPDATETYPE updateType;
-	
+	private String MESSAGE_UPDATED;
+	private UPDATETYPE updateType;	
 	private ArrayList<Task> list = LogicUtilities.list;
 
 	public UpdateCommand(Task task) {
@@ -22,12 +21,15 @@ public class UpdateCommand extends Command{
 		switch (updateType) {
 			case DESCRIPTION:
 				updateInfo();
+				MESSAGE_UPDATED = "Successfully updated the description of task " + taskID + ".";
 				break;
 			case DEADLINE:
 				updateDeadline();
+				MESSAGE_UPDATED = "Successfully updated the deadline of task " + taskID + ".";
 				break;
 			case TIMEFRAME:
 				updateTimeFrame();
+				MESSAGE_UPDATED = "Successfully updated the time frame of task " + taskID + ".";
 				break;
 			default:
 				break;

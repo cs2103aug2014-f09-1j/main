@@ -1,3 +1,4 @@
+//@author A0111773L
 package whatsupnext.parser.extractor;
 
 import java.text.ParseException;
@@ -8,31 +9,27 @@ import java.util.Calendar;
 
 public class ParseDate {
 	
-	private final String FORMAT_LAST_MINUTE = "HHmm";
-	private final String FORMAT_TODAY = "ddMMyyyy";
+	// These are the time and date formats
+	private final String FORMAT_MINUTE = "HHmm";
+	private final String FORMAT_TODAY = "yyyyMMdd";
 	private final ArrayList<String> FORMATS_TIME = new ArrayList<String>(Arrays.asList("HHmm", "HH:mm",
 																						"h:mm a", "h a"));
 	private final ArrayList<String> FORMATS_DATE = new ArrayList<String>(Arrays.asList("ddMMyy", "ddMMyyyy", 
 																						"dd/MM/yy", "dd/MM/yyyy", 
 																						"dd-MM-yy", "dd-MM-yyyy"));
-	private final ArrayList<String> ALIASES_TODAY = new ArrayList<String>(Arrays.asList("Today", "today"));
-	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("Tomorrow", "Tml",
-																							"tomorrow", "tml"));
-	private final ArrayList<String> ALIASES_SUNDAY = new ArrayList<String>(Arrays.asList("Sunday", "Sun",
-																						  "sunday", "sun"));
-	private final ArrayList<String> ALIASES_MONDAY = new ArrayList<String>(Arrays.asList("Monday", "Mon",
-																						  "monday", "mon"));
-	private final ArrayList<String> ALIASES_TUESDAY = new ArrayList<String>(Arrays.asList("Tuesday", "Tue",
-																						   "tuesday", "tue"));
-	private final ArrayList<String> ALIASES_WEDNESDAY = new ArrayList<String>(Arrays.asList("Wednesday", "Wed",
-																							 "wednesday", "wed"));
-	private final ArrayList<String> ALIASES_THURSDAY = new ArrayList<String>(Arrays.asList("Thursday", "Thu",
-																							"thursday", "thu"));
-	private final ArrayList<String> ALIASES_FRIDAY = new ArrayList<String>(Arrays.asList("Friday", "Fri",
-																						  "friday", "fri"));
-	private final ArrayList<String> ALIASES_SATURDAY = new ArrayList<String>(Arrays.asList("Saturday", "Sat",
-																							"saturday", "sat"));
 	
+	//These are the aliases for day of week 
+	private final ArrayList<String> ALIASES_TODAY = new ArrayList<String>(Arrays.asList("Today", "today"));
+	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("tomorrow", "tml"));
+	private final ArrayList<String> ALIASES_SUNDAY = new ArrayList<String>(Arrays.asList("sunday", "sun"));
+	private final ArrayList<String> ALIASES_MONDAY = new ArrayList<String>(Arrays.asList("monday", "mon"));
+	private final ArrayList<String> ALIASES_TUESDAY = new ArrayList<String>(Arrays.asList("tuesday", "tue"));
+	private final ArrayList<String> ALIASES_WEDNESDAY = new ArrayList<String>(Arrays.asList("wednesday", "wed"));
+	private final ArrayList<String> ALIASES_THURSDAY = new ArrayList<String>(Arrays.asList("thursday", "thu"));
+	private final ArrayList<String> ALIASES_FRIDAY = new ArrayList<String>(Arrays.asList("friday", "fri"));
+	private final ArrayList<String> ALIASES_SATURDAY = new ArrayList<String>(Arrays.asList("saturday", "sat"));
+	
+	//These indicate magic string/number
 	private final String NOW = "now";
 	private final String FIRST_MINUTE = "0000";
 	private final String LAST_MINUTE = "2359";
@@ -41,33 +38,80 @@ public class ParseDate {
 	
 	private ArrayList<String> listOfTimeDateFormats;
 	private ArrayList<String> listOfTimeDayFormats;
-	private ArrayList<String> listOfAliasesDay;
+	private ArrayList<String> listOfAliasesDays;
 	
 	private boolean isParsingStartTime;
 	
 	public ParseDate(){
 		listOfTimeDateFormats = getTimeDateFormats();
-		listOfAliasesDay = getAliasesDay();
-		listOfTimeDayFormats = getDayFormats();
+		listOfAliasesDays = getAliasesDays();
+		listOfTimeDayFormats = getTimeDayFormats();
 		isParsingStartTime = false;
 	}
 	
+	/**
+	 * Returns a 12-length formatted date string of the input 
+	 * @return In format of: yyyyMMddHHmm
+	 */
 	public String parseInput(String input) {
 		String formattedDate = "";
+		input = input.toLowerCase();
+		
 		if(input.equalsIgnoreCase(NOW)){
 			formattedDate = getCurrentTime();
 		}
 		if(formattedDate.isEmpty()){
-			formattedDate = parseAllTimeDateFormats(input);
+			formattedDate = parseTimeDateFormats(input);
 		}
 		if(formattedDate.isEmpty()){
-			formattedDate = parseAllDayFormats(input);
+			formattedDate = parseTimeDayFormats(input);
 		}
 		return formattedDate;
 	}
 	
+	/**
+	 * Set to parse input as a start time.
+	 */
 	public void setParsingStartTime(boolean isParsingStartTime) {
 		this.isParsingStartTime = isParsingStartTime;
+	}
+	
+	/**
+	 * Returns a 12-length string of current time 
+	 * @return In format of: yyyyMMddHHmm
+	 */
+	public String getCurrentTime() {
+		Calendar cal = Calendar.getInstance();
+		String formattedDate = formatDate(cal);
+		return formattedDate; 
+	}
+	
+	/**
+	 * Returns a 8-length string of today date 
+	 * @return In format of: yyyyMMdd
+	 */
+	public String getTodayDate() {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
+		return year + twoDigitMonth + twoDigitDayOfMonth;
+	}
+	
+	/**
+	 * Returns a 8-length string of provided Calendar object
+	 * @param cal Calendar to be formatted
+	 * @return In format of: yyyyMMdd
+	 */
+	public String getDateString(Calendar cal) {
+		int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
+		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
 	private ArrayList<String> getTimeDateFormats() {
@@ -91,28 +135,29 @@ public class ParseDate {
 		return allFormats;
 	}
 	
-	private ArrayList<String> getAliasesDay(){
-		ArrayList<String> allAliasesDay = new ArrayList<String>();
-		allAliasesDay.addAll(ALIASES_TODAY);
-		allAliasesDay.addAll(ALIASES_TOMORROW);
-		allAliasesDay.addAll(ALIASES_SUNDAY);
-		allAliasesDay.addAll(ALIASES_MONDAY);
-		allAliasesDay.addAll(ALIASES_TUESDAY);
-		allAliasesDay.addAll(ALIASES_WEDNESDAY);
-		allAliasesDay.addAll(ALIASES_THURSDAY);
-		allAliasesDay.addAll(ALIASES_FRIDAY);
-		allAliasesDay.addAll(ALIASES_SATURDAY);
+	private ArrayList<String> getAliasesDays(){
+		ArrayList<String> allAliasesDays = new ArrayList<String>();
+		allAliasesDays.addAll(ALIASES_TODAY);
+		allAliasesDays.addAll(ALIASES_TOMORROW);
+		allAliasesDays.addAll(ALIASES_SUNDAY);
+		allAliasesDays.addAll(ALIASES_MONDAY);
+		allAliasesDays.addAll(ALIASES_TUESDAY);
+		allAliasesDays.addAll(ALIASES_WEDNESDAY);
+		allAliasesDays.addAll(ALIASES_THURSDAY);
+		allAliasesDays.addAll(ALIASES_FRIDAY);
+		allAliasesDays.addAll(ALIASES_SATURDAY);
 		
-		return allAliasesDay;
+		return allAliasesDays;
 	}
-	private ArrayList<String> getDayFormats() {
+	
+	private ArrayList<String> getTimeDayFormats() {
 		ArrayList<String> allFormats = new ArrayList<String>();
 		for (String time : FORMATS_TIME) {
-			for (String day : listOfAliasesDay){
+			for (String day : listOfAliasesDays){
 				allFormats.add(time + " " + SINGLE_QUOTE + day + SINGLE_QUOTE);
 			}
 		}
-		for (String day : listOfAliasesDay){
+		for (String day : listOfAliasesDays){
 			for (String time : FORMATS_TIME) {
 				allFormats.add(SINGLE_QUOTE + day + SINGLE_QUOTE + " " + time);
 			}
@@ -121,7 +166,7 @@ public class ParseDate {
 		return allFormats;
 	}
 	
-	private String parseAllTimeDateFormats(String input) {
+	private String parseTimeDateFormats(String input) {
 		String formattedDate = "";
 		String formattedInput = "";
 		SimpleDateFormat formatter = null;
@@ -131,10 +176,10 @@ public class ParseDate {
 				formatter = new SimpleDateFormat(format);
 				if (FORMATS_TIME.contains(format)) {
 					formatter = new SimpleDateFormat(format + " " + FORMAT_TODAY);
-					formattedInput = formattedInput + " " + getToday();
+					formattedInput = formattedInput + " " + getTodayDate();
 				}
 				if (FORMATS_DATE.contains(format)) {
-					formatter = new SimpleDateFormat(format + " " + FORMAT_LAST_MINUTE);
+					formatter = new SimpleDateFormat(format + " " + FORMAT_MINUTE);
 					if(isParsingStartTime) {
 						formattedInput = formattedInput + " " + FIRST_MINUTE;
 					} else {
@@ -154,20 +199,20 @@ public class ParseDate {
 		return formattedDate;
 	}
 	
-	private String parseAllDayFormats(String input) {
+	private String parseTimeDayFormats(String input) {
 		String formattedDate = "";
 		String formattedInput = "";
 		SimpleDateFormat formatter = null;
 		for (String format : listOfTimeDayFormats) {
 			try {
-				formattedInput = input + " " + getToday();
+				formattedInput = input + " " + getTodayDate();
 				formatter = new SimpleDateFormat(format + " " + FORMAT_TODAY);
-				if (listOfAliasesDay.contains(input)){
-					formatter = new SimpleDateFormat(FORMAT_TODAY + " " + FORMAT_LAST_MINUTE);
+				if (listOfAliasesDays.contains(input)){
+					formatter = new SimpleDateFormat(FORMAT_TODAY + " " + FORMAT_MINUTE);
 					if(isParsingStartTime) {
-						formattedInput = getToday() + " " + FIRST_MINUTE;
+						formattedInput = getTodayDate() + " " + FIRST_MINUTE;
 					} else {
-						formattedInput = getToday() + " " + LAST_MINUTE;
+						formattedInput = getTodayDate() + " " + LAST_MINUTE;
 					}					
 				}
 				formatter.setLenient(false);
@@ -184,32 +229,12 @@ public class ParseDate {
 		return formattedDate;
 	}
 	
-	private String getCurrentTime() {
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH)+1;
-		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-		int hour = cal.get(Calendar.HOUR_OF_DAY);
-		int minute = cal.get(Calendar.MINUTE);
-		String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
-		String twoDigitHour = convertToTwoDigits(hour);
-		String twoDigitMinute = convertToTwoDigits(minute);
-
-		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
-	}
-	
-	private String getToday() {
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH)+1;
-        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth); 
-          
-		return twoDigitDayOfMonth + twoDigitMonth + year;
-	}
-	
+	/**
+	 * Returns an future Calendar which has its date forwarded based on provided day of week
+	 * @param cal Calendar to be updated
+	 * @param input the input that contains the Day of Week
+	 * @return the updated Calendar
+	 */
 	private Calendar setNewDay(Calendar cal, String input){
 		int numOfDay = 0;
 		for (String today : ALIASES_TODAY) {
@@ -276,16 +301,22 @@ public class ParseDate {
 		
 		return cal;
 	}
-
-	private int getNumOfDay(int currentDay, int expectedDay) {
+	
+	/**
+	 * Returns the number of days from the provided current day of week to the expected day of week
+	 * @param currentDayOfWeek the integer value of current day of week
+	 * @param expectedDayOfWeek the integer value of expected day of week
+	 * @return the number of days to reach expected day of week
+	 */
+	private int getNumOfDay(int currentDayOfWeek, int expectedDayOfWeek) {
 		int numOfDay = 0;
 		int newDay = 0;
 		for(int i = 1; i <= DAYS_IN_WEEK; i++) {
-			newDay = currentDay + i; 
+			newDay = currentDayOfWeek + i; 
 			if(newDay > DAYS_IN_WEEK) {
-				newDay = (currentDay + i) % DAYS_IN_WEEK;
+				newDay = (currentDayOfWeek + i) % DAYS_IN_WEEK;
 			}
-			if (newDay == expectedDay) {
+			if (newDay == expectedDayOfWeek) {
 				numOfDay = i;
 				break;
 			}
@@ -293,10 +324,15 @@ public class ParseDate {
 		
 		return numOfDay;
 	}
-
+	
+	/**
+	 * Returns a 12-length string based on provided calendar
+	 * @param cal Calendar to be formatted 
+	 * @return In format of: yyyyMMddHHmm
+	 */
 	private String formatDate(Calendar cal) {
 		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH)+1;
+		int month = cal.get(Calendar.MONTH) + 1;
 		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
 		int minute = cal.get(Calendar.MINUTE);
@@ -308,61 +344,12 @@ public class ParseDate {
 		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
 	}
 	
-	private String convertToTwoDigits(int value){
+	private String convertToTwoDigits(int value) {
 		if(value < 10) {
 			return "0" + value;
 		} else {
 			return "" + value;
 		}
-	}
-	
-	/**
-	 * This function reports the date string of today
-	 * In format of : yyyymmdd
-	 * @return
-	 */
-	public String getTodayDateString() {
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH)+1;
-        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
-		return year + twoDigitMonth + twoDigitDayOfMonth;
-	}
-	
-	/**
-	 * This function reports the date string of today
-	 * In format of : yyyymmddhhss
-	 * @return
-	 */
-	public String getTodayDateTimeString() {
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH)+1;
-		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-		int hour = cal.get(Calendar.HOUR_OF_DAY);
-		int minute = cal.get(Calendar.MINUTE);
-		String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
-		String twoDigitHour = convertToTwoDigits(hour);
-		String twoDigitMinute = convertToTwoDigits(minute);
-
-		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
-	}
-	
-	/**
-	 * This function reports the date string of the provided Calendar object
-	 * In format of : yyyymmdd
-	 * @return
-	 */
-	public String getDateString(Calendar cal) {
-		int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH)+1;
-        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
-		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 
 }

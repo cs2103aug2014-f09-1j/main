@@ -1,3 +1,4 @@
+//@author A0111773L
 package whatsupnext.structure;
 
 import java.util.Arrays;

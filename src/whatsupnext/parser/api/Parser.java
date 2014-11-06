@@ -1,5 +1,6 @@
+//@author A0111773L
 /*
- *  This is the Parser class for WhatsUpNext
+ *  This is the Parser API for WhatsUpNext
  */
 package whatsupnext.parser.api;
 
@@ -17,8 +18,10 @@ import whatsupnext.structure.Task;
 
 public class Parser {
 
+	// Messages
 	private final String MESSAGE_INVALID_OPCODE = "Unrecognized command type";
 	
+	//These are the aliases for opcode
 	private final String[] ALIASES_ADD = {"add", "a"};
 	private final String[] ALIASES_VIEW = {"view", "v", "list", "ls", "l"};
 	private final String[] ALIASES_UPDATE = {"update", "u", "edit", "e", "modify", "m"};
@@ -38,20 +41,24 @@ public class Parser {
 		task = new Task();
 	}
 	
+	/**
+	 * Returns a Task object containing information extracted during parsing of the input
+	 * @return the Task object
+	 */
 	public Task parseInput() {
 		StringTokenizer tokenizedInput = new StringTokenizer(input);
 		if (tokenizedInput.hasMoreTokens()){
 			String operation = tokenizedInput.nextToken();
 			task.setOpcode(determineOperation(operation));
 			input = removeFirstWord(input);
-			parseTaskArguments();
+			parseRemainingArguments();
 		} else {
 			task.setOpcode(OPCODE.INVALID);
 		}
 		return task;
 	}
 
-	private void parseTaskArguments() {
+	private void parseRemainingArguments() {
 		switch (task.getOpCode()) {
 			case ADD:
 				AddExtractor exAdd = new AddExtractor();
@@ -129,10 +136,10 @@ public class Parser {
 	
 	/**
 	 * Removes the first word of a string
-	 * @param userCommand
-	 * @return
+	 * @param userCommand the string to be manipulated
+	 * @return remaining words of the string
 	 */
-	private static String removeFirstWord(String userCommand) {
+	private String removeFirstWord(String userCommand) {
 		String commandString;
 		try {
 			commandString = userCommand.trim().split("\\s+", 2)[1];

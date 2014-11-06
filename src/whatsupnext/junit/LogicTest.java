@@ -118,7 +118,7 @@ public class LogicTest {
 		task.setDescription("testing");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Add Floating - Successful ", feedback, "A task is successfully added.");
+		assertEquals("Test Add Floating - Successful ", feedback, "Successfully added to task 1.");
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "1: testing\n\tNot done.");
@@ -133,7 +133,8 @@ public class LogicTest {
 		task.setEndTime("201410101200");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Add Deadline - Successful ", "A task is successfully added.", feedback);
+		assertEquals("Test Add Deadline - Successful ",
+				"Successfully added to task 1.\n     Deadline: 2014 Oct 10 12:00", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "1: testing\n\tEnd Time: 2014 Oct 10 12:00\n\tNot done.");
@@ -149,7 +150,8 @@ public class LogicTest {
 		task.setEndTime("201410111200");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Add Time Frame - Successful ", "A task is successfully added.", feedback);
+		assertEquals("Test Add Time Frame - Successful ",
+				"Successfully added to task 1.\n     Deadline: 2014 Oct 11 12:00", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "1: testing\n\tStart Time: 2014 Oct 10 12:00\n\tEnd Time: 2014 Oct 11 12:00\n\tNot done.");
@@ -177,7 +179,7 @@ public class LogicTest {
 		task.setTaskID("2");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Delete Id - Successful ", "Tasks are successfully deleted.", feedback);
+		assertEquals("Test Delete Id - Successful ", "Task 2 is deleted.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "1: testing\n\tNot done.");
@@ -206,7 +208,7 @@ public class LogicTest {
 		task.setEndTime("201410102359");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Delete Date - Successful ", "Tasks are successfully deleted.", feedback);
+		assertEquals("Test Delete Date - Successful ", "1 tasks are deleted.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "2: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:00\n\tNot done.");
@@ -243,7 +245,7 @@ public class LogicTest {
 		task.setEndTime("201410111200");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Delete Deadline - Successful ", "Tasks are successfully deleted.", feedback);
+		assertEquals("Test Delete Deadline - Successful ", "2 tasks are deleted.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "3: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:30\n\tNot done.");
@@ -281,7 +283,7 @@ public class LogicTest {
 		task.setEndTime("201410111220");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Delete Time Frame - Successful ", "Tasks are successfully deleted.", feedback);
+		assertEquals("Test Delete Time Frame - Successful ", "2 tasks are deleted.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "3: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:30\n\tNot done.");
@@ -302,7 +304,7 @@ public class LogicTest {
 		task.setDescription("new description");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Update Description - Successful ", "A task is successfully updated.", feedback);
+		assertEquals("Test Update Description - Successful ", "Successfully updated the description of task 1.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "1: new description\n\tNot done.");
@@ -324,7 +326,7 @@ public class LogicTest {
 		task.setEndTime("201411111111");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Update Deadline - Successful ", "A task is successfully updated.", feedback);
+		assertEquals("Test Update Deadline - Successful ", "Successfully updated the deadline of task 1.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "1: testing\n\tEnd Time: 2014 Nov 11 11:11\n\tNot done.");
@@ -348,7 +350,7 @@ public class LogicTest {
 		task.setEndTime("201411111111");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Update Deadline - Successful ", "A task is successfully updated.", feedback);
+		assertEquals("Test Update Deadline - Successful ", "Successfully updated the time frame of task 1.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "1: testing\n\tStart Time: 2014 Oct 10 10:10\n\tEnd Time: 2014 Nov 11 11:11\n\tNot done.");

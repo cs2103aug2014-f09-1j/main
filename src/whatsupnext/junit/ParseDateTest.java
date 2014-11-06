@@ -1,3 +1,4 @@
+//@author A0111773L
 package whatsupnext.junit;
 
 import static org.junit.Assert.*;
@@ -130,25 +131,25 @@ public class ParseDateTest {
 		String formattedDate = "";
 		
 		formattedDate = parseDate.parseInput("1234");
-		assertEquals("Test HHmm", getToday()+"1234", formattedDate);
+		assertEquals("Test HHmm", getTodayDate()+"1234", formattedDate);
 		
 		formattedDate = parseDate.parseInput("12:34");
-		assertEquals("Test HH:mm", getToday()+"1234", formattedDate);
+		assertEquals("Test HH:mm", getTodayDate()+"1234", formattedDate);
 		
 		formattedDate = parseDate.parseInput("12:34 pm");
-		assertEquals("Test h:mm a", getToday()+"1234", formattedDate);
+		assertEquals("Test h:mm a", getTodayDate()+"1234", formattedDate);
 		
 		formattedDate = parseDate.parseInput("12:43 am");
-		assertEquals("Test h:mm a", getToday()+"0043", formattedDate);
+		assertEquals("Test h:mm a", getTodayDate()+"0043", formattedDate);
 		
 		formattedDate = parseDate.parseInput("1:59 PM");
-		assertEquals("Test h:mm a", getToday()+"1359", formattedDate);
+		assertEquals("Test h:mm a", getTodayDate()+"1359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("11 PM");
-		assertEquals("Test h a", getToday()+"2300", formattedDate);
+		assertEquals("Test h a", getTodayDate()+"2300", formattedDate);
 		
 		formattedDate = parseDate.parseInput("5 AM");
-		assertEquals("Test h a", getToday()+"0500", formattedDate);
+		assertEquals("Test h a", getTodayDate()+"0500", formattedDate);
 	}
 	
 	@Test
@@ -191,31 +192,31 @@ public class ParseDateTest {
 		String formattedDate = "";
 		
 		formattedDate = parseDate.parseInput("0102 today");
-		assertEquals("HHmm today", getToday()+"0102", formattedDate);
+		assertEquals("HHmm today", getTodayDate()+"0102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("0102 tomorrow");
-		assertEquals("HHmm tomorrow", getTomorrow()+"0102", formattedDate);
+		assertEquals("HHmm tomorrow", getTomorrowDate()+"0102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("0102 sunday");
-		assertEquals("HHmm sunday", getTodayToNextDayOfWeek(Calendar.SUNDAY)+"0102", formattedDate);
+		assertEquals("HHmm sunday", getNextDayOfWeekDate(Calendar.SUNDAY)+"0102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("0102 monday");
-		assertEquals("HHmm monday", getTodayToNextDayOfWeek(Calendar.MONDAY)+"0102", formattedDate);
+		assertEquals("HHmm monday", getNextDayOfWeekDate(Calendar.MONDAY)+"0102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("0102 tuesday");
-		assertEquals("HHmm tuesday", getTodayToNextDayOfWeek(Calendar.TUESDAY)+"0102", formattedDate);
+		assertEquals("HHmm tuesday", getNextDayOfWeekDate(Calendar.TUESDAY)+"0102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("0102 wednesday");
-		assertEquals("HHmm wednesday", getTodayToNextDayOfWeek(Calendar.WEDNESDAY)+"0102", formattedDate);
+		assertEquals("HHmm wednesday", getNextDayOfWeekDate(Calendar.WEDNESDAY)+"0102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("0102 thursday");
-		assertEquals("HHmm thursday", getTodayToNextDayOfWeek(Calendar.THURSDAY)+"0102", formattedDate);
+		assertEquals("HHmm thursday", getNextDayOfWeekDate(Calendar.THURSDAY)+"0102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("0102 friday");
-		assertEquals("HHMm friday", getTodayToNextDayOfWeek(Calendar.FRIDAY)+"0102", formattedDate);
+		assertEquals("HHMm friday", getNextDayOfWeekDate(Calendar.FRIDAY)+"0102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("0102 saturday");
-		assertEquals("HHMm saturday", getTodayToNextDayOfWeek(Calendar.SATURDAY)+"0102", formattedDate);
+		assertEquals("HHMm saturday", getNextDayOfWeekDate(Calendar.SATURDAY)+"0102", formattedDate);
 		
 		
 	}
@@ -227,31 +228,31 @@ public class ParseDateTest {
 		String formattedDate = "";
 		
 		formattedDate = parseDate.parseInput("Today 2222");
-		assertEquals("Today HHmm", getToday()+"2222", formattedDate);
+		assertEquals("Today HHmm", getTodayDate()+"2222", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Tml 2222");
-		assertEquals("Tml HHmm", getTomorrow()+"2222", formattedDate);
+		assertEquals("Tml HHmm", getTomorrowDate()+"2222", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Sun 2222");
-		assertEquals("Sun HHmm ", getTodayToNextDayOfWeek(Calendar.SUNDAY)+"2222", formattedDate);
+		assertEquals("Sun HHmm ", getNextDayOfWeekDate(Calendar.SUNDAY)+"2222", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Mon 2222");
-		assertEquals("Mon HHmm", getTodayToNextDayOfWeek(Calendar.MONDAY)+"2222", formattedDate);
+		assertEquals("Mon HHmm", getNextDayOfWeekDate(Calendar.MONDAY)+"2222", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Tue 2222");
-		assertEquals("Tue HHmm", getTodayToNextDayOfWeek(Calendar.TUESDAY)+"2222", formattedDate);
+		assertEquals("Tue HHmm", getNextDayOfWeekDate(Calendar.TUESDAY)+"2222", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Wed 2222");
-		assertEquals("Wed HHmm", getTodayToNextDayOfWeek(Calendar.WEDNESDAY)+"2222", formattedDate);
+		assertEquals("Wed HHmm", getNextDayOfWeekDate(Calendar.WEDNESDAY)+"2222", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Thu 2222");
-		assertEquals("Thu HHmm", getTodayToNextDayOfWeek(Calendar.THURSDAY)+"2222", formattedDate);
+		assertEquals("Thu HHmm", getNextDayOfWeekDate(Calendar.THURSDAY)+"2222", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Fri 2222");
-		assertEquals("Fri HHmm", getTodayToNextDayOfWeek(Calendar.FRIDAY)+"2222", formattedDate);
+		assertEquals("Fri HHmm", getNextDayOfWeekDate(Calendar.FRIDAY)+"2222", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Sat 2222");
-		assertEquals("Sat HHmm", getTodayToNextDayOfWeek(Calendar.SATURDAY)+"2222", formattedDate);
+		assertEquals("Sat HHmm", getNextDayOfWeekDate(Calendar.SATURDAY)+"2222", formattedDate);
 		
 	}
 	
@@ -262,66 +263,66 @@ public class ParseDateTest {
 		String formattedDate = "";
 		
 		formattedDate = parseDate.parseInput("Today");
-		assertEquals("Today", getToday()+"2359", formattedDate);
+		assertEquals("Today", getTodayDate()+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("today");
-		assertEquals("today", getToday()+"2359", formattedDate);
+		assertEquals("today", getTodayDate()+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Tomorrow");
-		assertEquals("Tomorrow", getTomorrow()+"2359", formattedDate);
+		assertEquals("Tomorrow", getTomorrowDate()+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("tml");
-		assertEquals("tml", getTomorrow()+"2359", formattedDate);
+		assertEquals("tml", getTomorrowDate()+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Sunday");
-		assertEquals("Sunday", getTodayToNextDayOfWeek(Calendar.SUNDAY)+"2359", formattedDate);
+		assertEquals("Sunday", getNextDayOfWeekDate(Calendar.SUNDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("sun");
-		assertEquals("sun", getTodayToNextDayOfWeek(Calendar.SUNDAY)+"2359", formattedDate);
+		assertEquals("sun", getNextDayOfWeekDate(Calendar.SUNDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Monday");
-		assertEquals("Monday", getTodayToNextDayOfWeek(Calendar.MONDAY)+"2359", formattedDate);
+		assertEquals("Monday", getNextDayOfWeekDate(Calendar.MONDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("mon");
-		assertEquals("mon", getTodayToNextDayOfWeek(Calendar.MONDAY)+"2359", formattedDate);
+		assertEquals("mon", getNextDayOfWeekDate(Calendar.MONDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Tuesday");
-		assertEquals("Tuesday", getTodayToNextDayOfWeek(Calendar.TUESDAY)+"2359", formattedDate);
+		assertEquals("Tuesday", getNextDayOfWeekDate(Calendar.TUESDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("tue");
-		assertEquals("tue", getTodayToNextDayOfWeek(Calendar.TUESDAY)+"2359", formattedDate);
+		assertEquals("tue", getNextDayOfWeekDate(Calendar.TUESDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Wednesday");
-		assertEquals("Wednesday", getTodayToNextDayOfWeek(Calendar.WEDNESDAY)+"2359", formattedDate);
+		assertEquals("Wednesday", getNextDayOfWeekDate(Calendar.WEDNESDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("wed");
-		assertEquals("wed", getTodayToNextDayOfWeek(Calendar.WEDNESDAY)+"2359", formattedDate);
+		assertEquals("wed", getNextDayOfWeekDate(Calendar.WEDNESDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Thursday");
-		assertEquals("Thursday", getTodayToNextDayOfWeek(Calendar.THURSDAY)+"2359", formattedDate);
+		assertEquals("Thursday", getNextDayOfWeekDate(Calendar.THURSDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("thu");
-		assertEquals("thu", getTodayToNextDayOfWeek(Calendar.THURSDAY)+"2359", formattedDate);
+		assertEquals("thu", getNextDayOfWeekDate(Calendar.THURSDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Friday");
-		assertEquals("Friday", getTodayToNextDayOfWeek(Calendar.FRIDAY)+"2359", formattedDate);
+		assertEquals("Friday", getNextDayOfWeekDate(Calendar.FRIDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("fri");
-		assertEquals("fri", getTodayToNextDayOfWeek(Calendar.FRIDAY)+"2359", formattedDate);
+		assertEquals("fri", getNextDayOfWeekDate(Calendar.FRIDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("Saturday");
-		assertEquals("Saturday", getTodayToNextDayOfWeek(Calendar.SATURDAY)+"2359", formattedDate);
+		assertEquals("Saturday", getNextDayOfWeekDate(Calendar.SATURDAY)+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("sat");
-		assertEquals("sat", getTodayToNextDayOfWeek(Calendar.SATURDAY)+"2359", formattedDate);
+		assertEquals("sat", getNextDayOfWeekDate(Calendar.SATURDAY)+"2359", formattedDate);
 		
 		parseDate.setParsingStartTime(true);
 		formattedDate = parseDate.parseInput("today");
-		assertEquals("Today 0000", getToday()+"0000", formattedDate);
+		assertEquals("Today 0000", getTodayDate()+"0000", formattedDate);
 		
 		parseDate.setParsingStartTime(false);
 		formattedDate = parseDate.parseInput("today");
-		assertEquals("Today 2359", getToday()+"2359", formattedDate);
+		assertEquals("Today 2359", getTodayDate()+"2359", formattedDate);
 	}
 	
 	@Test
@@ -391,10 +392,10 @@ public class ParseDateTest {
 		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
 	}
 	
-	private String getToday() {
+	private String getTodayDate() {
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH)+1;
+        int month = cal.get(Calendar.MONTH) + 1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         String twoDigitMonth = convertToTwoDigits(month);
 		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth); 
@@ -402,11 +403,11 @@ public class ParseDateTest {
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
-	private String getTomorrow() {
+	private String getTomorrowDate() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_YEAR, 1);
 		int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH)+1;
+        int month = cal.get(Calendar.MONTH) + 1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         String twoDigitMonth = convertToTwoDigits(month);
 		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth); 
@@ -414,13 +415,16 @@ public class ParseDateTest {
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
-	private String getTodayToNextDayOfWeek(int expectedDay) {
+	/**
+	 * Get the expected day of week date based on today
+	 */
+	private String getNextDayOfWeekDate(int expectedDayOfWeek) {
 		Calendar cal = Calendar.getInstance();
-		int numOfDay = getNumOfDay(cal.get(Calendar.DAY_OF_WEEK), expectedDay);
+		int numOfDay = getNumOfDay(cal.get(Calendar.DAY_OF_WEEK), expectedDayOfWeek);
 		cal.add(Calendar.DAY_OF_YEAR, numOfDay);
 		
 		int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH)+1;
+        int month = cal.get(Calendar.MONTH) + 1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         String twoDigitMonth = convertToTwoDigits(month);
 		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth); 
@@ -428,15 +432,15 @@ public class ParseDateTest {
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
-	private int getNumOfDay(int currentDay, int expectedDay) {
+	private int getNumOfDay(int currentDayOfWeek, int expectedDayOfWeek) {
 		int numOfDay = 0;
 		int newDay = 0;
 		for(int i = 1; i <= DAYS_IN_WEEK; i++) {
-			newDay = currentDay + i; 
+			newDay = currentDayOfWeek + i; 
 			if(newDay > DAYS_IN_WEEK) {
-				newDay = (currentDay + i) % DAYS_IN_WEEK;
+				newDay = (currentDayOfWeek + i) % DAYS_IN_WEEK;
 			}
-			if (newDay == expectedDay) {
+			if (newDay == expectedDayOfWeek) {
 				numOfDay = i;
 				break;
 			}

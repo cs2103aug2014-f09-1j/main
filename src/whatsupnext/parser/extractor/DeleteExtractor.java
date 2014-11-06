@@ -85,7 +85,7 @@ public class DeleteExtractor implements Extractor {
 	 */
 	private void deleteCaseDeadline(Task task) {
 		task.setDeleteType(DELETETYPE.DEADLINE);
-		task.setEndTime(parseDate.getTodayDateTimeString());		
+		task.setEndTime(parseDate.getCurrentTime());		
 	}
 	
 	/**

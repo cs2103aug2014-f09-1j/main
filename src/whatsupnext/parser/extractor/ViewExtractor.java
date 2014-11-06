@@ -81,7 +81,7 @@ public class ViewExtractor implements Extractor {
 	 */
 	private void viewCaseNext(Task task) {
 		task.setViewType(VIEWTYPE.NEXT);
-		task.setEndTime(parseDate.getTodayDateTimeString());
+		task.setEndTime(parseDate.getCurrentTime());
 	}
 
 	/**

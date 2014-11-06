@@ -7,7 +7,6 @@ import whatsupnext.structure.Task;
 
 public class DoneCommand extends Command {
 
-	private final String MESSAGE_DONE = "Tasks are successfully labeled.";
 	private ArrayList<Task> list = LogicUtilities.list;
 	
 	public DoneCommand(Task task) {
@@ -15,13 +14,11 @@ public class DoneCommand extends Command {
 	}
 
 	@Override
-	public String executeCommand() {
-		labelTask(taskID);
-		
+	public String executeCommand() {	
 		String feedbackDone;
-		try {
+		try {		
+			feedbackDone = labelTask(taskID);
 			storage.inputTasks(list);
-			feedbackDone = MESSAGE_DONE;
 		} catch (IOException e) {
 			feedbackDone = e.getMessage();
 		}
@@ -29,9 +26,11 @@ public class DoneCommand extends Command {
 		return feedbackDone;
 	}
 	
-	private void labelTask(String id) {
+	private String labelTask(String id) {
 		int index = LogicUtilities.getTaskIndexInArray(id);
 		Task temp = list.get(index);
 		temp.setDone(true);
+		String MESSAGE_DONE = "Task " + id + " is successfully labeled as done.";
+		return MESSAGE_DONE;		
 	}
 }

@@ -154,6 +154,9 @@ public class UpcomingTasksWidget implements TasksWidget{
 		timeLengthCombobox.setFont(new Font("Cambria", Font.PLAIN, 12));
 		timeLengthCombobox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// TODO: temporary hot fix to strange visual bug
+				widgetPanel.setBackground(new Color(204, 224, 250, 170));
+				
 				@SuppressWarnings("unchecked")
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 		        selectedTimeOption = (String)cb.getSelectedItem();
@@ -173,7 +176,6 @@ public class UpcomingTasksWidget implements TasksWidget{
 
 	private void displayUpcomingFeedback(String feedback) {
 		feedback = feedback.replaceAll(currentYear, "");
-		//textDisplayUpcoming.setText(feedback);
 		appendToPane(feedback);
 	}
 	
@@ -239,38 +241,41 @@ public class UpcomingTasksWidget implements TasksWidget{
 	private void appendToPane(String feedback) {
 		textDisplayUpcoming.setText(feedback);
 		int numOfNewline = countSubstring("\n", feedback);
+		
 		String[] subStrings = feedback.trim().split("\n");
 		int currentStart = 0;
 		int currentEnd = feedback.indexOf("\n",1);
+		
 		String subString;
-		boolean newtask=true;
+		boolean newtask = true;
 		Color lastColor = generateNewColor();
       			
 	     for (int i = 0; i <= numOfNewline; i++) {
 	    	 currentEnd = feedback.indexOf("\n",currentStart+1);
-	    	 if (currentEnd<0) {
-	    		 currentEnd=doc.getLength();
+	    	 if (currentEnd < 0) {
+	    		 currentEnd = doc.getLength();
 	    	 }
              SimpleAttributeSet set = new SimpleAttributeSet();
  
              subString = subStrings[i]; 
              // This line is a task title
-             if (isnewTask(subString)){
+             if (isnewTask(subString)) {
             	 StyleConstants.setBold(set, true); 
             	 StyleConstants.setFontSize(set, 12);      
             	 StyleConstants.setBackground(set, titleBackground);
             	 StyleConstants.setForeground(set, titleForeground);
-            	 newtask=true;
+            	 newtask = true;
+            	 
              } else {
             	 StyleConstants.setBold(set, false); 
             	 StyleConstants.setFontSize(set, 11);
-            	 if (newtask){
+            	 if (newtask) {
                     lastColor = generateNewColor();
                     newtask = false;
             	 } 
             	 StyleConstants.setForeground(set, lastColor);
              }
-             doc.setCharacterAttributes(currentStart, currentEnd-currentStart+1, set, true);
+             doc.setCharacterAttributes(currentStart, currentEnd - currentStart + 1, set, true);
              currentStart = currentEnd + 1;
          }
 	}

@@ -1,3 +1,4 @@
+//@author A0105720W
 package whatsupnext.logic;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class AddCommand extends Command {
 		list.add(this.toTask());
 		MESSAGE_ADDED = "Successfully added to task " + taskID + ".";
 		if (!endTime.isEmpty()) {
-			MESSAGE_ADDED = MESSAGE_ADDED + "\n\tDeadline: " + LogicUtilities.getFormattedTime(endTime);
+			MESSAGE_ADDED = MESSAGE_ADDED + "\n     Deadline: " + LogicUtilities.getFormattedTime(endTime);
 		}
 		
 		LogicUtilities.sortTasks(list);

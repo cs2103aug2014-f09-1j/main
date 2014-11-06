@@ -1,3 +1,4 @@
+//@author A0105720W
 /*
  * This is the Logic class.
  */

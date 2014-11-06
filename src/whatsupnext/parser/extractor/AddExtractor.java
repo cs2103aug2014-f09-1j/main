@@ -60,13 +60,13 @@ public class AddExtractor implements Extractor {
 		parseDate.setParsingStartTime(true);
 		task.setStartTime(parseDate.parseInput(detailsTimeStartAndEnd[0]));
 		if(task.getStartTime().isEmpty() 
-				|| task.getStartTime().compareTo(parseDate.getTodayDateTimeString()) < 0) {
+				|| task.getStartTime().compareTo(parseDate.getCurrentTime()) < 0) {
 			throw new IllegalArgumentException(MESSAGE_INVALID_START_TIME);
 		}
 		parseDate.setParsingStartTime(false);
 		task.setEndTime(parseDate.parseInput(detailsTimeStartAndEnd[1]));
 		if(task.getEndTime().isEmpty() 
-				|| task.getEndTime().compareTo(parseDate.getTodayDateTimeString()) < 0) {
+				|| task.getEndTime().compareTo(parseDate.getCurrentTime()) < 0) {
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
 		}
 		if (task.getStartTime().compareTo(task.getEndTime())>0) {
@@ -90,7 +90,7 @@ public class AddExtractor implements Extractor {
 			task.setEndTime(parseDate.parseInput(details[detailsSize-1]));
 		}
 		if(task.getEndTime().isEmpty() 
-				|| task.getEndTime().compareTo(parseDate.getTodayDateTimeString()) < 0) {
+				|| task.getEndTime().compareTo(parseDate.getCurrentTime()) < 0) {
 			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
 		}
 	}

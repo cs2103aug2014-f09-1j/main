@@ -345,7 +345,7 @@ public class ParserTest {
         assertEquals("OPCODE", OPCODE.DELETE, task.getOpCode());
         assertEquals("deleteType", DELETETYPE.DEADLINE, task.getDeleteType());
 		assertEquals("startTime", "", task.getStartTime());
-		assertEquals("endTime", parseDate.getTodayDateTimeString(), task.getEndTime());
+		assertEquals("endTime", parseDate.getCurrentTime(), task.getEndTime());
 	}
 	
 	@Test

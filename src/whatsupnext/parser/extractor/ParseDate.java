@@ -64,6 +64,16 @@ public class ParseDate {
 		this.isParsingStartTime = isParsingStartTime;
 	}
 	
+	/**
+	 * Returns a 12-length string of current time 
+	 * @return In format of: yyyyMMddHHmm
+	 */
+	public String getCurrentTime() {
+		Calendar cal = Calendar.getInstance();
+		String formattedDate = formatDate(cal);
+		return formattedDate; 
+	}
+	
 	private ArrayList<String> getTimeDateFormats() {
 		ArrayList<String> allFormats = new ArrayList<String>();
 		for (String time : FORMATS_TIME) {
@@ -178,21 +188,6 @@ public class ParseDate {
 		return formattedDate;
 	}
 	
-	private String getCurrentTime() {
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH)+1;
-		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-		int hour = cal.get(Calendar.HOUR_OF_DAY);
-		int minute = cal.get(Calendar.MINUTE);
-		String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
-		String twoDigitHour = convertToTwoDigits(hour);
-		String twoDigitMinute = convertToTwoDigits(minute);
-
-		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
-	}
-	
 	private String getToday() {
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
@@ -287,7 +282,12 @@ public class ParseDate {
 		
 		return numOfDay;
 	}
-
+	
+	/**
+	 * Returns a 12-length string based on calendar
+	 * @param cal Calendar to be formatted 
+	 * @return In format of: yyyyMMddHHmm
+	 */
 	private String formatDate(Calendar cal) {
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH)+1;
@@ -323,26 +323,6 @@ public class ParseDate {
         String twoDigitMonth = convertToTwoDigits(month);
 		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
 		return year + twoDigitMonth + twoDigitDayOfMonth;
-	}
-	
-	/**
-	 * This function reports the date string of today
-	 * In format of : yyyymmddhhss
-	 * @return
-	 */
-	public String getTodayDateTimeString() {
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH)+1;
-		int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-		int hour = cal.get(Calendar.HOUR_OF_DAY);
-		int minute = cal.get(Calendar.MINUTE);
-		String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
-		String twoDigitHour = convertToTwoDigits(hour);
-		String twoDigitMinute = convertToTwoDigits(minute);
-
-		return year + twoDigitMonth + twoDigitDayOfMonth + twoDigitHour + twoDigitMinute; 
 	}
 	
 	/**

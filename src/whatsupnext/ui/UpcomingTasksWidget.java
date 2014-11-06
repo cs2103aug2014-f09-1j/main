@@ -199,7 +199,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 		Task task = new Task();
 		task.setOpcode(OPCODE.VIEW);
 		task.setViewType(VIEWTYPE.TIMEFRAME);
-		task.setStartTime(parseDate.getTodayDateString() + "0000");
+		task.setStartTime(parseDate.getTodayDate() + "0000");
 		
 		Calendar cal = Calendar.getInstance();
 		if (timeOption.equalsIgnoreCase(timeOptions[0])) {

@@ -9,7 +9,7 @@ import java.util.Calendar;
 public class ParseDate {
 	
 	private final String FORMAT_LAST_MINUTE = "HHmm";
-	private final String FORMAT_TODAY = "ddMMyyyy";
+	private final String FORMAT_TODAY = "yyyyMMdd";
 	private final ArrayList<String> FORMATS_TIME = new ArrayList<String>(Arrays.asList("HHmm", "HH:mm",
 																						"h:mm a", "h a"));
 	private final ArrayList<String> FORMATS_DATE = new ArrayList<String>(Arrays.asList("ddMMyy", "ddMMyyyy", 
@@ -74,6 +74,21 @@ public class ParseDate {
 		return formattedDate; 
 	}
 	
+	/**
+	 * Returns a 8-length string of today date 
+	 * @return In format of: yyyyMMdd
+	 * @return
+	 */
+	public String getTodayDate() {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        String twoDigitMonth = convertToTwoDigits(month);
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
+		return year + twoDigitMonth + twoDigitDayOfMonth;
+	}
+	
 	private ArrayList<String> getTimeDateFormats() {
 		ArrayList<String> allFormats = new ArrayList<String>();
 		for (String time : FORMATS_TIME) {
@@ -135,7 +150,7 @@ public class ParseDate {
 				formatter = new SimpleDateFormat(format);
 				if (FORMATS_TIME.contains(format)) {
 					formatter = new SimpleDateFormat(format + " " + FORMAT_TODAY);
-					formattedInput = formattedInput + " " + getToday();
+					formattedInput = formattedInput + " " + getTodayDate();
 				}
 				if (FORMATS_DATE.contains(format)) {
 					formatter = new SimpleDateFormat(format + " " + FORMAT_LAST_MINUTE);
@@ -164,14 +179,14 @@ public class ParseDate {
 		SimpleDateFormat formatter = null;
 		for (String format : listOfTimeDayFormats) {
 			try {
-				formattedInput = input + " " + getToday();
+				formattedInput = input + " " + getTodayDate();
 				formatter = new SimpleDateFormat(format + " " + FORMAT_TODAY);
 				if (listOfAliasesDay.contains(input)){
 					formatter = new SimpleDateFormat(FORMAT_TODAY + " " + FORMAT_LAST_MINUTE);
 					if(isParsingStartTime) {
-						formattedInput = getToday() + " " + FIRST_MINUTE;
+						formattedInput = getTodayDate() + " " + FIRST_MINUTE;
 					} else {
-						formattedInput = getToday() + " " + LAST_MINUTE;
+						formattedInput = getTodayDate() + " " + LAST_MINUTE;
 					}					
 				}
 				formatter.setLenient(false);
@@ -186,17 +201,6 @@ public class ParseDate {
 		}
 		
 		return formattedDate;
-	}
-	
-	private String getToday() {
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH)+1;
-        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth); 
-          
-		return twoDigitDayOfMonth + twoDigitMonth + year;
 	}
 	
 	private Calendar setNewDay(Calendar cal, String input){
@@ -310,20 +314,6 @@ public class ParseDate {
 		}
 	}
 	
-	/**
-	 * This function reports the date string of today
-	 * In format of : yyyymmdd
-	 * @return
-	 */
-	public String getTodayDateString() {
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH)+1;
-        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
-		return year + twoDigitMonth + twoDigitDayOfMonth;
-	}
 	
 	/**
 	 * This function reports the date string of the provided Calendar object

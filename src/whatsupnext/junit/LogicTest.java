@@ -134,7 +134,7 @@ public class LogicTest {
 		
 		String feedback = logic.executeTask(task);
 		assertEquals("Test Add Deadline - Successful ",
-				"Successfully added to task 1.\n     Deadline: 2014 Oct 10 12:00", feedback);
+				"Successfully added to task 1.\n\tDeadline: 2014 Oct 10 12:00", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "1: testing\n\tEnd Time: 2014 Oct 10 12:00\n\tNot done.");
@@ -151,7 +151,7 @@ public class LogicTest {
 		
 		String feedback = logic.executeTask(task);
 		assertEquals("Test Add Time Frame - Successful ",
-				"Successfully added to task 1.\n     Deadline: 2014 Oct 11 12:00", feedback);
+				"Successfully added to task 1.\n\tDeadline: 2014 Oct 11 12:00", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
 		assertEquals(feedback, "1: testing\n\tStart Time: 2014 Oct 10 12:00\n\tEnd Time: 2014 Oct 11 12:00\n\tNot done.");

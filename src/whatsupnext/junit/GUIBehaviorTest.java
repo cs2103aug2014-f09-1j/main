@@ -69,12 +69,12 @@ public class GUIBehaviorTest {
 		return twoDigitDayOfMonth + twoDigitMonth + year;
 	}
 
-	private String getTodayDateForFormat() {
+	private String getTodayDateForFormat(String time) {
 		Calendar cal = Calendar.getInstance();
 		String year = Integer.toString(cal.get(Calendar.YEAR));
 		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
 		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));     
-		return year + twoDigitMonth + twoDigitDayOfMonth;
+		return year + twoDigitMonth + twoDigitDayOfMonth + time;
 	}
 
 	/**
@@ -87,6 +87,15 @@ public class GUIBehaviorTest {
 		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
 		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));     
 		return twoDigitDayOfMonth + twoDigitMonth + year;
+	}
+	
+	private String getTomorrowDateForFormat(String time) {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+		String year = Integer.toString(cal.get(Calendar.YEAR));
+		String twoDigitMonth = convertToTwoDigits(cal.get(Calendar.MONTH) + 1);
+		String twoDigitDayOfMonth = convertToTwoDigits(cal.get(Calendar.DAY_OF_MONTH));     
+		return year + twoDigitMonth + twoDigitDayOfMonth + time;
 	}
 
 	private String convertToTwoDigits(int possibleSingleDigit) {
@@ -173,7 +182,7 @@ public class GUIBehaviorTest {
 		textInput.setText("add floating task test");
 		buttonEnter.doClick();
 
-		assertEquals("\nA task is successfully added.\n", textDisplayMain.getText());
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
 	}
@@ -183,8 +192,9 @@ public class GUIBehaviorTest {
 		textInput.setText("add byTaskTest by " + getTomorrowDate());
 		buttonEnter.doClick();
 
+		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2359")).replaceAll(currentYear, "");
 		assertEquals(
-				"\nA task is successfully added.\n",
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedUpcomingTime + "\n",
 				textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
@@ -192,11 +202,11 @@ public class GUIBehaviorTest {
 		textInput.setText("add byTaskTest2 by " + getTodayDate());
 		buttonEnter.doClick();
 
+		formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat("2359")).replaceAll(currentYear, "");
 		assertEquals(
-				"\nA task is successfully added.\n",
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedUpcomingTime + "\n",
 				textDisplayMain.getText());
-		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat()).replaceAll(currentYear, "");
-		assertEquals("2: byTaskTest2\n\tEnd Time:" + formattedUpcomingTime + " 23:59\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("2: byTaskTest2\n\tEnd Time:" + formattedUpcomingTime + "\n\tNot done.", textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
@@ -208,8 +218,9 @@ public class GUIBehaviorTest {
 						" to 8 pm " + getTomorrowDate());
 		buttonEnter.doClick();
 
+		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2000")).replaceAll(currentYear, "");
 		assertEquals(
-				"\nA task is successfully added.\n",
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedUpcomingTime + "\n",
 				textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
@@ -220,14 +231,14 @@ public class GUIBehaviorTest {
 						" to 11:59 pm " + getTodayDate());
 		buttonEnter.doClick();
 
+		formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat("2359")).replaceAll(currentYear, "");
 		assertEquals(
-				"\nA task is successfully added.\n",
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedUpcomingTime + "\n",
 				textDisplayMain.getText());
-		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat()).replaceAll(currentYear, "");
 		assertEquals(
 				"2: fromToTaskTest2" +
-						"\n\tStart Time:" + formattedUpcomingTime + " 23:59" +
-						"\n\tEnd Time:" + formattedUpcomingTime + " 23:59\n\tNot done.",
+						"\n\tStart Time:" + formattedUpcomingTime +
+						"\n\tEnd Time:" + formattedUpcomingTime + "\n\tNot done.",
 						textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}

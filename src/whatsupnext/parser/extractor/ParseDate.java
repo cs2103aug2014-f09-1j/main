@@ -16,10 +16,12 @@ public class ParseDate {
 																						"h:mm a", "h a"));
 	private final ArrayList<String> FORMATS_DATE = new ArrayList<String>(Arrays.asList("ddMMyy", "ddMMyyyy", 
 																						"dd/MM/yy", "dd/MM/yyyy", 
-																						"dd-MM-yy", "dd-MM-yyyy"));
+																						"dd-MM-yy", "dd-MM-yyyy",
+																						"dd MMM yy", "dd MMM yyyy",
+																						"dd MMMM yy", "dd MMMM yyyy"));
 	
 	//These are the aliases for day of week 
-	private final ArrayList<String> ALIASES_TODAY = new ArrayList<String>(Arrays.asList("Today", "today"));
+	private final ArrayList<String> ALIASES_TODAY = new ArrayList<String>(Arrays.asList("today"));
 	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("tomorrow", "tml"));
 	private final ArrayList<String> ALIASES_SUNDAY = new ArrayList<String>(Arrays.asList("sunday", "sun"));
 	private final ArrayList<String> ALIASES_MONDAY = new ArrayList<String>(Arrays.asList("monday", "mon"));

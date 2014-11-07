@@ -66,6 +66,13 @@ public class ParseDateTest {
 		
 		formattedDate = parseDate.parseInput("1 pm 25/12/14");
 		assertEquals("Test h a dd/MM/yy", "201412251300", formattedDate);
+		
+		formattedDate = parseDate.parseInput("1 pm 25 dec 14");
+		assertEquals("h a dd MMM yy", "201412251300", formattedDate);
+		
+		formattedDate = parseDate.parseInput("1 pm 25 december 2014");
+		assertEquals("h a dd MMMM yyyy", "201412251300", formattedDate);
+		
 	}
 	
 	@Test
@@ -122,6 +129,12 @@ public class ParseDateTest {
 		formattedDate = parseDate.parseInput("25/12/14 1 PM");
 		assertEquals("Test dd/MM/yy h a", "201412251300", formattedDate);
 		
+		formattedDate = parseDate.parseInput("04 jan 14 1 AM");
+		assertEquals("dd MMM yy h a", "201401040100", formattedDate);
+		
+		formattedDate = parseDate.parseInput("25 december 2014 1 PM");
+		assertEquals("dd MMMM yy h a", "201412251300", formattedDate);
+		
 	}
 	
 	@Test
@@ -175,6 +188,18 @@ public class ParseDateTest {
 		
 		formattedDate = parseDate.parseInput("29-09-2014");
 		assertEquals("Test dd-MM-yyyy", "201409292359", formattedDate);
+		
+		formattedDate = parseDate.parseInput("29 sep 14");
+		assertEquals("dd MMM yy", "201409292359", formattedDate);
+		
+		formattedDate = parseDate.parseInput("29 sep 2014");
+		assertEquals("dd MMM yyyy", "201409292359", formattedDate);
+		
+		formattedDate = parseDate.parseInput("29 september 14");
+		assertEquals("dd MMMM yy", "201409292359", formattedDate);
+		
+		formattedDate = parseDate.parseInput("29 september 2014");
+		assertEquals("dd MMMM yyyy", "201409292359", formattedDate);
 		
 		parseDate.setParsingStartTime(true);
 		formattedDate = parseDate.parseInput("29-09-2014");

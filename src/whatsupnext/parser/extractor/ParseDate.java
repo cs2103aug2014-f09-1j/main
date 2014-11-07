@@ -59,14 +59,17 @@ public class ParseDate {
 		String formattedDate = "";
 		input = input.toLowerCase();
 		
-		if(input.equalsIgnoreCase(NOW)){
+		if(input.equalsIgnoreCase(NOW)) {
 			formattedDate = getCurrentTime();
 		}
-		if(formattedDate.isEmpty()){
+		if(formattedDate.isEmpty()) {
 			formattedDate = parseTimeDateFormats(input);
 		}
-		if(formattedDate.isEmpty()){
+		if(formattedDate.isEmpty()) {
 			formattedDate = parseTimeDayFormats(input);
+		}
+		if(formattedDate.length() > 12) {
+			formattedDate = "";
 		}
 		return formattedDate;
 	}

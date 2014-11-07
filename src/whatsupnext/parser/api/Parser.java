@@ -30,6 +30,7 @@ public class Parser {
 	private final String[] ALIASES_DONE = {"done"};
 	private final String[] ALIASES_UNDO = {"undo"};
 	private final String[] ALIASES_REDO = {"redo"};
+	private final String[] ALIASES_FREE = {"free"};
 	private final String[] ALIASES_HELP = {"help", "h", "?"};
 	private final String[] ALIASES_EXIT = {"exit", "e", "quit", "q"};
 	
@@ -88,6 +89,8 @@ public class Parser {
 				break;
 			case REDO:
 				break;
+			case FREE:
+				break;
 			case HELP:
 				HelpExtractor exHelp = new HelpExtractor();
 				exHelp.extract(task, input);
@@ -116,6 +119,8 @@ public class Parser {
 			return OPCODE.UNDO;
 		} else if (isInOperationAliases(operation, ALIASES_REDO)) {
 			return OPCODE.REDO;
+		} else if (isInOperationAliases(operation, ALIASES_FREE)) {
+			return OPCODE.FREE;
 		}else if (isInOperationAliases(operation, ALIASES_HELP)) {
 			return OPCODE.HELP;
 		} else if (isInOperationAliases(operation, ALIASES_EXIT)) {

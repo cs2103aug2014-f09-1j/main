@@ -18,24 +18,28 @@ public class UpdateCommand extends Command{
 		updateType = task.getUpdateType();
 	}
 
-	public String executeCommand() {	
-		switch (updateType) {
-			case DESCRIPTION:
-				updateInfo();
-				MESSAGE_UPDATED = "Successfully updated the description of task " + taskID + ".";
+	public String executeCommand() {
+		int index = LogicUtilities.getTaskIndexInArray(taskID);
+		
+		if (index < 0) {
+			MESSAGE_UPDATED = "Task " + taskID + " doesn't exist.";
+		} else {
+			switch (updateType) {
+			case DESCRIPTION:				
+				MESSAGE_UPDATED = updateInfo(index);
 				break;
-			case DEADLINE:
-				updateDeadline();
-				MESSAGE_UPDATED = "Successfully updated the deadline of task " + taskID + ".";
+			case DEADLINE:				
+				MESSAGE_UPDATED = updateDeadline(index);;
 				break;
-			case TIMEFRAME:
-				updateTimeFrame();
-				MESSAGE_UPDATED = "Successfully updated the time frame of task " + taskID + ".";
+			case TIMEFRAME:			
+				MESSAGE_UPDATED = updateTimeFrame(index);
 				break;
 			default:
 				break;
+		    }
 		}
 		
+
 		LogicUtilities.sortTasks(list);
 		
 		String feedbackUpdate;
@@ -52,22 +56,25 @@ public class UpdateCommand extends Command{
 	/*
 	 * Three types of UPDATE functions.
 	 */
-	private void updateInfo() {
-		int index = LogicUtilities.getTaskIndexInArray(taskID);
+	private String updateInfo(int index) {
 		Task task = list.get(index);
 		task.setDescription(description);
+		
+		return "Successfully updated the description of task " + taskID + ".";
 	}
 	
-	private void updateDeadline() {
-		int index = LogicUtilities.getTaskIndexInArray(taskID);	
+	private String updateDeadline(int index) {
 		Task task = list.get(index);
 		task.setEndTime(endTime);
+		
+		return "Successfully updated the deadline of task " + taskID + ".";
 	}
 	
-	private void updateTimeFrame() {
-		int index = LogicUtilities.getTaskIndexInArray(taskID);		
+	private String updateTimeFrame(int index) {	
 		Task task = list.get(index);
 		task.setStartTime(startTime);
 		task.setEndTime(endTime);
+		
+		return "Successfully updated the time frame of task " + taskID + ".";
 	}
 }

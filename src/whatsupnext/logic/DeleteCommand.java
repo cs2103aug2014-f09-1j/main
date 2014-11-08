@@ -27,25 +27,20 @@ public class DeleteCommand extends Command {
 		
 		try {
 			switch (deleteType) {
-				case ALL:
-					deleteAll();
-					MESSAGE_DELETED = "All tasks are deleted.";
+				case ALL:			
+					MESSAGE_DELETED = deleteAll();;
 					break;
-				case ID:
-					deleteById();
-					MESSAGE_DELETED = "Task " + taskID + " is deleted.";
+				case ID:					
+					MESSAGE_DELETED = deleteById();;
 					break;
-				case DEADLINE:
-					deleteByDeadline();
-					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
+				case DEADLINE:					
+					MESSAGE_DELETED = deleteByDeadline();
 					break;
-				case DATE:
-					deleteByDate();
-					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
+				case DATE:				
+					MESSAGE_DELETED = deleteByDate();
 					break;
-				case TIMEFRAME:
-					deleteByTimeFrame();
-					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
+				case TIMEFRAME:					
+					MESSAGE_DELETED = deleteByTimeFrame();
 					break;
 				default:
 					break;
@@ -61,22 +56,31 @@ public class DeleteCommand extends Command {
 		return feedbackDelete;
 	}
 	
-	private void deleteAll() {
+	private String deleteAll() {
 		list.clear();
 		LogicUtilities.setupAvailableIDs();
+		
+		return "All tasks are deleted.";
 	}
 	
-	private void deleteById() {
+	private String deleteById() {
 		int index = LogicUtilities.getTaskIndexInArray(taskID);
-		try {
-			Task removed = list.remove(index);
-			availableIDs.add(Integer.parseInt(removed.getTaskID()));
-		} catch (IndexOutOfBoundsException e) {
-			throw new IndexOutOfBoundsException("Task ID is not valid.");
+		
+		if (index >= 0) {
+			try {
+				Task removed = list.remove(index);
+				availableIDs.add(Integer.parseInt(removed.getTaskID()));
+			} catch (IndexOutOfBoundsException e) {
+				throw new IndexOutOfBoundsException("Task ID is not valid.");
+			}
+			
+			return "Task " + taskID + " is deleted.";
+		} else {
+			return "Task " + taskID + " doesn't exist.";
 		}
 	}
 	
-	private void deleteByDeadline() {
+	private String deleteByDeadline() {
 		Iterator<Task> taskIterator = list.iterator();
 		
 		while (taskIterator.hasNext()) {
@@ -87,9 +91,11 @@ public class DeleteCommand extends Command {
 				deletedNumbers++;
 			}
 		}
+		
+		return deletedNumbers + " tasks are deleted.";
 	}
 	
-	private void deleteByDate() {
+	private String deleteByDate() {
 		Iterator<Task> taskIterator = list.iterator();
 		
 		while (taskIterator.hasNext()) {
@@ -100,9 +106,11 @@ public class DeleteCommand extends Command {
 				deletedNumbers++;
 			}
 		}
+		
+		return deletedNumbers + " tasks are deleted.";
 	}
 	
-	private void deleteByTimeFrame() {
+	private String deleteByTimeFrame() {
 		Iterator<Task> taskIterator = list.iterator();
 		
 		while (taskIterator.hasNext()) {
@@ -115,6 +123,8 @@ public class DeleteCommand extends Command {
 				deletedNumbers++;
 			}
 		}
+		
+		return deletedNumbers + " tasks are deleted.";
 	}
 	
 }

@@ -29,9 +29,16 @@ public class DoneCommand extends Command {
 	
 	private String labelTask(String id) {
 		int index = LogicUtilities.getTaskIndexInArray(id);
-		Task temp = list.get(index);
-		temp.setDone(true);
-		String MESSAGE_DONE = "Task " + id + " is successfully labeled as done.";
+		String MESSAGE_DONE;
+		
+		if (index >= 0) {
+			Task temp = list.get(index);
+			temp.setDone(true);
+			MESSAGE_DONE = "Task " + id + " is successfully labeled as done.";
+		} else {
+			MESSAGE_DONE = "Task " + id + " doesn't exist.";
+		}		
+		
 		return MESSAGE_DONE;		
 	}
 }

@@ -23,7 +23,8 @@ public class SearchCommand extends Command {
 	}
 	
 	public String executeCommand () {
-		searchByDescription(description);		
+		description = description.toLowerCase();
+		searchByKeywords(description);		
 		getOutput();
 		
 		String feedbackSearch = LogicUtilities.formatArrayAsString(output);
@@ -32,11 +33,11 @@ public class SearchCommand extends Command {
 		return feedbackSearch;
 	}
 
-	private void searchByDescription(String keywords) {
-			
+	private void searchByKeywords(String keywords) {	
 		for (int i = 0; i < list.size(); i++) {
 			Task task = list.get(i);
-			String taskDescription = task.getDescription();			
+			String taskDescription = task.getDescription();
+			taskDescription = taskDescription.toLowerCase();
 			
 		    RELEVANCE relevance;
 		    relevance = compareTasks(taskDescription, keywords);	
@@ -64,8 +65,7 @@ public class SearchCommand extends Command {
 			} else {
 				break;
 			}
-		}
-		
+		}	
 		if (number >= keyword) {
 			r = RELEVANCE.LOW;
 		}
@@ -81,9 +81,8 @@ public class SearchCommand extends Command {
 					number++;
 				}
 			}
-		}
-		
-		if ((number >= keyword) && (r==RELEVANCE.LOW)) {
+		}	
+		if ((number >= keyword) && (r == RELEVANCE.LOW) ) {
 			r = RELEVANCE.HIGH;
 		} 
 			

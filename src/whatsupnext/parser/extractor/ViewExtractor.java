@@ -30,6 +30,8 @@ public class ViewExtractor implements Extractor {
 				viewCaseAll(task);
 			} else if (input.equalsIgnoreCase("next")) {
 				viewCaseNext(task);
+			} else if (input.equalsIgnoreCase("overdue")){
+				viewCaseOverdue(task);
 			} else {
 				viewCaseDate(task,input);
 			}
@@ -45,6 +47,15 @@ public class ViewExtractor implements Extractor {
 	}
 	
 	
+	/**
+	 *  View case for overdue tasks
+	 * @param task
+	 */
+	private void viewCaseOverdue(Task task) {
+		task.setViewType(VIEWTYPE.OVERDUE);
+		task.setEndTime(parseDate.getCurrentTime());
+	}
+
 	/**
 	 *  View case for only tasks not done 
 	 * @param task

@@ -60,6 +60,9 @@ public class LogicUtilities {
 	 * This check function is to check whether the end time of task(i) is before a given time.
 	 */
 	public static boolean endsBeforeDeadline(Task task, String deadline) {	
+		if(task.getEndTime().isEmpty()) {
+			return false;
+		}
 		assert(!task.getEndTime().isEmpty());
 		
 		long endTime = Long.parseLong(task.getEndTime());
@@ -69,6 +72,9 @@ public class LogicUtilities {
 	}
 	
 	public static boolean endsOnGivenDate(Task task, String date) {
+		if(task.getEndTime().isEmpty()) {
+			return false;
+		}
 		assert(!task.getEndTime().isEmpty());
 		
 		long endTime = Long.parseLong(task.getEndTime());

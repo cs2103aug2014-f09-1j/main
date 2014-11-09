@@ -22,7 +22,7 @@ public class ParseDate {
 	
 	//These are the aliases for day of week 
 	private final ArrayList<String> ALIASES_TODAY = new ArrayList<String>(Arrays.asList("today"));
-	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("tomorrow", "tml"));
+	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("tomorrow", "tml", "tmr"));
 	private final ArrayList<String> ALIASES_SUNDAY = new ArrayList<String>(Arrays.asList("sunday", "sun"));
 	private final ArrayList<String> ALIASES_MONDAY = new ArrayList<String>(Arrays.asList("monday", "mon"));
 	private final ArrayList<String> ALIASES_TUESDAY = new ArrayList<String>(Arrays.asList("tuesday", "tue"));

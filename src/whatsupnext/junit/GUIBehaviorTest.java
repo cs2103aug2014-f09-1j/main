@@ -245,7 +245,7 @@ public class GUIBehaviorTest {
 
 	@Test
 	public void AddTaskFromToDayTest() {
-
+		
 	}
 
 	@Test

@@ -9,9 +9,9 @@ public class TaskComparators {
 		return task.getEndTime() == null || task.getEndTime().isEmpty();
 	}
 
-	private static boolean hasEmptyStartTime(Task task) {
-		return task.getStartTime() == null || task.getStartTime().isEmpty();
-	}
+//	private static boolean hasEmptyStartTime(Task task) {
+//		return task.getStartTime() == null || task.getStartTime().isEmpty();
+//	}
 	
 	public static class TaskDefaultComparator implements Comparator<Task> {
 		@Override
@@ -26,41 +26,16 @@ public class TaskComparators {
 				return 1;
 			}
 
-			// Deadline tasks get sorted by end time and alphabetically on description
-			// Deadline tasks get placed before time frame tasks
+			// Other tasks get sorted by end time and alphabetically on description
 			long taskAEndTime = Long.parseLong(taskA.getEndTime());
 			long taskBEndTime = Long.parseLong(taskB.getEndTime());
-
-			if (hasEmptyStartTime(taskA) && hasEmptyStartTime(taskB)) {
-				if (taskAEndTime < taskBEndTime) {
-					return -1;
-				} else if (taskAEndTime > taskBEndTime) {
-					return 1;
-				} else if (taskAEndTime == taskBEndTime) {
-					return taskA.getDescription().compareToIgnoreCase(taskB.getDescription());
-				}
-			} else if (hasEmptyStartTime(taskA) && !hasEmptyStartTime(taskB)) {
-				return -1;
-			} else if (!hasEmptyStartTime(taskA) && hasEmptyStartTime(taskB)) {
-				return 1;
-			}
-
-			// Time frame tasks get sorted by end time and by start time and alphabetically on description
-			long taskAStartTime = Long.parseLong(taskA.getStartTime());
-			long taskBStartTime = Long.parseLong(taskB.getStartTime());
 
 			if (taskAEndTime < taskBEndTime) {
 				return -1;
 			} else if (taskAEndTime > taskBEndTime) {
 				return 1;
 			} else {
-				if (taskAStartTime < taskBStartTime) {
-					return -1;
-				} else if (taskAStartTime > taskBStartTime) {
-					return 1;
-				} else {
-					return taskA.getDescription().compareToIgnoreCase(taskB.getDescription());
-				}
+				return taskA.getDescription().compareToIgnoreCase(taskB.getDescription());
 			}
 		}
 	}

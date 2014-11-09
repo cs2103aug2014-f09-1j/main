@@ -232,6 +232,15 @@ public class ExtractorTest {
 	}
 	
 	@Test
+	/* testing for delete DONE*/
+	public void testDelete5() {
+		Task task = new Task();
+		DeleteExtractor ex = new DeleteExtractor();
+		ex.extract(task, "done");
+		assertEquals("Test Delete - deleteType", DELETETYPE.DONE, task.getDeleteType());
+	}
+	
+	@Test
 	public void testDeleteInvalidArgument() {
 		String MESSAGE_INVALID_ARGUMENT = "'delete' must have an argument";
 		Task task = new Task();

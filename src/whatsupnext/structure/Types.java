@@ -19,4 +19,7 @@ public class Types {
 		ALL, NEXT, DATE, TIMEFRAME, UNDONE, FLOATING, OVERDUE
 	}
 	
+	public enum FREETYPE {
+		DATE, TIMEFRAME,
+	}
 }

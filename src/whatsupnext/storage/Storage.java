@@ -181,6 +181,10 @@ public class Storage {
 			deleteLaterVersions();
 		}
 		currentVersionNumber++;		
+		
+		// A copy is created since using the same object reference will make the local  
+		// version vulnerable to changes made to the ArrayList object in Logic.
+		
 		ArrayList<Task> tasksCopy = new ArrayList<Task>();
 		for (int x = 0; x < tasks.size(); x++) {
 			tasksCopy.add(tasks.get(x));

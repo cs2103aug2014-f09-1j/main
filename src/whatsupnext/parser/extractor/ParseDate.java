@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ParseDate {
 	
@@ -44,6 +46,8 @@ public class ParseDate {
 	
 	private boolean isParsingStartTime;
 	
+	private static Logger logger = Logger.getLogger("ParseDate");
+	
 	public ParseDate(){
 		listOfTimeDateFormats = getTimeDateFormats();
 		listOfAliasesDays = getAliasesDays();
@@ -67,9 +71,15 @@ public class ParseDate {
 		}
 		if(formattedDate.isEmpty()) {
 			formattedDate = parseTimeDayFormats(input);
-		}
-		if(formattedDate.length() > 12) {
+		} 
+		if(formattedDate.length() != 12) {
 			formattedDate = "";
+		}
+		assert (formattedDate.isEmpty() || formattedDate.length() == 12);
+		if(formattedDate.length() == 12) {
+			logger.log(Level.INFO, "ParseDate Success!: " + input + " to " + formattedDate);
+		} else {
+			logger.log(Level.INFO, "ParseDate Failure!: " + input);
 		}
 		return formattedDate;
 	}
@@ -88,6 +98,7 @@ public class ParseDate {
 	public String getCurrentTime() {
 		Calendar cal = Calendar.getInstance();
 		String formattedDate = formatDate(cal);
+		assert (formattedDate.length() == 12);
 		return formattedDate; 
 	}
 	
@@ -101,7 +112,10 @@ public class ParseDate {
         int month = cal.get(Calendar.MONTH) + 1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
+		assert (year >= 1000 && year <= 9999 );
+		assert (twoDigitMonth.length() == 2);
+		assert (twoDigitDayOfMonth.length() == 2);
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
@@ -115,7 +129,10 @@ public class ParseDate {
         int month = cal.get(Calendar.MONTH) + 1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
+		assert (year >= 1000 && year <= 9999 );
+		assert (twoDigitMonth.length() == 2);
+		assert (twoDigitDayOfMonth.length() == 2);
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	

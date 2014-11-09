@@ -52,6 +52,9 @@ public class Logic {
 			case REDO:
 				userCommand = new RedoCommand(task);
 				break;
+			case FREE:
+				userCommand = new FreeCommand(task);
+				break;
 			default:
 				return "Unable to execute the command";
 		}

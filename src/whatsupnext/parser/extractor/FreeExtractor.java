@@ -22,6 +22,9 @@ public class FreeExtractor implements Extractor {
 	
 	
 	public void extract(Task task, String input){
+		
+		assert task != null;
+		
 		Pattern onKeywordPattern = Pattern.compile("\\s+(O|o)(N|n)\\s+");
 		Pattern byKeywordPattern = Pattern.compile("\\s+(B|b)(Y|y)\\s+");
 		Pattern fromKeywordPattern = Pattern.compile("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");

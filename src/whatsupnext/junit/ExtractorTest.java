@@ -10,6 +10,7 @@ import org.junit.Test;
 import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.DeleteExtractor;
 import whatsupnext.parser.extractor.DoneExtractor;
+import whatsupnext.parser.extractor.FreeExtractor;
 import whatsupnext.parser.extractor.HelpExtractor;
 import whatsupnext.parser.extractor.SearchExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
@@ -18,6 +19,7 @@ import whatsupnext.structure.Help;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.ADDTYPE;
 import whatsupnext.structure.Types.DELETETYPE;
+import whatsupnext.structure.Types.FREETYPE;
 import whatsupnext.structure.Types.UPDATETYPE;
 import whatsupnext.structure.Types.VIEWTYPE;
 
@@ -473,6 +475,56 @@ public class ExtractorTest {
 		assertEquals("Test Done - endTime", "", task.getEndTime());
 		assertEquals("Test Done - taskID", "", task.getTaskID());
 	}
+
+	
+	@Test
+	public void testFree1(){
+		Task task = new Task();
+		FreeExtractor ex = new FreeExtractor();
+		ex.extract(task,"3");
+		assertEquals("Test Free - description", "3", task.getDescription());
+		assertEquals("Test Free - startTime", getTodayDateTime(), task.getStartTime());
+		assertEquals("Test Free - endTime", getTodayDate()+"2359", task.getEndTime());
+		assertEquals("Test Free - taskID", "", task.getTaskID());
+		assertEquals("Test Free - FREETYPE",FREETYPE.TIMEFRAME,task.getFreeType());
+	}
+	
+	@Test
+	public void testFree2(){
+		Task task = new Task();
+		FreeExtractor ex = new FreeExtractor();
+		ex.extract(task,"3 from 11/11/2014 1000 to 11/11/2014");
+		assertEquals("Test Free - description", "3", task.getDescription());
+		assertEquals("Test Free - startTime", "201411111000", task.getStartTime());
+		assertEquals("Test Free - endTime", "201411112359", task.getEndTime());
+		assertEquals("Test Free - taskID", "", task.getTaskID());
+		assertEquals("Test Free - FREETYPE",FREETYPE.TIMEFRAME,task.getFreeType());
+	}
+	
+	@Test
+	public void testFree3(){
+		Task task = new Task();
+		FreeExtractor ex = new FreeExtractor();
+		ex.extract(task,"3 on 11/11/2014");
+		assertEquals("Test Free - description", "3", task.getDescription());
+		assertEquals("Test Free - startTime", "", task.getStartTime());
+		assertEquals("Test Free - endTime", "201411112359", task.getEndTime());
+		assertEquals("Test Free - taskID", "", task.getTaskID());
+		assertEquals("Test Free - FREETYPE",FREETYPE.DATE,task.getFreeType());
+	}
+	
+	@Test
+	public void testFreeInvalidDuration(){
+		String MESSAGE_INVALID_DURATION = "'free' must have a valid duration: # of hours";
+		Task task = new Task();
+		FreeExtractor ex = new FreeExtractor();
+		try{
+			ex.extract(task, "hours");
+		} catch (Exception e) {
+			assertEquals("Test free - invalid duration", MESSAGE_INVALID_DURATION, e.getMessage());
+		}
+	}
+	
 	
 	@Test
 	public void testViewInvalidArgument() {

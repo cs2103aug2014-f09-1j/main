@@ -20,11 +20,15 @@ import whatsupnext.logic.Logic;
 import whatsupnext.ui.util.ComponentMover;
 import whatsupnext.ui.util.ComponentResizer;
 import whatsupnext.ui.util.TransparentJFrame;
+import whatsupnext.ui.widgets.CommandLineInterfaceWidget;
+import whatsupnext.ui.widgets.FloatingTasksWidget;
+import whatsupnext.ui.widgets.MainDisplayWidget;
+import whatsupnext.ui.widgets.UpcomingTasksWidget;
 
 /*
  * This class is used for GUI of software WhatsUpNext
  */
-public class GUIMultipleWindows {
+public class GUIMultipleWindows extends GUIAbstract{
 	
 	private JFrame frameMain;
 	private final int FRAME_MAIN_WIDTH = 530;
@@ -45,7 +49,7 @@ public class GUIMultipleWindows {
 	private UpcomingTasksWidget upcomingWidget;
 	
 	private boolean movingAllFramesToFront = false;
-	static Logic logic;
+	private static Logic logic;
 
 	
 	public GUIMultipleWindows() {
@@ -376,7 +380,17 @@ public class GUIMultipleWindows {
 	}
 	
 	private void deleteRevisions() {
-		logic.clearRevisionFiles();
+		getLogic().clearRevisionFiles();
 	}
-	
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static Logic getLogic() {
+		return logic;
+	}
+
 }

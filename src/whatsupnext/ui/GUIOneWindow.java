@@ -10,10 +10,16 @@ import java.awt.Toolkit;
 import java.awt.Window.Type;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import whatsupnext.logic.Logic;
+import whatsupnext.ui.widgets.CommandLineInterfaceWidget;
+import whatsupnext.ui.widgets.FloatingTasksWidget;
+import whatsupnext.ui.widgets.MainDisplayWidget;
+import whatsupnext.ui.widgets.ResetButtonWidget;
+import whatsupnext.ui.widgets.UpcomingTasksWidget;
 
 public class GUIOneWindow extends GUIAbstract{
 
@@ -38,7 +44,7 @@ public class GUIOneWindow extends GUIAbstract{
 	private UpcomingTasksWidget upcomingWidget;
 	private ResetButtonWidget resetWidget;
 	
-	static Logic logic;
+	private static Logic logic;
 
 	
 	public GUIOneWindow() {
@@ -63,15 +69,29 @@ public class GUIOneWindow extends GUIAbstract{
 	public JFrame getMainFrame() {
 		return frameMain;
 	}
+
+	public static Logic getLogic() {
+		return logic;
+	}
 	
 	public void showWindows() {
 		frameMain.setLocationRelativeTo(null);
 		frameMain.setVisible(true);
 		frameMain.pack();
+		
+		cliWidget.requestFocus();
 	}
 	
 	public void hideWindows() {
 		frameMain.setVisible(false);
+	}
+	
+	@Override
+	public void reset() {
+		frameMain.pack();
+		displayWidgetTasks();
+		
+		cliWidget.requestFocus();
 	}
 	
 	/**
@@ -278,14 +298,7 @@ public class GUIOneWindow extends GUIAbstract{
 	}
 	
 	private void deleteRevisions() {
-		logic.clearRevisionFiles();
+		getLogic().clearRevisionFiles();
 	}
 
-	@Override
-	public void reset() {
-		frameMain.setLocationRelativeTo(null);
-		frameMain.pack();
-		displayWidgetTasks();
-	}
-	
 }

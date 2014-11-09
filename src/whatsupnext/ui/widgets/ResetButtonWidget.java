@@ -1,4 +1,4 @@
-package whatsupnext.ui;
+package whatsupnext.ui.widgets;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -12,6 +12,9 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import whatsupnext.ui.GUIAbstract;
+import whatsupnext.ui.GUIOneWindow;
 
 public class ResetButtonWidget {
 

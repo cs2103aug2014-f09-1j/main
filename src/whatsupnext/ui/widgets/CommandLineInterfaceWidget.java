@@ -1,9 +1,8 @@
 //@author A0126730M
-package whatsupnext.ui;
+package whatsupnext.ui.widgets;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -27,6 +26,8 @@ import javax.swing.JTextField;
 import whatsupnext.parser.api.Parser;
 import whatsupnext.structure.enums.OPCODE;
 import whatsupnext.structure.util.Task;
+import whatsupnext.ui.GUIMultipleWindows;
+import whatsupnext.ui.GUIOneWindow;
 
 public class CommandLineInterfaceWidget {
 
@@ -34,9 +35,6 @@ public class CommandLineInterfaceWidget {
 	private ArrayList<TasksWidget> linkedOptionalDisplays;
 
 	private JPanel widgetPanel;
-	private final int PANEL_WIDTH = 520;
-	private final int PANEL_HEIGHT = 25;
-	
 	private JTextField textInput;
 	private JButton buttonEnter;
 
@@ -75,11 +73,8 @@ public class CommandLineInterfaceWidget {
 	private void initializeCLIPanel() {
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(new Color(204, 224, 250));
-		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
-		gbl_widgetPanel.columnWidths = new int[]{430, 50};
-		gbl_widgetPanel.rowHeights = new int[]{PANEL_HEIGHT};
 		gbl_widgetPanel.columnWeights = new double[]{1.0, 0.0};
 		gbl_widgetPanel.rowWeights = new double[]{1.0};
 		widgetPanel.setLayout(gbl_widgetPanel);
@@ -178,10 +173,10 @@ public class CommandLineInterfaceWidget {
 					if (currentTask.getOpCode() == OPCODE.HELP) {
 						feedback = currentTask.getHelpMessage();
 					} else {
-						if (GUIMultipleWindows.logic != null) {
-							feedback = GUIMultipleWindows.logic.executeTask(currentTask);
+						if (GUIMultipleWindows.getLogic() != null) {
+							feedback = GUIMultipleWindows.getLogic().executeTask(currentTask);
 						} else {
-							feedback = GUIOneWindow.logic.executeTask(currentTask);
+							feedback = GUIOneWindow.getLogic().executeTask(currentTask);
 						}
 					}
 				} catch (Exception e) {
@@ -262,5 +257,9 @@ public class CommandLineInterfaceWidget {
 		} else {
 			return findWindow(c.getParent());
 		}
+	}
+
+	public void requestFocus() {
+		textInput.requestFocus();
 	}
 }

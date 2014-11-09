@@ -1,8 +1,7 @@
 //@author A0126730M
-package whatsupnext.ui;
+package whatsupnext.ui.widgets;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -29,13 +28,13 @@ import whatsupnext.parser.extractor.ParseDate;
 import whatsupnext.structure.enums.OPCODE;
 import whatsupnext.structure.enums.Types.VIEWTYPE;
 import whatsupnext.structure.util.Task;
+import whatsupnext.ui.GUIMultipleWindows;
+import whatsupnext.ui.GUIOneWindow;
 
 public class UpcomingTasksWidget implements TasksWidget{
 
 	private JPanel widgetPanel;
-	private final int PANEL_WIDTH = 174;
-	private final int PANEL_HEIGHT = 210;
-	
+
 	private final String[] timeOptions = {"1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "1 week", "2 weeks", "3 weeks", "1 month"};
 	private String selectedTimeOption;
 	private JComboBox<String> timeLengthCombobox;
@@ -89,11 +88,8 @@ public class UpcomingTasksWidget implements TasksWidget{
 	private void initializeUpcomingTasksPanel() {
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(new Color(204, 224, 250));
-		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
-		gbl_widgetPanel.columnWidths = new int[]{80, 94};
-		gbl_widgetPanel.rowHeights = new int[]{28, 180};
 		gbl_widgetPanel.columnWeights = new double[]{0.9, 0.1};
 		gbl_widgetPanel.rowWeights = new double[]{0.0, 1.0};
 		widgetPanel.setLayout(gbl_widgetPanel);
@@ -185,10 +181,10 @@ public class UpcomingTasksWidget implements TasksWidget{
 		
 		String feedback;
 		try {
-			if (GUIMultipleWindows.logic != null) {
-				feedback = GUIMultipleWindows.logic.executeTask(task);
+			if (GUIMultipleWindows.getLogic() != null) {
+				feedback = GUIMultipleWindows.getLogic().executeTask(task);
 			} else {
-				feedback = GUIOneWindow.logic.executeTask(task);
+				feedback = GUIOneWindow.getLogic().executeTask(task);
 			}
 		} catch (Exception e) {
 			feedback = e.getMessage();

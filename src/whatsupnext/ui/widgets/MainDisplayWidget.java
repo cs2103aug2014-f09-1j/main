@@ -1,5 +1,5 @@
 //@author A0126730M
-package whatsupnext.ui;
+package whatsupnext.ui.widgets;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,7 +18,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -26,9 +25,6 @@ import java.awt.Insets;
 public class MainDisplayWidget {
 	
 	private JPanel widgetPanel;
-	private final int PANEL_WIDTH = 328;
-	private final int PANEL_HEIGHT = 205;
-
     private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";
     private final String DEFAULT_MESSAGE = "----Please enter command below:\n    type \"help\" for instructions\n";
     private JLabel labelWelcome;
@@ -39,11 +35,13 @@ public class MainDisplayWidget {
 	
 	private Random random = new Random();
 	private int currentColorIndex;
-	private Color[] colors = {new Color(153,0,76),new Color(102,102,0),
-			                  new Color(0,128,128),new Color(220,20,60),
-/*			                  new Color(220,20,60),new Color(184,134,11),
-			                  new Color(139,0,139),new Color(188,143,143),*/
-			                  new Color(210,105,30)};
+	private Color[] colors = {
+			new Color(153, 0, 76),
+			new Color(102, 102, 0),
+			new Color(0, 128, 128), 
+			new Color(220, 20, 60),
+			new Color(210, 105, 30)
+	};
 	private Color titleBackground = new Color(230,230,250);
 	private Color titleForeground = new Color(25,25,112);
 
@@ -80,11 +78,8 @@ public class MainDisplayWidget {
 	private void initializeMainDisplayPanel() {
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(new Color(204, 224, 250));
-		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
-		gbl_widgetPanel.columnWidths = new int[]{PANEL_WIDTH};
-		gbl_widgetPanel.rowHeights = new int[]{30, 180};
 		gbl_widgetPanel.columnWeights = new double[]{1.0};
 		gbl_widgetPanel.rowWeights = new double[]{0.0, 1.0};
 		widgetPanel.setLayout(gbl_widgetPanel);
@@ -137,6 +132,7 @@ public class MainDisplayWidget {
 		GridBagConstraints gbc_textDisplayMainScrollPane = new GridBagConstraints();
 		gbc_textDisplayMainScrollPane.fill = GridBagConstraints.BOTH;
 		gbc_textDisplayMainScrollPane.anchor = GridBagConstraints.NORTHWEST;
+		gbc_textDisplayMainScrollPane.insets = new Insets(3, 0, 0, 0);
 		gbc_textDisplayMainScrollPane.gridx = 0;
 		gbc_textDisplayMainScrollPane.gridy = 1;
 		

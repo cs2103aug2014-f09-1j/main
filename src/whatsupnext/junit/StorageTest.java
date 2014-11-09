@@ -8,14 +8,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import whatsupnext.storage.Storage;
+import whatsupnext.storage.JSONHelper;
 import whatsupnext.structure.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class StorageTest {
 	Storage obj;
+	JSONHelper jsonHelperObject;
 	Task dummyTask1;
 	Task dummyTask2;
 	Task dummyTask3;
@@ -24,13 +25,11 @@ public class StorageTest {
 	ArrayList<Task> taskArray2;
 	ArrayList<Task> taskArray3;
 	
-	public final static String DELIMITER = "%#";	
-	
 	@Before
 	public void initialize() {
 		Storage.tryInitialize("storageTest");
 		obj = Storage.getInstance();
-		
+		jsonHelperObject = new JSONHelper();
 		setUpDummyTasks();
 		setUpTaskArrays();
 	}
@@ -43,18 +42,6 @@ public class StorageTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * Testing the helper code to make sure it's working
-	 */
-	@Test
-	public void testStringToTask() {
-		assertEquals(dummyTask1.getTaskID(), "DummyTaskID1");
-		assertEquals(dummyTask1.getDescription(), "DummyDescription1");
-		assertEquals(dummyTask1.getStartTime(), "DummyStartTime1");
-		assertEquals(dummyTask1.getEndTime(), "DummyEndTime1");
-		assertEquals(dummyTask1.getDone(), true);		
 	}
 	
 	/**
@@ -85,13 +72,15 @@ public class StorageTest {
 	/**
 	 * Creates dummy tasks that will later be written to the file for testing
 	 */
-	private void setUpDummyTasks() {
-		dummyTask1 = stringToTask("DummyTaskID1" + DELIMITER + "DummyDescription1" + DELIMITER + 
-				"DummyStartTime1" + DELIMITER + "DummyEndTime1" + DELIMITER + "true" + DELIMITER);
-		dummyTask2 = stringToTask("DummyTaskID2" + DELIMITER + "DummyDescription2" + DELIMITER + 
-				"DummyStartTime2" + DELIMITER + "DummyEndTime2" + DELIMITER + "false" + DELIMITER);
-		dummyTask3 = stringToTask("DummyTaskID3" + DELIMITER + "DummyDescription3" + DELIMITER + 
-				"DummyStartTime3" + DELIMITER + "DummyEndTime3" + DELIMITER + "true" + DELIMITER);
+	private void setUpDummyTasks() {		
+		dummyTask1 = jsonHelperObject.JSONStringToTask("[\"DummyTaskID1\",\"DummyDescription1\","
+				+ "\"DummyStartTime1\",\"DummyEndTime1\",true]");
+		
+		dummyTask2 = jsonHelperObject.JSONStringToTask("[\"DummyTaskID2\",\"DummyDescription2\","
+				+ "\"DummyStartTime2\",\"DummyEndTime2\",false]");
+		
+		dummyTask3 = jsonHelperObject.JSONStringToTask("[\"DummyTaskID3\",\"DummyDescription3\","
+				+ "\"DummyStartTime3\",\"DummyEndTime3\",true]");
 	}
 	
 	/**
@@ -175,35 +164,5 @@ public class StorageTest {
 		assertTrue(obj.goToPreviousVersion());
 		assertFalse(obj.goToPreviousVersion());
 		assertFalse(obj.goToPreviousVersion());
-	}
-	
-	/**
-	 * A helper function that converts a String in a specific format to a Task object
-	 * @param taskInString
-	 * @return
-	 */
-	private Task stringToTask(String taskInString) {
-		Scanner extractFromString = new Scanner(taskInString);
-		extractFromString.useDelimiter(DELIMITER);
-		
-		String taskID = extractFromString.next();
-		String description = extractFromString.next();
-		String startTime = extractFromString.next();
-		String endTime = extractFromString.next();
-		String booleanString = extractFromString.next();
-		
-		assertTrue(booleanString.equals("true") || booleanString.equals("false"));		
-		boolean isDone = Boolean.parseBoolean(booleanString);
-		
-		Task taskFromString = new Task();
-		taskFromString.setTaskID(taskID);
-		taskFromString.setDescription(description);
-		taskFromString.setStartTime(startTime);
-		taskFromString.setEndTime(endTime);
-		taskFromString.setDone(isDone);
-		
-		extractFromString.close();
-		
-		return taskFromString;
 	}
 }

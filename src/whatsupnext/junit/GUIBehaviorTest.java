@@ -339,62 +339,61 @@ public class GUIBehaviorTest {
 	}
 
 	@Test
-	public void UndoAddTest() {
+	public void UndoTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("undo");
+		buttonEnter.doClick();
+		
+		assertEquals("\nThe execution was canceled.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 
 	}
 
 	@Test
-	public void UndoDeleteTest() {
+	public void RedoTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
 
-	}
-
-	@Test
-	public void UndoUpdateTest() {
-
-	}
-
-	@Test
-	public void UndoLabelTest() {
-
-	}
-
-	@Test
-	public void UndoRedoTest() {
-
-	}
-
-	@Test
-	public void RedoAddTest() {
-
-	}
-
-	@Test
-	public void RedoDeleteTest() {
-
-	}
-
-	@Test
-	public void RedoUpdateTest() {
-
-	}
-
-	@Test
-	public void RedoLabelTest() {
-
-	}
-
-	@Test
-	public void RedoUndoTest() {
-
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("undo");
+		buttonEnter.doClick();
+		
+		assertEquals("\nThe execution was canceled.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("redo");
+		buttonEnter.doClick();
+		
+		assertEquals("\nThe execution was re executed.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
 	}
 
 	@Test
 	public void LabelDoneTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
 
-	}
-
-	@Test
-	public void LabelCategoryTest() {
-
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 }

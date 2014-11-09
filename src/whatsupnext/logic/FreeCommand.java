@@ -30,16 +30,20 @@ public class FreeCommand extends Command {
 	public String executeCommand() {
 		getTasks();
 		
-		switch (freeType) {
-		case DATE:
-			freeDate(endDate);
-			break;
-		case TIMEFRAME:
-			startDate = Long.parseLong(startTime) / 10000;
-			freeTimeFrame(startDate, endDate);
-			break;
-		default:
-			break;
+		if ((duration>=1)&&(duration<=16)) {
+			switch (freeType) {
+			case DATE:
+				freeDate(endDate);
+				break;
+			case TIMEFRAME:
+				startDate = Long.parseLong(startTime) / 10000;
+				freeTimeFrame(startDate, endDate);
+				break;
+			default:
+				break;
+			}
+		} else {
+			feedback = "The duration should within 1 - 16 hours.";
 		}
 		
 		output.clear();

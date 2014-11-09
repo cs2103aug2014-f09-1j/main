@@ -1,6 +1,8 @@
 //@author A0092165E
 package whatsupnext.parser.extractor;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,6 +10,8 @@ import whatsupnext.structure.enums.Types.ADDTYPE;
 import whatsupnext.structure.util.Task;
 
 public class AddExtractor implements Extractor {
+		
+	private static final Logger log = Logger.getLogger( AddExtractor.class.getName() );
 	
 	private final String MESSAGE_INVALID_DESCRIPTION = "'add' must have a valid description";
 	private final String MESSAGE_INVALID_END_TIME = "'add' must have a valid end time";
@@ -21,6 +25,7 @@ public class AddExtractor implements Extractor {
 	}
 	
 	public void extract(Task task, String input){
+		assert task != null;
 		// Determine 'add' case: add by deadline or time frame
 		Pattern byKeywordPattern = Pattern.compile("\\s+(B|b)(Y|y)\\s+");
 		Pattern fromKeywordPattern = Pattern.compile("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
@@ -90,6 +95,8 @@ public class AddExtractor implements Extractor {
 			task.setDescription(details[0]);
 		    task.setEndTime(parseDate.parseInput(details[1]));
 		} else {
+			log.setLevel(Level.INFO);
+		    log.info("description contains keyword by");
 			task.setDescription(Utility.recoverDetails("by",details));
 			task.setEndTime(parseDate.parseInput(details[detailsSize-1]));
 		}

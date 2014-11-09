@@ -23,7 +23,6 @@ public class ViewExtractor implements Extractor {
 	public void extract(Task task, String input){
 		int numOfWord = Utility.countWords(input);
 		if ( numOfWord == 0){
-			// throw new IllegalArgumentException(MESSAGE_INVALID_ARGUMENT);
 			viewCaseUndone(task);
 		} else if (numOfWord == 1) {
 			if (input.equalsIgnoreCase("all")) {

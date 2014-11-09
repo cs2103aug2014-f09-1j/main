@@ -238,7 +238,7 @@ public class CommandLineInterfaceWidget {
 	 * Clears the main display area
 	 */
 	private void clearLinkedDisplay() {
-		linkedDisplay.setText("---Please enter command below:\r\n");
+		linkedDisplay.setText("---Please enter command below:\r\n   type \"help\" for instructions\n ");
 	}
 
 	private void pressEnterFromCLI() {

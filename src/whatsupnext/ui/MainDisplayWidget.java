@@ -122,7 +122,7 @@ public class MainDisplayWidget {
 		textDisplayMain = new JTextPane(doc);
 		textDisplayMain.setFont(new Font("Courier New", Font.BOLD, 12));
 		textDisplayMain.setForeground(new Color(25, 25, 112));
-		textDisplayMain.setText("---Please enter command below:\r\n");
+		textDisplayMain.setText("---Please enter command below:\r\n   type \"help\" for instructions\n ");
 		textDisplayMain.setEditable(false);
 		textDisplayMain.setBackground(new Color(240, 255, 255));
 		
@@ -139,7 +139,7 @@ public class MainDisplayWidget {
 	}
 	
 	public void setText(String string) {
-		textDisplayMain.setText("---Please enter command below:\r\n");
+		textDisplayMain.setText("---Please enter command below:\r\n   type \"help\" for instructions\n ");
 	}
 
 	public void displayFeedback(String feedback) {

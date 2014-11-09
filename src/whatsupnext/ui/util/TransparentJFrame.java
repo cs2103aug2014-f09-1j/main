@@ -1,5 +1,5 @@
 //@author A0126730M
-package whatsupnext.ui;
+package whatsupnext.ui.util;
 
 import java.awt.Color;
 

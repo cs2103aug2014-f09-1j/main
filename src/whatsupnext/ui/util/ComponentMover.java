@@ -4,7 +4,7 @@
  * Rob Camick
  * Provided from http://tips4java.wordpress.com/2009/06/14/moving-windows/
  */
-package whatsupnext.ui;
+package whatsupnext.ui.util;
 
 import java.awt.*;
 import java.awt.event.*;

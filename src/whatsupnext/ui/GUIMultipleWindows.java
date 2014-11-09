@@ -15,7 +15,11 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import whatsupnext.logic.Logic;
+import whatsupnext.ui.util.ComponentMover;
+import whatsupnext.ui.util.ComponentResizer;
+import whatsupnext.ui.util.TransparentJFrame;
 
 /*
  * This class is used for GUI of software WhatsUpNext

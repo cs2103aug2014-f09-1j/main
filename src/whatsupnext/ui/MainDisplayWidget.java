@@ -39,7 +39,7 @@ public class MainDisplayWidget {
 	private Random random = new Random();
 	private int currentColorIndex;
 	private Color[] colors = {new Color(153,0,76),new Color(102,102,0),
-			                  new Color(0,128,128),new Color(0,0,128),
+			                  new Color(0,128,128),new Color(220,20,60),
 /*			                  new Color(220,20,60),new Color(184,134,11),
 			                  new Color(139,0,139),new Color(188,143,143),*/
 			                  new Color(210,105,30)};

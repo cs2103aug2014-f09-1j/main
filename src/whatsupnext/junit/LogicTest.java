@@ -16,6 +16,7 @@ import whatsupnext.storage.Storage;
 import whatsupnext.structure.enums.OPCODE;
 import whatsupnext.structure.enums.Types.ADDTYPE;
 import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.enums.Types.FREETYPE;
 import whatsupnext.structure.enums.Types.UPDATETYPE;
 import whatsupnext.structure.enums.Types.VIEWTYPE;
 import whatsupnext.structure.util.Task;
@@ -207,9 +208,21 @@ public class LogicTest {
 		task.setOpcode(OPCODE.ADD);
 		task.setAddType(ADDTYPE.DEADLINE);
 		task.setDescription("testing");
-		task.setEndTime("201410101200");
+		task.setEndTime("201410101300");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("1");
 		task.setDone(true);
 		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("2");
+		task.setDone(true);
+		logic.executeTask(task);
+
 		
 		task = new Task();
 		task.setOpcode(OPCODE.DELETE);
@@ -220,7 +233,7 @@ public class LogicTest {
 		assertEquals("Test Delete Date - Successful ", "1 tasks are deleted.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
-		assertEquals("1: testing\n\tEnd Time: 2014 Oct 10 12:00\n\tNot done.\n2: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:00\n\tNot done.", feedback);
+		assertEquals("3: testing\n\tEnd Time: 2014 Oct 10 13:00\n\tNot done.\n2: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:00\n\tDone.", feedback);
 	}
 	
 	@Test
@@ -246,6 +259,18 @@ public class LogicTest {
 		task.setDescription("testing");
 		task.setStartTime("201410111000");
 		task.setEndTime("201410111230");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("1");
+		task.setDone(true);
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("2");
+		task.setDone(true);
 		logic.executeTask(task);
 		
 		task = new Task();
@@ -286,16 +311,29 @@ public class LogicTest {
 		logic.executeTask(task);
 		
 		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("2");
+		task.setDone(true);
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("3");
+		task.setDone(true);
+		logic.executeTask(task);
+		
+		task = new Task();
 		task.setOpcode(OPCODE.DELETE);
 		task.setDeleteType(DELETETYPE.TIMEFRAME);
 		task.setStartTime("201410100000");
 		task.setEndTime("201410111220");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Delete Time Frame - Successful ", "2 tasks are deleted.", feedback);
+		assertEquals("Test Delete Time Frame - Successful ", "1 tasks are deleted.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
-		assertEquals(feedback, "3: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:30\n\tNot done.");
+		assertEquals(feedback, "1: testing\n\tEnd Time: 2014 Oct 10 12:00\n\tNot done.\n"
+				+ "3: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:30\n\tDone.");
 	}
 	
 	@Test
@@ -541,6 +579,36 @@ public class LogicTest {
 		feedback = logic.executeTask(task);
 		assertEquals(feedback,
 				"2: task a b\n\tNot done."
+		);
+	}
+	
+	@Test
+	public void testFreeDate() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410101100");
+		task.setEndTime("201410101500");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410101800");
+		task.setEndTime("201410102100");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.FREE);
+		task.setFreeType(FREETYPE.DATE);
+		task.setDescription("3");
+		task.setEndTime("201410102359");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals(feedback,
+				"Available time slots:\n2014 Oct 10 06:00 - 2014 Oct 10 11:00\n2014 Oct 10 15:00 - 2014 Oct 10 18:00"
 		);
 	}
 }

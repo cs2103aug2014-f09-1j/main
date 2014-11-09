@@ -30,6 +30,7 @@ public class MainDisplayWidget {
 	private final int PANEL_HEIGHT = 205;
 
     private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";
+    private final String DEFAULT_MESSAGE = "----Please enter command below:\n    type \"help\" for instructions\n";
     private JLabel labelWelcome;
 	private JScrollPane textDisplayMainScrollPane;
 	private JTextPane textDisplayMain;
@@ -39,7 +40,7 @@ public class MainDisplayWidget {
 	private Random random = new Random();
 	private int currentColorIndex;
 	private Color[] colors = {new Color(153,0,76),new Color(102,102,0),
-			                  new Color(0,128,128),new Color(0,0,128),
+			                  new Color(0,128,128),new Color(220,20,60),
 /*			                  new Color(220,20,60),new Color(184,134,11),
 			                  new Color(139,0,139),new Color(188,143,143),*/
 			                  new Color(210,105,30)};
@@ -57,6 +58,10 @@ public class MainDisplayWidget {
     
     public JPanel getWidgetPanel() {
     	return widgetPanel;
+    }
+    
+    public String getDefaultMessage() {
+    	return DEFAULT_MESSAGE;
     }
     
     private void initializeCurrentYear() {
@@ -122,7 +127,7 @@ public class MainDisplayWidget {
 		textDisplayMain = new JTextPane(doc);
 		textDisplayMain.setFont(new Font("Courier New", Font.BOLD, 12));
 		textDisplayMain.setForeground(new Color(25, 25, 112));
-		textDisplayMain.setText("---Please enter command below:\r\n");
+		textDisplayMain.setText(DEFAULT_MESSAGE);
 		textDisplayMain.setEditable(false);
 		textDisplayMain.setBackground(new Color(240, 255, 255));
 		
@@ -139,7 +144,7 @@ public class MainDisplayWidget {
 	}
 	
 	public void setText(String string) {
-		textDisplayMain.setText("---Please enter command below:\r\n");
+		textDisplayMain.setText(DEFAULT_MESSAGE);
 	}
 
 	public void displayFeedback(String feedback) {

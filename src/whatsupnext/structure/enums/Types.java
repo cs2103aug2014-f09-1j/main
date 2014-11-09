@@ -1,5 +1,5 @@
 //@author A0126730M
-package whatsupnext.structure;
+package whatsupnext.structure.enums;
 
 public class Types {
 	
@@ -19,4 +19,7 @@ public class Types {
 		ALL, NEXT, DATE, TIMEFRAME, UNDONE, FLOATING, OVERDUE
 	}
 	
+	public enum FREETYPE {
+		DATE, TIMEFRAME,
+	}
 }

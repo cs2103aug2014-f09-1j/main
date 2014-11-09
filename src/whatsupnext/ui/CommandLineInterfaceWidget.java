@@ -25,8 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import whatsupnext.parser.api.Parser;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.util.Task;
 
 public class CommandLineInterfaceWidget {
 
@@ -242,7 +242,7 @@ public class CommandLineInterfaceWidget {
 	 * Clears the main display area
 	 */
 	private void clearLinkedDisplay() {
-		linkedDisplay.setText("---Please enter command below:\r\n");
+		linkedDisplay.setText(linkedDisplay.getDefaultMessage());
 	}
 
 	private void pressEnterFromCLI() {

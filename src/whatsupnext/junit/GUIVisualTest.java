@@ -23,10 +23,10 @@ import org.junit.Test;
 
 import whatsupnext.logic.Logic;
 import whatsupnext.storage.Storage;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.DELETETYPE;
 import whatsupnext.ui.GUIMultipleWindows;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.util.Task;
 
 public class GUIVisualTest {
 	private WhatsUpNextGUIStub gui;
@@ -173,6 +173,6 @@ public class GUIVisualTest {
 		assertTrue(textDisplayMain.getFont().isBold());
 		assertEquals(12, textDisplayMain.getFont().getSize());
 		
-		assertEquals("---Please enter command below:\r\n", textDisplayMain.getText());
+		assertEquals("----Please enter command below:\n    type \"help\" for instructions\n", textDisplayMain.getText());
 	}
 }

@@ -4,7 +4,7 @@ package whatsupnext.logic;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class DoneCommand extends Command {
 

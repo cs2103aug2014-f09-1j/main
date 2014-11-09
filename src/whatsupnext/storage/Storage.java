@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 
 public class Storage {

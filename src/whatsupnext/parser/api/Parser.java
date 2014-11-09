@@ -9,12 +9,13 @@ import java.util.StringTokenizer;
 import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.DeleteExtractor;
 import whatsupnext.parser.extractor.DoneExtractor;
+import whatsupnext.parser.extractor.FreeExtractor;
 import whatsupnext.parser.extractor.HelpExtractor;
 import whatsupnext.parser.extractor.SearchExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.util.Task;
 
 public class Parser {
 
@@ -90,6 +91,8 @@ public class Parser {
 			case REDO:
 				break;
 			case FREE:
+				FreeExtractor exFree = new FreeExtractor();
+				exFree.extract(task, input);
 				break;
 			case HELP:
 				HelpExtractor exHelp = new HelpExtractor();

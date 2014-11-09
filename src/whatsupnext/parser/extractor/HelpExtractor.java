@@ -1,8 +1,8 @@
 //@author A0111773L
 package whatsupnext.parser.extractor;
 
-import whatsupnext.structure.Help;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Help;
+import whatsupnext.structure.util.Task;
 
 public class HelpExtractor {
 	private final String MESSAGE_INVALID_ARGUMENT = "Invalid Argument.";

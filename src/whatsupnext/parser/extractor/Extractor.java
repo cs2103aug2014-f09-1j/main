@@ -1,7 +1,7 @@
 //@author A0111773L
 package whatsupnext.parser.extractor;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public interface Extractor {
 	

@@ -17,10 +17,10 @@ import org.junit.Test;
 import whatsupnext.logic.Logic;
 import whatsupnext.logic.LogicUtilities;
 import whatsupnext.storage.Storage;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.DELETETYPE;
 import whatsupnext.ui.GUIMultipleWindows;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.util.Task;
 
 public class GUIBehaviorTest {
 	private WhatsUpNextGUIStub gui;

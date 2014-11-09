@@ -2,7 +2,7 @@
 package whatsupnext.storage;
 
 import static org.junit.Assert.assertNotNull;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;

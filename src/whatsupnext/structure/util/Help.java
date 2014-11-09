@@ -140,7 +140,7 @@ public class Help {
 			+ NEWLINE + "Current Time" + INDENT + "\'now\'"
 			+ NEWLINE
 			+ NEWLINE + "Valid examples:"
-			+ NEWLINE + "\'0000 010114\', \'31/12/2014 23:59\'"
+			+ NEWLINE + "\'0000 010114\', \'31/12/2013 23:59\'"
 			+ NEWLINE + "\'7:30 am sunday\', \'tml 12 pm\'"
 			+ NEWLINE + "\'0930 10-11-14\', \'11:30 am today\'"
 			+ NEWLINE +  "\'now\'"

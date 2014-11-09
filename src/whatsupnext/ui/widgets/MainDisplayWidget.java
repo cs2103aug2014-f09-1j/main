@@ -62,6 +62,18 @@ public class MainDisplayWidget {
     	return DEFAULT_MESSAGE;
     }
     
+    public void setText(String string) {
+		textDisplayMain.setText(DEFAULT_MESSAGE);
+	}
+
+	public void displayFeedback(String feedback) {
+		feedback = feedback.replaceAll(" " + currentYear, "");
+		feedback = feedback.replaceAll(currentYear + " ", "");
+		feedback = feedback.replaceAll(currentYear, "");
+		appendToPane(feedback);
+	}
+	
+    
     private void initializeCurrentYear() {
     	DateFormat dateFormat = new SimpleDateFormat("yyyy");
 		Calendar cal = Calendar.getInstance();
@@ -138,18 +150,6 @@ public class MainDisplayWidget {
 		
 		widgetPanel.add(textDisplayMainScrollPane, gbc_textDisplayMainScrollPane);
 	}
-	
-	public void setText(String string) {
-		textDisplayMain.setText(DEFAULT_MESSAGE);
-	}
-
-	public void displayFeedback(String feedback) {
-		feedback = feedback.replaceAll(" " + currentYear, "");
-		feedback = feedback.replaceAll(currentYear + " ", "");
-		feedback = feedback.replaceAll(currentYear, "");
-		appendToPane(feedback);
-	}
-	
 	
 	/**
 	 * This function displays feedback with customized coloring

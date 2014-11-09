@@ -9,10 +9,6 @@ public class TaskComparators {
 		return task.getEndTime() == null || task.getEndTime().isEmpty();
 	}
 
-//	private static boolean hasEmptyStartTime(Task task) {
-//		return task.getStartTime() == null || task.getStartTime().isEmpty();
-//	}
-	
 	public static class TaskDefaultComparator implements Comparator<Task> {
 		@Override
 		public int compare(Task taskA, Task taskB) {

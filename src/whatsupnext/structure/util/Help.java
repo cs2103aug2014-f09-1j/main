@@ -7,17 +7,20 @@ public class Help {
 	private static final String NEWLINE = "\n";
 	
 	public static final String DEFAULT_HELP_MESSAGE = "Supported Commands:"
-			+ NEWLINE + "add" + INDENT + "Add a task by with description only"
-			+ NEWLINE + INDENT + "or append it with a deadline or time"
-			+ NEWLINE + INDENT + "period."
+			+ NEWLINE + "add" + INDENT + "Add a task by with description"
+			+ NEWLINE + INDENT + "only or append it with a deadline"
+			+ NEWLINE + INDENT + "or a time period."
 			+ NEWLINE + "view" + INDENT + "Display the upcoming task or the"
-			+ NEWLINE + INDENT + "tasks for the day. A time frame can" 
-			+ NEWLINE + INDENT + "be specified too."
+			+ NEWLINE + INDENT + "tasks for the day. A time frame " 
+			+ NEWLINE + INDENT + "can be specified too."
 			+ NEWLINE + "update" + INDENT + "Update the description, deadline,"
 			+ NEWLINE + INDENT + "start or end time of a task."
 			+ NEWLINE + "delete" + INDENT + "Delete by id, date, deadline, or"
 			+ NEWLINE + INDENT + "time frame."
 			+ NEWLINE + "search" + INDENT + "Search for a task by its keyword."
+			+ NEWLINE + "free" + INDENT + "Find free time slots of certain "
+			+ NEWLINE + INDENT + "duration today, or by specifying"
+			+ NEWLINE + INDENT + "end_time, date or time frame."
 			+ NEWLINE + "done" + INDENT + "Label a task as done."
 			+ NEWLINE + "undo" + INDENT + "Undo most recent add/update/delete."
 			+ NEWLINE + "redo" + INDENT + "Redo the most recent undo."
@@ -84,6 +87,19 @@ public class Help {
 			+ NEWLINE
 			+ NEWLINE + "Aliases supported:"
 			+ NEWLINE + "\'s\', \'find\', \'f\'";
+	
+	public static final String FREE_HELP_MESSAGE = "free" + INDENT + "find free slots of certain duration today"
+			+ NEWLINE + INDENT + "or by specifying an end_time, date or time frame."
+			+ NEWLINE
+			+ NEWLINE + "Formats supported:"
+			+ NEWLINE + "free [duration]"
+			+ NEWLINE + "free [duration] by [end_time]"
+			+ NEWLINE + "free [duration] on [date]"
+			+ NEWLINE + "free [duration] from [start_time] to [end_time]"
+			+ NEWLINE
+			+ NEWLINE + "NOTE: [duration] is in number of hours" 
+			+ NEWLINE + "      Time slots during general sleeping time <10 pm to 6 am>"
+			+ NEWLINE + "      would not be returned";
 	
 	public static final String DONE_HELP_MESSAGE = "done" + INDENT + "Label a task as done."
 			+ NEWLINE

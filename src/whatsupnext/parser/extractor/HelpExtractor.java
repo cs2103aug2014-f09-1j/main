@@ -28,6 +28,9 @@ public class HelpExtractor {
 				case "search":
 					task.setHelpMessage(Help.SEARCH_HELP_MESSAGE);
 					break;
+				case "free":
+					task.setHelpMessage(Help.FREE_HELP_MESSAGE);
+					break;					
 				case "done":
 					task.setHelpMessage(Help.DONE_HELP_MESSAGE);
 					break;

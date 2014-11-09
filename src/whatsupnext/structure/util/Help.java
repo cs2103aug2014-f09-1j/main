@@ -88,8 +88,9 @@ public class Help {
 			+ NEWLINE + "Aliases supported:"
 			+ NEWLINE + "\'s\', \'find\', \'f\'";
 	
-	public static final String FREE_HELP_MESSAGE = "free" + INDENT + "find free slots of certain duration today"
-			+ NEWLINE + INDENT + "or by specifying an end_time, date or time frame."
+	public static final String FREE_HELP_MESSAGE = "free" + INDENT + "find free slots of certain duration"
+			+ NEWLINE + INDENT + "today or by specifying an end_time, "
+			+ NEWLINE + INDENT + "date or time frame."
 			+ NEWLINE
 			+ NEWLINE + "Formats supported:"
 			+ NEWLINE + "free [duration]"
@@ -98,8 +99,8 @@ public class Help {
 			+ NEWLINE + "free [duration] from [start_time] to [end_time]"
 			+ NEWLINE
 			+ NEWLINE + "NOTE: [duration] is in number of hours" 
-			+ NEWLINE + "      Time slots during general sleeping time <10 pm to 6 am>"
-			+ NEWLINE + "      would not be returned";
+			+ NEWLINE + "      Time slots during general sleeping time "
+			+ NEWLINE + "      <10 pm to 6 am> would not be returned";
 	
 	public static final String DONE_HELP_MESSAGE = "done" + INDENT + "Label a task as done."
 			+ NEWLINE

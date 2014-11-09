@@ -6,6 +6,7 @@ import java.util.Arrays;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Types.ADDTYPE;
 import whatsupnext.structure.Types.DELETETYPE;
+import whatsupnext.structure.Types.FREETYPE;
 import whatsupnext.structure.Types.UPDATETYPE;
 import whatsupnext.structure.Types.VIEWTYPE;
 
@@ -24,6 +25,7 @@ public class Task {
 	private VIEWTYPE viewType;
 	private UPDATETYPE updateType;
 	private DELETETYPE deleteType;
+	private FREETYPE freeType;
 	private String[] operand;
 	private boolean isDone;
 
@@ -144,4 +146,11 @@ public class Task {
 		return false;
 	}
 
+	public FREETYPE getFreeType() {
+		return freeType;	
+	}
+
+	public void setFreeType(FREETYPE freeType) {
+		this.freeType = freeType;
+	}
 }

@@ -19,15 +19,15 @@ import whatsupnext.logic.Logic;
 public class GUIOneWindow {
 
 	private JFrame frameMain;
-	private final int FRAME_MAIN_WIDTH = 910;
-	private final int FRAME_MAIN_HEIGHT = 700;
+	private final int FRAME_MAIN_WIDTH = 700;
+	private final int FRAME_MAIN_HEIGHT = 442;
 	
-	private final int PANEL_MAIN_WIDTH = 530;
-	private final int PANEL_MAIN_HEIGHT = 360;
-	private final int PANEL_FLOATING_WIDTH = 380;
-	private final int PANEL_FLOATING_HEIGHT = 350;
-	private final int PANEL_UPCOMING_WIDTH = 380;
-	private final int PANEL_UPCOMING_HEIGHT = 350;
+	private final int PANEL_MAIN_WIDTH = 350;
+	private final int PANEL_MAIN_HEIGHT = 442;
+	private final int PANEL_FLOATING_WIDTH = 350;
+	private final int PANEL_FLOATING_HEIGHT = 221;
+	private final int PANEL_UPCOMING_WIDTH = 350;
+	private final int PANEL_UPCOMING_HEIGHT = 221;
 	
 	private JPanel mainPanel;
 	private JPanel floatingPanel;
@@ -111,7 +111,7 @@ public class GUIOneWindow {
 		frameMain.setTitle("WhatsUpNext");
 		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMain.setPreferredSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
-		frameMain.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
+		frameMain.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH - 50, FRAME_MAIN_HEIGHT - 110));
 		
 		GridBagLayout gbl_mainFrame = new GridBagLayout();
 		gbl_mainFrame.columnWidths = new int[]{400, 300};

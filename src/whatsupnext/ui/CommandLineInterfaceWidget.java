@@ -178,7 +178,11 @@ public class CommandLineInterfaceWidget {
 					if (currentTask.getOpCode() == OPCODE.HELP) {
 						feedback = currentTask.getHelpMessage();
 					} else {
-						feedback = GUIMultipleWindows.logic.executeTask(currentTask);
+						if (GUIMultipleWindows.logic != null) {
+							feedback = GUIMultipleWindows.logic.executeTask(currentTask);
+						} else {
+							feedback = GUIOneWindow.logic.executeTask(currentTask);
+						}
 					}
 				} catch (Exception e) {
 					feedback = e.getMessage();

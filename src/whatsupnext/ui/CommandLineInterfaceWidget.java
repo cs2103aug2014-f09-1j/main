@@ -78,7 +78,7 @@ public class CommandLineInterfaceWidget {
 		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
-		gbl_widgetPanel.columnWidths = new int[]{430, 90};
+		gbl_widgetPanel.columnWidths = new int[]{430, 50};
 		gbl_widgetPanel.rowHeights = new int[]{PANEL_HEIGHT};
 		gbl_widgetPanel.columnWeights = new double[]{1.0, 0.0};
 		gbl_widgetPanel.rowWeights = new double[]{1.0};
@@ -116,7 +116,7 @@ public class CommandLineInterfaceWidget {
 		GridBagConstraints gbc_textInput = new GridBagConstraints();
 		gbc_textInput.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textInput.anchor = GridBagConstraints.WEST;
-		gbc_textInput.insets = new Insets(0, 0, 0, 10);
+		gbc_textInput.insets = new Insets(0, 0, 0, 5);
 		gbc_textInput.gridx = 0;
 		gbc_textInput.gridy = 0;
 		

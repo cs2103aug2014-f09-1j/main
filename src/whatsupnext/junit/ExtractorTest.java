@@ -514,6 +514,18 @@ public class ExtractorTest {
 	}
 	
 	@Test
+	public void testFree4(){
+		Task task = new Task();
+		FreeExtractor ex = new FreeExtractor();
+		ex.extract(task,"3 by 11/11/2014");
+		assertEquals("Test Free - description", "3", task.getDescription());
+		assertEquals("Test Free - startTime", getTodayDateTime(), task.getStartTime());
+		assertEquals("Test Free - endTime", "201411112359", task.getEndTime());
+		assertEquals("Test Free - taskID", "", task.getTaskID());
+		assertEquals("Test Free - FREETYPE",FREETYPE.TIMEFRAME,task.getFreeType());
+	}
+	
+	@Test
 	public void testFreeInvalidDuration(){
 		String MESSAGE_INVALID_DURATION = "'free' must have a valid duration: # of hours";
 		Task task = new Task();

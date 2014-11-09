@@ -42,6 +42,9 @@ public class DeleteCommand extends Command {
 				case TIMEFRAME:					
 					MESSAGE_DELETED = deleteByTimeFrame();
 					break;
+				case DONE:
+					MESSAGE_DELETED = deleteDone();
+					break;
 				default:
 					break;
 			}
@@ -129,4 +132,18 @@ public class DeleteCommand extends Command {
 		return deletedNumbers + " tasks are deleted.";
 	}
 	
+	private String deleteDone() {
+		Iterator<Task> taskIterator = list.iterator();
+		
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if ((task.getDone()==true)) {
+				availableIDs.add(Integer.parseInt(task.getTaskID()));
+				taskIterator.remove();
+				deletedNumbers++;
+			}
+		}
+		
+		return deletedNumbers + " tasks are deleted.";
+	}
 }

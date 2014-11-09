@@ -30,7 +30,9 @@ public class DeleteExtractor implements Extractor {
 		    String formattedDate = parseDate.parseInput(input);
 		    if (input.equalsIgnoreCase("deadline")) {
 				deleteCaseDeadline(task);
-			} else{
+			} else if(input.equalsIgnoreCase("done")) {
+				deleteCaseDone(task);
+			} else {
 				if (formattedDate.isEmpty()) {
 					// TODO; should judge for valid ID instead of valid date	
 					deleteCaseID(task,input);
@@ -50,6 +52,15 @@ public class DeleteExtractor implements Extractor {
 		}
 	}
 	
+	
+	/**
+	 * Delete done tasks
+	 * @param task
+	 */
+	private void deleteCaseDone(Task task) {
+		task.setDeleteType(DELETETYPE.DONE);
+	}
+
 	/**
 	 * Delete by ID. delete detail should be valid task ID
 	 * @param task

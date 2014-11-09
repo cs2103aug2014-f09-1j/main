@@ -69,11 +69,14 @@ public class Help {
 			+ NEWLINE + "\'u\', \'edit\', \'e\', \'modify\', \'m\'";
 			
 	public static final String DELETE_HELP_MESSAGE = "delete" + INDENT + "Delete by id, date, deadline, or"
-			+ NEWLINE + INDENT + "time frame."
+			+ NEWLINE + INDENT + "time frame. "
+			+ NEWLINE + INDENT + "Can also delete done tasks or tasks"
+			+ NEWLINE + INDENT + "that passed deadline"
 			+ NEWLINE
 			+ NEWLINE + "Formats supported:"
 			+ NEWLINE + "delete [task_id]"
 			+ NEWLINE + "delete deadline"
+			+ NEWLINE + "delete done"
 			+ NEWLINE + "delete [date]"
 			+ NEWLINE + "delete from [start_time] to [end_time]"
 			+ NEWLINE

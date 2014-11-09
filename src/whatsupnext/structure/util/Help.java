@@ -1,4 +1,4 @@
-//@author A0118897J
+//@author A0111773L
 package whatsupnext.structure.util;
 
 public class Help {
@@ -125,13 +125,13 @@ public class Help {
 			+ NEWLINE
 			+ NEWLINE + "Date formats supported:"
 			+ NEWLINE + "DayMonthYear  " + INDENT + "\'021114\',"
-			+ NEWLINE + INDENT + INDENT + "\'31102014\'"
+			+ NEWLINE + INDENT + INDENT + "\'31102013\'"
 			+ NEWLINE + "Day/Month/Year" + INDENT + "\'02/11/14\',"
-			+ NEWLINE + INDENT + INDENT + "\'31/10/2014\'"
+			+ NEWLINE + INDENT + INDENT + "\'31/10/2013\'"
 			+ NEWLINE + "Day-Month-Year" + INDENT + "\'02-11-14\',"
-			+ NEWLINE + INDENT + INDENT + "\'31-10-2014\'"
+			+ NEWLINE + INDENT + INDENT + "\'31-10-2013\'"
 			+ NEWLINE + "Day Month Year" + INDENT + "\'02 nov 14\',"
-			+ NEWLINE + INDENT + INDENT + "\'02 November 14\'"
+			+ NEWLINE + INDENT + INDENT + "\'02 November 2013\'"
 			+ NEWLINE
 			+ NEWLINE + "Special formats supported:"
 			+ NEWLINE + "Day of Week" + INDENT + "\'monday\', \'mon\'"
@@ -146,9 +146,9 @@ public class Help {
 			+ NEWLINE +  "\'now\'"
 			+ NEWLINE
 			+ NEWLINE + "Things to note:"
-			+ NEWLINE + "Day of week is referring to the upcoming day of week."
-			+ NEWLINE + "If you have only specify the time, today date will be automatically assigned to it."
-			+ NEWLINE + "If you have only specify the date, either time 0000 for start time "
+			+ NEWLINE + "-Day of week is referring to the upcoming day of week."
+			+ NEWLINE + "-If you have only specify the time, today date will be automatically assigned to it."
+			+ NEWLINE + "-If you have only specify the date, either time 0000 for start time "
 					+ "or time 2359 for end time will be automatically assigned to it.";
 	
 }

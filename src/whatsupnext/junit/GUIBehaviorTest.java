@@ -330,12 +330,36 @@ public class GUIBehaviorTest {
 
 	@Test
 	public void SearchEmptyTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
 
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("search xyz");
+		buttonEnter.doClick();
+		
+		assertEquals("\nNo tasks are found.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
 	}
 
 	@Test
 	public void SearchTextTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
 
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("search floating");
+		buttonEnter.doClick();
+		
+		assertEquals("\n1: floating task test\n\tNot done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
 	}
 
 	@Test
@@ -351,6 +375,13 @@ public class GUIBehaviorTest {
 		buttonEnter.doClick();
 		
 		assertEquals("\nThe execution was canceled.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("undo");
+		buttonEnter.doClick();
+		
+		assertEquals("\nCannot execute undo command.\n", textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
 
@@ -376,6 +407,13 @@ public class GUIBehaviorTest {
 		buttonEnter.doClick();
 		
 		assertEquals("\nThe execution was re executed.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("redo");
+		buttonEnter.doClick();
+		
+		assertEquals("\nCannot execute redo command.\n", textDisplayMain.getText());
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
 	}

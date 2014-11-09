@@ -57,6 +57,7 @@ public class Parser {
 		} else {
 			task.setOpcode(OPCODE.INVALID);
 		}
+		assert(task.getOpCode() != null);
 		return task;
 	}
 

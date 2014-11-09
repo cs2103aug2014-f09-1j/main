@@ -10,16 +10,15 @@ import java.awt.Toolkit;
 import java.awt.Window.Type;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import whatsupnext.logic.Logic;
 
-public class GUIOneWindow {
+public class GUIOneWindow extends GUIAbstract{
 
 	private JFrame frameMain;
-	private final int FRAME_MAIN_WIDTH = 700;
+	private final int FRAME_MAIN_WIDTH = 780;
 	private final int FRAME_MAIN_HEIGHT = 442;
 	
 	private final int PANEL_MAIN_WIDTH = 350;
@@ -32,10 +31,12 @@ public class GUIOneWindow {
 	private JPanel mainPanel;
 	private JPanel floatingPanel;
 	private JPanel upcomingPanel;
+	private JPanel resetPanel;
 	private MainDisplayWidget mainDisplayWidget;
 	private CommandLineInterfaceWidget cliWidget;
 	private FloatingTasksWidget floatingWidget;
 	private UpcomingTasksWidget upcomingWidget;
+	private ResetButtonWidget resetWidget;
 	
 	static Logic logic;
 
@@ -104,20 +105,20 @@ public class GUIOneWindow {
 	private void createMainFrame() {
 		frameMain = new JFrame();
 		frameMain.setResizable(true);
-		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(GUIMultipleWindows.class.getResource("/whatsupnext/ui/iconGUI.png")));
+		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(GUIOneWindow.class.getResource("/whatsupnext/ui/iconGUI.png")));
 		frameMain.setType(Type.POPUP);
 		frameMain.setFont(new Font("Cambria", Font.BOLD, 12));
 		frameMain.getContentPane().setBackground(new Color(204, 224, 250));
 		frameMain.setTitle("WhatsUpNext");
 		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMain.setPreferredSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
-		frameMain.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH - 50, FRAME_MAIN_HEIGHT - 110));
+		frameMain.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH - 40, FRAME_MAIN_HEIGHT - 110));
 		
 		GridBagLayout gbl_mainFrame = new GridBagLayout();
-		gbl_mainFrame.columnWidths = new int[]{400, 300};
-		gbl_mainFrame.rowHeights = new int[]{235, 235};
-		gbl_mainFrame.columnWeights = new double[]{0.5, 0.5};
-		gbl_mainFrame.rowWeights = new double[]{0.5, 0.5};
+		gbl_mainFrame.columnWidths = new int[]{400, 300, 15};
+		gbl_mainFrame.rowHeights = new int[]{15, 235, 235};
+		gbl_mainFrame.columnWeights = new double[]{0.5, 0.5, 0.0};
+		gbl_mainFrame.rowWeights = new double[]{0.0, 0.5, 0.5};
 		frameMain.getContentPane().setLayout(gbl_mainFrame);
 		
 		frameMain.addWindowListener(new WindowAdapter() {
@@ -136,6 +137,8 @@ public class GUIOneWindow {
 		cliWidget = new CommandLineInterfaceWidget(mainDisplayWidget);
 		cliWidget.linkToWidget(floatingWidget);
 		cliWidget.linkToWidget(upcomingWidget);
+		
+		resetWidget = new ResetButtonWidget(this);
 	}
 	
 
@@ -143,10 +146,12 @@ public class GUIOneWindow {
 		initializeMainPanel();
 		initializeFloatingPanel();
 		initializeUpcomingPanel();
+		initializeResetPanel();
 	}
 	
 	private void initializeMainPanel() {
 		mainPanel = new JPanel();
+		mainPanel.setBackground(new Color(204, 224, 250));
 		mainPanel.setPreferredSize(new Dimension(PANEL_MAIN_WIDTH, PANEL_MAIN_HEIGHT));
 		mainPanel.setMinimumSize(new Dimension(PANEL_MAIN_WIDTH, PANEL_MAIN_HEIGHT));
 		
@@ -176,15 +181,16 @@ public class GUIOneWindow {
 		GridBagConstraints gbc_mainPanel = new GridBagConstraints();
 		gbc_mainPanel.fill = GridBagConstraints.BOTH;
 		gbc_mainPanel.anchor = GridBagConstraints.CENTER;
-		gbc_mainPanel.insets = new Insets(15, 15, 15, 15);
+		gbc_mainPanel.insets = new Insets(0, 15, 15, 15);
 		gbc_mainPanel.gridx = 0;
-		gbc_mainPanel.gridy = 0;
+		gbc_mainPanel.gridy = 1;
 		gbc_mainPanel.gridheight = 2;
 		frameMain.getContentPane().add(mainPanel, gbc_mainPanel);
 	}
 	
 	private void initializeFloatingPanel() {
 		floatingPanel = new JPanel();
+		floatingPanel.setBackground(new Color(204, 224, 250));
 		floatingPanel.setPreferredSize(new Dimension(PANEL_FLOATING_WIDTH, PANEL_FLOATING_HEIGHT));
 		floatingPanel.setMinimumSize(new Dimension(PANEL_FLOATING_WIDTH, PANEL_FLOATING_HEIGHT));
 		
@@ -206,14 +212,15 @@ public class GUIOneWindow {
 		GridBagConstraints gbc_floatingPanel = new GridBagConstraints();
 		gbc_floatingPanel.fill = GridBagConstraints.BOTH;
 		gbc_floatingPanel.anchor = GridBagConstraints.CENTER;
-		gbc_floatingPanel.insets = new Insets(15, 0, 15, 15);
+		gbc_floatingPanel.insets = new Insets(0, 0, 15, 0);
 		gbc_floatingPanel.gridx = 1;
-		gbc_floatingPanel.gridy = 0;
+		gbc_floatingPanel.gridy = 1;
 		frameMain.getContentPane().add(floatingPanel, gbc_floatingPanel);
 	}
 	
 	private void initializeUpcomingPanel() {
 		upcomingPanel = new JPanel();
+		upcomingPanel.setBackground(new Color(204, 224, 250));
 		upcomingPanel.setPreferredSize(new Dimension(PANEL_UPCOMING_WIDTH, PANEL_UPCOMING_HEIGHT));
 		upcomingPanel.setMinimumSize(new Dimension(PANEL_UPCOMING_WIDTH, PANEL_UPCOMING_HEIGHT));
 		
@@ -235,14 +242,50 @@ public class GUIOneWindow {
 		GridBagConstraints gbc_upcomingPanel = new GridBagConstraints();
 		gbc_upcomingPanel.fill = GridBagConstraints.BOTH;
 		gbc_upcomingPanel.anchor = GridBagConstraints.CENTER;
-		gbc_upcomingPanel.insets = new Insets(0, 0, 15, 15);
+		gbc_upcomingPanel.insets = new Insets(0, 0, 15, 0);
 		gbc_upcomingPanel.gridx = 1;
-		gbc_upcomingPanel.gridy = 1;
+		gbc_upcomingPanel.gridy = 2;
 		frameMain.getContentPane().add(upcomingPanel, gbc_upcomingPanel);
+	}
+	
+	private void initializeResetPanel() {
+		resetPanel = new JPanel();
+		resetPanel.setBackground(new Color(204, 224, 250));
+		resetPanel.setPreferredSize(new Dimension(28, 28));
+		resetPanel.setMinimumSize(new Dimension(28, 28));
+		
+		GridBagLayout gbl_resetPanel = new GridBagLayout();
+		gbl_resetPanel.columnWidths = new int[]{28};
+		gbl_resetPanel.rowHeights = new int[]{28};
+		gbl_resetPanel.columnWeights = new double[]{1.0};
+		gbl_resetPanel.rowWeights = new double[]{1.0};
+		resetPanel.setLayout(gbl_resetPanel);
+		
+		GridBagConstraints gbc_resetWidget = new GridBagConstraints();
+		gbc_resetWidget.fill = GridBagConstraints.BOTH;
+		gbc_resetWidget.anchor = GridBagConstraints.CENTER;
+		gbc_resetWidget.insets = new Insets(0, 0, 0, 0);
+		gbc_resetWidget.gridx = 0;
+		gbc_resetWidget.gridy = 0;
+		resetPanel.add(resetWidget.getWidgetPanel(), gbc_resetWidget);
+		
+		GridBagConstraints gbc_resetPanel = new GridBagConstraints();
+		gbc_resetPanel.anchor = GridBagConstraints.NORTHEAST;
+		gbc_resetPanel.insets = new Insets(0, 0, 0, 15);
+		gbc_resetPanel.gridx = 0;
+		gbc_resetPanel.gridy = 1;
+		frameMain.getContentPane().add(resetPanel, gbc_resetPanel, 0);
 	}
 	
 	private void deleteRevisions() {
 		logic.clearRevisionFiles();
+	}
+
+	@Override
+	public void reset() {
+		frameMain.setLocationRelativeTo(null);
+		frameMain.pack();
+		displayWidgetTasks();
 	}
 	
 }

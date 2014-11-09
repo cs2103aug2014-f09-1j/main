@@ -483,10 +483,10 @@ public class ExtractorTest {
 		FreeExtractor ex = new FreeExtractor();
 		ex.extract(task,"3");
 		assertEquals("Test Free - description", "3", task.getDescription());
-		assertEquals("Test Free - startTime", getTodayDateTime(), task.getStartTime());
+		assertEquals("Test Free - startTime","", task.getStartTime());
 		assertEquals("Test Free - endTime", getTodayDate()+"2359", task.getEndTime());
 		assertEquals("Test Free - taskID", "", task.getTaskID());
-		assertEquals("Test Free - FREETYPE",FREETYPE.TIMEFRAME,task.getFreeType());
+		assertEquals("Test Free - FREETYPE",FREETYPE.DATE,task.getFreeType());
 	}
 	
 	@Test

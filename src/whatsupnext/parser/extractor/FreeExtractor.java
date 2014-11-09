@@ -42,7 +42,7 @@ public class FreeExtractor implements Extractor {
 			task.setFreeType(FREETYPE.TIMEFRAME);
 			splitOnFromToKeyword(task, input);
 		} else {
-			task.setFreeType(FREETYPE.TIMEFRAME);
+			task.setFreeType(FREETYPE.DATE);
 			getFreeTimeToday(task,input);
 		}	
 	
@@ -63,7 +63,6 @@ public class FreeExtractor implements Extractor {
 		} catch (NumberFormatException e) {
 			throw new NumberFormatException(MESSAGE_INVALID_DURATION);
 		}
-		task.setStartTime(parseDate.getCurrentTime());
 		parseDate.setParsingStartTime(false);
 		task.setEndTime(parseDate.getTodayDate()+"2359");
 	}

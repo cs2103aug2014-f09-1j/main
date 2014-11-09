@@ -67,7 +67,7 @@ public class FloatingTasksWidget implements TasksWidget {
 
 	private void initializeFloatingTasksPanel() {
 		widgetPanel = new JPanel();
-		widgetPanel.setBackground(new Color(204, 224, 250, 0));
+		widgetPanel.setBackground(new Color(204, 224, 250));
 		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
@@ -127,7 +127,11 @@ public class FloatingTasksWidget implements TasksWidget {
 		
 		String feedback;
 		try {
-			feedback = GUIMultipleWindows.logic.executeTask(task);
+			if (GUIMultipleWindows.logic != null) {
+				feedback = GUIMultipleWindows.logic.executeTask(task);
+			} else {
+				feedback = GUIOneWindow.logic.executeTask(task);
+			}
 		} catch (Exception e) {
 			feedback = e.getMessage();
 		}

@@ -88,7 +88,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 
 	private void initializeUpcomingTasksPanel() {
 		widgetPanel = new JPanel();
-		widgetPanel.setBackground(new Color(204, 224, 250, 0));
+		widgetPanel.setBackground(new Color(204, 224, 250));
 		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
@@ -155,7 +155,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 		timeLengthCombobox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO: temporary hot fix to strange visual bug
-				widgetPanel.setBackground(new Color(204, 224, 250, 170));
+//				widgetPanel.setBackground(new Color(204, 224, 250, 170));
 				
 				@SuppressWarnings("unchecked")
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
@@ -185,7 +185,11 @@ public class UpcomingTasksWidget implements TasksWidget{
 		
 		String feedback;
 		try {
-			feedback = GUIMultipleWindows.logic.executeTask(task);
+			if (GUIMultipleWindows.logic != null) {
+				feedback = GUIMultipleWindows.logic.executeTask(task);
+			} else {
+				feedback = GUIOneWindow.logic.executeTask(task);
+			}
 		} catch (Exception e) {
 			feedback = e.getMessage();
 		}

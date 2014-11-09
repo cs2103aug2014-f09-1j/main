@@ -204,6 +204,14 @@ public class LogicTest {
 		logic.executeTask(task);
 		
 		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.DEADLINE);
+		task.setDescription("testing");
+		task.setEndTime("201410101200");
+		task.setDone(true);
+		logic.executeTask(task);
+		
+		task = new Task();
 		task.setOpcode(OPCODE.DELETE);
 		task.setDeleteType(DELETETYPE.DATE);
 		task.setEndTime("201410102359");
@@ -212,7 +220,7 @@ public class LogicTest {
 		assertEquals("Test Delete Date - Successful ", "1 tasks are deleted.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
-		assertEquals(feedback, "2: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:00\n\tNot done.");
+		assertEquals("1: testing\n\tEnd Time: 2014 Oct 10 12:00\n\tNot done.\n2: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:00\n\tNot done.", feedback);
 	}
 	
 	@Test

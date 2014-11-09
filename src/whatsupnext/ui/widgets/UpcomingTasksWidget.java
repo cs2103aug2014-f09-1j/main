@@ -72,7 +72,7 @@ public class UpcomingTasksWidget implements TasksWidget{
     }
 	
 	private void initializeCurrentYear() {
-    	DateFormat dateFormat = new SimpleDateFormat(" yyyy");
+    	DateFormat dateFormat = new SimpleDateFormat("yyyy");
 		Calendar cal = Calendar.getInstance();
 		currentYear = dateFormat.format(cal.getTime());
 	}
@@ -150,9 +150,6 @@ public class UpcomingTasksWidget implements TasksWidget{
 		timeLengthCombobox.setFont(new Font("Cambria", Font.PLAIN, 12));
 		timeLengthCombobox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: temporary hot fix to strange visual bug
-//				widgetPanel.setBackground(new Color(204, 224, 250, 170));
-				
 				@SuppressWarnings("unchecked")
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 		        selectedTimeOption = (String)cb.getSelectedItem();
@@ -171,6 +168,8 @@ public class UpcomingTasksWidget implements TasksWidget{
 	}
 
 	private void displayUpcomingFeedback(String feedback) {
+		feedback = feedback.replaceAll(" " + currentYear, "");
+		feedback = feedback.replaceAll(currentYear + " ", "");
 		feedback = feedback.replaceAll(currentYear, "");
 		appendToPane(feedback);
 	}
@@ -259,7 +258,7 @@ public class UpcomingTasksWidget implements TasksWidget{
  
              subString = subStrings[i]; 
              // This line is a task title
-             if (isnewTask(subString)) {
+             if (isNewTask(subString)) {
             	 StyleConstants.setBold(set, true); 
             	 StyleConstants.setFontSize(set, 12);      
             	 StyleConstants.setBackground(set, titleBackground);
@@ -300,7 +299,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 	 * @param subString
 	 * @return
 	 */
-	private boolean isnewTask(String subString) {
+	private boolean isNewTask(String subString) {
 		subString = subString.trim().split("\n")[0];
 		String taskID = subString.trim().split(":")[0];
 		try {

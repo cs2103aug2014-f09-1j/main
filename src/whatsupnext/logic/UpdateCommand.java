@@ -38,7 +38,6 @@ public class UpdateCommand extends Command{
 				break;
 		    }
 		}
-		
 
 		LogicUtilities.sortTasks(list);
 		

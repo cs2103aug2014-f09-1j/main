@@ -135,7 +135,6 @@ public class FloatingTasksWidget implements TasksWidget {
 	}
 	
 	private void displayFloatingFeedback(String feedback) {
-	//	textDisplayFloating.setText(feedback);
 		appendToPane(feedback);
 	}
 	

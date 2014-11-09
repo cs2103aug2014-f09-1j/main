@@ -63,7 +63,7 @@ public class MainDisplayWidget {
     }
     
     private void initializeCurrentYear() {
-    	DateFormat dateFormat = new SimpleDateFormat(" yyyy");
+    	DateFormat dateFormat = new SimpleDateFormat("yyyy");
 		Calendar cal = Calendar.getInstance();
 		currentYear = dateFormat.format(cal.getTime());
 	}
@@ -144,8 +144,9 @@ public class MainDisplayWidget {
 	}
 
 	public void displayFeedback(String feedback) {
+		feedback = feedback.replaceAll(" " + currentYear, "");
+		feedback = feedback.replaceAll(currentYear + " ", "");
 		feedback = feedback.replaceAll(currentYear, "");
-	//	textDisplayMain.append("\n"+feedback+"\n");
 		appendToPane(feedback);
 	}
 	

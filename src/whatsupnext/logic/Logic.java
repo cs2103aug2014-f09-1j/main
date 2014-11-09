@@ -7,7 +7,7 @@ package whatsupnext.logic;
 import java.io.IOException;
 import java.util.Iterator;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 import whatsupnext.storage.Storage;
 
 public class Logic {

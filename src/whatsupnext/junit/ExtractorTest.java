@@ -15,13 +15,13 @@ import whatsupnext.parser.extractor.HelpExtractor;
 import whatsupnext.parser.extractor.SearchExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
-import whatsupnext.structure.Help;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.ADDTYPE;
-import whatsupnext.structure.Types.DELETETYPE;
-import whatsupnext.structure.Types.FREETYPE;
-import whatsupnext.structure.Types.UPDATETYPE;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.Types.ADDTYPE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.enums.Types.FREETYPE;
+import whatsupnext.structure.enums.Types.UPDATETYPE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
+import whatsupnext.structure.util.Help;
+import whatsupnext.structure.util.Task;
 
 public class ExtractorTest {
 	

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class AddCommand extends Command {
 	

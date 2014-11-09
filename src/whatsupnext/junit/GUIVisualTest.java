@@ -23,9 +23,9 @@ import org.junit.Test;
 
 import whatsupnext.logic.Logic;
 import whatsupnext.storage.Storage;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.DELETETYPE;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.util.Task;
 import whatsupnext.ui.WhatsUpNextGUI;
 
 public class GUIVisualTest {

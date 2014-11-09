@@ -14,8 +14,8 @@ import whatsupnext.parser.extractor.HelpExtractor;
 import whatsupnext.parser.extractor.SearchExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.util.Task;
 
 public class Parser {
 

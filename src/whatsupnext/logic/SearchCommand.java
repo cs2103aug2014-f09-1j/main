@@ -4,7 +4,7 @@ package whatsupnext.logic;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class SearchCommand extends Command {
 

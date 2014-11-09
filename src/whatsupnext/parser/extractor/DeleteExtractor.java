@@ -4,8 +4,8 @@ package whatsupnext.parser.extractor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.DELETETYPE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.util.Task;
 
 public class DeleteExtractor implements Extractor {
 	

@@ -1,5 +1,5 @@
 //@author A0118897J
-package whatsupnext.structure;
+package whatsupnext.structure.util;
 
 public class Help {
 	
@@ -23,6 +23,9 @@ public class Help {
 			+ NEWLINE + "redo" + INDENT + "Redo the most recent undo."
 			+ NEWLINE + "exit" + INDENT + "Close WhatsUpNext."
 			+ NEWLINE
+			+ NEWLINE + "Help aliases supported:"
+			+ NEWLINE + "\'h\', \'?\'"
+			+ NEWLINE
 			+ NEWLINE + "Type \"help <command>\" to find out more."
 			+ NEWLINE + "Type \"help time\" to see time/date formats.";
 	
@@ -36,7 +39,7 @@ public class Help {
 			+ NEWLINE + "add [task] from [start_time] to [end_time]"
 			+ NEWLINE
 			+ NEWLINE + "Aliases supported:"
-			+ NEWLINE + "\'add\', \'a\'";
+			+ NEWLINE + "\'a\'";
 	
 	public static final String VIEW_HELP_MESSAGE = "view" + INDENT + "Display the upcoming task or the"
 			+ NEWLINE + INDENT + "tasks for the day. A time frame can" 
@@ -49,7 +52,7 @@ public class Help {
 			+ NEWLINE + "view from [start_time] to [end_time]"
 			+ NEWLINE
 			+ NEWLINE + "Aliases supported:"
-			+ NEWLINE + "\'view\', \'v\', \'list\', \'ls\', \'l\'";
+			+ NEWLINE + "\'v\', \'list\', \'ls\', \'l\'";
 	
 	public static final String UPDATE_HELP_MESSAGE =  "update" + INDENT + "Update the description, deadline,"
 			+ NEWLINE + INDENT + "start or end time of a task."
@@ -60,7 +63,7 @@ public class Help {
 			+ NEWLINE + "update [task_id] from [start_time] to [end_time]"
 			+ NEWLINE
 			+ NEWLINE + "Aliases supported:"
-			+ NEWLINE + "\'update\', \'u\', \'edit\', \'e\', \'modify\', \'m\'";
+			+ NEWLINE + "\'u\', \'edit\', \'e\', \'modify\', \'m\'";
 			
 	public static final String DELETE_HELP_MESSAGE = "delete" + INDENT + "Delete by id, date, deadline, or"
 			+ NEWLINE + INDENT + "time frame."
@@ -72,7 +75,7 @@ public class Help {
 			+ NEWLINE + "delete from [start_time] to [end_time]"
 			+ NEWLINE
 			+ NEWLINE + "Aliases supported:"
-			+ NEWLINE + "\'delete\', \'del\', \'d\'";
+			+ NEWLINE + "\'del\', \'d\'";
 
 	public static final String SEARCH_HELP_MESSAGE = "search" + INDENT + "Search for a task by its keyword."
 			+ NEWLINE
@@ -80,7 +83,7 @@ public class Help {
 			+ NEWLINE + "search [keywords]"
 			+ NEWLINE
 			+ NEWLINE + "Aliases supported:"
-			+ NEWLINE + "\'search\', \'s\', \'find\', \'f\'";
+			+ NEWLINE + "\'s\', \'find\', \'f\'";
 	
 	public static final String DONE_HELP_MESSAGE = "done" + INDENT + "Label a task as done."
 			+ NEWLINE
@@ -91,16 +94,20 @@ public class Help {
 	
 	public static final String REDO_HELP_MESSAGE = "redo" + INDENT + "Redo the most recent undo.";
 	
-	public static final String EXIT_HELP_MESSAGE = "exit" + INDENT + "Close WhatsUpNext.";
+	public static final String EXIT_HELP_MESSAGE = "exit" + INDENT + "Close WhatsUpNext."
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'e\', \'quit\', \'q\'";;
 	
 	public static final String TIME_HELP_MESSAGE = "Time formats supported:"
 			+ NEWLINE + "24-hour clock" + INDENT + "\'09:00\', \'2359\'" 
-			+ NEWLINE + "12-hour clock" + INDENT + "\'9:00 am, \'11 pm"
+			+ NEWLINE + "12-hour clock" + INDENT + "\'9:00 am, \'11 pm\'"
 			+ NEWLINE
 			+ NEWLINE + "Date formats supported:"
 			+ NEWLINE + "DayMonthYear" + INDENT + "\'021114\', \'31102014\'"
 			+ NEWLINE + "Day/Month/Year" + INDENT + "\'02/11/14\', \'31/10/2014\'"
 			+ NEWLINE + "Day-Month-Year" + INDENT + "\'02-11-14\', \'31-10-2014\'"
+			+ NEWLINE + "Day Month Year" + INDENT + "\'02 nov 14\', \'02 November 14\'"
 			+ NEWLINE
 			+ NEWLINE + "Special formats supported:"
 			+ NEWLINE + "Day of Week" + INDENT + "\'monday\', \'mon\'"
@@ -115,8 +122,9 @@ public class Help {
 			+ NEWLINE +  "\'now\'"
 			+ NEWLINE
 			+ NEWLINE + "Things to note:"
-			+ NEWLINE + "When day of week is specified, it is referring to the upcoming day of week."
-			+ NEWLINE + "When only time is specified, it will be assigned with today date."
-			+ NEWLINE + "When only date is specified, it will be assigned either 0000 for start time or 2359 for end time.";
+			+ NEWLINE + "Day of week is referring to the upcoming day of week."
+			+ NEWLINE + "If you have only specify the time, today date will be automatically assigned to it."
+			+ NEWLINE + "If you have only specify the date, either time 0000 for start time "
+					+ "or time 2359 for end time will be automatically assigned to it.";
 	
 }

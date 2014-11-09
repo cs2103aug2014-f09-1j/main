@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import whatsupnext.storage.Storage;
 import whatsupnext.storage.JSONHelper;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;

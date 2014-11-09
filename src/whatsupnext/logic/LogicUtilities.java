@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.PriorityQueue;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.TaskComparators.TaskDefaultComparator;
+import whatsupnext.structure.util.Task;
+import whatsupnext.structure.util.TaskComparators.TaskDefaultComparator;
 
 public class LogicUtilities {
 	

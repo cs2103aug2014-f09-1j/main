@@ -23,13 +23,18 @@ public class FreeExtractor implements Extractor {
 	
 	public void extract(Task task, String input){
 		Pattern onKeywordPattern = Pattern.compile("\\s+(O|o)(N|n)\\s+");
+		Pattern byKeywordPattern = Pattern.compile("\\s+(B|b)(Y|y)\\s+");
 		Pattern fromKeywordPattern = Pattern.compile("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
 		Matcher onKeywordMatcher = onKeywordPattern.matcher(input);
+		Matcher byKeywordMatcher = byKeywordPattern.matcher(input);
 		Matcher fromKeywordMatcher = fromKeywordPattern.matcher(input);
 
 		if (onKeywordMatcher.find()) {
 			task.setFreeType(FREETYPE.DATE);
 			splitOnOnKeyword(task, input);
+		} else if(byKeywordMatcher.find()){
+			task.setFreeType(FREETYPE.TIMEFRAME);
+			splitOnByKeyword(task, input);
 		} else if (fromKeywordMatcher.find()) {
 			task.setFreeType(FREETYPE.TIMEFRAME);
 			splitOnFromToKeyword(task, input);
@@ -125,6 +130,30 @@ public class FreeExtractor implements Extractor {
 		}
 	}
 
+	
+	/**
+	 * Splits input based on keyword "by"
+	 * @param taskDetails
+	 * @return
+	 */
+	private void splitOnByKeyword(Task task, String taskDetails) {
+		String[] details = taskDetails.split("\\s+(B|b)(Y|y)\\s+");
+		task.setDescription(details[0]);
+		try {
+			if(Integer.parseInt(task.getDescription()) < 0) {
+				throw new IllegalArgumentException(MESSAGE_INVALID_DURATION) ;
+			}
+		} catch (NumberFormatException e) {
+			throw new NumberFormatException(MESSAGE_INVALID_DURATION);
+		}
+		task.setStartTime(parseDate.getCurrentTime());
+		parseDate.setParsingStartTime(false);
+		task.setEndTime(parseDate.parseInput(details[1]));
+		if(task.getEndTime().isEmpty() 
+				|| task.getEndTime().compareTo(parseDate.getCurrentTime()) < 0) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
+		}
+	}
 	
 
 	

@@ -250,7 +250,33 @@ public class GUIBehaviorTest {
 
 	@Test
 	public void ViewAllTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
 
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add floating task test 2");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 2.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("2: floating task test 2\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("view all");
+		buttonEnter.doClick();
+		
+		assertEquals("\n1: floating task test\n\tDone.\n2: floating task test 2\n\tNot done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("2: floating task test 2\n\tNot done.", textDisplayFloating.getText());
 	}
 
 	@Test
@@ -280,7 +306,19 @@ public class GUIBehaviorTest {
 
 	@Test
 	public void UpdateDescriptionTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
 
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("update 1 floating task with update test");
+		buttonEnter.doClick();
+		
+		assertEquals("\nSuccessfully updated the description of task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task with update test\n\tNot done.", textDisplayFloating.getText());
 	}
 
 	@Test
@@ -305,7 +343,19 @@ public class GUIBehaviorTest {
 
 	@Test
 	public void DeleteTaskIdTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
 
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("delete 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is deleted.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
 	@Test

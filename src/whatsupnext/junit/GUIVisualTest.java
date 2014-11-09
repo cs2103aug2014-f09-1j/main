@@ -26,12 +26,12 @@ import whatsupnext.storage.Storage;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.DELETETYPE;
-import whatsupnext.ui.WhatsUpNextGUI;
+import whatsupnext.ui.GUIMultipleWindows;
 
 public class GUIVisualTest {
 	private WhatsUpNextGUIStub gui;
 	
-	private class WhatsUpNextGUIStub extends WhatsUpNextGUI {
+	private class WhatsUpNextGUIStub extends GUIMultipleWindows {
 		private Logic logic;
 		
 		public WhatsUpNextGUIStub(String fileName) {

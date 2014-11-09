@@ -185,7 +185,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 		
 		String feedback;
 		try {
-			feedback = WhatsUpNextGUI.logic.executeTask(task);
+			feedback = GUIMultipleWindows.logic.executeTask(task);
 		} catch (Exception e) {
 			feedback = e.getMessage();
 		}

@@ -20,7 +20,7 @@ import whatsupnext.storage.Storage;
 import whatsupnext.structure.OPCODE;
 import whatsupnext.structure.Task;
 import whatsupnext.structure.Types.DELETETYPE;
-import whatsupnext.ui.WhatsUpNextGUI;
+import whatsupnext.ui.GUIMultipleWindows;
 
 public class GUIBehaviorTest {
 	private WhatsUpNextGUIStub gui;
@@ -34,7 +34,7 @@ public class GUIBehaviorTest {
 
 	private String currentYear;
 
-	private class WhatsUpNextGUIStub extends WhatsUpNextGUI {
+	private class WhatsUpNextGUIStub extends GUIMultipleWindows {
 		private Logic logic;
 
 		public WhatsUpNextGUIStub(String fileName) {

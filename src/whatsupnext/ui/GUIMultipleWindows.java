@@ -5,12 +5,9 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.GraphicsDevice.WindowTranslucency;
 import java.awt.Window.Type;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -18,15 +15,12 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-
 import whatsupnext.logic.Logic;
 
 /*
  * This class is used for GUI of software WhatsUpNext
  */
-public class WhatsUpNextGUI {
+public class GUIMultipleWindows {
 	
 	private JFrame frameMain;
 	private final int FRAME_MAIN_WIDTH = 530;
@@ -48,66 +42,16 @@ public class WhatsUpNextGUI {
 	
 	private boolean movingAllFramesToFront = false;
 	static Logic logic;
-	private static boolean isPerPixelTranslucencySupported;
 
 	
-	/**
-	 * Launch the application.
-	 * Sets window visibility and size.
-	 */
-	public static void main(String[] args) {
-		// Determine what the GraphicsDevice can support.
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice gd = ge.getDefaultScreenDevice();
-		isPerPixelTranslucencySupported = 
-				gd.isWindowTranslucencySupported(WindowTranslucency.PERPIXEL_TRANSLUCENT);
-
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {
-		    // If Nimbus is not available, you can set the GUI to another look and feel.
-		}
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					WhatsUpNextGUI gui = new WhatsUpNextGUI();
-					
-					gui.frameFloating.setLocation(750, 15);
-					gui.frameFloating.setVisible(true);
-					gui.frameFloating.pack();
-					
-					gui.frameUpcoming.setLocation(750, 385);
-					gui.frameUpcoming.setVisible(true);
-					gui.frameUpcoming.pack();
-					
-					gui.frameMain.setLocation(200, 150);
-					gui.frameMain.setVisible(true);
-					gui.frameMain.pack();
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	
-	public WhatsUpNextGUI() {
+	public GUIMultipleWindows() {
 		logic = new Logic();
 		initGUIComponents();
 		setComponentsNames();
 		displayWidgetTasks();
 	}
 	
-	public WhatsUpNextGUI(String fileName) {
+	public GUIMultipleWindows(String fileName) {
 		logic = new Logic(fileName);
 		initGUIComponents();
 		setComponentsNames();
@@ -129,6 +73,26 @@ public class WhatsUpNextGUI {
 	
 	public JFrame getUpcomingFrame() {
 		return frameUpcoming;
+	}
+	
+	public void showWindows() {
+		frameFloating.setLocation(750, 15);
+		frameFloating.setVisible(true);
+		frameFloating.pack();
+		
+		frameUpcoming.setLocation(750, 385);
+		frameUpcoming.setVisible(true);
+		frameUpcoming.pack();
+		
+		frameMain.setLocation(200, 150);
+		frameMain.setVisible(true);
+		frameMain.pack();
+	}
+	
+	public void hideWindows() {
+		frameFloating.setVisible(false);
+		frameUpcoming.setVisible(false);
+		frameMain.setVisible(false);
 	}
 	
 	/**
@@ -166,7 +130,7 @@ public class WhatsUpNextGUI {
 	private void createCLIFrame() {
 		frameMain = new JFrame();
 		frameMain.setResizable(true);
-		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/whatsupnext/ui/iconGUI.png")));
+		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(GUIMultipleWindows.class.getResource("/whatsupnext/ui/iconGUI.png")));
 		frameMain.setType(Type.POPUP);
 		frameMain.setFont(new Font("Cambria", Font.BOLD, 12));
 		frameMain.setTitle("WhatsUpNext");
@@ -205,7 +169,7 @@ public class WhatsUpNextGUI {
 
 
 	private void createFloatingFrame() {
-		if (!isPerPixelTranslucencySupported) {
+		if (!WhatsUpNextMain.isPerPixelTranslucencySupported) {
 			frameFloating = new JFrame();
 		} else {
 			frameFloating = new TransparentJFrame();
@@ -258,7 +222,7 @@ public class WhatsUpNextGUI {
 
 
 	private void createUpcomingFrame() {
-		if (!isPerPixelTranslucencySupported) {
+		if (!WhatsUpNextMain.isPerPixelTranslucencySupported) {
 			frameUpcoming = new JFrame();
 		} else {
 			frameUpcoming = new TransparentJFrame();

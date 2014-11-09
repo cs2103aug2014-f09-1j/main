@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.DELETETYPE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.util.Task;
 
 public class DeleteCommand extends Command {
 

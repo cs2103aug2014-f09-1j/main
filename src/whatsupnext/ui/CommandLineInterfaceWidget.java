@@ -25,8 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import whatsupnext.parser.api.Parser;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.util.Task;
 
 public class CommandLineInterfaceWidget {
 

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.TaskComparators.TaskDefaultComparator;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
+import whatsupnext.structure.util.Task;
+import whatsupnext.structure.util.TaskComparators.TaskDefaultComparator;
 
 public class ViewCommand extends Command {
 

@@ -4,8 +4,8 @@ package whatsupnext.parser.extractor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.UPDATETYPE;
+import whatsupnext.structure.enums.Types.UPDATETYPE;
+import whatsupnext.structure.util.Task;
 
 public class UpdateExtractor implements Extractor {
 	

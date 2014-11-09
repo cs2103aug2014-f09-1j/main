@@ -1,14 +1,14 @@
 //@author A0111773L
-package whatsupnext.structure;
+package whatsupnext.structure.util;
 
 import java.util.Arrays;
 
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Types.ADDTYPE;
-import whatsupnext.structure.Types.DELETETYPE;
-import whatsupnext.structure.Types.FREETYPE;
-import whatsupnext.structure.Types.UPDATETYPE;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types.ADDTYPE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.enums.Types.FREETYPE;
+import whatsupnext.structure.enums.Types.UPDATETYPE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
 
 public class Task {
 

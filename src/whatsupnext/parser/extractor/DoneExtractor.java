@@ -1,7 +1,7 @@
 //@author A0092165E
 package whatsupnext.parser.extractor;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class DoneExtractor implements Extractor{
 	private final String MESSAGE_INVALID_TASKID = "'Done' must have a valid ID";

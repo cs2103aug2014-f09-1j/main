@@ -26,9 +26,9 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import whatsupnext.parser.extractor.ParseDate;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
+import whatsupnext.structure.util.Task;
 
 public class UpcomingTasksWidget implements TasksWidget{
 

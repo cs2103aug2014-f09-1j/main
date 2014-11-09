@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import whatsupnext.storage.JSONHelper;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class JSONHelperTest {
 	JSONHelper obj;

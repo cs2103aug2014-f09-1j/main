@@ -2,7 +2,7 @@
 package whatsupnext.logic;
 
 import whatsupnext.storage.Storage;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class UndoCommand extends Command{
 

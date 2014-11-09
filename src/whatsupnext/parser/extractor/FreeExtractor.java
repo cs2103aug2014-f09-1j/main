@@ -4,8 +4,8 @@ package whatsupnext.parser.extractor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.FREETYPE;
+import whatsupnext.structure.enums.Types.FREETYPE;
+import whatsupnext.structure.util.Task;
 
 public class FreeExtractor implements Extractor {
 	

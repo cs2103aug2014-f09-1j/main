@@ -1,5 +1,5 @@
 //@author A0118897J
-package whatsupnext.structure;
+package whatsupnext.structure.util;
 
 public class Help {
 	

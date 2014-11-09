@@ -4,8 +4,8 @@ package whatsupnext.logic;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.UPDATETYPE;
+import whatsupnext.structure.enums.Types.UPDATETYPE;
+import whatsupnext.structure.util.Task;
 
 public class UpdateCommand extends Command{
 

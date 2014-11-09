@@ -1,5 +1,5 @@
 //@author A0126730M
-package whatsupnext.structure;
+package whatsupnext.structure.enums;
 
 public class Types {
 	

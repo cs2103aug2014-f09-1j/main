@@ -73,6 +73,7 @@ public class Logic {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		LogicUtilities.sortTasks(LogicUtilities.list);
 	}
 	
 	public void clearRevisionFiles() {

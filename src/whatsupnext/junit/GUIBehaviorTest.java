@@ -244,6 +244,7 @@ public class GUIBehaviorTest {
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 	
+	//@author A0118897J
 	@Test
 	public void ViewAllTest() {
 		textInput.setText("add floating task test");

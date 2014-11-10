@@ -522,6 +522,10 @@ public class GUIBehaviorTest {
 		textInput.setText("done 1");
 		buttonEnter.doClick();
 		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
 		textInput.setText("delete done");
 		buttonEnter.doClick();
 		
@@ -542,6 +546,10 @@ public class GUIBehaviorTest {
 		
 		textInput.setText("done 1");
 		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 		
 		textInput.setText("delete deadline");
 		buttonEnter.doClick();
@@ -575,8 +583,16 @@ public class GUIBehaviorTest {
 		textInput.setText("done 1");
 		buttonEnter.doClick();
 		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
 		textInput.setText("done 2");
 		buttonEnter.doClick();
+		
+		assertEquals("\nTask 2 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 		
 		textInput.setText("delete " + getTomorrowDate());
 		buttonEnter.doClick();
@@ -610,8 +626,17 @@ public class GUIBehaviorTest {
 		textInput.setText("done 1");
 		buttonEnter.doClick();
 		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("2: todayTask" +
+ 				"\n\tEnd Time:" + formattedUpcomingTime2 + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
 		textInput.setText("done 2");
 		buttonEnter.doClick();
+		
+		assertEquals("\nTask 2 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 				
 		textInput.setText("delete from " + getTodayDate() + " to " + getTomorrowDate());
 		buttonEnter.doClick();

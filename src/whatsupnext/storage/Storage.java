@@ -187,7 +187,16 @@ public class Storage {
 		
 		ArrayList<Task> tasksCopy = new ArrayList<Task>();
 		for (int x = 0; x < tasks.size(); x++) {
-			tasksCopy.add(tasks.get(x));
+			Task taskTemp = new Task();
+			Task taskCopy = tasks.get(x);
+			
+			taskTemp.setTaskID(taskCopy.getTaskID());
+			taskTemp.setDescription(taskCopy.getDescription());
+			taskTemp.setStartTime(taskCopy.getStartTime());
+			taskTemp.setEndTime(taskCopy.getEndTime());
+			taskTemp.setDone(taskCopy.getDone());			
+			
+			tasksCopy.add(taskTemp);
 		}
 		arrayOfVersions.add(tasksCopy);
 	}	

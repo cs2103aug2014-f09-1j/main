@@ -453,23 +453,44 @@ public class GUIBehaviorTest {
 	}
 
 	@Test
-	public void UpdateByDeadlineDayTest() {
-
-	}
-
-	@Test
 	public void UpdateByDeadlineDateTest() {
+		textInput.setText("add update deadline test");
+		buttonEnter.doClick();
 
-	}
-
-	@Test
-	public void UpdateFromToDayTest() {
-
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: update deadline test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("update 1 by today");
+		buttonEnter.doClick();
+		
+		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat("2359")).replaceAll(currentYear, "");
+		
+		assertEquals("\nSuccessfully updated the deadline of task 1.\n", textDisplayMain.getText());
+		assertEquals("1: update deadline test" +
+				"\n\tEnd Time:" + formattedUpcomingTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
 	@Test
 	public void UpdateFromToDateTest() {
+		textInput.setText("add update timeframe test");
+		buttonEnter.doClick();
 
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: update timeframe test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("update 1 from 2359 today to 2359 today");
+		buttonEnter.doClick();
+		
+		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat("2359")).replaceAll(currentYear, "");
+		
+		assertEquals("\nSuccessfully updated the time frame of task 1.\n", textDisplayMain.getText());
+		assertEquals("1: update timeframe test" +
+				"\n\tStart Time:" + formattedUpcomingTime
+ 				+"\n\tEnd Time:" + formattedUpcomingTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
 	@Test

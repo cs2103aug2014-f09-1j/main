@@ -19,6 +19,7 @@ import whatsupnext.logic.LogicUtilities;
 import whatsupnext.storage.Storage;
 import whatsupnext.ui.GUIOneWindow;
 import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types;
 import whatsupnext.structure.enums.Types.DELETETYPE;
 import whatsupnext.structure.util.Task;
 
@@ -242,12 +243,38 @@ public class GUIBehaviorTest {
 						textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
-
+	
 	@Test
-	public void AddTaskFromToDayTest() {
-		
-	}
+	public void ViewTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
 
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add floating task test 2");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 2.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("2: floating task test 2\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("view");
+		buttonEnter.doClick();
+		
+		assertEquals("\n2: floating task test 2\n\tNot done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("2: floating task test 2\n\tNot done.", textDisplayFloating.getText());
+	}
+	
 	@Test
 	public void ViewAllTest() {
 		textInput.setText("add floating task test");
@@ -281,27 +308,131 @@ public class GUIBehaviorTest {
 
 	@Test
 	public void ViewNextTest() {
-
+		textInput.setText("add next next by 2000 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2000")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedUpcomingTime + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add next by 1800 tml");
+		buttonEnter.doClick();
+		formattedUpcomingTime = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1800")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedUpcomingTime + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("view next");
+		buttonEnter.doClick();
+		assertEquals(
+				"\n2: next" +
+						"\n\tEnd Time:" + formattedUpcomingTime + "\n\tNot done.\n", 
+						textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
 	@Test
-	public void ViewDayTest() {
-
+	public void ViewOverdueTest() {
+		Logic logic = new Logic("guiTest");
+		Task task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(Types.ADDTYPE.DEADLINE);
+		task.setDescription("overdue");
+		task.setEndTime("201301012359");
+		logic.executeTask(task);
+		
+		textInput.setText("view overdue");
+		buttonEnter.doClick();
+		assertEquals(
+				"\n1: overdue" +
+						"\n\tEnd Time: 2013 Jan 01 23:59\n\tNot done.\n", 
+						textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DELETE);
+		task.setDeleteType(Types.DELETETYPE.ID);
+		task.setTaskID("1");
+		logic.executeTask(task);
+		
+		textInput.setText("view overdue");
+		buttonEnter.doClick();
+		assertEquals("\nNo tasks to display!\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
 	@Test
 	public void ViewDateTest() {
-
-	}
-
-	@Test
-	public void ViewFromToDayTest() {
-
+		textInput.setText("add tmlTask1 by 1800 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime1 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1800")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedUpcomingTime1 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add tmlTask2 by 2000 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime2 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2000")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedUpcomingTime2 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("view " + getTomorrowDate());
+		buttonEnter.doClick();
+		assertEquals(
+				"\n1: tmlTask1" +
+						"\n\tEnd Time:" + formattedUpcomingTime1 + "\n\tNot done.\n"
+				+ "2: tmlTask2" +
+						"\n\tEnd Time:" + formattedUpcomingTime2 + "\n\tNot done.\n", 
+						textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
 	@Test
 	public void ViewFromToDateTest() {
-
+		textInput.setText("add todayTask by 2359 today");
+		buttonEnter.doClick();
+		String formattedTodayTime = LogicUtilities.getFormattedTime(getTodayDateForFormat("2359")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedTodayTime + "\n",
+				textDisplayMain.getText());
+		assertEquals("1: todayTask" +
+				"\n\tEnd Time:" + formattedTodayTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add tmlTask by 1800 tml");
+		buttonEnter.doClick();
+		String formattedTmlTime = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1800")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedTmlTime + "\n",
+				textDisplayMain.getText());
+		assertEquals("1: todayTask" +
+				"\n\tEnd Time:" + formattedTodayTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("view from " + getTodayDate() + " to " + getTomorrowDate());
+		buttonEnter.doClick();
+		assertEquals(
+				"\n1: todayTask" +
+						"\n\tEnd Time:" + formattedTodayTime + "\n\tNot done.\n"
+				+ "2: tmlTask" +
+						"\n\tEnd Time:" + formattedTmlTime + "\n\tNot done.\n", 
+						textDisplayMain.getText());
+		assertEquals("1: todayTask" +
+				"\n\tEnd Time:" + formattedTodayTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
 	@Test
@@ -322,23 +453,44 @@ public class GUIBehaviorTest {
 	}
 
 	@Test
-	public void UpdateByDeadlineDayTest() {
-
-	}
-
-	@Test
 	public void UpdateByDeadlineDateTest() {
+		textInput.setText("add update deadline test");
+		buttonEnter.doClick();
 
-	}
-
-	@Test
-	public void UpdateFromToDayTest() {
-
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: update deadline test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("update 1 by today");
+		buttonEnter.doClick();
+		
+		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat("2359")).replaceAll(currentYear, "");
+		
+		assertEquals("\nSuccessfully updated the deadline of task 1.\n", textDisplayMain.getText());
+		assertEquals("1: update deadline test" +
+				"\n\tEnd Time:" + formattedUpcomingTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
 	@Test
 	public void UpdateFromToDateTest() {
+		textInput.setText("add update timeframe test");
+		buttonEnter.doClick();
 
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: update timeframe test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("update 1 from 2359 today to 2359 today");
+		buttonEnter.doClick();
+		
+		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat("2359")).replaceAll(currentYear, "");
+		
+		assertEquals("\nSuccessfully updated the time frame of task 1.\n", textDisplayMain.getText());
+		assertEquals("1: update timeframe test" +
+				"\n\tStart Time:" + formattedUpcomingTime
+ 				+"\n\tEnd Time:" + formattedUpcomingTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
 	@Test
@@ -357,25 +509,141 @@ public class GUIBehaviorTest {
 		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
+	
+	@Test
+	public void DeleteDoneTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
 
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("delete done");
+		buttonEnter.doClick();
+		
+		assertEquals("\n1 tasks are deleted.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+	
 	@Test
 	public void DeleteDeadlineTest() {
-
+		Logic logic = new Logic("guiTest");
+		Task task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(Types.ADDTYPE.DEADLINE);
+		task.setDescription("overdue");
+		task.setEndTime("201301012359");
+		logic.executeTask(task);
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("delete deadline");
+		buttonEnter.doClick();
+		
+		assertEquals("\n1 tasks are deleted.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
 	}
 
 	@Test
 	public void DeleteDateTest() {
-
-	}
-
-	@Test
-	public void DeleteFromToDayTest() {
-
+		textInput.setText("add tmlTask1 by 1800 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime1 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1800")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedUpcomingTime1 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add tmlTask2 by 2000 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime2 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2000")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedUpcomingTime2 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("done 2");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 2 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("delete " + getTomorrowDate());
+		buttonEnter.doClick();
+		
+		assertEquals("\n2 tasks are deleted.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
 	@Test
 	public void DeleteFromToDateTest() {
-
+		textInput.setText("add tmlTask by 2000 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime1 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2000")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedUpcomingTime1 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add todayTask by 1800 today");
+		buttonEnter.doClick();
+		String formattedUpcomingTime2 = LogicUtilities.getFormattedTime(getTodayDateForFormat("1800")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedUpcomingTime2 + "\n",
+				textDisplayMain.getText());
+		assertEquals("2: todayTask" +
+ 				"\n\tEnd Time:" + formattedUpcomingTime2 + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("2: todayTask" +
+ 				"\n\tEnd Time:" + formattedUpcomingTime2 + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("done 2");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 2 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+				
+		textInput.setText("delete from " + getTodayDate() + " to " + getTomorrowDate());
+		buttonEnter.doClick();
+		
+		assertEquals("\n2 tasks are deleted.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
 
 	@Test

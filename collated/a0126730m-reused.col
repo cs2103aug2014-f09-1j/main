@@ -3,10 +3,10 @@
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\GUITestUtils.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\ui\GUITestUtils.java
 	 */
 
-package whatsupnext.junit;
+package whatsupnext.junit.ui;
 
 import java.awt.*;
 
@@ -30,14 +30,14 @@ public class GUITestUtils {
 	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\GUITestUtils.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\ui\GUITestUtils.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\ComponentMover.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\util\ComponentMover.java
 	 */
 
 
@@ -45,7 +45,7 @@ public class GUITestUtils {
  * Rob Camick
  * Provided from http://tips4java.wordpress.com/2009/06/14/moving-windows/
  */
-package whatsupnext.ui;
+package whatsupnext.ui.util;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -420,14 +420,14 @@ public class ComponentMover extends MouseAdapter
 		}
 	}
 }
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\ComponentMover.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\util\ComponentMover.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\ComponentResizer.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\util\ComponentResizer.java
 	 */
 
 
@@ -435,7 +435,7 @@ public class ComponentMover extends MouseAdapter
  * Rob Camick
  * Provided from http://tips4java.wordpress.com/2009/09/13/resizing-components/
  */
-package whatsupnext.ui;
+package whatsupnext.ui.util;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -893,7 +893,7 @@ public class ComponentResizer extends MouseAdapter
 		}
 	}
 }
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\ComponentResizer.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\util\ComponentResizer.java
 
 
 

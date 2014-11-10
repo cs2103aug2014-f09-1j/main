@@ -3,10 +3,66 @@
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\StorageTest.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\storage\JSONHelperTest.java
 	 */
 
-package whatsupnext.junit;
+package whatsupnext.junit.storage;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import whatsupnext.storage.JSONHelper;
+import whatsupnext.structure.util.Task;
+
+public class JSONHelperTest {
+	JSONHelper obj;
+	String inputJSONString;
+	
+	@Before
+	public void initialize() {
+		obj = new JSONHelper();
+		inputJSONString = "[\"DummyTaskID1\",\"DummyDescription1\",\"DummyStartTime1\",\"DummyEndTime1\",true]";
+	}
+	
+	@Test
+	public void testJSONStringToTask() {
+		Task testTask = obj.JSONStringToTask(inputJSONString);
+		assertEquals(testTask.getTaskID(), "DummyTaskID1");
+		assertEquals(testTask.getDescription(), "DummyDescription1");
+		assertEquals(testTask.getStartTime(), "DummyStartTime1");
+		assertEquals(testTask.getEndTime(), "DummyEndTime1");
+		assertEquals(testTask.getDone(), true);		
+	}
+	
+	@Test
+	public void testTaskToJSONString() {
+		Task task = new Task();
+    	task.setTaskID("DummyTaskID1");
+    	task.setDescription("DummyDescription1");
+    	task.setStartTime("DummyStartTime1");
+    	task.setEndTime("DummyEndTime1");
+    	task.setDone(true);
+    	
+    	String testString = obj.taskToJSONString(task);    	
+    	
+    	assertEquals(inputJSONString, testString);
+    	
+	}
+}
+
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\storage\JSONHelperTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\storage\StorageTest.java
+	 */
+
+package whatsupnext.junit.storage;
 
 import static org.junit.Assert.*;
 
@@ -15,14 +71,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import whatsupnext.storage.Storage;
-import whatsupnext.structure.Task;
+import whatsupnext.storage.JSONHelper;
+import whatsupnext.structure.util.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class StorageTest {
 	Storage obj;
+	JSONHelper jsonHelperObject;
 	Task dummyTask1;
 	Task dummyTask2;
 	Task dummyTask3;
@@ -31,13 +88,11 @@ public class StorageTest {
 	ArrayList<Task> taskArray2;
 	ArrayList<Task> taskArray3;
 	
-	public final static String DELIMITER = "%#";	
-	
 	@Before
 	public void initialize() {
 		Storage.tryInitialize("storageTest");
 		obj = Storage.getInstance();
-		
+		jsonHelperObject = new JSONHelper();
 		setUpDummyTasks();
 		setUpTaskArrays();
 	}
@@ -50,18 +105,6 @@ public class StorageTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * Testing the helper code to make sure it's working
-	 */
-	@Test
-	public void testStringToTask() {
-		assertEquals(dummyTask1.getTaskID(), "DummyTaskID1");
-		assertEquals(dummyTask1.getDescription(), "DummyDescription1");
-		assertEquals(dummyTask1.getStartTime(), "DummyStartTime1");
-		assertEquals(dummyTask1.getEndTime(), "DummyEndTime1");
-		assertEquals(dummyTask1.getDone(), true);		
 	}
 	
 	/**
@@ -92,13 +135,15 @@ public class StorageTest {
 	/**
 	 * Creates dummy tasks that will later be written to the file for testing
 	 */
-	private void setUpDummyTasks() {
-		dummyTask1 = stringToTask("DummyTaskID1" + DELIMITER + "DummyDescription1" + DELIMITER + 
-				"DummyStartTime1" + DELIMITER + "DummyEndTime1" + DELIMITER + "true" + DELIMITER);
-		dummyTask2 = stringToTask("DummyTaskID2" + DELIMITER + "DummyDescription2" + DELIMITER + 
-				"DummyStartTime2" + DELIMITER + "DummyEndTime2" + DELIMITER + "false" + DELIMITER);
-		dummyTask3 = stringToTask("DummyTaskID3" + DELIMITER + "DummyDescription3" + DELIMITER + 
-				"DummyStartTime3" + DELIMITER + "DummyEndTime3" + DELIMITER + "true" + DELIMITER);
+	private void setUpDummyTasks() {		
+		dummyTask1 = jsonHelperObject.JSONStringToTask("[\"DummyTaskID1\",\"DummyDescription1\","
+				+ "\"DummyStartTime1\",\"DummyEndTime1\",true]");
+		
+		dummyTask2 = jsonHelperObject.JSONStringToTask("[\"DummyTaskID2\",\"DummyDescription2\","
+				+ "\"DummyStartTime2\",\"DummyEndTime2\",false]");
+		
+		dummyTask3 = jsonHelperObject.JSONStringToTask("[\"DummyTaskID3\",\"DummyDescription3\","
+				+ "\"DummyStartTime3\",\"DummyEndTime3\",true]");
 	}
 	
 	/**
@@ -183,52 +228,187 @@ public class StorageTest {
 		assertFalse(obj.goToPreviousVersion());
 		assertFalse(obj.goToPreviousVersion());
 	}
-	
-	/**
-	 * A helper function that converts a String in a specific format to a Task object
-	 * @param taskInString
-	 * @return
-	 */
-	private Task stringToTask(String taskInString) {
-		Scanner extractFromString = new Scanner(taskInString);
-		extractFromString.useDelimiter(DELIMITER);
-		
-		String taskID = extractFromString.next();
-		String description = extractFromString.next();
-		String startTime = extractFromString.next();
-		String endTime = extractFromString.next();
-		String booleanString = extractFromString.next();
-		
-		assertTrue(booleanString.equals("true") || booleanString.equals("false"));		
-		boolean isDone = Boolean.parseBoolean(booleanString);
-		
-		Task taskFromString = new Task();
-		taskFromString.setTaskID(taskID);
-		taskFromString.setDescription(description);
-		taskFromString.setStartTime(startTime);
-		taskFromString.setEndTime(endTime);
-		taskFromString.setDone(isDone);
-		
-		extractFromString.close();
-		
-		return taskFromString;
-	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\StorageTest.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\storage\StorageTest.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\storage\JSONHelper.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\ui\GUIBehaviorTest.java
+	 */
+
+	@Test
+	public void ViewAllTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add floating task test 2");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 2.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("2: floating task test 2\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("view all");
+		buttonEnter.doClick();
+		
+		assertEquals("\n1: floating task test\n\tDone.\n2: floating task test 2\n\tNot done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("2: floating task test 2\n\tNot done.", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void UpdateDescriptionTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("update 1 floating task with update test");
+		buttonEnter.doClick();
+		
+		assertEquals("\nSuccessfully updated the description of task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task with update test\n\tNot done.", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void SearchEmptyTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("search xyz");
+		buttonEnter.doClick();
+		
+		assertEquals("\nNo tasks are found.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void SearchTextTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("search floating");
+		buttonEnter.doClick();
+		
+		assertEquals("\n1: floating task test\n\tNot done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void UndoTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("undo");
+		buttonEnter.doClick();
+		
+		assertEquals("\nThe execution was canceled.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("undo");
+		buttonEnter.doClick();
+		
+		assertEquals("\nCannot execute undo command.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+
+	}
+
+	@Test
+	public void RedoTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("undo");
+		buttonEnter.doClick();
+		
+		assertEquals("\nThe execution was canceled.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("redo");
+		buttonEnter.doClick();
+		
+		assertEquals("\nThe execution was re executed.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("redo");
+		buttonEnter.doClick();
+		
+		assertEquals("\nCannot execute redo command.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void LabelDoneTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+	
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\ui\GUIBehaviorTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\storage\JSONHelper.java
 	 */
 
 package whatsupnext.storage;
 
 import static org.junit.Assert.assertNotNull;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -294,14 +474,14 @@ public class JSONHelper {
 
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\storage\JSONHelper.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\storage\JSONHelper.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\storage\Storage.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\storage\Storage.java
 	 */
 
 package whatsupnext.storage;
@@ -313,7 +493,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 
 public class Storage {
@@ -486,12 +666,34 @@ public class Storage {
 			deleteLaterVersions();
 		}
 		currentVersionNumber++;		
-		ArrayList<Task> tasksCopy = new ArrayList<Task>();
-		for (int x = 0; x < tasks.size(); x++) {
-			tasksCopy.add(tasks.get(x));
-		}
+		
+		// A copy is created since using the same object reference will make the local  
+		// version vulnerable to changes made to the ArrayList object in Logic.
+		
+		ArrayList<Task> tasksCopy = createTaskArrayCopy(tasks);
 		arrayOfVersions.add(tasksCopy);
 	}	
+	
+	private ArrayList<Task> createTaskArrayCopy(ArrayList<Task> tasks) {
+		ArrayList<Task> tasksCopy = new ArrayList<Task>();
+		for (int x = 0; x < tasks.size(); x++) {
+			Task taskToBeCopied = tasks.get(x);
+			tasksCopy.add(createTaskCopy(taskToBeCopied));
+		}
+		return tasksCopy;
+	}
+	
+	private Task createTaskCopy(Task task) {
+		Task taskCopy = new Task();
+		
+		taskCopy.setTaskID(task.getTaskID());
+		taskCopy.setDescription(task.getDescription());
+		taskCopy.setStartTime(task.getStartTime());
+		taskCopy.setEndTime(task.getEndTime());
+		taskCopy.setDone(task.getDone());	
+		
+		return taskCopy;
+	}
 	
 	/**
 	 * Deletes the old branch of versions after changes have been made
@@ -558,139 +760,7 @@ public class Storage {
 	} 
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\storage\Storage.java
-
-
-
-
-
-	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\structure\Help.java
-	 */
-
-package whatsupnext.structure;
-
-public class Help {
-	
-	private static final String INDENT = "\t";
-	private static final String NEWLINE = "\n";
-	
-	public static final String DEFAULT_HELP_MESSAGE = "Supported Commands:"
-			+ NEWLINE + "add" + INDENT + "Add a task by with description only"
-			+ NEWLINE + INDENT + "or append it with a deadline or time"
-			+ NEWLINE + INDENT + "period."
-			+ NEWLINE + "view" + INDENT + "Display the upcoming task or the"
-			+ NEWLINE + INDENT + "tasks for the day. A time frame can" 
-			+ NEWLINE + INDENT + "be specified too."
-			+ NEWLINE + "update" + INDENT + "Update the description, deadline,"
-			+ NEWLINE + INDENT + "start or end time of a task."
-			+ NEWLINE + "delete" + INDENT + "Delete by id, date, deadline, or"
-			+ NEWLINE + INDENT + "time frame."
-			+ NEWLINE + "search" + INDENT + "Search for a task by its keyword."
-			+ NEWLINE + "done" + INDENT + "Label a task as done."
-			+ NEWLINE + "undo" + INDENT + "Undo most recent add/update/delete."
-			+ NEWLINE + "redo" + INDENT + "Redo the most recent undo."
-			+ NEWLINE + "exit" + INDENT + "Close WhatsUpNext."
-			+ NEWLINE
-			+ NEWLINE + "Type \"help <command>\" to find out more."
-			+ NEWLINE + "Type \"help time\" to see time/date formats.";
-	
-	public static final String ADD_HELP_MESSAGE = "add" + INDENT + "Add a task by with description only"
-			+ NEWLINE + INDENT + "or append it with a deadline or time"
-			+ NEWLINE + INDENT + "period."
-			+ NEWLINE
-			+ NEWLINE + "Formats supported:"
-			+ NEWLINE + "add [task]"
-			+ NEWLINE + "add [task] by [end_time]" 
-			+ NEWLINE + "add [task] from [start_time] to [end_time]"
-			+ NEWLINE
-			+ NEWLINE + "Aliases supported:"
-			+ NEWLINE + "\'add\', \'a\'";
-	
-	public static final String VIEW_HELP_MESSAGE = "view" + INDENT + "Display the upcoming task or the"
-			+ NEWLINE + INDENT + "tasks for the day. A time frame can" 
-			+ NEWLINE + INDENT + "be specified too."
-			+ NEWLINE
-			+ NEWLINE + "Formats supported:"
-			+ NEWLINE + "view all"
-			+ NEWLINE + "view next"
-			+ NEWLINE + "view [day|date]"
-			+ NEWLINE + "view from [start_time] to [end_time]"
-			+ NEWLINE
-			+ NEWLINE + "Aliases supported:"
-			+ NEWLINE + "\'view\', \'v\', \'list\', \'ls\', \'l\'";
-	
-	public static final String UPDATE_HELP_MESSAGE =  "update" + INDENT + "Update the description, deadline,"
-			+ NEWLINE + INDENT + "start or end time of a task."
-			+ NEWLINE
-			+ NEWLINE + "Formats supported:"
-			+ NEWLINE + "update [task_id] [new_description]"
-			+ NEWLINE + "update [task_id] by [end_time]"
-			+ NEWLINE + "update [task_id] from [start_time] to [end_time]"
-			+ NEWLINE
-			+ NEWLINE + "Aliases supported:"
-			+ NEWLINE + "\'update\', \'u\', \'edit\', \'e\', \'modify\', \'m\'";
-			
-	public static final String DELETE_HELP_MESSAGE = "delete" + INDENT + "Delete by id, date, deadline, or"
-			+ NEWLINE + INDENT + "time frame."
-			+ NEWLINE
-			+ NEWLINE + "Formats supported:"
-			+ NEWLINE + "delete [task_id]"
-			+ NEWLINE + "delete deadline"
-			+ NEWLINE + "delete [date]"
-			+ NEWLINE + "delete from [start_time] to [end_time]"
-			+ NEWLINE
-			+ NEWLINE + "Aliases supported:"
-			+ NEWLINE + "\'delete\', \'del\', \'d\'";
-
-	public static final String SEARCH_HELP_MESSAGE = "search" + INDENT + "Search for a task by its keyword."
-			+ NEWLINE
-			+ NEWLINE + "Formats supported:" 
-			+ NEWLINE + "search [keywords]"
-			+ NEWLINE
-			+ NEWLINE + "Aliases supported:"
-			+ NEWLINE + "\'search\', \'s\', \'find\', \'f\'";
-	
-	public static final String DONE_HELP_MESSAGE = "done" + INDENT + "Label a task as done."
-			+ NEWLINE
-			+ NEWLINE + "Formats supported:"
-			+ NEWLINE + "done [task_id]";
-	
-	public static final String UNDO_HELP_MESSAGE = "undo" + INDENT + "Undo most recent add/update/delete.";
-	
-	public static final String REDO_HELP_MESSAGE = "redo" + INDENT + "Redo the most recent undo.";
-	
-	public static final String EXIT_HELP_MESSAGE = "exit" + INDENT + "Close WhatsUpNext.";
-	
-	public static final String TIME_HELP_MESSAGE = "Time formats supported:"
-			+ NEWLINE + "24-hour clock" + INDENT + "\'09:00\', \'2359\'" 
-			+ NEWLINE + "12-hour clock" + INDENT + "\'9:00 am, \'11 pm"
-			+ NEWLINE
-			+ NEWLINE + "Date formats supported:"
-			+ NEWLINE + "DayMonthYear" + INDENT + "\'021114\', \'31102014\'"
-			+ NEWLINE + "Day/Month/Year" + INDENT + "\'02/11/14\', \'31/10/2014\'"
-			+ NEWLINE + "Day-Month-Year" + INDENT + "\'02-11-14\', \'31-10-2014\'"
-			+ NEWLINE
-			+ NEWLINE + "Special formats supported:"
-			+ NEWLINE + "Day of Week" + INDENT + "\'monday\', \'mon\'"
-			+ NEWLINE + "Today date" + INDENT + INDENT + "\'today\'"
-			+ NEWLINE + "Tomorrow date" + INDENT + "\'tomorrow\', \'tml\'"
-			+ NEWLINE + "Current Time" + INDENT + "\'now\'"
-			+ NEWLINE
-			+ NEWLINE + "Valid examples:"
-			+ NEWLINE + "\'0000 010114\', \'31/12/2014 23:59\'"
-			+ NEWLINE + "\'7:30 am sunday\', \'tml 12 pm\'"
-			+ NEWLINE + "\'0930 10-11-14\', \'11:30 am today\'"
-			+ NEWLINE +  "\'now\'"
-			+ NEWLINE
-			+ NEWLINE + "Things to note:"
-			+ NEWLINE + "When day of week is specified, it is referring to the upcoming day of week."
-			+ NEWLINE + "When only time is specified, it will be assigned with today date."
-			+ NEWLINE + "When only date is specified, it will be assigned either 0000 for start time or 2359 for end time.";
-	
-}
-
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\structure\Help.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\storage\Storage.java
 
 
 

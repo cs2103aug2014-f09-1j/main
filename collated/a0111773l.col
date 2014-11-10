@@ -3,10 +3,10 @@
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\ParseDateTest.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\parser\ParseDateTest.java
 	 */
 
-package whatsupnext.junit;
+package whatsupnext.junit.parser;
 
 import static org.junit.Assert.*;
 
@@ -27,52 +27,59 @@ public class ParseDateTest {
 		String formattedDate = "";
 		
 		formattedDate = parseDate.parseInput("2359 010414");
-		assertEquals("Test HHmm ddMMyy", "201404012359", formattedDate);
+		assertEquals("HHmm ddMMyy", "201404012359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("0102 04012014");
-		assertEquals("Test HHmm ddMMyyyy", "201401040102", formattedDate);
+		assertEquals("HHmm ddMMyyyy", "201401040102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("1315 25/12/14");
-		assertEquals("Test HHmm dd/MM/yy", "201412251315", formattedDate);
+		assertEquals("HHmm dd/MM/yy", "201412251315", formattedDate);
 		
 		formattedDate = parseDate.parseInput("1315 25/12/2014");
-		assertEquals("Test HHmm dd/MM/yyyy", "201412251315", formattedDate);
+		assertEquals("HHmm dd/MM/yyyy", "201412251315", formattedDate);
 	
 		formattedDate = parseDate.parseInput("0909 03-04-14");
-		assertEquals("Test HHmm dd-MM-yy", "201404030909", formattedDate);
+		assertEquals("HHmm dd-MM-yy", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("0909 03-04-2014");
-		assertEquals("Test HHmm dd-MM-yyyy", "201404030909", formattedDate);
+		assertEquals("HHmm dd-MM-yyyy", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("23:59 010414");
-		assertEquals("Test HH:mm ddMMyy", "201404012359", formattedDate);
+		assertEquals("HH:mm ddMMyy", "201404012359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("01:02 04012014");
-		assertEquals("Test HH:mm ddMMyyyy", "201401040102", formattedDate);
+		assertEquals("HH:mm ddMMyyyy", "201401040102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("13:15 25/12/14");
-		assertEquals("Test HH:mm dd/MM/yy", "201412251315", formattedDate);
+		assertEquals("HH:mm dd/MM/yy", "201412251315", formattedDate);
 		
 		formattedDate = parseDate.parseInput("13:15 25/12/2014");
-		assertEquals("Test HH:mm dd/MM/yyyy", "201412251315", formattedDate);
+		assertEquals("HH:mm dd/MM/yyyy", "201412251315", formattedDate);
 	
 		formattedDate = parseDate.parseInput("09:09 03-04-14");
-		assertEquals("Test HH:mm dd-MM-yy", "201404030909", formattedDate);
+		assertEquals("HH:mm dd-MM-yy", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("09:09 03-04-2014");
-		assertEquals("Test HH:mm dd-MM-yyyy", "201404030909", formattedDate);
+		assertEquals("HH:mm dd-MM-yyyy", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("11:59 PM 010414");
-		assertEquals("Test h:mm a ddMMyy", "201404012359", formattedDate);
+		assertEquals("h:mm a ddMMyy", "201404012359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("9:09 am 03-04-2014");
-		assertEquals("Test h:mm a dd-MM-yyyy", "201404030909", formattedDate);
+		assertEquals("h:mm a dd-MM-yyyy", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("1 am 04012014");
-		assertEquals("Test h a ddMMyyyy", "201401040100", formattedDate);
+		assertEquals("h a ddMMyyyy", "201401040100", formattedDate);
 		
 		formattedDate = parseDate.parseInput("1 pm 25/12/14");
-		assertEquals("Test h a dd/MM/yy", "201412251300", formattedDate);
+		assertEquals("h a dd/MM/yy", "201412251300", formattedDate);
+		
+		formattedDate = parseDate.parseInput("1 pm 25 dec 14");
+		assertEquals("h a dd MMM yy", "201412251300", formattedDate);
+		
+		formattedDate = parseDate.parseInput("1 pm 25 december 2014");
+		assertEquals("h a dd MMMM yyyy", "201412251300", formattedDate);
+		
 	}
 	
 	@Test
@@ -82,52 +89,58 @@ public class ParseDateTest {
 		String formattedDate = "";
 		
 		formattedDate = parseDate.parseInput("010414 2359");
-		assertEquals("Test ddMMyy HHmm", "201404012359", formattedDate);
+		assertEquals("ddMMyy HHmm", "201404012359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("04012014 0102");
-		assertEquals("Test ddMMyyyy HHmm", "201401040102", formattedDate);
+		assertEquals("ddMMyyyy HHmm", "201401040102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("25/12/14 1315");
-		assertEquals("Test dd/MM/yy HHmm", "201412251315", formattedDate);
+		assertEquals("dd/MM/yy HHmm", "201412251315", formattedDate);
 		
 		formattedDate = parseDate.parseInput("25/12/2014 1315");
-		assertEquals("Test dd/MM/yyyy HHmm", "201412251315", formattedDate);
+		assertEquals("dd/MM/yyyy HHmm", "201412251315", formattedDate);
 		
 		formattedDate = parseDate.parseInput("03-04-14 0909");
-		assertEquals("Test dd-MM-yy HHmm", "201404030909", formattedDate);
+		assertEquals("dd-MM-yy HHmm", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("03-04-2014 0909");
-		assertEquals("Test dd-MM-yyyy HHmm", "201404030909", formattedDate);
+		assertEquals("dd-MM-yyyy HHmm", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("010414 23:59");
-		assertEquals("Test ddMMyy HH:mm", "201404012359", formattedDate);
+		assertEquals("ddMMyy HH:mm", "201404012359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("04012014 01:02");
-		assertEquals("Test ddMMyyyy HH:mm", "201401040102", formattedDate);
+		assertEquals("ddMMyyyy HH:mm", "201401040102", formattedDate);
 		
 		formattedDate = parseDate.parseInput("25/12/14 13:15");
-		assertEquals("Test dd/MM/yy HH:mm", "201412251315", formattedDate);
+		assertEquals("dd/MM/yy HH:mm", "201412251315", formattedDate);
 		
 		formattedDate = parseDate.parseInput("25/12/2014 13:15");
-		assertEquals("Test dd/MM/yyyy HH:mm", "201412251315", formattedDate);
+		assertEquals("dd/MM/yyyy HH:mm", "201412251315", formattedDate);
 		
 		formattedDate = parseDate.parseInput("03-04-14 09:09");
-		assertEquals("Test dd-MM-yy HH:mm", "201404030909", formattedDate);
+		assertEquals("dd-MM-yy HH:mm", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("03-04-2014 09:09");
-		assertEquals("Test dd-MM-yyyy HH:mm", "201404030909", formattedDate);
+		assertEquals("dd-MM-yyyy HH:mm", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("010414 23:59 pm");
-		assertEquals("Test ddMMyy h:mm a", "201404012359", formattedDate);
+		assertEquals("ddMMyy h:mm a", "201404012359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("03-04-2014 09:09 AM");
-		assertEquals("Test dd-MM-yyyy h:mm a", "201404030909", formattedDate);
+		assertEquals("dd-MM-yyyy h:mm a", "201404030909", formattedDate);
 		
 		formattedDate = parseDate.parseInput("04012014 1 AM");
-		assertEquals("Test ddMMyyyy h a", "201401040100", formattedDate);
+		assertEquals("ddMMyyyy h a", "201401040100", formattedDate);
 		
 		formattedDate = parseDate.parseInput("25/12/14 1 PM");
-		assertEquals("Test dd/MM/yy h a", "201412251300", formattedDate);
+		assertEquals("dd/MM/yy h a", "201412251300", formattedDate);
+		
+		formattedDate = parseDate.parseInput("04 jan 14 1 AM");
+		assertEquals("dd MMM yy h a", "201401040100", formattedDate);
+		
+		formattedDate = parseDate.parseInput("25 december 2014 1 PM");
+		assertEquals("dd MMMM yy h a", "201412251300", formattedDate);
 		
 	}
 	
@@ -138,25 +151,25 @@ public class ParseDateTest {
 		String formattedDate = "";
 		
 		formattedDate = parseDate.parseInput("1234");
-		assertEquals("Test HHmm", getTodayDate()+"1234", formattedDate);
+		assertEquals("HHmm", getTodayDate()+"1234", formattedDate);
 		
 		formattedDate = parseDate.parseInput("12:34");
-		assertEquals("Test HH:mm", getTodayDate()+"1234", formattedDate);
+		assertEquals("HH:mm", getTodayDate()+"1234", formattedDate);
 		
 		formattedDate = parseDate.parseInput("12:34 pm");
-		assertEquals("Test h:mm a", getTodayDate()+"1234", formattedDate);
+		assertEquals("h:mm a", getTodayDate()+"1234", formattedDate);
 		
 		formattedDate = parseDate.parseInput("12:43 am");
-		assertEquals("Test h:mm a", getTodayDate()+"0043", formattedDate);
+		assertEquals("h:mm a", getTodayDate()+"0043", formattedDate);
 		
 		formattedDate = parseDate.parseInput("1:59 PM");
-		assertEquals("Test h:mm a", getTodayDate()+"1359", formattedDate);
+		assertEquals("h:mm a", getTodayDate()+"1359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("11 PM");
-		assertEquals("Test h a", getTodayDate()+"2300", formattedDate);
+		assertEquals("h a", getTodayDate()+"2300", formattedDate);
 		
 		formattedDate = parseDate.parseInput("5 AM");
-		assertEquals("Test h a", getTodayDate()+"0500", formattedDate);
+		assertEquals("h a", getTodayDate()+"0500", formattedDate);
 	}
 	
 	@Test
@@ -183,13 +196,25 @@ public class ParseDateTest {
 		formattedDate = parseDate.parseInput("29-09-2014");
 		assertEquals("Test dd-MM-yyyy", "201409292359", formattedDate);
 		
+		formattedDate = parseDate.parseInput("29 sep 14");
+		assertEquals("dd MMM yy", "201409292359", formattedDate);
+		
+		formattedDate = parseDate.parseInput("29 sep 2014");
+		assertEquals("dd MMM yyyy", "201409292359", formattedDate);
+		
+		formattedDate = parseDate.parseInput("29 september 14");
+		assertEquals("dd MMMM yy", "201409292359", formattedDate);
+		
+		formattedDate = parseDate.parseInput("29 september 2014");
+		assertEquals("dd MMMM yyyy", "201409292359", formattedDate);
+		
 		parseDate.setParsingStartTime(true);
 		formattedDate = parseDate.parseInput("29-09-2014");
-		assertEquals("Test dd-MM-yyyy 0000", "201409290000", formattedDate);
+		assertEquals("dd-MM-yyyy 0000", "201409290000", formattedDate);
 		
 		parseDate.setParsingStartTime(false);
 		formattedDate = parseDate.parseInput("29-09-2014");
-		assertEquals("Test dd-MM-yyyy 2359", "201409292359", formattedDate);
+		assertEquals("dd-MM-yyyy 2359", "201409292359", formattedDate);
 	}
 	
 	@Test
@@ -268,9 +293,6 @@ public class ParseDateTest {
 	public void testParseStandaloneDay() {
 		ParseDate parseDate = new ParseDate();
 		String formattedDate = "";
-		
-		formattedDate = parseDate.parseInput("Today");
-		assertEquals("Today", getTodayDate()+"2359", formattedDate);
 		
 		formattedDate = parseDate.parseInput("today");
 		assertEquals("today", getTodayDate()+"2359", formattedDate);
@@ -355,6 +377,10 @@ public class ParseDateTest {
 		formattedDate = parseDate.parseInput("rubbish");
 		assertEquals("Invalid day", "", formattedDate);
 		
+		/* This is a boundary case for the 'any other years' partition */
+		formattedDate = parseDate.parseInput("03/03/20154");
+		assertEquals("Invalid year", "", formattedDate);
+		
 		/* This is a boundary case for the 'any other time format' partition */
 		formattedDate = parseDate.parseInput("1144 PM");
 		assertEquals("Invalid time format", "", formattedDate);
@@ -377,11 +403,12 @@ public class ParseDateTest {
 		
 		/* This is a boundary case for the 'MAX_MONTH+1' partition */
 		formattedDate = parseDate.parseInput("2359 041314");
-		assertEquals("Invalid", "", formattedDate);
+		assertEquals("Invalid MM", "", formattedDate);
 		
 		/* This is a boundary case for the 'MAX_DAYOFMONTH+1' partition */
 		formattedDate = parseDate.parseInput("320314");
-		assertEquals("Invalid", "", formattedDate);
+		assertEquals("Invalid dd", "", formattedDate);
+	
 	}
 	
 	private String getCurrentTime() {
@@ -468,17 +495,17 @@ public class ParseDateTest {
 	
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\ParseDateTest.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\parser\ParseDateTest.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\ParserTest.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\parser\ParserTest.java
 	 */
 
-package whatsupnext.junit;
+package whatsupnext.junit.parser;
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
@@ -487,12 +514,12 @@ import org.junit.Test;
 
 import whatsupnext.parser.api.Parser;
 import whatsupnext.parser.extractor.ParseDate;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.ADDTYPE;
-import whatsupnext.structure.Types.DELETETYPE;
-import whatsupnext.structure.Types.UPDATETYPE;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types.ADDTYPE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.enums.Types.UPDATETYPE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
+import whatsupnext.structure.util.Task;
 
 public class ParserTest {
 	
@@ -1005,14 +1032,499 @@ public class ParserTest {
 	
 	
 }
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\ParserTest.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\parser\ParserTest.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\api\Parser.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\ui\GUIBehaviorTest.java
+	 */
+
+	@Test
+	public void FreeTest() {
+		String formattedUpcomingTime1 = LogicUtilities.getFormattedTime(getTodayDateForFormat("0600")).replaceAll(currentYear, "");
+		String formattedUpcomingTime2 = LogicUtilities.getFormattedTime(getTodayDateForFormat("1500")).replaceAll(currentYear, "");
+		String formattedUpcomingTime3 = LogicUtilities.getFormattedTime(getTodayDateForFormat("1700")).replaceAll(currentYear, "");
+		String formattedUpcomingTime4 = LogicUtilities.getFormattedTime(getTodayDateForFormat("2200")).replaceAll(currentYear, "");
+		
+		Logic logic = new Logic("guiTest");
+		Task task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(Types.ADDTYPE.TIMEFRAME);
+		task.setDescription("todayTask");
+		task.setStartTime(getTodayDateForFormat("1500"));
+		task.setEndTime(getTodayDateForFormat("1700"));
+		logic.executeTask(task);
+		
+		textInput.setText("free 2");
+		buttonEnter.doClick();
+		
+		assertEquals(
+				"\nAvailable time slots:" +
+						"\n" + formattedUpcomingTime1.trim() + " -" + formattedUpcomingTime2 +
+						"\n" + formattedUpcomingTime3.trim() + " -" + formattedUpcomingTime4 + "\n", 
+						textDisplayMain.getText());
+		assertEquals("1: todayTask" +
+				"\n\tStart Time:" + formattedUpcomingTime2 +
+					"\n\tEnd Time:" + formattedUpcomingTime3 + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void FreeByTest() {
+		String formattedTodayTime1 = LogicUtilities.getFormattedTime(getTodayDateForFormat("0600")).replaceAll(currentYear, "");
+		String formattedTodayTime2 = LogicUtilities.getFormattedTime(getTodayDateForFormat("2200")).replaceAll(currentYear, "");
+		String formattedTmlTime1 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("0600")).replaceAll(currentYear, "");
+		String formattedTmlTime2 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1500")).replaceAll(currentYear, "");
+		String formattedTmlTime3 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1700")).replaceAll(currentYear, "");
+		String formattedTmlTime4 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2200")).replaceAll(currentYear, "");
+		
+		textInput.setText("add tmlTask from 1500 tml to 1700 tml");
+		buttonEnter.doClick();
+
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedTmlTime3 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("free 2 by tml");
+		buttonEnter.doClick();
+
+		assertEquals(
+				"\nAvailable time slots:" +
+						"\n" + formattedTodayTime1.trim() + " -" + formattedTodayTime2 +
+						"\n" + formattedTmlTime1.trim() + " -" + formattedTmlTime2 +
+						"\n" + formattedTmlTime3.trim() + " -" + formattedTmlTime4 + "\n", 
+						textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void FreeOnTest() {
+		String formattedUpcomingTime1 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("0600")).replaceAll(currentYear, "");
+		String formattedUpcomingTime2 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1500")).replaceAll(currentYear, "");
+		String formattedUpcomingTime3 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1700")).replaceAll(currentYear, "");
+		String formattedUpcomingTime4 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2200")).replaceAll(currentYear, "");
+		
+		textInput.setText("add tmlTask from 1500 tomorrow to 1700 tomorrow");
+		buttonEnter.doClick();
+
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedUpcomingTime3 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("free 2 on " + getTomorrowDate());
+		buttonEnter.doClick();
+		
+		assertEquals(
+				"\nAvailable time slots:" +
+						"\n" + formattedUpcomingTime1.trim() + " -" + formattedUpcomingTime2 +
+						"\n" + formattedUpcomingTime3.trim() + " -" + formattedUpcomingTime4 + "\n", 
+						textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void FreeFromToTest() {
+		String formattedTodayTime1 = LogicUtilities.getFormattedTime(getTodayDateForFormat("0600")).replaceAll(currentYear, "");
+		String formattedTodayTime2 = LogicUtilities.getFormattedTime(getTodayDateForFormat("2200")).replaceAll(currentYear, "");
+		String formattedTmlTime1 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("0600")).replaceAll(currentYear, "");
+		String formattedTmlTime2 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1500")).replaceAll(currentYear, "");
+		String formattedTmlTime3 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1700")).replaceAll(currentYear, "");
+		String formattedTmlTime4 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2200")).replaceAll(currentYear, "");
+		
+		textInput.setText("add tmlTask from 1500 tml to 1700 tml");
+		buttonEnter.doClick();
+
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedTmlTime3 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("free 2 from now to " + getTomorrowDate());
+		buttonEnter.doClick();
+
+		assertEquals(
+				"\nAvailable time slots:" +
+						"\n" + formattedTodayTime1.trim() + " -" + formattedTodayTime2 +
+						"\n" + formattedTmlTime1.trim() + " -" + formattedTmlTime2 +
+						"\n" + formattedTmlTime3.trim() + " -" + formattedTmlTime4 + "\n", 
+						textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+	
+	@Test
+	public void UpdateByDeadlineDateTest() {
+		textInput.setText("add update deadline test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: update deadline test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("update 1 by today");
+		buttonEnter.doClick();
+		
+		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat("2359")).replaceAll(currentYear, "");
+		
+		assertEquals("\nSuccessfully updated the deadline of task 1.\n", textDisplayMain.getText());
+		assertEquals("1: update deadline test" +
+				"\n\tEnd Time:" + formattedUpcomingTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void UpdateFromToDateTest() {
+		textInput.setText("add update timeframe test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: update timeframe test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("update 1 from 2359 today to 2359 today");
+		buttonEnter.doClick();
+		
+		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTodayDateForFormat("2359")).replaceAll(currentYear, "");
+		
+		assertEquals("\nSuccessfully updated the time frame of task 1.\n", textDisplayMain.getText());
+		assertEquals("1: update timeframe test" +
+				"\n\tStart Time:" + formattedUpcomingTime
+ 				+"\n\tEnd Time:" + formattedUpcomingTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void DeleteTaskIdTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("delete 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is deleted.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+	
+	@Test
+	public void DeleteDoneTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("delete done");
+		buttonEnter.doClick();
+		
+		assertEquals("\n1 tasks are deleted.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+	
+	@Test
+	public void DeleteDeadlineTest() {
+		Logic logic = new Logic("guiTest");
+		Task task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(Types.ADDTYPE.DEADLINE);
+		task.setDescription("overdue");
+		task.setEndTime("201301012359");
+		logic.executeTask(task);
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("delete deadline");
+		buttonEnter.doClick();
+		
+		assertEquals("\n1 tasks are deleted.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+	}
+
+	@Test
+	public void DeleteDateTest() {
+		textInput.setText("add tmlTask1 by 1800 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime1 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1800")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedUpcomingTime1 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add tmlTask2 by 2000 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime2 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2000")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedUpcomingTime2 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("done 2");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 2 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("delete " + getTomorrowDate());
+		buttonEnter.doClick();
+		
+		assertEquals("\n2 tasks are deleted.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void DeleteFromToDateTest() {
+		textInput.setText("add tmlTask by 2000 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime1 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2000")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedUpcomingTime1 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add todayTask by 1800 today");
+		buttonEnter.doClick();
+		String formattedUpcomingTime2 = LogicUtilities.getFormattedTime(getTodayDateForFormat("1800")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedUpcomingTime2 + "\n",
+				textDisplayMain.getText());
+		assertEquals("2: todayTask" +
+ 				"\n\tEnd Time:" + formattedUpcomingTime2 + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("2: todayTask" +
+ 				"\n\tEnd Time:" + formattedUpcomingTime2 + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("done 2");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 2 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+				
+		textInput.setText("delete from " + getTodayDate() + " to " + getTomorrowDate());
+		buttonEnter.doClick();
+		
+		assertEquals("\n2 tasks are deleted.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+	
+	@Test
+	public void ViewTest() {
+		textInput.setText("add floating task test");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 1.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("1: floating task test\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("done 1");
+		buttonEnter.doClick();
+		
+		assertEquals("\nTask 1 is successfully labeled as done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add floating task test 2");
+		buttonEnter.doClick();
+
+		assertEquals("\nSuccessfully added to task 2.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("2: floating task test 2\n\tNot done.", textDisplayFloating.getText());
+		
+		textInput.setText("view");
+		buttonEnter.doClick();
+		
+		assertEquals("\n2: floating task test 2\n\tNot done.\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("2: floating task test 2\n\tNot done.", textDisplayFloating.getText());
+	}
+	
+	@Test
+	public void ViewNextTest() {
+		textInput.setText("add next next by 2000 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2000")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedUpcomingTime + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add next by 1800 tml");
+		buttonEnter.doClick();
+		formattedUpcomingTime = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1800")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedUpcomingTime + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("view next");
+		buttonEnter.doClick();
+		assertEquals(
+				"\n2: next" +
+						"\n\tEnd Time:" + formattedUpcomingTime + "\n\tNot done.\n", 
+						textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void ViewOverdueTest() {
+		Logic logic = new Logic("guiTest");
+		Task task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(Types.ADDTYPE.DEADLINE);
+		task.setDescription("overdue");
+		task.setEndTime("201301012359");
+		logic.executeTask(task);
+		
+		textInput.setText("view overdue");
+		buttonEnter.doClick();
+		assertEquals(
+				"\n1: overdue" +
+						"\n\tEnd Time: 2013 Jan 01 23:59\n\tNot done.\n", 
+						textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DELETE);
+		task.setDeleteType(Types.DELETETYPE.ID);
+		task.setTaskID("1");
+		logic.executeTask(task);
+		
+		textInput.setText("view overdue");
+		buttonEnter.doClick();
+		assertEquals("\nNo tasks to display!\n", textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void ViewDateTest() {
+		textInput.setText("add tmlTask1 by 1800 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime1 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1800")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedUpcomingTime1 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add tmlTask2 by 2000 tml");
+		buttonEnter.doClick();
+		String formattedUpcomingTime2 = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("2000")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedUpcomingTime2 + "\n",
+				textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("view " + getTomorrowDate());
+		buttonEnter.doClick();
+		assertEquals(
+				"\n1: tmlTask1" +
+						"\n\tEnd Time:" + formattedUpcomingTime1 + "\n\tNot done.\n"
+				+ "2: tmlTask2" +
+						"\n\tEnd Time:" + formattedUpcomingTime2 + "\n\tNot done.\n", 
+						textDisplayMain.getText());
+		assertEquals("No tasks to display!", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+
+	@Test
+	public void ViewFromToDateTest() {
+		textInput.setText("add todayTask by 2359 today");
+		buttonEnter.doClick();
+		String formattedTodayTime = LogicUtilities.getFormattedTime(getTodayDateForFormat("2359")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 1.\n\tDeadline:" + formattedTodayTime + "\n",
+				textDisplayMain.getText());
+		assertEquals("1: todayTask" +
+				"\n\tEnd Time:" + formattedTodayTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("add tmlTask by 1800 tml");
+		buttonEnter.doClick();
+		String formattedTmlTime = LogicUtilities.getFormattedTime(getTomorrowDateForFormat("1800")).replaceAll(currentYear, "");
+		assertEquals(
+				"\nSuccessfully added to task 2.\n\tDeadline:" + formattedTmlTime + "\n",
+				textDisplayMain.getText());
+		assertEquals("1: todayTask" +
+				"\n\tEnd Time:" + formattedTodayTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+		
+		textInput.setText("view from " + getTodayDate() + " to " + getTomorrowDate());
+		buttonEnter.doClick();
+		assertEquals(
+				"\n1: todayTask" +
+						"\n\tEnd Time:" + formattedTodayTime + "\n\tNot done.\n"
+				+ "2: tmlTask" +
+						"\n\tEnd Time:" + formattedTmlTime + "\n\tNot done.\n", 
+						textDisplayMain.getText());
+		assertEquals("1: todayTask" +
+				"\n\tEnd Time:" + formattedTodayTime + "\n\tNot done.", textDisplayUpcoming.getText());
+		assertEquals("No tasks to display!", textDisplayFloating.getText());
+	}
+}
+
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\ui\GUIBehaviorTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\api\Parser.java
 	 */
 
 /*
@@ -1025,12 +1537,13 @@ import java.util.StringTokenizer;
 import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.DeleteExtractor;
 import whatsupnext.parser.extractor.DoneExtractor;
+import whatsupnext.parser.extractor.FreeExtractor;
 import whatsupnext.parser.extractor.HelpExtractor;
 import whatsupnext.parser.extractor.SearchExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.util.Task;
 
 public class Parser {
 
@@ -1046,6 +1559,7 @@ public class Parser {
 	private final String[] ALIASES_DONE = {"done"};
 	private final String[] ALIASES_UNDO = {"undo"};
 	private final String[] ALIASES_REDO = {"redo"};
+	private final String[] ALIASES_FREE = {"free"};
 	private final String[] ALIASES_HELP = {"help", "h", "?"};
 	private final String[] ALIASES_EXIT = {"exit", "e", "quit", "q"};
 	
@@ -1071,6 +1585,7 @@ public class Parser {
 		} else {
 			task.setOpcode(OPCODE.INVALID);
 		}
+		assert(task.getOpCode() != null);
 		return task;
 	}
 
@@ -1104,6 +1619,10 @@ public class Parser {
 				break;
 			case REDO:
 				break;
+			case FREE:
+				FreeExtractor exFree = new FreeExtractor();
+				exFree.extract(task, input);
+				break;
 			case HELP:
 				HelpExtractor exHelp = new HelpExtractor();
 				exHelp.extract(task, input);
@@ -1132,6 +1651,8 @@ public class Parser {
 			return OPCODE.UNDO;
 		} else if (isInOperationAliases(operation, ALIASES_REDO)) {
 			return OPCODE.REDO;
+		} else if (isInOperationAliases(operation, ALIASES_FREE)) {
+			return OPCODE.FREE;
 		}else if (isInOperationAliases(operation, ALIASES_HELP)) {
 			return OPCODE.HELP;
 		} else if (isInOperationAliases(operation, ALIASES_EXIT)) {
@@ -1165,19 +1686,19 @@ public class Parser {
 		return commandString;
 	}
 }
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\api\Parser.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\api\Parser.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\Extractor.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\Extractor.java
 	 */
 
 package whatsupnext.parser.extractor;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public interface Extractor {
 	
@@ -1191,20 +1712,20 @@ public interface Extractor {
 	
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\Extractor.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\Extractor.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\HelpExtractor.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\HelpExtractor.java
 	 */
 
 package whatsupnext.parser.extractor;
 
-import whatsupnext.structure.Help;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Help;
+import whatsupnext.structure.util.Task;
 
 public class HelpExtractor {
 	private final String MESSAGE_INVALID_ARGUMENT = "Invalid Argument.";
@@ -1230,6 +1751,9 @@ public class HelpExtractor {
 				case "search":
 					task.setHelpMessage(Help.SEARCH_HELP_MESSAGE);
 					break;
+				case "free":
+					task.setHelpMessage(Help.FREE_HELP_MESSAGE);
+					break;					
 				case "done":
 					task.setHelpMessage(Help.DONE_HELP_MESSAGE);
 					break;
@@ -1252,14 +1776,14 @@ public class HelpExtractor {
 	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\HelpExtractor.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\HelpExtractor.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\ParseDate.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\ParseDate.java
 	 */
 
 package whatsupnext.parser.extractor;
@@ -1269,6 +1793,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ParseDate {
 	
@@ -1279,11 +1805,13 @@ public class ParseDate {
 																						"h:mm a", "h a"));
 	private final ArrayList<String> FORMATS_DATE = new ArrayList<String>(Arrays.asList("ddMMyy", "ddMMyyyy", 
 																						"dd/MM/yy", "dd/MM/yyyy", 
-																						"dd-MM-yy", "dd-MM-yyyy"));
+																						"dd-MM-yy", "dd-MM-yyyy",
+																						"dd MMM yy", "dd MMM yyyy",
+																						"dd MMMM yy", "dd MMMM yyyy"));
 	
 	//These are the aliases for day of week 
-	private final ArrayList<String> ALIASES_TODAY = new ArrayList<String>(Arrays.asList("Today", "today"));
-	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("tomorrow", "tml"));
+	private final ArrayList<String> ALIASES_TODAY = new ArrayList<String>(Arrays.asList("today"));
+	private final ArrayList<String> ALIASES_TOMORROW = new ArrayList<String>(Arrays.asList("tomorrow", "tml", "tmr"));
 	private final ArrayList<String> ALIASES_SUNDAY = new ArrayList<String>(Arrays.asList("sunday", "sun"));
 	private final ArrayList<String> ALIASES_MONDAY = new ArrayList<String>(Arrays.asList("monday", "mon"));
 	private final ArrayList<String> ALIASES_TUESDAY = new ArrayList<String>(Arrays.asList("tuesday", "tue"));
@@ -1305,6 +1833,8 @@ public class ParseDate {
 	
 	private boolean isParsingStartTime;
 	
+	private static Logger logger = Logger.getLogger("ParseDate");
+	
 	public ParseDate(){
 		listOfTimeDateFormats = getTimeDateFormats();
 		listOfAliasesDays = getAliasesDays();
@@ -1320,14 +1850,23 @@ public class ParseDate {
 		String formattedDate = "";
 		input = input.toLowerCase();
 		
-		if(input.equalsIgnoreCase(NOW)){
+		if(input.equalsIgnoreCase(NOW)) {
 			formattedDate = getCurrentTime();
 		}
-		if(formattedDate.isEmpty()){
+		if(formattedDate.isEmpty()) {
 			formattedDate = parseTimeDateFormats(input);
 		}
-		if(formattedDate.isEmpty()){
+		if(formattedDate.isEmpty()) {
 			formattedDate = parseTimeDayFormats(input);
+		} 
+		if(formattedDate.length() != 12) {
+			formattedDate = "";
+		}
+		assert (formattedDate.isEmpty() || formattedDate.length() == 12);
+		if(formattedDate.length() == 12) {
+			logger.log(Level.INFO, "ParseDate Success!: " + input + " to " + formattedDate);
+		} else {
+			logger.log(Level.INFO, "ParseDate Failure!: " + input);
 		}
 		return formattedDate;
 	}
@@ -1346,6 +1885,7 @@ public class ParseDate {
 	public String getCurrentTime() {
 		Calendar cal = Calendar.getInstance();
 		String formattedDate = formatDate(cal);
+		assert (formattedDate.length() == 12);
 		return formattedDate; 
 	}
 	
@@ -1359,7 +1899,10 @@ public class ParseDate {
         int month = cal.get(Calendar.MONTH) + 1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
+		assert (year >= 1000 && year <= 9999 );
+		assert (twoDigitMonth.length() == 2);
+		assert (twoDigitDayOfMonth.length() == 2);
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
@@ -1373,7 +1916,10 @@ public class ParseDate {
         int month = cal.get(Calendar.MONTH) + 1;
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         String twoDigitMonth = convertToTwoDigits(month);
-		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);       
+		String twoDigitDayOfMonth = convertToTwoDigits(dayOfMonth);
+		assert (year >= 1000 && year <= 9999 );
+		assert (twoDigitMonth.length() == 2);
+		assert (twoDigitDayOfMonth.length() == 2);
 		return year + twoDigitMonth + twoDigitDayOfMonth;
 	}
 	
@@ -1616,42 +2162,207 @@ public class ParseDate {
 	}
 
 }
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\ParseDate.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\ParseDate.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\structure\OPCODE.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\structure\enums\OPCODE.java
 	 */
 
-package whatsupnext.structure;
+package whatsupnext.structure.enums;
 
 public enum OPCODE {
-	ADD, VIEW, UPDATE, DELETE, SEARCH, DONE, UNDO, REDO, HELP, INVALID, EXIT
+	ADD, VIEW, UPDATE, DELETE, SEARCH, DONE, UNDO, REDO, FREE, HELP, INVALID, EXIT
 }
 
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\structure\OPCODE.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\structure\enums\OPCODE.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\structure\Task.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\structure\util\Help.java
 	 */
 
-package whatsupnext.structure;
+package whatsupnext.structure.util;
+
+public class Help {
+	
+	private static final String INDENT = "\t";
+	private static final String NEWLINE = "\n";
+	
+	public static final String DEFAULT_HELP_MESSAGE = "Supported Commands:"
+			+ NEWLINE + "add" + INDENT + "Add a task by with description"
+			+ NEWLINE + INDENT + "only or append it with a deadline"
+			+ NEWLINE + INDENT + "or a time period."
+			+ NEWLINE + "view" + INDENT + "Display the upcoming task or the"
+			+ NEWLINE + INDENT + "tasks for the day. A time frame " 
+			+ NEWLINE + INDENT + "can be specified too."
+			+ NEWLINE + "update" + INDENT + "Update the description, deadline,"
+			+ NEWLINE + INDENT + "start or end time of a task."
+			+ NEWLINE + "delete" + INDENT + "Delete by id, date, deadline, or"
+			+ NEWLINE + INDENT + "time frame."
+			+ NEWLINE + "search" + INDENT + "Search for a task by its keyword."
+			+ NEWLINE + "free" + INDENT + "Find free time slots of certain "
+			+ NEWLINE + INDENT + "duration today, or by specifying"
+			+ NEWLINE + INDENT + "end_time, date or time frame."
+			+ NEWLINE + "done" + INDENT + "Label a task as done."
+			+ NEWLINE + "undo" + INDENT + "Undo most recent add/update/delete."
+			+ NEWLINE + "redo" + INDENT + "Redo the most recent undo."
+			+ NEWLINE + "exit" + INDENT + "Close WhatsUpNext."
+			+ NEWLINE
+			+ NEWLINE + "Help aliases supported:"
+			+ NEWLINE + "\'h\', \'?\'"
+			+ NEWLINE
+			+ NEWLINE + "Type \"help <command>\" to find out more."
+			+ NEWLINE + "Type \"help time\" to see time/date formats.";
+	
+	public static final String ADD_HELP_MESSAGE = "add" + INDENT + "Add a task by with description only"
+			+ NEWLINE + INDENT + "or append it with a deadline or time"
+			+ NEWLINE + INDENT + "period."
+			+ NEWLINE
+			+ NEWLINE + "Formats supported:"
+			+ NEWLINE + "add [task]"
+			+ NEWLINE + "add [task] by [end_time]" 
+			+ NEWLINE + "add [task] from [start_time] to [end_time]"
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'a\'";
+	
+	public static final String VIEW_HELP_MESSAGE = "view" + INDENT + "Display the upcoming task or the"
+			+ NEWLINE + INDENT + "tasks for the day. A time frame can" 
+			+ NEWLINE + INDENT + "be specified too."
+			+ NEWLINE
+			+ NEWLINE + "Formats supported:"
+			+ NEWLINE + "view all"
+			+ NEWLINE + "view next"
+			+ NEWLINE + "view [day|date]"
+			+ NEWLINE + "view from [start_time] to [end_time]"
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'v\', \'list\', \'ls\', \'l\'";
+	
+	public static final String UPDATE_HELP_MESSAGE =  "update" + INDENT + "Update the description, deadline,"
+			+ NEWLINE + INDENT + "start or end time of a task."
+			+ NEWLINE
+			+ NEWLINE + "Formats supported:"
+			+ NEWLINE + "update [task_id] [new_description]"
+			+ NEWLINE + "update [task_id] by [end_time]"
+			+ NEWLINE + "update [task_id] from [start_time] to [end_time]"
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'u\', \'edit\', \'e\', \'modify\', \'m\'";
+			
+	public static final String DELETE_HELP_MESSAGE = "delete" + INDENT + "Delete by id, date, deadline, or"
+			+ NEWLINE + INDENT + "time frame. "
+			+ NEWLINE + INDENT + "Can also delete done tasks or tasks"
+			+ NEWLINE + INDENT + "that passed deadline"
+			+ NEWLINE
+			+ NEWLINE + "Formats supported:"
+			+ NEWLINE + "delete [task_id]"
+			+ NEWLINE + "delete deadline"
+			+ NEWLINE + "delete done"
+			+ NEWLINE + "delete [date]"
+			+ NEWLINE + "delete from [start_time] to [end_time]"
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'del\', \'d\'";
+
+	public static final String SEARCH_HELP_MESSAGE = "search" + INDENT + "Search for a task by its keyword."
+			+ NEWLINE
+			+ NEWLINE + "Formats supported:" 
+			+ NEWLINE + "search [keywords]"
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'s\', \'find\', \'f\'";
+	
+	public static final String FREE_HELP_MESSAGE = "free" + INDENT + "find free slots of certain duration"
+			+ NEWLINE + INDENT + "today or by specifying an end_time, "
+			+ NEWLINE + INDENT + "date or time frame."
+			+ NEWLINE
+			+ NEWLINE + "Formats supported:"
+			+ NEWLINE + "free [duration]"
+			+ NEWLINE + "free [duration] by [end_time]"
+			+ NEWLINE + "free [duration] on [date]"
+			+ NEWLINE + "free [duration] from [start_time] to [end_time]"
+			+ NEWLINE
+			+ NEWLINE + "NOTE: [duration] is in number of hours" 
+			+ NEWLINE + "      Time slots during general sleeping time "
+			+ NEWLINE + "      <10 pm to 6 am> would not be returned";
+	
+	public static final String DONE_HELP_MESSAGE = "done" + INDENT + "Label a task as done."
+			+ NEWLINE
+			+ NEWLINE + "Formats supported:"
+			+ NEWLINE + "done [task_id]";
+	
+	public static final String UNDO_HELP_MESSAGE = "undo" + INDENT + "Undo most recent add/update/delete.";
+	
+	public static final String REDO_HELP_MESSAGE = "redo" + INDENT + "Redo the most recent undo.";
+	
+	public static final String EXIT_HELP_MESSAGE = "exit" + INDENT + "Close WhatsUpNext."
+			+ NEWLINE
+			+ NEWLINE + "Aliases supported:"
+			+ NEWLINE + "\'e\', \'quit\', \'q\'";;
+	
+	public static final String TIME_HELP_MESSAGE = "Time formats supported:"
+			+ NEWLINE + "24-hour clock" + INDENT + "\'09:00\', \'2359\'" 
+			+ NEWLINE + "12-hour clock" + INDENT + "\'9:00 am, \'11 pm\'"
+			+ NEWLINE
+			+ NEWLINE + "Date formats supported:"
+			+ NEWLINE + "DayMonthYear  " + INDENT + "\'021114\',"
+			+ NEWLINE + INDENT + INDENT + "\'31102013\'"
+			+ NEWLINE + "Day/Month/Year" + INDENT + "\'02/11/14\',"
+			+ NEWLINE + INDENT + INDENT + "\'31/10/2013\'"
+			+ NEWLINE + "Day-Month-Year" + INDENT + "\'02-11-14\',"
+			+ NEWLINE + INDENT + INDENT + "\'31-10-2013\'"
+			+ NEWLINE + "Day Month Year" + INDENT + "\'02 nov 14\',"
+			+ NEWLINE + INDENT + INDENT + "\'02 November 2013\'"
+			+ NEWLINE
+			+ NEWLINE + "Special formats supported:"
+			+ NEWLINE + "Day of Week" + INDENT + "\'monday\', \'mon\'"
+			+ NEWLINE + "Today date" + INDENT + INDENT + "\'today\'"
+			+ NEWLINE + "Tomorrow date" + INDENT + "\'tomorrow\', \'tml\',\'tmr\'"
+			+ NEWLINE + "Current Time" + INDENT + "\'now\'"
+			+ NEWLINE
+			+ NEWLINE + "Valid examples:"
+			+ NEWLINE + "\'0000 010114\', \'31/12/2013 23:59\'"
+			+ NEWLINE + "\'7:30 am sunday\', \'tml 12 pm\'"
+			+ NEWLINE + "\'0930 10-11-14\', \'11:30 am today\'"
+			+ NEWLINE +  "\'now\'"
+			+ NEWLINE
+			+ NEWLINE + "Things to note:"
+			+ NEWLINE + "-Day of week is referring to the upcoming day of week."
+			+ NEWLINE + "-If you have only specify the time, today date will be automatically assigned to it."
+			+ NEWLINE + "-If you have only specify the date, either time 0000 for start time "
+					+ "or time 2359 for end time will be automatically assigned to it.";
+	
+}
+
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\structure\util\Help.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\structure\util\Task.java
+	 */
+
+package whatsupnext.structure.util;
 
 import java.util.Arrays;
 
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Types.ADDTYPE;
-import whatsupnext.structure.Types.DELETETYPE;
-import whatsupnext.structure.Types.UPDATETYPE;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types.ADDTYPE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.enums.Types.FREETYPE;
+import whatsupnext.structure.enums.Types.UPDATETYPE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
 
 public class Task {
 
@@ -1668,6 +2379,7 @@ public class Task {
 	private VIEWTYPE viewType;
 	private UPDATETYPE updateType;
 	private DELETETYPE deleteType;
+	private FREETYPE freeType;
 	private String[] operand;
 	private boolean isDone;
 
@@ -1788,9 +2500,16 @@ public class Task {
 		return false;
 	}
 
+	public FREETYPE getFreeType() {
+		return freeType;	
+	}
+
+	public void setFreeType(FREETYPE freeType) {
+		this.freeType = freeType;
+	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\structure\Task.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\structure\util\Task.java
 
 
 

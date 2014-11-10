@@ -3,10 +3,10 @@
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\ExtractorTest.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\parser\ExtractorTest.java
 	 */
 
-package whatsupnext.junit;
+package whatsupnext.junit.parser;
 
 import static org.junit.Assert.*;
 
@@ -17,16 +17,18 @@ import org.junit.Test;
 import whatsupnext.parser.extractor.AddExtractor;
 import whatsupnext.parser.extractor.DeleteExtractor;
 import whatsupnext.parser.extractor.DoneExtractor;
+import whatsupnext.parser.extractor.FreeExtractor;
 import whatsupnext.parser.extractor.HelpExtractor;
 import whatsupnext.parser.extractor.SearchExtractor;
 import whatsupnext.parser.extractor.UpdateExtractor;
 import whatsupnext.parser.extractor.ViewExtractor;
-import whatsupnext.structure.Help;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.ADDTYPE;
-import whatsupnext.structure.Types.DELETETYPE;
-import whatsupnext.structure.Types.UPDATETYPE;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.Types.ADDTYPE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.enums.Types.FREETYPE;
+import whatsupnext.structure.enums.Types.UPDATETYPE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
+import whatsupnext.structure.util.Help;
+import whatsupnext.structure.util.Task;
 
 public class ExtractorTest {
 	
@@ -234,6 +236,15 @@ public class ExtractorTest {
 		assertEquals("Test Delete - startTime", "201410060000", task.getStartTime());
 		assertEquals("Test Delete - endTime", "201410102359", task.getEndTime());
 		assertEquals("Test Delete - deleteType", DELETETYPE.TIMEFRAME, task.getDeleteType());
+	}
+	
+	@Test
+	/* testing for delete DONE*/
+	public void testDelete5() {
+		Task task = new Task();
+		DeleteExtractor ex = new DeleteExtractor();
+		ex.extract(task, "done");
+		assertEquals("Test Delete - deleteType", DELETETYPE.DONE, task.getDeleteType());
 	}
 	
 	@Test
@@ -480,6 +491,68 @@ public class ExtractorTest {
 		assertEquals("Test Done - endTime", "", task.getEndTime());
 		assertEquals("Test Done - taskID", "", task.getTaskID());
 	}
+
+	
+	@Test
+	public void testFree1(){
+		Task task = new Task();
+		FreeExtractor ex = new FreeExtractor();
+		ex.extract(task,"3");
+		assertEquals("Test Free - description", "3", task.getDescription());
+		assertEquals("Test Free - startTime","", task.getStartTime());
+		assertEquals("Test Free - endTime", getTodayDate()+"2359", task.getEndTime());
+		assertEquals("Test Free - taskID", "", task.getTaskID());
+		assertEquals("Test Free - FREETYPE",FREETYPE.DATE,task.getFreeType());
+	}
+	
+	@Test
+	public void testFree2(){
+		Task task = new Task();
+		FreeExtractor ex = new FreeExtractor();
+		ex.extract(task,"3 from 11/11/2014 1000 to 11/11/2014");
+		assertEquals("Test Free - description", "3", task.getDescription());
+		assertEquals("Test Free - startTime", "201411111000", task.getStartTime());
+		assertEquals("Test Free - endTime", "201411112359", task.getEndTime());
+		assertEquals("Test Free - taskID", "", task.getTaskID());
+		assertEquals("Test Free - FREETYPE",FREETYPE.TIMEFRAME,task.getFreeType());
+	}
+	
+	@Test
+	public void testFree3(){
+		Task task = new Task();
+		FreeExtractor ex = new FreeExtractor();
+		ex.extract(task,"3 on 11/11/2014");
+		assertEquals("Test Free - description", "3", task.getDescription());
+		assertEquals("Test Free - startTime", "", task.getStartTime());
+		assertEquals("Test Free - endTime", "201411112359", task.getEndTime());
+		assertEquals("Test Free - taskID", "", task.getTaskID());
+		assertEquals("Test Free - FREETYPE",FREETYPE.DATE,task.getFreeType());
+	}
+	
+	@Test
+	public void testFree4(){
+		Task task = new Task();
+		FreeExtractor ex = new FreeExtractor();
+		ex.extract(task,"3 by 11/11/2014");
+		assertEquals("Test Free - description", "3", task.getDescription());
+		assertEquals("Test Free - startTime", getTodayDateTime(), task.getStartTime());
+		assertEquals("Test Free - endTime", "201411112359", task.getEndTime());
+		assertEquals("Test Free - taskID", "", task.getTaskID());
+		assertEquals("Test Free - FREETYPE",FREETYPE.TIMEFRAME,task.getFreeType());
+	}
+	
+	@Test
+	public void testFreeInvalidDuration(){
+		String MESSAGE_INVALID_DURATION = "'free' must have a valid duration: # of hours";
+		Task task = new Task();
+		FreeExtractor ex = new FreeExtractor();
+		try{
+			ex.extract(task, "hours");
+		} catch (Exception e) {
+			assertEquals("Test free - invalid duration", MESSAGE_INVALID_DURATION, e.getMessage());
+		}
+	}
+	
 	
 	@Test
 	public void testViewInvalidArgument() {
@@ -574,25 +647,29 @@ public class ExtractorTest {
 	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\ExtractorTest.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\parser\ExtractorTest.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\AddExtractor.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\AddExtractor.java
 	 */
 
 package whatsupnext.parser.extractor;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.ADDTYPE;
+import whatsupnext.structure.enums.Types.ADDTYPE;
+import whatsupnext.structure.util.Task;
 
 public class AddExtractor implements Extractor {
+		
+	private static final Logger log = Logger.getLogger( AddExtractor.class.getName() );
 	
 	private final String MESSAGE_INVALID_DESCRIPTION = "'add' must have a valid description";
 	private final String MESSAGE_INVALID_END_TIME = "'add' must have a valid end time";
@@ -606,6 +683,7 @@ public class AddExtractor implements Extractor {
 	}
 	
 	public void extract(Task task, String input){
+		assert task != null;
 		// Determine 'add' case: add by deadline or time frame
 		Pattern byKeywordPattern = Pattern.compile("\\s+(B|b)(Y|y)\\s+");
 		Pattern fromKeywordPattern = Pattern.compile("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
@@ -643,6 +721,9 @@ public class AddExtractor implements Extractor {
 		}
 		String detailsTime = details[1];
 		String[] detailsTimeStartAndEnd = detailsTime.split("\\s+(T|t)(O|o)\\s+");
+		if(detailsTimeStartAndEnd.length == 1) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
+		}
 		parseDate.setParsingStartTime(true);
 		task.setStartTime(parseDate.parseInput(detailsTimeStartAndEnd[0]));
 		if(task.getStartTime().isEmpty() 
@@ -672,6 +753,8 @@ public class AddExtractor implements Extractor {
 			task.setDescription(details[0]);
 		    task.setEndTime(parseDate.parseInput(details[1]));
 		} else {
+			log.setLevel(Level.INFO);
+		    log.info("description contains keyword by");
 			task.setDescription(Utility.recoverDetails("by",details));
 			task.setEndTime(parseDate.parseInput(details[detailsSize-1]));
 		}
@@ -686,14 +769,14 @@ public class AddExtractor implements Extractor {
 	
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\AddExtractor.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\AddExtractor.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\DeleteExtractor.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\DeleteExtractor.java
 	 */
 
 package whatsupnext.parser.extractor;
@@ -701,8 +784,8 @@ package whatsupnext.parser.extractor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.DELETETYPE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.util.Task;
 
 public class DeleteExtractor implements Extractor {
 	
@@ -727,7 +810,9 @@ public class DeleteExtractor implements Extractor {
 		    String formattedDate = parseDate.parseInput(input);
 		    if (input.equalsIgnoreCase("deadline")) {
 				deleteCaseDeadline(task);
-			} else{
+			} else if(input.equalsIgnoreCase("done")) {
+				deleteCaseDone(task);
+			} else {
 				if (formattedDate.isEmpty()) {
 					// TODO; should judge for valid ID instead of valid date	
 					deleteCaseID(task,input);
@@ -747,6 +832,15 @@ public class DeleteExtractor implements Extractor {
 		}
 	}
 	
+	
+	/**
+	 * Delete done tasks
+	 * @param task
+	 */
+	private void deleteCaseDone(Task task) {
+		task.setDeleteType(DELETETYPE.DONE);
+	}
+
 	/**
 	 * Delete by ID. delete detail should be valid task ID
 	 * @param task
@@ -829,19 +923,19 @@ public class DeleteExtractor implements Extractor {
 }
 
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\DeleteExtractor.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\DeleteExtractor.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\DoneExtractor.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\DoneExtractor.java
 	 */
 
 package whatsupnext.parser.extractor;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class DoneExtractor implements Extractor{
 	private final String MESSAGE_INVALID_TASKID = "'Done' must have a valid ID";
@@ -860,19 +954,191 @@ public class DoneExtractor implements Extractor{
 	
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\DoneExtractor.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\DoneExtractor.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\SearchExtractor.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\FreeExtractor.java
 	 */
 
 package whatsupnext.parser.extractor;
 
-import whatsupnext.structure.Task;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import whatsupnext.structure.enums.Types.FREETYPE;
+import whatsupnext.structure.util.Task;
+
+public class FreeExtractor implements Extractor {
+	
+	private final String MESSAGE_INVALID_DURATION = "'free' must have a valid duration: # of hours";
+	private final String MESSAGE_INVALID_END_TIME = "'free' must have a valid end time";
+	private final String MESSAGE_INVALID_START_TIME = "'free' must have a valid start time";
+	private final String MESSAGE_INVALID_START_END_TIME = "Start time must be before end time"; 
+	
+	private ParseDate parseDate;
+	
+	public FreeExtractor(){
+		this.parseDate = new ParseDate();
+	}
+	
+	
+	public void extract(Task task, String input){
+		
+		assert task != null;
+		
+		Pattern onKeywordPattern = Pattern.compile("\\s+(O|o)(N|n)\\s+");
+		Pattern byKeywordPattern = Pattern.compile("\\s+(B|b)(Y|y)\\s+");
+		Pattern fromKeywordPattern = Pattern.compile("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
+		Matcher onKeywordMatcher = onKeywordPattern.matcher(input);
+		Matcher byKeywordMatcher = byKeywordPattern.matcher(input);
+		Matcher fromKeywordMatcher = fromKeywordPattern.matcher(input);
+
+		if (onKeywordMatcher.find()) {
+			task.setFreeType(FREETYPE.DATE);
+			splitOnOnKeyword(task, input);
+		} else if(byKeywordMatcher.find()){
+			task.setFreeType(FREETYPE.TIMEFRAME);
+			splitOnByKeyword(task, input);
+		} else if (fromKeywordMatcher.find()) {
+			task.setFreeType(FREETYPE.TIMEFRAME);
+			splitOnFromToKeyword(task, input);
+		} else {
+			task.setFreeType(FREETYPE.DATE);
+			getFreeTimeToday(task,input);
+		}	
+	
+	}
+
+	
+	/**
+	 * Find free time slots today
+	 * @param task
+	 * @param input
+	 */
+	private void getFreeTimeToday(Task task, String input) {
+		try {
+			if(Integer.parseInt(input) < 0) {
+				throw new IllegalArgumentException(MESSAGE_INVALID_DURATION) ;
+			}
+			task.setDescription(input);
+		} catch (NumberFormatException e) {
+			throw new NumberFormatException(MESSAGE_INVALID_DURATION);
+		}
+		parseDate.setParsingStartTime(false);
+		task.setEndTime(parseDate.getTodayDate()+"2359");
+	}
+
+	
+	/**
+	 * Splits the input based on keyword "from" and "to"
+	 * @param taskDetail
+	 */
+	private void splitOnFromToKeyword(Task task, String taskDetail) {
+		String[] details = taskDetail.split("\\s+(F|f)(R|r)(O|o)(M|m)\\s+");
+		task.setDescription(details[0]);
+		if(task.getDescription().isEmpty()){
+			throw new IllegalArgumentException(MESSAGE_INVALID_DURATION);
+		}
+		try {
+			if(Integer.parseInt(task.getDescription()) < 0) {
+				throw new IllegalArgumentException(MESSAGE_INVALID_DURATION) ;
+			}
+		} catch (NumberFormatException e) {
+			throw new NumberFormatException(MESSAGE_INVALID_DURATION);
+		}
+		
+		String detailsTime = details[1];
+		String[] detailsTimeStartAndEnd = detailsTime.split("\\s+(T|t)(O|o)\\s+");
+		if(detailsTimeStartAndEnd.length == 1) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
+		}
+		parseDate.setParsingStartTime(true);
+		task.setStartTime(parseDate.parseInput(detailsTimeStartAndEnd[0]));
+		if(task.getStartTime().isEmpty() 
+				|| task.getStartTime().compareTo(parseDate.getCurrentTime()) < 0) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_START_TIME);
+		}
+		parseDate.setParsingStartTime(false);
+		task.setEndTime(parseDate.parseInput(detailsTimeStartAndEnd[1]));
+		if(task.getEndTime().isEmpty() 
+				|| task.getEndTime().compareTo(parseDate.getCurrentTime()) < 0) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
+		}
+		if (task.getStartTime().compareTo(task.getEndTime())>0) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_START_END_TIME);
+		}
+	}
+
+	/**
+	 * Splits input based on keyword "on"
+	 * @param taskDetails
+	 * @return
+	 */
+	private void splitOnOnKeyword(Task task, String taskDetails) {
+		String[] details = taskDetails.split("\\s+(O|o)(N|n)\\s+");
+		parseDate.setParsingStartTime(false);
+		task.setDescription(details[0]);
+		try {
+			if(Integer.parseInt(task.getDescription()) < 0) {
+				throw new IllegalArgumentException(MESSAGE_INVALID_DURATION) ;
+			}
+		} catch (NumberFormatException e) {
+			throw new NumberFormatException(MESSAGE_INVALID_DURATION);
+		}
+		
+		task.setEndTime(parseDate.parseInput(details[1]));
+		if(task.getEndTime().isEmpty() 
+				|| task.getEndTime().compareTo(parseDate.getCurrentTime()) < 0) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
+		}
+	}
+
+	
+	/**
+	 * Splits input based on keyword "by"
+	 * @param taskDetails
+	 * @return
+	 */
+	private void splitOnByKeyword(Task task, String taskDetails) {
+		String[] details = taskDetails.split("\\s+(B|b)(Y|y)\\s+");
+		task.setDescription(details[0]);
+		try {
+			if(Integer.parseInt(task.getDescription()) < 0) {
+				throw new IllegalArgumentException(MESSAGE_INVALID_DURATION) ;
+			}
+		} catch (NumberFormatException e) {
+			throw new NumberFormatException(MESSAGE_INVALID_DURATION);
+		}
+		task.setStartTime(parseDate.getCurrentTime());
+		parseDate.setParsingStartTime(false);
+		task.setEndTime(parseDate.parseInput(details[1]));
+		if(task.getEndTime().isEmpty() 
+				|| task.getEndTime().compareTo(parseDate.getCurrentTime()) < 0) {
+			throw new IllegalArgumentException(MESSAGE_INVALID_END_TIME);
+		}
+	}
+	
+
+	
+}
+
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\FreeExtractor.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\SearchExtractor.java
+	 */
+
+package whatsupnext.parser.extractor;
+
+import whatsupnext.structure.util.Task;
 
 public class SearchExtractor implements Extractor{
 
@@ -891,14 +1157,14 @@ public class SearchExtractor implements Extractor{
 	
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\SearchExtractor.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\SearchExtractor.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\UpdateExtractor.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\UpdateExtractor.java
 	 */
 
 package whatsupnext.parser.extractor;
@@ -906,8 +1172,8 @@ package whatsupnext.parser.extractor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.UPDATETYPE;
+import whatsupnext.structure.enums.Types.UPDATETYPE;
+import whatsupnext.structure.util.Task;
 
 public class UpdateExtractor implements Extractor {
 	
@@ -1001,14 +1267,14 @@ public class UpdateExtractor implements Extractor {
 
 
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\UpdateExtractor.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\UpdateExtractor.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\Utility.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\Utility.java
 	 */
 
 package whatsupnext.parser.extractor;
@@ -1084,14 +1350,14 @@ public final class Utility {
 }
 
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\Utility.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\Utility.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\ViewExtractor.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\ViewExtractor.java
 	 */
 
 package whatsupnext.parser.extractor;
@@ -1099,8 +1365,8 @@ package whatsupnext.parser.extractor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
+import whatsupnext.structure.util.Task;
 
 public class ViewExtractor implements Extractor {
 	
@@ -1118,13 +1384,14 @@ public class ViewExtractor implements Extractor {
 	public void extract(Task task, String input){
 		int numOfWord = Utility.countWords(input);
 		if ( numOfWord == 0){
-			// throw new IllegalArgumentException(MESSAGE_INVALID_ARGUMENT);
 			viewCaseUndone(task);
 		} else if (numOfWord == 1) {
 			if (input.equalsIgnoreCase("all")) {
 				viewCaseAll(task);
 			} else if (input.equalsIgnoreCase("next")) {
 				viewCaseNext(task);
+			} else if (input.equalsIgnoreCase("overdue")){
+				viewCaseOverdue(task);
 			} else {
 				viewCaseDate(task,input);
 			}
@@ -1140,6 +1407,15 @@ public class ViewExtractor implements Extractor {
 	}
 	
 	
+	/**
+	 *  View case for overdue tasks
+	 * @param task
+	 */
+	private void viewCaseOverdue(Task task) {
+		task.setViewType(VIEWTYPE.OVERDUE);
+		task.setEndTime(parseDate.getCurrentTime());
+	}
+
 	/**
 	 *  View case for only tasks not done 
 	 * @param task
@@ -1221,7 +1497,299 @@ public class ViewExtractor implements Extractor {
 
 
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\parser\extractor\ViewExtractor.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\parser\extractor\ViewExtractor.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\FloatingTasksWidget.java
+	 */
+
+	/**
+	 * This function displays feedback with customized coloring
+	 * @param feedback
+	 */
+	private void appendToPane(String feedback) {
+		textDisplayFloating.setText(feedback);
+		int numOfNewline = countSubstring("\n", feedback);
+		String[] subStrings = feedback.trim().split("\n");
+		int currentStart = 0;
+		int currentEnd = feedback.indexOf("\n",1);
+		String subString;
+		boolean newtask=true;
+		Color lastColor = generateNewColor();
+      			
+	     for (int i = 0; i <= numOfNewline; i++) {
+	    	 currentEnd = feedback.indexOf("\n",currentStart+1);
+	    	 if (currentEnd<0) {
+	    		 currentEnd=doc.getLength();
+	    	 }
+             SimpleAttributeSet set = new SimpleAttributeSet();
+ 
+             subString = subStrings[i]; 
+             // This line is a task title
+             if (isnewTask(subString)){
+            	 StyleConstants.setBold(set, true); 
+            	 StyleConstants.setFontSize(set, 12);      
+            	 StyleConstants.setBackground(set, titleBackground);
+            	 StyleConstants.setForeground(set, titleForeground);
+            	 newtask=true;
+             } else {
+            	 StyleConstants.setBold(set, false); 
+            	 StyleConstants.setFontSize(set, 11);
+            	 if (newtask){
+                    lastColor = generateNewColor();
+                    newtask = false;
+            	 } 
+            	 StyleConstants.setForeground(set, lastColor);
+             }
+             doc.setCharacterAttributes(currentStart, currentEnd-currentStart+1, set, true);
+             currentStart = currentEnd + 1;
+         }
+	}
+	
+		
+	/**
+	 * This function generates a new font color without repeating last one
+	 * @return
+	 */
+	private Color generateNewColor(){
+		int newColorIndex = random.nextInt(colors.length-1);
+		while (newColorIndex == currentColorIndex){
+			newColorIndex = random.nextInt(colors.length-1);
+		}
+		currentColorIndex = newColorIndex;
+		return colors[newColorIndex];
+	}
+	
+	/**
+	 * This function judges if a string is title of a task
+	 * based on if it starts with "<taskID:>"
+	 * @param subString
+	 * @return
+	 */
+	private boolean isnewTask(String subString) {
+		subString = subString.trim().split("\n")[0];
+		String taskID = subString.trim().split(":")[0];
+		try {
+			Integer.parseInt(taskID); 
+			return true;
+		}  catch (NumberFormatException e) {
+			return false;
+		}	
+	}
+
+	/**
+	 * This function counts the number of lines inside a string
+	 * @param subStr
+	 * @param str
+	 * @return
+	 */
+	public static int countSubstring(String subStr, String str){
+		return (str.length() - str.replace(subStr, "").length()) / subStr.length();
+	}
+	
+}
+
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\FloatingTasksWidget.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\MainDisplayWidget.java
+	 */
+
+	/**
+	 * This function displays feedback with customized coloring
+	 * @param feedback
+	 */
+	private void appendToPane(String feedback) {
+		textDisplayMain.setText("\n"+feedback+"\n");
+		int numOfNewline = countSubstring("\n", feedback);
+		String[] subStrings = feedback.trim().split("\n");
+		int currentStart = 0;
+		int currentEnd = feedback.indexOf("\n",1);
+		String subString;
+		boolean newtask=true;
+		Color lastColor = generateNewColor();
+      			
+	     for (int i = 0; i <= numOfNewline; i++) {
+	    	 currentEnd = feedback.indexOf("\n",currentStart+1);
+	    	 if (currentEnd<0) {
+	    		 currentEnd=doc.getLength();
+	    	 }
+             SimpleAttributeSet set = new SimpleAttributeSet();
+ 
+             subString = subStrings[i]; 
+             // This line is a task title
+             if (isnewTask(subString)){
+            	 StyleConstants.setBold(set, true); 
+            	 StyleConstants.setFontSize(set, 13);      
+            	 StyleConstants.setBackground(set, titleBackground);
+            	 StyleConstants.setForeground(set, titleForeground);
+            	 newtask=true;
+             } else {
+            	 StyleConstants.setBold(set, false); 
+            	 StyleConstants.setFontSize(set, 11);
+            	 if (newtask){
+                    lastColor = generateNewColor();
+                    newtask = false;
+            	 } 
+            	 StyleConstants.setForeground(set, lastColor);
+             }
+             doc.setCharacterAttributes(currentStart, currentEnd-currentStart+1, set, true);
+             currentStart = currentEnd + 1;
+         }
+	}
+	
+		
+	/**
+	 * This function generates a new font color without repeating last one
+	 * @return
+	 */
+	private Color generateNewColor(){
+		int newColorIndex = random.nextInt(colors.length-1);
+		while (newColorIndex == currentColorIndex){
+			newColorIndex = random.nextInt(colors.length-1);
+		}
+		currentColorIndex = newColorIndex;
+		return colors[newColorIndex];
+	}
+	
+	/**
+	 * This function judges if a string is title of a task
+	 * based on if it starts with "<taskID:>"
+	 * @param subString
+	 * @return
+	 */
+	private boolean isnewTask(String subString) {
+		subString = subString.trim().split("\n")[0];
+		String taskID = subString.trim().split(":")[0];
+		try {
+			Integer.parseInt(taskID); 
+			return true;
+		}  catch (NumberFormatException e) {
+			return false;
+		}	
+	}
+
+	/**
+	 * This function counts the number of lines inside a string
+	 * @param subStr
+	 * @param str
+	 * @return
+	 */
+	public static int countSubstring(String subStr, String str){
+		return (str.length() - str.replace(subStr, "").length()) / subStr.length();
+	}
+	
+}
+
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\MainDisplayWidget.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\UpcomingTasksWidget.java
+	 */
+
+	/**
+	 * This function displays feedback with customized coloring
+	 * @param feedback
+	 */
+	private void appendToPane(String feedback) {
+		textDisplayUpcoming.setText(feedback);
+		int numOfNewline = countSubstring("\n", feedback);
+		
+		String[] subStrings = feedback.trim().split("\n");
+		int currentStart = 0;
+		int currentEnd = feedback.indexOf("\n",1);
+		
+		String subString;
+		boolean newtask = true;
+		Color lastColor = generateNewColor();
+      			
+	     for (int i = 0; i <= numOfNewline; i++) {
+	    	 currentEnd = feedback.indexOf("\n",currentStart+1);
+	    	 if (currentEnd < 0) {
+	    		 currentEnd = doc.getLength();
+	    	 }
+             SimpleAttributeSet set = new SimpleAttributeSet();
+ 
+             subString = subStrings[i]; 
+             // This line is a task title
+             if (isNewTask(subString)) {
+            	 StyleConstants.setBold(set, true); 
+            	 StyleConstants.setFontSize(set, 12);      
+            	 StyleConstants.setBackground(set, titleBackground);
+            	 StyleConstants.setForeground(set, titleForeground);
+            	 newtask = true;
+            	 
+             } else {
+            	 StyleConstants.setBold(set, false); 
+            	 StyleConstants.setFontSize(set, 11);
+            	 if (newtask) {
+                    lastColor = generateNewColor();
+                    newtask = false;
+            	 } 
+            	 StyleConstants.setForeground(set, lastColor);
+             }
+             doc.setCharacterAttributes(currentStart, currentEnd - currentStart + 1, set, true);
+             currentStart = currentEnd + 1;
+         }
+	}
+	
+		
+	/**
+	 * This function generates a new font color without repeating last one
+	 * @return
+	 */
+	private Color generateNewColor(){
+		int newColorIndex = random.nextInt(colors.length-1);
+		while (newColorIndex == currentColorIndex){
+			newColorIndex = random.nextInt(colors.length-1);
+		}
+		currentColorIndex = newColorIndex;
+		return colors[newColorIndex];
+	}
+	
+	/**
+	 * This function judges if a string is title of a task
+	 * based on if it starts with "<taskID:>"
+	 * @param subString
+	 * @return
+	 */
+	private boolean isNewTask(String subString) {
+		subString = subString.trim().split("\n")[0];
+		String taskID = subString.trim().split(":")[0];
+		try {
+			Integer.parseInt(taskID); 
+			return true;
+		}  catch (NumberFormatException e) {
+			return false;
+		}	
+	}
+
+	/**
+	 * This function counts the number of lines inside a string
+	 * @param subStr
+	 * @param str
+	 * @return
+	 */
+	public static int countSubstring(String subStr, String str){
+		return (str.length() - str.replace(subStr, "").length()) / subStr.length();
+	}
+	
+	
+}
+
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\UpcomingTasksWidget.java
 
 
 

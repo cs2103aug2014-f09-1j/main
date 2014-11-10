@@ -3,10 +3,10 @@
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\GUIBehaviorTest.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\ui\GUIBehaviorTest.java
 	 */
 
-package whatsupnext.junit;
+package whatsupnext.junit.ui;
 
 import static org.junit.Assert.*;
 
@@ -24,10 +24,11 @@ import org.junit.Test;
 import whatsupnext.logic.Logic;
 import whatsupnext.logic.LogicUtilities;
 import whatsupnext.storage.Storage;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.DELETETYPE;
-import whatsupnext.ui.WhatsUpNextGUI;
+import whatsupnext.ui.GUIOneWindow;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.util.Task;
 
 public class GUIBehaviorTest {
 	private WhatsUpNextGUIStub gui;
@@ -41,7 +42,7 @@ public class GUIBehaviorTest {
 
 	private String currentYear;
 
-	private class WhatsUpNextGUIStub extends WhatsUpNextGUI {
+	private class WhatsUpNextGUIStub extends GUIOneWindow {
 		private Logic logic;
 
 		public WhatsUpNextGUIStub(String fileName) {
@@ -124,15 +125,15 @@ public class GUIBehaviorTest {
 	@Before
 	public void initializeWidgets() {
 		textDisplayMain = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
-		textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "textDisplayUpcoming");
-		textDisplayFloating = (JTextPane)GUITestUtils.getChildNamed(gui.getFloatingFrame(), "textDisplayFloating");
+		textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
+		textDisplayFloating = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayFloating");
 		assertNotNull("Can't acess the main text display JTextPane", textDisplayMain);
 		assertNotNull("Can't acess the upcoming task text area JTextPane", textDisplayUpcoming);
 		assertNotNull("Can't acess the floating task text area JTextPane", textDisplayFloating);
 
 		buttonEnter = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonEnter");
-		buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "buttonUpcoming");
-		buttonFloating = (JButton)GUITestUtils.getChildNamed(gui.getFloatingFrame(), "buttonFloating");
+		buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonUpcoming");
+		buttonFloating = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonFloating");
 		assertNotNull("Can't acess the main enter button JButton", buttonEnter);
 		assertNotNull("Can't acess the upcoming task button JButton", buttonUpcoming);
 		assertNotNull("Can't acess the floating task button JButton", buttonFloating);
@@ -249,174 +250,18 @@ public class GUIBehaviorTest {
 						textDisplayUpcoming.getText());
 		assertEquals("No tasks to display!", textDisplayFloating.getText());
 	}
-
-	@Test
-	public void AddTaskFromToDayTest() {
-
-	}
-
-	@Test
-	public void ViewAllTest() {
-
-	}
-
-	@Test
-	public void ViewNextTest() {
-
-	}
-
-	@Test
-	public void ViewDayTest() {
-
-	}
-
-	@Test
-	public void ViewDateTest() {
-
-	}
-
-	@Test
-	public void ViewFromToDayTest() {
-
-	}
-
-	@Test
-	public void ViewFromToDateTest() {
-
-	}
-
-	@Test
-	public void UpdateDescriptionTest() {
-
-	}
-
-	@Test
-	public void UpdateByDeadlineDayTest() {
-
-	}
-
-	@Test
-	public void UpdateByDeadlineDateTest() {
-
-	}
-
-	@Test
-	public void UpdateFromToDayTest() {
-
-	}
-
-	@Test
-	public void UpdateFromToDateTest() {
-
-	}
-
-	@Test
-	public void DeleteTaskIdTest() {
-
-	}
-
-	@Test
-	public void DeleteDeadlineTest() {
-
-	}
-
-	@Test
-	public void DeleteDateTest() {
-
-	}
-
-	@Test
-	public void DeleteFromToDayTest() {
-
-	}
-
-	@Test
-	public void DeleteFromToDateTest() {
-
-	}
-
-	@Test
-	public void SearchEmptyTest() {
-
-	}
-
-	@Test
-	public void SearchTextTest() {
-
-	}
-
-	@Test
-	public void UndoAddTest() {
-
-	}
-
-	@Test
-	public void UndoDeleteTest() {
-
-	}
-
-	@Test
-	public void UndoUpdateTest() {
-
-	}
-
-	@Test
-	public void UndoLabelTest() {
-
-	}
-
-	@Test
-	public void UndoRedoTest() {
-
-	}
-
-	@Test
-	public void RedoAddTest() {
-
-	}
-
-	@Test
-	public void RedoDeleteTest() {
-
-	}
-
-	@Test
-	public void RedoUpdateTest() {
-
-	}
-
-	@Test
-	public void RedoLabelTest() {
-
-	}
-
-	@Test
-	public void RedoUndoTest() {
-
-	}
-
-	@Test
-	public void LabelDoneTest() {
-
-	}
-
-	@Test
-	public void LabelCategoryTest() {
-
-	}
-}
-
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\GUIBehaviorTest.java
+	
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\ui\GUIBehaviorTest.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\GUIVisualTest.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\ui\GUIVisualTest.java
 	 */
 
-package whatsupnext.junit;
+package whatsupnext.junit.ui;
 
 import static org.junit.Assert.*;
 
@@ -440,15 +285,15 @@ import org.junit.Test;
 
 import whatsupnext.logic.Logic;
 import whatsupnext.storage.Storage;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.DELETETYPE;
-import whatsupnext.ui.WhatsUpNextGUI;
+import whatsupnext.ui.GUIOneWindow;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.util.Task;
 
 public class GUIVisualTest {
 	private WhatsUpNextGUIStub gui;
 	
-	private class WhatsUpNextGUIStub extends WhatsUpNextGUI {
+	private class WhatsUpNextGUIStub extends GUIOneWindow {
 		private Logic logic;
 		
 		public WhatsUpNextGUIStub(String fileName) {
@@ -490,11 +335,11 @@ public class GUIVisualTest {
 		assertTrue(frameMain.isResizable());
 		
 		Dimension prefSize = frameMain.getPreferredSize();
-		assertEquals(530, prefSize.width);
-		assertEquals(360, prefSize.height);
+		assertEquals(780, prefSize.width);
+		assertEquals(442, prefSize.height);
 		Dimension minSize = frameMain.getMinimumSize();
-		assertEquals(530, minSize.width);
-		assertEquals(360, minSize.height);
+		assertEquals(740, minSize.width);
+		assertEquals(332, minSize.height);
 		
 		assertEquals("Cambria", frameMain.getFont().getName());
 		assertTrue(frameMain.getFont().isBold());
@@ -523,12 +368,12 @@ public class GUIVisualTest {
 	
 	@Test
 	public void UpcomingTasksTextDisplayTest() {
-		JScrollPane textDisplayUpcomingScrollPane = (JScrollPane)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "textDisplayUpcomingScrollPane");
+		JScrollPane textDisplayUpcomingScrollPane = (JScrollPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcomingScrollPane");
 		assertNotNull("Can't acess the upcoming task text display scrolling pane JScrollPane", textDisplayUpcomingScrollPane);
 		
 		assertEquals(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, textDisplayUpcomingScrollPane.getVerticalScrollBarPolicy());
 		
-		JTextPane textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "textDisplayUpcoming");
+		JTextPane textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
 		assertNotNull("Can't acess the upcoming task text area JTextArea", textDisplayUpcoming);
 		
 		assertEquals("Courier New", textDisplayUpcoming.getFont().getName());
@@ -540,7 +385,7 @@ public class GUIVisualTest {
 	
 	@Test
 	public void UpcomingTasksButtonTest() {
-		JButton buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "buttonUpcoming");
+		JButton buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonUpcoming");
 		assertNotNull("Can't acess the upcoming task button JButton", buttonUpcoming);
 		
 		assertEquals("Cambria", buttonUpcoming.getFont().getName());
@@ -590,21 +435,56 @@ public class GUIVisualTest {
 		assertTrue(textDisplayMain.getFont().isBold());
 		assertEquals(12, textDisplayMain.getFont().getSize());
 		
-		assertEquals("---Please enter command below:\r\n", textDisplayMain.getText());
+		assertEquals("----Please enter command below:\n    type \"help\" for instructions\n", textDisplayMain.getText());
 	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\GUIVisualTest.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\ui\GUIVisualTest.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\structure\TaskComparators.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\structure\enums\Types.java
 	 */
 
-package whatsupnext.structure;
+package whatsupnext.structure.enums;
+
+public class Types {
+	
+	public enum ADDTYPE {
+		FLOATING, DEADLINE, TIMEFRAME
+	}
+	
+	public enum DELETETYPE {
+		ALL, ID, DATE, DEADLINE, TIMEFRAME, DONE
+	}
+	
+	public enum UPDATETYPE {
+		DESCRIPTION, DEADLINE, TIMEFRAME 
+	}
+	
+	public enum VIEWTYPE {
+		ALL, NEXT, DATE, TIMEFRAME, UNDONE, FLOATING, OVERDUE
+	}
+	
+	public enum FREETYPE {
+		DATE, TIMEFRAME,
+	}
+}
+
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\structure\enums\Types.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\structure\util\TaskComparators.java
+	 */
+
+package whatsupnext.structure.util;
 
 import java.util.Comparator;
 
@@ -614,10 +494,6 @@ public class TaskComparators {
 		return task.getEndTime() == null || task.getEndTime().isEmpty();
 	}
 
-	private static boolean hasEmptyStartTime(Task task) {
-		return task.getStartTime() == null || task.getStartTime().isEmpty();
-	}
-	
 	public static class TaskDefaultComparator implements Comparator<Task> {
 		@Override
 		public int compare(Task taskA, Task taskB) {
@@ -631,94 +507,437 @@ public class TaskComparators {
 				return 1;
 			}
 
-			// Deadline tasks get sorted by end time and alphabetically on description
-			// Deadline tasks get placed before time frame tasks
+			// Other tasks get sorted by end time and alphabetically on description
 			long taskAEndTime = Long.parseLong(taskA.getEndTime());
 			long taskBEndTime = Long.parseLong(taskB.getEndTime());
-
-			if (hasEmptyStartTime(taskA) && hasEmptyStartTime(taskB)) {
-				if (taskAEndTime < taskBEndTime) {
-					return -1;
-				} else if (taskAEndTime > taskBEndTime) {
-					return 1;
-				} else if (taskAEndTime == taskBEndTime) {
-					return taskA.getDescription().compareToIgnoreCase(taskB.getDescription());
-				}
-			} else if (hasEmptyStartTime(taskA) && !hasEmptyStartTime(taskB)) {
-				return -1;
-			} else if (!hasEmptyStartTime(taskA) && hasEmptyStartTime(taskB)) {
-				return 1;
-			}
-
-			// Time frame tasks get sorted by end time and by start time and alphabetically on description
-			long taskAStartTime = Long.parseLong(taskA.getStartTime());
-			long taskBStartTime = Long.parseLong(taskB.getStartTime());
 
 			if (taskAEndTime < taskBEndTime) {
 				return -1;
 			} else if (taskAEndTime > taskBEndTime) {
 				return 1;
 			} else {
-				if (taskAStartTime < taskBStartTime) {
-					return -1;
-				} else if (taskAStartTime > taskBStartTime) {
-					return 1;
-				} else {
-					return taskA.getDescription().compareToIgnoreCase(taskB.getDescription());
-				}
+				return taskA.getDescription().compareToIgnoreCase(taskB.getDescription());
 			}
 		}
 	}
 	
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\structure\TaskComparators.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\structure\util\TaskComparators.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\structure\Types.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\GUIAbstract.java
 	 */
 
-package whatsupnext.structure;
+package whatsupnext.ui;
 
-public class Types {
+import whatsupnext.logic.Logic;
+
+public abstract class GUIAbstract {
 	
-	public enum ADDTYPE {
-		FLOATING, DEADLINE, TIMEFRAME
+	protected static Logic logic;
+	
+	public abstract void reset();
+	public abstract void showWindows();
+	
+	public static Logic getLogic() {
+		return logic;
 	}
-	
-	public enum DELETETYPE {
-		ALL, ID, DATE, DEADLINE, TIMEFRAME
-	}
-	
-	public enum UPDATETYPE {
-		DESCRIPTION, DEADLINE, TIMEFRAME 
-	}
-	
-	public enum VIEWTYPE {
-		ALL, NEXT, DATE, TIMEFRAME, UNDONE, FLOATING, OVERDUE
-	}
-	
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\structure\Types.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\GUIAbstract.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\CommandLineInterfaceWidget.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\GUIOneWindow.java
 	 */
 
 package whatsupnext.ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.Window.Type;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import whatsupnext.logic.Logic;
+import whatsupnext.ui.widgets.CommandLineInterfaceWidget;
+import whatsupnext.ui.widgets.FloatingTasksWidget;
+import whatsupnext.ui.widgets.MainDisplayWidget;
+import whatsupnext.ui.widgets.ResetButtonWidget;
+import whatsupnext.ui.widgets.UpcomingTasksWidget;
+
+public class GUIOneWindow extends GUIAbstract{
+
+	private JFrame frameMain;
+	private final int FRAME_MAIN_WIDTH = 780;
+	private final int FRAME_MAIN_HEIGHT = 442;
+	
+	private final int PANEL_MAIN_WIDTH = 350;
+	private final int PANEL_MAIN_HEIGHT = 442;
+	private final int PANEL_FLOATING_WIDTH = 350;
+	private final int PANEL_FLOATING_HEIGHT = 221;
+	private final int PANEL_UPCOMING_WIDTH = 350;
+	private final int PANEL_UPCOMING_HEIGHT = 221;
+	
+	private JPanel mainPanel;
+	private JPanel floatingPanel;
+	private JPanel upcomingPanel;
+	private JPanel resetPanel;
+	private MainDisplayWidget mainDisplayWidget;
+	private CommandLineInterfaceWidget cliWidget;
+	private FloatingTasksWidget floatingWidget;
+	private UpcomingTasksWidget upcomingWidget;
+	private ResetButtonWidget resetWidget;
+	
+	
+	public GUIOneWindow() {
+		logic = new Logic();
+		initGUIComponents();
+		setComponentsNames();
+		displayWidgetTasks();
+	}
+	
+	public GUIOneWindow(String fileName) {
+		logic = new Logic(fileName);
+		initGUIComponents();
+		setComponentsNames();
+		displayWidgetTasks();
+	}
+	
+	/**
+	 * Returns the main frame used in the GUI
+	 * 
+	 * @return The JFrame for the main application
+	 */
+	public JFrame getMainFrame() {
+		return frameMain;
+	}
+
+	public static Logic getLogic() {
+		return logic;
+	}
+	
+	public void showWindows() {
+		frameMain.setLocationRelativeTo(null);
+		frameMain.setVisible(true);
+		frameMain.pack();
+		
+		cliWidget.requestFocus();
+	}
+	
+	public void hideWindows() {
+		frameMain.setVisible(false);
+	}
+	
+	@Override
+	public void reset() {
+		frameMain.pack();
+		displayWidgetTasks();
+		
+		cliWidget.requestFocus();
+	}
+	
+	/**
+	 * Names every component used in the GUI
+	 */
+	private void setComponentsNames() {
+		frameMain.setName("frameMain");
+	}
+	
+	private void displayWidgetTasks() {
+		floatingWidget.clickFloating();
+		upcomingWidget.clickUpcoming();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initGUIComponents() {
+		initializeApplicationFrames();
+		initializeWidgets();
+		initializeWidgetPanels();
+	}
+	
+	/**
+	 * Initialize frame of the application
+	 */
+	private void initializeApplicationFrames() {
+		createMainFrame();
+	}
+	
+	private void createMainFrame() {
+		frameMain = new JFrame();
+		frameMain.setResizable(true);
+		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(GUIOneWindow.class.getResource("/whatsupnext/ui/iconGUI.png")));
+		frameMain.setType(Type.POPUP);
+		frameMain.setFont(new Font("Cambria", Font.BOLD, 12));
+		frameMain.getContentPane().setBackground(new Color(204, 224, 250));
+		frameMain.setTitle("WhatsUpNext");
+		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameMain.setPreferredSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
+		frameMain.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH - 40, FRAME_MAIN_HEIGHT - 110));
+		
+		GridBagLayout gbl_mainFrame = new GridBagLayout();
+		gbl_mainFrame.columnWidths = new int[]{400, 300, 15};
+		gbl_mainFrame.rowHeights = new int[]{15, 235, 235};
+		gbl_mainFrame.columnWeights = new double[]{0.5, 0.5, 0.0};
+		gbl_mainFrame.rowWeights = new double[]{0.0, 0.5, 0.5};
+		frameMain.getContentPane().setLayout(gbl_mainFrame);
+		
+		frameMain.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				deleteRevisions();
+			}
+		});
+	}
+	
+	private void initializeWidgets() {
+		mainDisplayWidget = new MainDisplayWidget();
+		floatingWidget = new FloatingTasksWidget();
+		upcomingWidget = new UpcomingTasksWidget();
+		
+		cliWidget = new CommandLineInterfaceWidget(mainDisplayWidget);
+		cliWidget.linkToWidget(floatingWidget);
+		cliWidget.linkToWidget(upcomingWidget);
+		
+		resetWidget = new ResetButtonWidget(this);
+	}
+	
+
+	private void initializeWidgetPanels() {
+		initializeMainPanel();
+		initializeFloatingPanel();
+		initializeUpcomingPanel();
+		initializeResetPanel();
+	}
+	
+	private void initializeMainPanel() {
+		mainPanel = new JPanel();
+		mainPanel.setBackground(new Color(204, 224, 250));
+		mainPanel.setPreferredSize(new Dimension(PANEL_MAIN_WIDTH, PANEL_MAIN_HEIGHT));
+		mainPanel.setMinimumSize(new Dimension(PANEL_MAIN_WIDTH, PANEL_MAIN_HEIGHT));
+		
+		GridBagLayout gbl_mainPanel = new GridBagLayout();
+		gbl_mainPanel.columnWidths = new int[]{400};
+		gbl_mainPanel.rowHeights = new int[]{235};
+		gbl_mainPanel.columnWeights = new double[]{1.0};
+		gbl_mainPanel.rowWeights = new double[]{1.0};
+		mainPanel.setLayout(gbl_mainPanel);
+		
+		GridBagConstraints gbc_mainDisplayWidget = new GridBagConstraints();
+		gbc_mainDisplayWidget.fill = GridBagConstraints.BOTH;
+		gbc_mainDisplayWidget.anchor = GridBagConstraints.CENTER;
+		gbc_mainDisplayWidget.insets = new Insets(0, 0, 5, 0);
+		gbc_mainDisplayWidget.gridx = 0;
+		gbc_mainDisplayWidget.gridy = 0;
+		mainPanel.add(mainDisplayWidget.getWidgetPanel(), gbc_mainDisplayWidget);
+		
+		GridBagConstraints gbc_cliWidget = new GridBagConstraints();
+		gbc_cliWidget.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cliWidget.anchor = GridBagConstraints.CENTER;
+		gbc_cliWidget.insets = new Insets(0, 0, 0, 0);
+		gbc_cliWidget.gridx = 0;
+		gbc_cliWidget.gridy = 1;
+		mainPanel.add(cliWidget.getWidgetPanel(), gbc_cliWidget);
+		
+		GridBagConstraints gbc_mainPanel = new GridBagConstraints();
+		gbc_mainPanel.fill = GridBagConstraints.BOTH;
+		gbc_mainPanel.anchor = GridBagConstraints.CENTER;
+		gbc_mainPanel.insets = new Insets(0, 15, 15, 15);
+		gbc_mainPanel.gridx = 0;
+		gbc_mainPanel.gridy = 1;
+		gbc_mainPanel.gridheight = 2;
+		frameMain.getContentPane().add(mainPanel, gbc_mainPanel);
+	}
+	
+	private void initializeFloatingPanel() {
+		floatingPanel = new JPanel();
+		floatingPanel.setBackground(new Color(204, 224, 250));
+		floatingPanel.setPreferredSize(new Dimension(PANEL_FLOATING_WIDTH, PANEL_FLOATING_HEIGHT));
+		floatingPanel.setMinimumSize(new Dimension(PANEL_FLOATING_WIDTH, PANEL_FLOATING_HEIGHT));
+		
+		GridBagLayout gbl_floatingPanel = new GridBagLayout();
+		gbl_floatingPanel.columnWidths = new int[]{300};
+		gbl_floatingPanel.rowHeights = new int[]{235};
+		gbl_floatingPanel.columnWeights = new double[]{1.0};
+		gbl_floatingPanel.rowWeights = new double[]{1.0};
+		floatingPanel.setLayout(gbl_floatingPanel);
+		
+		GridBagConstraints gbc_floatingWidget = new GridBagConstraints();
+		gbc_floatingWidget.fill = GridBagConstraints.BOTH;
+		gbc_floatingWidget.anchor = GridBagConstraints.CENTER;
+		gbc_floatingWidget.insets = new Insets(0, 0, 0, 0);
+		gbc_floatingWidget.gridx = 0;
+		gbc_floatingWidget.gridy = 0;
+		floatingPanel.add(floatingWidget.getWidgetPanel(), gbc_floatingWidget);
+		
+		GridBagConstraints gbc_floatingPanel = new GridBagConstraints();
+		gbc_floatingPanel.fill = GridBagConstraints.BOTH;
+		gbc_floatingPanel.anchor = GridBagConstraints.CENTER;
+		gbc_floatingPanel.insets = new Insets(0, 0, 15, 0);
+		gbc_floatingPanel.gridx = 1;
+		gbc_floatingPanel.gridy = 1;
+		frameMain.getContentPane().add(floatingPanel, gbc_floatingPanel);
+	}
+	
+	private void initializeUpcomingPanel() {
+		upcomingPanel = new JPanel();
+		upcomingPanel.setBackground(new Color(204, 224, 250));
+		upcomingPanel.setPreferredSize(new Dimension(PANEL_UPCOMING_WIDTH, PANEL_UPCOMING_HEIGHT));
+		upcomingPanel.setMinimumSize(new Dimension(PANEL_UPCOMING_WIDTH, PANEL_UPCOMING_HEIGHT));
+		
+		GridBagLayout gbl_upcomingPanel = new GridBagLayout();
+		gbl_upcomingPanel.columnWidths = new int[]{350};
+		gbl_upcomingPanel.rowHeights = new int[]{235};
+		gbl_upcomingPanel.columnWeights = new double[]{1.0};
+		gbl_upcomingPanel.rowWeights = new double[]{1.0};
+		upcomingPanel.setLayout(gbl_upcomingPanel);
+		
+		GridBagConstraints gbc_upcomingWidget = new GridBagConstraints();
+		gbc_upcomingWidget.fill = GridBagConstraints.BOTH;
+		gbc_upcomingWidget.anchor = GridBagConstraints.CENTER;
+		gbc_upcomingWidget.insets = new Insets(0, 0, 0, 0);
+		gbc_upcomingWidget.gridx = 0;
+		gbc_upcomingWidget.gridy = 0;
+		upcomingPanel.add(upcomingWidget.getWidgetPanel(), gbc_upcomingWidget);
+		
+		GridBagConstraints gbc_upcomingPanel = new GridBagConstraints();
+		gbc_upcomingPanel.fill = GridBagConstraints.BOTH;
+		gbc_upcomingPanel.anchor = GridBagConstraints.CENTER;
+		gbc_upcomingPanel.insets = new Insets(0, 0, 15, 0);
+		gbc_upcomingPanel.gridx = 1;
+		gbc_upcomingPanel.gridy = 2;
+		frameMain.getContentPane().add(upcomingPanel, gbc_upcomingPanel);
+	}
+	
+	private void initializeResetPanel() {
+		resetPanel = new JPanel();
+		resetPanel.setBackground(new Color(204, 224, 250));
+		resetPanel.setPreferredSize(new Dimension(28, 28));
+		resetPanel.setMinimumSize(new Dimension(28, 28));
+		
+		GridBagLayout gbl_resetPanel = new GridBagLayout();
+		gbl_resetPanel.columnWidths = new int[]{28};
+		gbl_resetPanel.rowHeights = new int[]{28};
+		gbl_resetPanel.columnWeights = new double[]{1.0};
+		gbl_resetPanel.rowWeights = new double[]{1.0};
+		resetPanel.setLayout(gbl_resetPanel);
+		
+		GridBagConstraints gbc_resetWidget = new GridBagConstraints();
+		gbc_resetWidget.fill = GridBagConstraints.BOTH;
+		gbc_resetWidget.anchor = GridBagConstraints.CENTER;
+		gbc_resetWidget.insets = new Insets(0, 0, 0, 0);
+		gbc_resetWidget.gridx = 0;
+		gbc_resetWidget.gridy = 0;
+		resetPanel.add(resetWidget.getWidgetPanel(), gbc_resetWidget);
+		
+		GridBagConstraints gbc_resetPanel = new GridBagConstraints();
+		gbc_resetPanel.anchor = GridBagConstraints.NORTHEAST;
+		gbc_resetPanel.insets = new Insets(0, 0, 0, 15);
+		gbc_resetPanel.gridx = 0;
+		gbc_resetPanel.gridy = 1;
+		frameMain.getContentPane().add(resetPanel, gbc_resetPanel, 0);
+	}
+	
+	private void deleteRevisions() {
+		getLogic().clearRevisionFiles();
+	}
+
+}
+
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\GUIOneWindow.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\WhatsUpNextMain.java
+	 */
+
+package whatsupnext.ui;
+
+import java.awt.EventQueue;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.GraphicsDevice.WindowTranslucency;
+
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+
+public class WhatsUpNextMain {
+	
+	static boolean isPerPixelTranslucencySupported;
+	
+	
+	/**
+	 * Launch the application.
+	 * Sets window visibility and size.
+	 */
+	public static void main(String[] args) {
+		// Determine what the GraphicsDevice can support.
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice gd = ge.getDefaultScreenDevice();
+		isPerPixelTranslucencySupported = 
+				gd.isWindowTranslucencySupported(WindowTranslucency.PERPIXEL_TRANSLUCENT);
+
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+			JFrame.setDefaultLookAndFeelDecorated(true);
+		}
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GUIAbstract gui = new GUIOneWindow();
+					gui.showWindows();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+}
+
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\WhatsUpNextMain.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\CommandLineInterfaceWidget.java
+	 */
+
+package whatsupnext.ui.widgets;
+
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -740,8 +959,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import whatsupnext.parser.api.Parser;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.util.Task;
+import whatsupnext.ui.GUIAbstract;
 
 public class CommandLineInterfaceWidget {
 
@@ -749,9 +969,6 @@ public class CommandLineInterfaceWidget {
 	private ArrayList<TasksWidget> linkedOptionalDisplays;
 
 	private JPanel widgetPanel;
-	private final int PANEL_WIDTH = 520;
-	private final int PANEL_HEIGHT = 25;
-	
 	private JTextField textInput;
 	private JButton buttonEnter;
 
@@ -790,11 +1007,8 @@ public class CommandLineInterfaceWidget {
 	private void initializeCLIPanel() {
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(new Color(204, 224, 250));
-		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
-		gbl_widgetPanel.columnWidths = new int[]{430, 90};
-		gbl_widgetPanel.rowHeights = new int[]{PANEL_HEIGHT};
 		gbl_widgetPanel.columnWeights = new double[]{1.0, 0.0};
 		gbl_widgetPanel.rowWeights = new double[]{1.0};
 		widgetPanel.setLayout(gbl_widgetPanel);
@@ -831,7 +1045,7 @@ public class CommandLineInterfaceWidget {
 		GridBagConstraints gbc_textInput = new GridBagConstraints();
 		gbc_textInput.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textInput.anchor = GridBagConstraints.WEST;
-		gbc_textInput.insets = new Insets(0, 0, 0, 10);
+		gbc_textInput.insets = new Insets(0, 0, 0, 5);
 		gbc_textInput.gridx = 0;
 		gbc_textInput.gridy = 0;
 		
@@ -893,7 +1107,7 @@ public class CommandLineInterfaceWidget {
 					if (currentTask.getOpCode() == OPCODE.HELP) {
 						feedback = currentTask.getHelpMessage();
 					} else {
-						feedback = WhatsUpNextGUI.logic.executeTask(currentTask);
+						feedback = GUIAbstract.getLogic().executeTask(currentTask);
 					}
 				} catch (Exception e) {
 					feedback = e.getMessage();
@@ -953,7 +1167,7 @@ public class CommandLineInterfaceWidget {
 	 * Clears the main display area
 	 */
 	private void clearLinkedDisplay() {
-		linkedDisplay.setText("---Please enter command below:\r\n");
+		linkedDisplay.setText(linkedDisplay.getDefaultMessage());
 	}
 
 	private void pressEnterFromCLI() {
@@ -974,22 +1188,25 @@ public class CommandLineInterfaceWidget {
 			return findWindow(c.getParent());
 		}
 	}
+
+	public void requestFocus() {
+		textInput.requestFocus();
+	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\CommandLineInterfaceWidget.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\CommandLineInterfaceWidget.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\FloatingTasksWidget.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\FloatingTasksWidget.java
 	 */
 
-package whatsupnext.ui;
+package whatsupnext.ui.widgets;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -1008,15 +1225,13 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
+import whatsupnext.structure.util.Task;
+import whatsupnext.ui.GUIAbstract;
 
 public class FloatingTasksWidget implements TasksWidget {
 	private JPanel widgetPanel;
-	private final int PANEL_WIDTH = 150;
-	private final int PANEL_HEIGHT = 210;
-	
 	private JButton buttonFloating;
 	private JScrollPane textDisplayFloatingScrollPane;
 	private JTextPane textDisplayFloating;
@@ -1054,12 +1269,9 @@ public class FloatingTasksWidget implements TasksWidget {
 
 	private void initializeFloatingTasksPanel() {
 		widgetPanel = new JPanel();
-		widgetPanel.setBackground(new Color(204, 224, 250, 0));
-		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		widgetPanel.setBackground(new Color(204, 224, 250));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
-		gbl_widgetPanel.columnWidths = new int[]{PANEL_WIDTH};
-		gbl_widgetPanel.rowHeights = new int[]{28, 180};
 		gbl_widgetPanel.columnWeights = new double[]{1.0};
 		gbl_widgetPanel.rowWeights = new double[]{0.0, 1.0};
 		widgetPanel.setLayout(gbl_widgetPanel);
@@ -1114,7 +1326,7 @@ public class FloatingTasksWidget implements TasksWidget {
 		
 		String feedback;
 		try {
-			feedback = WhatsUpNextGUI.logic.executeTask(task);
+			feedback = GUIAbstract.getLogic().executeTask(task);
 		} catch (Exception e) {
 			feedback = e.getMessage();
 		}
@@ -1123,7 +1335,6 @@ public class FloatingTasksWidget implements TasksWidget {
 	}
 	
 	private void displayFloatingFeedback(String feedback) {
-	//	textDisplayFloating.setText(feedback);
 		appendToPane(feedback);
 	}
 	
@@ -1134,104 +1345,17 @@ public class FloatingTasksWidget implements TasksWidget {
 		return task;
 	}
 
-	
-	/**
-	 * This function displays feedback with customized coloring
-	 * @param feedback
-	 */
-	private void appendToPane(String feedback) {
-		textDisplayFloating.setText(feedback);
-		int numOfNewline = countSubstring("\n", feedback);
-		String[] subStrings = feedback.trim().split("\n");
-		int currentStart = 0;
-		int currentEnd = feedback.indexOf("\n",1);
-		String subString;
-		boolean newtask=true;
-		Color lastColor = generateNewColor();
-      			
-	     for (int i = 0; i <= numOfNewline; i++) {
-	    	 currentEnd = feedback.indexOf("\n",currentStart+1);
-	    	 if (currentEnd<0) {
-	    		 currentEnd=doc.getLength();
-	    	 }
-             SimpleAttributeSet set = new SimpleAttributeSet();
- 
-             subString = subStrings[i]; 
-             // This line is a task title
-             if (isnewTask(subString)){
-            	 StyleConstants.setBold(set, true); 
-            	 StyleConstants.setFontSize(set, 12);      
-            	 StyleConstants.setBackground(set, titleBackground);
-            	 StyleConstants.setForeground(set, titleForeground);
-            	 newtask=true;
-             } else {
-            	 StyleConstants.setBold(set, false); 
-            	 StyleConstants.setFontSize(set, 11);
-            	 if (newtask){
-                    lastColor = generateNewColor();
-                    newtask = false;
-            	 } 
-            	 StyleConstants.setForeground(set, lastColor);
-             }
-             doc.setCharacterAttributes(currentStart, currentEnd-currentStart+1, set, true);
-             currentStart = currentEnd + 1;
-         }
-	}
-	
-		
-	/**
-	 * This function generates a new font color without repeating last one
-	 * @return
-	 */
-	private Color generateNewColor(){
-		int newColorIndex = random.nextInt(colors.length-1);
-		while (newColorIndex == currentColorIndex){
-			newColorIndex = random.nextInt(colors.length-1);
-		}
-		currentColorIndex = newColorIndex;
-		return colors[newColorIndex];
-	}
-	
-	/**
-	 * This function judges if a string is title of a task
-	 * based on if it starts with "<taskID:>"
-	 * @param subString
-	 * @return
-	 */
-	private boolean isnewTask(String subString) {
-		subString = subString.trim().split("\n")[0];
-		String taskID = subString.trim().split(":")[0];
-		try {
-			Integer.parseInt(taskID); 
-			return true;
-		}  catch (NumberFormatException e) {
-			return false;
-		}	
-	}
-
-	/**
-	 * This function counts the number of lines inside a string
-	 * @param subStr
-	 * @param str
-	 * @return
-	 */
-	public static int countSubstring(String subStr, String str){
-		return (str.length() - str.replace(subStr, "").length()) / subStr.length();
-	}
-	
-}
-
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\FloatingTasksWidget.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\FloatingTasksWidget.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\MainDisplayWidget.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\MainDisplayWidget.java
 	 */
 
-package whatsupnext.ui;
+package whatsupnext.ui.widgets;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -1250,7 +1374,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -1258,10 +1381,8 @@ import java.awt.Insets;
 public class MainDisplayWidget {
 	
 	private JPanel widgetPanel;
-	private final int PANEL_WIDTH = 328;
-	private final int PANEL_HEIGHT = 205;
-
     private String STRING_WELCOME = "Welcome to WhatsUpNext! Today is ";
+    private final String DEFAULT_MESSAGE = "----Please enter command below:\n    type \"help\" for instructions\n";
     private JLabel labelWelcome;
 	private JScrollPane textDisplayMainScrollPane;
 	private JTextPane textDisplayMain;
@@ -1270,11 +1391,13 @@ public class MainDisplayWidget {
 	
 	private Random random = new Random();
 	private int currentColorIndex;
-	private Color[] colors = {new Color(153,0,76),new Color(102,102,0),
-			                  new Color(0,128,128),new Color(0,0,128),
-/*			                  new Color(220,20,60),new Color(184,134,11),
-			                  new Color(139,0,139),new Color(188,143,143),*/
-			                  new Color(210,105,30)};
+	private Color[] colors = {
+			new Color(153, 0, 76),
+			new Color(102, 102, 0),
+			new Color(0, 128, 128), 
+			new Color(220, 20, 60),
+			new Color(210, 105, 30)
+	};
 	private Color titleBackground = new Color(230,230,250);
 	private Color titleForeground = new Color(25,25,112);
 
@@ -1291,8 +1414,24 @@ public class MainDisplayWidget {
     	return widgetPanel;
     }
     
+    public String getDefaultMessage() {
+    	return DEFAULT_MESSAGE;
+    }
+    
+    public void setText(String string) {
+		textDisplayMain.setText(DEFAULT_MESSAGE);
+	}
+
+	public void displayFeedback(String feedback) {
+		feedback = feedback.replaceAll(" " + currentYear, "");
+		feedback = feedback.replaceAll(currentYear + " ", "");
+		feedback = feedback.replaceAll(currentYear, "");
+		appendToPane(feedback);
+	}
+	
+    
     private void initializeCurrentYear() {
-    	DateFormat dateFormat = new SimpleDateFormat(" yyyy");
+    	DateFormat dateFormat = new SimpleDateFormat("yyyy");
 		Calendar cal = Calendar.getInstance();
 		currentYear = dateFormat.format(cal.getTime());
 	}
@@ -1307,11 +1446,8 @@ public class MainDisplayWidget {
 	private void initializeMainDisplayPanel() {
 		widgetPanel = new JPanel();
 		widgetPanel.setBackground(new Color(204, 224, 250));
-		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
-		gbl_widgetPanel.columnWidths = new int[]{PANEL_WIDTH};
-		gbl_widgetPanel.rowHeights = new int[]{30, 180};
 		gbl_widgetPanel.columnWeights = new double[]{1.0};
 		gbl_widgetPanel.rowWeights = new double[]{0.0, 1.0};
 		widgetPanel.setLayout(gbl_widgetPanel);
@@ -1354,7 +1490,7 @@ public class MainDisplayWidget {
 		textDisplayMain = new JTextPane(doc);
 		textDisplayMain.setFont(new Font("Courier New", Font.BOLD, 12));
 		textDisplayMain.setForeground(new Color(25, 25, 112));
-		textDisplayMain.setText("---Please enter command below:\r\n");
+		textDisplayMain.setText(DEFAULT_MESSAGE);
 		textDisplayMain.setEditable(false);
 		textDisplayMain.setBackground(new Color(240, 255, 255));
 		
@@ -1364,170 +1500,131 @@ public class MainDisplayWidget {
 		GridBagConstraints gbc_textDisplayMainScrollPane = new GridBagConstraints();
 		gbc_textDisplayMainScrollPane.fill = GridBagConstraints.BOTH;
 		gbc_textDisplayMainScrollPane.anchor = GridBagConstraints.NORTHWEST;
+		gbc_textDisplayMainScrollPane.insets = new Insets(3, 0, 0, 0);
 		gbc_textDisplayMainScrollPane.gridx = 0;
 		gbc_textDisplayMainScrollPane.gridy = 1;
 		
 		widgetPanel.add(textDisplayMainScrollPane, gbc_textDisplayMainScrollPane);
 	}
 	
-	public void setText(String string) {
-		textDisplayMain.setText("---Please enter command below:\r\n");
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\MainDisplayWidget.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\ResetButtonWidget.java
+	 */
+
+package whatsupnext.ui.widgets;
+
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import whatsupnext.ui.GUIAbstract;
+import whatsupnext.ui.GUIOneWindow;
+
+public class ResetButtonWidget {
+
+	JPanel widgetPanel;
+	JButton buttonReset;
+	GUIAbstract linkedGui;
+	
+	
+	public ResetButtonWidget(GUIAbstract gui) {
+		linkedGui = gui;
+		initializeResetButtonPanel();
+		setComponentNames();
+	}
+	
+	public JPanel getWidgetPanel() {
+    	return widgetPanel;
+    }
+	
+	private void setComponentNames() {
+		widgetPanel.setName("resetButtonWidgetPanel");
+		buttonReset.setName("buttonReset");
 	}
 
-	public void displayFeedback(String feedback) {
-		feedback = feedback.replaceAll(currentYear, "");
-	//	textDisplayMain.append("\n"+feedback+"\n");
-		appendToPane(feedback);
-	}
-	
-	
-	/**
-	 * This function displays feedback with customized coloring
-	 * @param feedback
-	 */
-	private void appendToPane(String feedback) {
-		textDisplayMain.setText("\n"+feedback+"\n");
-		int numOfNewline = countSubstring("\n", feedback);
-		String[] subStrings = feedback.trim().split("\n");
-		int currentStart = 0;
-		int currentEnd = feedback.indexOf("\n",1);
-		String subString;
-		boolean newtask=true;
-		Color lastColor = generateNewColor();
-      			
-	     for (int i = 0; i <= numOfNewline; i++) {
-	    	 currentEnd = feedback.indexOf("\n",currentStart+1);
-	    	 if (currentEnd<0) {
-	    		 currentEnd=doc.getLength();
-	    	 }
-             SimpleAttributeSet set = new SimpleAttributeSet();
- 
-             subString = subStrings[i]; 
-             // This line is a task title
-             if (isnewTask(subString)){
-            	 StyleConstants.setBold(set, true); 
-            	 StyleConstants.setFontSize(set, 13);      
-            	 StyleConstants.setBackground(set, titleBackground);
-            	 StyleConstants.setForeground(set, titleForeground);
-            	 newtask=true;
-             } else {
-            	 StyleConstants.setBold(set, false); 
-            	 StyleConstants.setFontSize(set, 11);
-            	 if (newtask){
-                    lastColor = generateNewColor();
-                    newtask = false;
-            	 } 
-            	 StyleConstants.setForeground(set, lastColor);
-             }
-             doc.setCharacterAttributes(currentStart, currentEnd-currentStart+1, set, true);
-             currentStart = currentEnd + 1;
-         }
-	}
-	
+	private void initializeResetButtonPanel() {
+		widgetPanel = new JPanel();
+		widgetPanel.setBackground(new Color(204, 224, 250));
 		
-	/**
-	 * This function generates a new font color without repeating last one
-	 * @return
-	 */
-	private Color generateNewColor(){
-		int newColorIndex = random.nextInt(colors.length-1);
-		while (newColorIndex == currentColorIndex){
-			newColorIndex = random.nextInt(colors.length-1);
-		}
-		currentColorIndex = newColorIndex;
-		return colors[newColorIndex];
-	}
-	
-	/**
-	 * This function judges if a string is title of a task
-	 * based on if it starts with "<taskID:>"
-	 * @param subString
-	 * @return
-	 */
-	private boolean isnewTask(String subString) {
-		subString = subString.trim().split("\n")[0];
-		String taskID = subString.trim().split(":")[0];
-		try {
-			Integer.parseInt(taskID); 
-			return true;
-		}  catch (NumberFormatException e) {
-			return false;
-		}	
+		GridBagLayout gbl_widgetPanel = new GridBagLayout();
+		gbl_widgetPanel.columnWeights = new double[]{1.0};
+		gbl_widgetPanel.rowWeights = new double[]{1.0};
+		widgetPanel.setLayout(gbl_widgetPanel);
+		
+		initializeResetButton();
 	}
 
-	/**
-	 * This function counts the number of lines inside a string
-	 * @param subStr
-	 * @param str
-	 * @return
-	 */
-	public static int countSubstring(String subStr, String str){
-		return (str.length() - str.replace(subStr, "").length()) / subStr.length();
+	private void initializeResetButton() {
+		Image img = Toolkit.getDefaultToolkit().getImage(GUIOneWindow.class.getResource("/whatsupnext/ui/resetIcon.png"));
+		buttonReset = new JButton(new ImageIcon(img));
+		buttonReset.setToolTipText("Reset to default size");
+		buttonReset.setBackground(new Color(255, 117, 56));
+		buttonReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clickReset();
+			}
+		});
+		
+		GridBagConstraints gbc_resetButton = new GridBagConstraints();
+		gbc_resetButton.fill = GridBagConstraints.BOTH;
+		gbc_resetButton.anchor = GridBagConstraints.CENTER;
+		gbc_resetButton.insets = new Insets(0, 0, 0, 0);
+		gbc_resetButton.gridx = 0;
+		gbc_resetButton.gridy = 0;
+		
+		widgetPanel.add(buttonReset, gbc_resetButton);
+	}
+	
+	private void clickReset() {
+		linkedGui.reset();
 	}
 	
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\MainDisplayWidget.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\ResetButtonWidget.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\TasksWidget.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\TasksWidget.java
 	 */
 
-package whatsupnext.ui;
+package whatsupnext.ui.widgets;
 
 public interface TasksWidget {
 	public void doActionOnClick();
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\TasksWidget.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\TasksWidget.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\TransparentJFrame.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\UpcomingTasksWidget.java
 	 */
 
-package whatsupnext.ui;
+package whatsupnext.ui.widgets;
 
 import java.awt.Color;
-
-import javax.swing.JFrame;
-import javax.swing.border.LineBorder;
-
-public class TransparentJFrame extends JFrame {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private LineBorder border = new LineBorder(new Color(204, 224, 250, 150), 2);
-
-	public TransparentJFrame() {
-		super();
-		setUndecorated(true);
-		setBackground(new Color(0, 0, 0, 0));
-		this.getRootPane().setBorder(border);
-	}
-}
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\TransparentJFrame.java
-
-
-
-
-
-	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\UpcomingTasksWidget.java
-	 */
-
-package whatsupnext.ui;
-
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -1551,16 +1648,15 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import whatsupnext.parser.extractor.ParseDate;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
+import whatsupnext.structure.util.Task;
+import whatsupnext.ui.GUIAbstract;
 
 public class UpcomingTasksWidget implements TasksWidget{
 
 	private JPanel widgetPanel;
-	private final int PANEL_WIDTH = 174;
-	private final int PANEL_HEIGHT = 210;
-	
+
 	private final String[] timeOptions = {"1 day", "2 days", "3 days", "4 days", "5 days", "6 days", "1 week", "2 weeks", "3 weeks", "1 month"};
 	private String selectedTimeOption;
 	private JComboBox<String> timeLengthCombobox;
@@ -1598,7 +1694,7 @@ public class UpcomingTasksWidget implements TasksWidget{
     }
 	
 	private void initializeCurrentYear() {
-    	DateFormat dateFormat = new SimpleDateFormat(" yyyy");
+    	DateFormat dateFormat = new SimpleDateFormat("yyyy");
 		Calendar cal = Calendar.getInstance();
 		currentYear = dateFormat.format(cal.getTime());
 	}
@@ -1613,12 +1709,9 @@ public class UpcomingTasksWidget implements TasksWidget{
 
 	private void initializeUpcomingTasksPanel() {
 		widgetPanel = new JPanel();
-		widgetPanel.setBackground(new Color(204, 224, 250, 0));
-		widgetPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		widgetPanel.setBackground(new Color(204, 224, 250));
 		
 		GridBagLayout gbl_widgetPanel = new GridBagLayout();
-		gbl_widgetPanel.columnWidths = new int[]{80, 94};
-		gbl_widgetPanel.rowHeights = new int[]{28, 180};
 		gbl_widgetPanel.columnWeights = new double[]{0.9, 0.1};
 		gbl_widgetPanel.rowWeights = new double[]{0.0, 1.0};
 		widgetPanel.setLayout(gbl_widgetPanel);
@@ -1679,9 +1772,6 @@ public class UpcomingTasksWidget implements TasksWidget{
 		timeLengthCombobox.setFont(new Font("Cambria", Font.PLAIN, 12));
 		timeLengthCombobox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: temporary hot fix to strange visual bug
-				widgetPanel.setBackground(new Color(204, 224, 250, 170));
-				
 				@SuppressWarnings("unchecked")
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 		        selectedTimeOption = (String)cb.getSelectedItem();
@@ -1700,6 +1790,8 @@ public class UpcomingTasksWidget implements TasksWidget{
 	}
 
 	private void displayUpcomingFeedback(String feedback) {
+		feedback = feedback.replaceAll(" " + currentYear, "");
+		feedback = feedback.replaceAll(currentYear + " ", "");
 		feedback = feedback.replaceAll(currentYear, "");
 		appendToPane(feedback);
 	}
@@ -1710,7 +1802,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 		
 		String feedback;
 		try {
-			feedback = WhatsUpNextGUI.logic.executeTask(task);
+			feedback = GUIAbstract.getLogic().executeTask(task);
 		} catch (Exception e) {
 			feedback = e.getMessage();
 		}
@@ -1758,522 +1850,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 	
 	
 	
-	
-	/**
-	 * This function displays feedback with customized coloring
-	 * @param feedback
-	 */
-	private void appendToPane(String feedback) {
-		textDisplayUpcoming.setText(feedback);
-		int numOfNewline = countSubstring("\n", feedback);
-		
-		String[] subStrings = feedback.trim().split("\n");
-		int currentStart = 0;
-		int currentEnd = feedback.indexOf("\n",1);
-		
-		String subString;
-		boolean newtask = true;
-		Color lastColor = generateNewColor();
-      			
-	     for (int i = 0; i <= numOfNewline; i++) {
-	    	 currentEnd = feedback.indexOf("\n",currentStart+1);
-	    	 if (currentEnd < 0) {
-	    		 currentEnd = doc.getLength();
-	    	 }
-             SimpleAttributeSet set = new SimpleAttributeSet();
- 
-             subString = subStrings[i]; 
-             // This line is a task title
-             if (isnewTask(subString)) {
-            	 StyleConstants.setBold(set, true); 
-            	 StyleConstants.setFontSize(set, 12);      
-            	 StyleConstants.setBackground(set, titleBackground);
-            	 StyleConstants.setForeground(set, titleForeground);
-            	 newtask = true;
-            	 
-             } else {
-            	 StyleConstants.setBold(set, false); 
-            	 StyleConstants.setFontSize(set, 11);
-            	 if (newtask) {
-                    lastColor = generateNewColor();
-                    newtask = false;
-            	 } 
-            	 StyleConstants.setForeground(set, lastColor);
-             }
-             doc.setCharacterAttributes(currentStart, currentEnd - currentStart + 1, set, true);
-             currentStart = currentEnd + 1;
-         }
-	}
-	
-		
-	/**
-	 * This function generates a new font color without repeating last one
-	 * @return
-	 */
-	private Color generateNewColor(){
-		int newColorIndex = random.nextInt(colors.length-1);
-		while (newColorIndex == currentColorIndex){
-			newColorIndex = random.nextInt(colors.length-1);
-		}
-		currentColorIndex = newColorIndex;
-		return colors[newColorIndex];
-	}
-	
-	/**
-	 * This function judges if a string is title of a task
-	 * based on if it starts with "<taskID:>"
-	 * @param subString
-	 * @return
-	 */
-	private boolean isnewTask(String subString) {
-		subString = subString.trim().split("\n")[0];
-		String taskID = subString.trim().split(":")[0];
-		try {
-			Integer.parseInt(taskID); 
-			return true;
-		}  catch (NumberFormatException e) {
-			return false;
-		}	
-	}
-
-	/**
-	 * This function counts the number of lines inside a string
-	 * @param subStr
-	 * @param str
-	 * @return
-	 */
-	public static int countSubstring(String subStr, String str){
-		return (str.length() - str.replace(subStr, "").length()) / subStr.length();
-	}
-	
-	
-}
-
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\UpcomingTasksWidget.java
-
-
-
-
-
-	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\WhatsUpNextGUI.java
-	 */
-
-package whatsupnext.ui;
-
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.GraphicsDevice.WindowTranslucency;
-import java.awt.Window.Type;
-import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-
-import whatsupnext.logic.Logic;
-
-/*
- * This class is used for GUI of software WhatsUpNext
- */
-public class WhatsUpNextGUI {
-	
-	private JFrame frameMain;
-	private final int FRAME_MAIN_WIDTH = 530;
-	private final int FRAME_MAIN_HEIGHT = 360;
-	private JFrame frameFloating;
-	private final int FRAME_FLOATING_WIDTH = 380;
-	private final int FRAME_FLOATING_HEIGHT = 350;
-	private JFrame frameUpcoming;
-	private final int FRAME_UPCOMING_WIDTH = 380;
-	private final int FRAME_UPCOMING_HEIGHT = 350;
-	
-	private JPanel mainPanel;
-	private JPanel floatingPanel;
-	private JPanel upcomingPanel;
-	private MainDisplayWidget mainDisplayWidget;
-	private CommandLineInterfaceWidget cliWidget;
-	private FloatingTasksWidget floatingWidget;
-	private UpcomingTasksWidget upcomingWidget;
-	
-	private boolean movingAllFramesToFront = false;
-	static Logic logic;
-	private static boolean isPerPixelTranslucencySupported;
-
-	
-	/**
-	 * Launch the application.
-	 * Sets window visibility and size.
-	 */
-	public static void main(String[] args) {
-		// Determine what the GraphicsDevice can support.
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice gd = ge.getDefaultScreenDevice();
-		isPerPixelTranslucencySupported = 
-				gd.isWindowTranslucencySupported(WindowTranslucency.PERPIXEL_TRANSLUCENT);
-
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {
-		    // If Nimbus is not available, you can set the GUI to another look and feel.
-		}
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					WhatsUpNextGUI gui = new WhatsUpNextGUI();
-					
-					gui.frameFloating.setLocation(750, 15);
-					gui.frameFloating.setVisible(true);
-					gui.frameFloating.pack();
-					
-					gui.frameUpcoming.setLocation(750, 385);
-					gui.frameUpcoming.setVisible(true);
-					gui.frameUpcoming.pack();
-					
-					gui.frameMain.setLocation(200, 150);
-					gui.frameMain.setVisible(true);
-					gui.frameMain.pack();
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	
-	public WhatsUpNextGUI() {
-		logic = new Logic();
-		initGUIComponents();
-		setComponentsNames();
-		displayWidgetTasks();
-	}
-	
-	public WhatsUpNextGUI(String fileName) {
-		logic = new Logic(fileName);
-		initGUIComponents();
-		setComponentsNames();
-		displayWidgetTasks();
-	}
-	
-	/**
-	 * Returns the main frame used in the GUI
-	 * 
-	 * @return The JFrame for the main application
-	 */
-	public JFrame getMainFrame() {
-		return frameMain;
-	}
-	
-	public JFrame getFloatingFrame() {
-		return frameFloating;
-	}
-	
-	public JFrame getUpcomingFrame() {
-		return frameUpcoming;
-	}
-	
-	/**
-	 * Names every component used in the GUI
-	 */
-	private void setComponentsNames() {
-		frameMain.setName("frameMain");
-		frameFloating.setName("frameFloating");
-		frameUpcoming.setName("frameUpcoming");
-	}
-	
-	private void displayWidgetTasks() {
-		floatingWidget.clickFloating();
-		upcomingWidget.clickUpcoming();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initGUIComponents() {
-		initializeApplicationFrames();
-		initializeWidgets();
-		initializeWindowPanels();
-	}
-	
-	/**
-	 * Initialize frame of the application
-	 */
-	private void initializeApplicationFrames() {
-		createCLIFrame();
-		createFloatingFrame();
-		createUpcomingFrame();
-	}
-	
-	private void createCLIFrame() {
-		frameMain = new JFrame();
-		frameMain.setResizable(true);
-		frameMain.setIconImage(Toolkit.getDefaultToolkit().getImage(WhatsUpNextGUI.class.getResource("/whatsupnext/ui/iconGUI.png")));
-		frameMain.setType(Type.POPUP);
-		frameMain.setFont(new Font("Cambria", Font.BOLD, 12));
-		frameMain.setTitle("WhatsUpNext");
-		frameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frameMain.setPreferredSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
-		frameMain.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
-		
-		frameMain.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				deleteRevisions();
-			}
-			
-			@Override
-			public void windowActivated(WindowEvent e) {
-				if (movingAllFramesToFront) {
-			        return;
-			    }
-
-			    movingAllFramesToFront = true;
-
-			    frameFloating.toFront();
-				frameUpcoming.toFront();
-
-			    e.getWindow().toFront();
-			    e.getWindow().requestFocus();
-
-			    EventQueue.invokeLater(new Runnable() {
-			        public void run() {
-			            movingAllFramesToFront = false;
-			        }
-			    });
-			};
-		});
-	}
-
-
-	private void createFloatingFrame() {
-		if (!isPerPixelTranslucencySupported) {
-			frameFloating = new JFrame();
-		} else {
-			frameFloating = new TransparentJFrame();
-		}
-		frameFloating.setResizable(true);
-		frameFloating.setType(Type.POPUP);
-		frameFloating.setFont(new Font("Cambria", Font.BOLD, 12));
-		frameFloating.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frameFloating.setPreferredSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
-		frameFloating.setMinimumSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
-		
-		frameFloating.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				deleteRevisions();
-			}
-			
-			@Override
-			public void windowActivated(WindowEvent e) {
-				if (movingAllFramesToFront) {
-			        return;
-			    }
-
-			    movingAllFramesToFront = true;
-
-				frameUpcoming.toFront();
-				frameMain.toFront();
-
-			    e.getWindow().toFront();
-			    e.getWindow().requestFocus();
-
-			    EventQueue.invokeLater(new Runnable() {
-			        public void run() {
-			            movingAllFramesToFront = false;
-			        }
-			    });
-			}
-		});
-		
-		ComponentResizer resizer = new ComponentResizer();
-		resizer.setSnapSize(new Dimension(2, 2));
-		resizer.setMinimumSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
-		resizer.registerComponent(frameFloating);
-		
-		ComponentMover mover = new ComponentMover();
-		mover.setDragInsets(new Insets(2, 4, 4, 4));
-		mover.setEdgeInsets(new Insets(0, 0, 0, -65));
-		mover.registerComponent(frameFloating);
-	}
-
-
-	private void createUpcomingFrame() {
-		if (!isPerPixelTranslucencySupported) {
-			frameUpcoming = new JFrame();
-		} else {
-			frameUpcoming = new TransparentJFrame();
-		}
-		frameUpcoming.setResizable(true);
-		frameUpcoming.setType(Type.POPUP);
-		frameUpcoming.setFont(new Font("Cambria", Font.BOLD, 12));
-		frameUpcoming.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frameUpcoming.setPreferredSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
-		frameUpcoming.setMinimumSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
-		
-		frameUpcoming.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				deleteRevisions();
-			}
-			
-			@Override
-			public void windowActivated(WindowEvent e) {
-				if (movingAllFramesToFront) {
-			        return;
-			    }
-
-			    movingAllFramesToFront = true;
-
-			    frameFloating.toFront();
-				frameMain.toFront();
-
-			    e.getWindow().toFront();
-			    e.getWindow().requestFocus();
-
-			    EventQueue.invokeLater(new Runnable() {
-			        public void run() {
-			            movingAllFramesToFront = false;
-			        }
-			    });
-			}
-		});
-		
-		ComponentResizer resizer = new ComponentResizer();
-		resizer.setSnapSize(new Dimension(2, 2));
-		resizer.setMinimumSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
-		resizer.registerComponent(frameUpcoming);
-		
-		ComponentMover mover = new ComponentMover();
-		mover.setDragInsets(new Insets(2, 4, 4, 4));
-		mover.setEdgeInsets(new Insets(0, 0, 0, -65));
-		mover.registerComponent(frameUpcoming);
-	}
-
-	
-	private void initializeWidgets() {
-		mainDisplayWidget = new MainDisplayWidget();
-		floatingWidget = new FloatingTasksWidget();
-		upcomingWidget = new UpcomingTasksWidget();
-		
-		cliWidget = new CommandLineInterfaceWidget(mainDisplayWidget);
-		cliWidget.linkToWidget(floatingWidget);
-		cliWidget.linkToWidget(upcomingWidget);
-	}
-	
-
-	private void initializeWindowPanels() {
-		initializeMainPanel();
-		initializeFloatingPanel();
-		initializeUpcomingPanel();
-	}
-	
-	private void initializeMainPanel() {
-		mainPanel = new JPanel();
-		mainPanel.setBackground(new Color(204, 224, 250));
-		mainPanel.setPreferredSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
-		mainPanel.setMinimumSize(new Dimension(FRAME_MAIN_WIDTH, FRAME_MAIN_HEIGHT));
-		
-		GridBagLayout gbl_mainPanel = new GridBagLayout();
-		gbl_mainPanel.columnWidths = new int[]{400};
-		gbl_mainPanel.rowHeights = new int[]{235};
-		gbl_mainPanel.columnWeights = new double[]{1.0};
-		gbl_mainPanel.rowWeights = new double[]{1.0};
-		mainPanel.setLayout(gbl_mainPanel);
-		
-		GridBagConstraints gbc_mainDisplayWidget = new GridBagConstraints();
-		gbc_mainDisplayWidget.fill = GridBagConstraints.BOTH;
-		gbc_mainDisplayWidget.anchor = GridBagConstraints.CENTER;
-		gbc_mainDisplayWidget.insets = new Insets(5, 10, 5, 10);
-		gbc_mainDisplayWidget.gridx = 0;
-		gbc_mainDisplayWidget.gridy = 0;
-		mainPanel.add(mainDisplayWidget.getWidgetPanel(), gbc_mainDisplayWidget);
-		
-		GridBagConstraints gbc_cliWidget = new GridBagConstraints();
-		gbc_cliWidget.fill = GridBagConstraints.HORIZONTAL;
-		gbc_cliWidget.anchor = GridBagConstraints.CENTER;
-		gbc_cliWidget.insets = new Insets(0, 10, 10, 10);
-		gbc_cliWidget.gridx = 0;
-		gbc_cliWidget.gridy = 1;
-		mainPanel.add(cliWidget.getWidgetPanel(), gbc_cliWidget);
-		
-		frameMain.getContentPane().add(mainPanel);
-	}
-	
-	private void initializeFloatingPanel() {
-		floatingPanel = new JPanel();
-		floatingPanel.setBackground(new Color(204, 224, 250, 170));
-		floatingPanel.setPreferredSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
-		floatingPanel.setMinimumSize(new Dimension(FRAME_FLOATING_WIDTH, FRAME_FLOATING_HEIGHT));
-		
-		GridBagLayout gbl_floatingPanel = new GridBagLayout();
-		gbl_floatingPanel.columnWidths = new int[]{300};
-		gbl_floatingPanel.rowHeights = new int[]{235};
-		gbl_floatingPanel.columnWeights = new double[]{1.0};
-		gbl_floatingPanel.rowWeights = new double[]{1.0};
-		floatingPanel.setLayout(gbl_floatingPanel);
-		
-		GridBagConstraints gbc_floatingWidget = new GridBagConstraints();
-		gbc_floatingWidget.fill = GridBagConstraints.BOTH;
-		gbc_floatingWidget.anchor = GridBagConstraints.CENTER;
-		gbc_floatingWidget.insets = new Insets(22, 15, 15, 15);
-		gbc_floatingWidget.gridx = 0;
-		gbc_floatingWidget.gridy = 0;
-		floatingPanel.add(floatingWidget.getWidgetPanel(), gbc_floatingWidget);
-		
-		frameFloating.getContentPane().add(floatingPanel);
-	}
-	
-	private void initializeUpcomingPanel() {
-		upcomingPanel = new JPanel();
-		upcomingPanel.setBackground(new Color(204, 224, 250, 170));
-		upcomingPanel.setPreferredSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
-		upcomingPanel.setMinimumSize(new Dimension(FRAME_UPCOMING_WIDTH, FRAME_UPCOMING_HEIGHT));
-		
-		GridBagLayout gbl_upcomingPanel = new GridBagLayout();
-		gbl_upcomingPanel.columnWidths = new int[]{350};
-		gbl_upcomingPanel.rowHeights = new int[]{235};
-		gbl_upcomingPanel.columnWeights = new double[]{1.0};
-		gbl_upcomingPanel.rowWeights = new double[]{1.0};
-		upcomingPanel.setLayout(gbl_upcomingPanel);
-		
-		GridBagConstraints gbc_upcomingWidget = new GridBagConstraints();
-		gbc_upcomingWidget.fill = GridBagConstraints.BOTH;
-		gbc_upcomingWidget.anchor = GridBagConstraints.CENTER;
-		gbc_upcomingWidget.insets = new Insets(22, 15, 15, 15);
-		gbc_upcomingWidget.gridx = 0;
-		gbc_upcomingWidget.gridy = 0;
-		upcomingPanel.add(upcomingWidget.getWidgetPanel(), gbc_upcomingWidget);
-		
-		frameUpcoming.getContentPane().add(upcomingPanel);
-	}
-	
-	private void deleteRevisions() {
-		logic.clearRevisionFiles();
-	}
-	
-}
-
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\ui\WhatsUpNextGUI.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\ui\widgets\UpcomingTasksWidget.java
 
 
 

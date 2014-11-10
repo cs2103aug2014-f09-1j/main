@@ -3,10 +3,10 @@
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\LogicTest.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\logic\LogicTest.java
 	 */
 
-package whatsupnext.junit;
+package whatsupnext.junit.logic;
 
 import static org.junit.Assert.*;
 
@@ -20,12 +20,13 @@ import org.junit.Test;
 import whatsupnext.logic.Logic;
 import whatsupnext.logic.LogicUtilities;
 import whatsupnext.storage.Storage;
-import whatsupnext.structure.OPCODE;
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.ADDTYPE;
-import whatsupnext.structure.Types.DELETETYPE;
-import whatsupnext.structure.Types.UPDATETYPE;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.OPCODE;
+import whatsupnext.structure.enums.Types.ADDTYPE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.enums.Types.FREETYPE;
+import whatsupnext.structure.enums.Types.UPDATETYPE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
+import whatsupnext.structure.util.Task;
 
 public class LogicTest {
 	
@@ -211,6 +212,26 @@ public class LogicTest {
 		logic.executeTask(task);
 		
 		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.DEADLINE);
+		task.setDescription("testing");
+		task.setEndTime("201410101300");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("1");
+		task.setDone(true);
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("2");
+		task.setDone(true);
+		logic.executeTask(task);
+
+		
+		task = new Task();
 		task.setOpcode(OPCODE.DELETE);
 		task.setDeleteType(DELETETYPE.DATE);
 		task.setEndTime("201410102359");
@@ -219,7 +240,7 @@ public class LogicTest {
 		assertEquals("Test Delete Date - Successful ", "1 tasks are deleted.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
-		assertEquals(feedback, "2: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:00\n\tNot done.");
+		assertEquals("3: testing\n\tEnd Time: 2014 Oct 10 13:00\n\tNot done.\n2: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:00\n\tDone.", feedback);
 	}
 	
 	@Test
@@ -245,6 +266,18 @@ public class LogicTest {
 		task.setDescription("testing");
 		task.setStartTime("201410111000");
 		task.setEndTime("201410111230");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("1");
+		task.setDone(true);
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("2");
+		task.setDone(true);
 		logic.executeTask(task);
 		
 		task = new Task();
@@ -285,16 +318,29 @@ public class LogicTest {
 		logic.executeTask(task);
 		
 		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("2");
+		task.setDone(true);
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.DONE);
+		task.setTaskID("3");
+		task.setDone(true);
+		logic.executeTask(task);
+		
+		task = new Task();
 		task.setOpcode(OPCODE.DELETE);
 		task.setDeleteType(DELETETYPE.TIMEFRAME);
 		task.setStartTime("201410100000");
 		task.setEndTime("201410111220");
 		
 		String feedback = logic.executeTask(task);
-		assertEquals("Test Delete Time Frame - Successful ", "2 tasks are deleted.", feedback);
+		assertEquals("Test Delete Time Frame - Successful ", "1 tasks are deleted.", feedback);
 		
 		feedback = logic.executeTask(viewAllTask);
-		assertEquals(feedback, "3: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:30\n\tNot done.");
+		assertEquals(feedback, "1: testing\n\tEnd Time: 2014 Oct 10 12:00\n\tNot done.\n"
+				+ "3: testing\n\tStart Time: 2014 Oct 11 10:00\n\tEnd Time: 2014 Oct 11 12:30\n\tDone.");
 	}
 	
 	@Test
@@ -542,16 +588,46 @@ public class LogicTest {
 				"2: task a b\n\tNot done."
 		);
 	}
+	
+	@Test
+	public void testFreeDate() {
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410101100");
+		task.setEndTime("201410101500");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.ADD);
+		task.setAddType(ADDTYPE.TIMEFRAME);
+		task.setDescription("testing");
+		task.setStartTime("201410101800");
+		task.setEndTime("201410102100");
+		logic.executeTask(task);
+		
+		task = new Task();
+		task.setOpcode(OPCODE.FREE);
+		task.setFreeType(FREETYPE.DATE);
+		task.setDescription("3");
+		task.setEndTime("201410102359");
+		
+		String feedback = logic.executeTask(task);
+		assertEquals(feedback,
+				"Available time slots:\n2014 Oct 10 06:00 - 2014 Oct 10 11:00\n2014 Oct 10 15:00 - 2014 Oct 10 18:00"
+		);
+	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\junit\LogicTest.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\junit\logic\LogicTest.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\AddCommand.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\AddCommand.java
 	 */
 
 package whatsupnext.logic;
@@ -560,7 +636,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class AddCommand extends Command {
 	
@@ -605,20 +681,20 @@ public class AddCommand extends Command {
 	
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\AddCommand.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\AddCommand.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\Command.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\Command.java
 	 */
 
 package whatsupnext.logic;
 
 import whatsupnext.storage.Storage;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public abstract class Command {
 	
@@ -641,14 +717,14 @@ public abstract class Command {
 	public abstract String executeCommand();
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\Command.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\Command.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\DeleteCommand.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\DeleteCommand.java
 	 */
 
 package whatsupnext.logic;
@@ -657,8 +733,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.DELETETYPE;
+import whatsupnext.structure.enums.Types.DELETETYPE;
+import whatsupnext.structure.util.Task;
 
 public class DeleteCommand extends Command {
 
@@ -679,25 +755,23 @@ public class DeleteCommand extends Command {
 		
 		try {
 			switch (deleteType) {
-				case ALL:
-					deleteAll();
-					MESSAGE_DELETED = "All tasks are deleted.";
+				case ALL:			
+					MESSAGE_DELETED = deleteAll();;
 					break;
-				case ID:
-					deleteById();
-					MESSAGE_DELETED = "Task " + taskID + " is deleted.";
+				case ID:					
+					MESSAGE_DELETED = deleteById();;
 					break;
-				case DEADLINE:
-					deleteByDeadline();
-					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
+				case DEADLINE:					
+					MESSAGE_DELETED = deleteByDeadline();
 					break;
-				case DATE:
-					deleteByDate();
-					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
+				case DATE:				
+					MESSAGE_DELETED = deleteByDate();
 					break;
-				case TIMEFRAME:
-					deleteByTimeFrame();
-					MESSAGE_DELETED = deletedNumbers + " tasks are deleted.";
+				case TIMEFRAME:					
+					MESSAGE_DELETED = deleteByTimeFrame();
+					break;
+				case DONE:
+					MESSAGE_DELETED = deleteDone();
 					break;
 				default:
 					break;
@@ -713,53 +787,68 @@ public class DeleteCommand extends Command {
 		return feedbackDelete;
 	}
 	
-	private void deleteAll() {
+	private String deleteAll() {
 		list.clear();
 		LogicUtilities.setupAvailableIDs();
+		
+		return "All tasks are deleted.";
 	}
 	
-	private void deleteById() {
+	private String deleteById() {
 		int index = LogicUtilities.getTaskIndexInArray(taskID);
-		try {
-			Task removed = list.remove(index);
-			availableIDs.add(Integer.parseInt(removed.getTaskID()));
-		} catch (IndexOutOfBoundsException e) {
-			throw new IndexOutOfBoundsException("Task ID is not valid.");
+		
+		if (index >= 0) {
+			try {
+				Task removed = list.remove(index);
+				availableIDs.add(Integer.parseInt(removed.getTaskID()));
+			} catch (IndexOutOfBoundsException e) {
+				throw new IndexOutOfBoundsException("Task ID is not valid.");
+			}
+			
+			return "Task " + taskID + " is deleted.";
+		} else {
+			return "Task " + taskID + " doesn't exist.";
 		}
 	}
 	
-	private void deleteByDeadline() {
+	private String deleteByDeadline() {
 		Iterator<Task> taskIterator = list.iterator();
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && LogicUtilities.endsBeforeDeadline(task, endTime)) {
+			if (!task.getEndTime().isEmpty() && LogicUtilities.endsBeforeDeadline(task, endTime)
+					&& (task.getDone()==true)) {
 				availableIDs.add(Integer.parseInt(task.getTaskID()));
 				taskIterator.remove();
 				deletedNumbers++;
 			}
 		}
+		
+		return deletedNumbers + " tasks are deleted.";
 	}
 	
-	private void deleteByDate() {
+	private String deleteByDate() {
 		Iterator<Task> taskIterator = list.iterator();
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() && LogicUtilities.endsOnGivenDate(task, endTime)) {
+			if (!task.getEndTime().isEmpty() && LogicUtilities.endsOnGivenDate(task, endTime)
+					&& (task.getDone()==true)) {
 				availableIDs.add(Integer.parseInt(task.getTaskID()));
 				taskIterator.remove();
 				deletedNumbers++;
 			}
 		}
+		
+		return deletedNumbers + " tasks are deleted.";
 	}
 	
-	private void deleteByTimeFrame() {
+	private String deleteByTimeFrame() {
 		Iterator<Task> taskIterator = list.iterator();
 		
 		while (taskIterator.hasNext()) {
 			Task task = taskIterator.next();
-			if (!task.getEndTime().isEmpty() &&
+			if (!task.getEndTime().isEmpty() && (task.getDone()==true) &&
 					!LogicUtilities.endsBeforeDeadline(task, startTime) &&
 					LogicUtilities.endsBeforeDeadline(task, endTime)) {
 				availableIDs.add(Integer.parseInt(task.getTaskID()));
@@ -767,18 +856,34 @@ public class DeleteCommand extends Command {
 				deletedNumbers++;
 			}
 		}
+		
+		return deletedNumbers + " tasks are deleted.";
 	}
 	
+	private String deleteDone() {
+		Iterator<Task> taskIterator = list.iterator();
+		
+		while (taskIterator.hasNext()) {
+			Task task = taskIterator.next();
+			if ((task.getDone()==true)) {
+				availableIDs.add(Integer.parseInt(task.getTaskID()));
+				taskIterator.remove();
+				deletedNumbers++;
+			}
+		}
+		
+		return deletedNumbers + " tasks are deleted.";
+	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\DeleteCommand.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\DeleteCommand.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\DoneCommand.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\DoneCommand.java
 	 */
 
 package whatsupnext.logic;
@@ -786,7 +891,7 @@ package whatsupnext.logic;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class DoneCommand extends Command {
 
@@ -811,21 +916,28 @@ public class DoneCommand extends Command {
 	
 	private String labelTask(String id) {
 		int index = LogicUtilities.getTaskIndexInArray(id);
-		Task temp = list.get(index);
-		temp.setDone(true);
-		String MESSAGE_DONE = "Task " + id + " is successfully labeled as done.";
+		String MESSAGE_DONE;
+		
+		if (index >= 0) {
+			Task temp = list.get(index);
+			temp.setDone(true);
+			MESSAGE_DONE = "Task " + id + " is successfully labeled as done.";
+		} else {
+			MESSAGE_DONE = "Task " + id + " doesn't exist.";
+		}		
+		
 		return MESSAGE_DONE;		
 	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\DoneCommand.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\DoneCommand.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\Logic.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\Logic.java
 	 */
 
 /*
@@ -836,7 +948,7 @@ package whatsupnext.logic;
 import java.io.IOException;
 import java.util.Iterator;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 import whatsupnext.storage.Storage;
 
 public class Logic {
@@ -881,6 +993,9 @@ public class Logic {
 			case REDO:
 				userCommand = new RedoCommand(task);
 				break;
+			case FREE:
+				userCommand = new FreeCommand(task);
+				break;
 			default:
 				return "Unable to execute the command";
 		}
@@ -899,6 +1014,7 @@ public class Logic {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		LogicUtilities.sortTasks(LogicUtilities.list);
 	}
 	
 	public void clearRevisionFiles() {
@@ -912,14 +1028,14 @@ public class Logic {
 	
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\Logic.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\Logic.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\LogicUtilities.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\LogicUtilities.java
 	 */
 
 package whatsupnext.logic;
@@ -928,8 +1044,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.PriorityQueue;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.TaskComparators.TaskDefaultComparator;
+import whatsupnext.structure.util.Task;
+import whatsupnext.structure.util.TaskComparators.TaskDefaultComparator;
 
 public class LogicUtilities {
 	
@@ -983,6 +1099,9 @@ public class LogicUtilities {
 	 * This check function is to check whether the end time of task(i) is before a given time.
 	 */
 	public static boolean endsBeforeDeadline(Task task, String deadline) {	
+		if(task.getEndTime().isEmpty()) {
+			return false;
+		}
 		assert(!task.getEndTime().isEmpty());
 		
 		long endTime = Long.parseLong(task.getEndTime());
@@ -992,6 +1111,9 @@ public class LogicUtilities {
 	}
 	
 	public static boolean endsOnGivenDate(Task task, String date) {
+		if(task.getEndTime().isEmpty()) {
+			return false;
+		}
 		assert(!task.getEndTime().isEmpty());
 		
 		long endTime = Long.parseLong(task.getEndTime());
@@ -1081,20 +1203,20 @@ public class LogicUtilities {
 	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\LogicUtilities.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\LogicUtilities.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\RedoCommand.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\RedoCommand.java
 	 */
 
 package whatsupnext.logic;
 
 import whatsupnext.storage.Storage;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class RedoCommand extends Command{
 
@@ -1118,14 +1240,14 @@ public class RedoCommand extends Command{
 	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\RedoCommand.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\RedoCommand.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\SearchCommand.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\SearchCommand.java
 	 */
 
 package whatsupnext.logic;
@@ -1133,7 +1255,7 @@ package whatsupnext.logic;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class SearchCommand extends Command {
 
@@ -1152,7 +1274,8 @@ public class SearchCommand extends Command {
 	}
 	
 	public String executeCommand () {
-		searchByDescription(description);		
+		description = description.toLowerCase();
+		searchByKeywords(description);		
 		getOutput();
 		
 		String feedbackSearch = LogicUtilities.formatArrayAsString(output);
@@ -1161,11 +1284,11 @@ public class SearchCommand extends Command {
 		return feedbackSearch;
 	}
 
-	private void searchByDescription(String keywords) {
-			
+	private void searchByKeywords(String keywords) {	
 		for (int i = 0; i < list.size(); i++) {
 			Task task = list.get(i);
-			String taskDescription = task.getDescription();			
+			String taskDescription = task.getDescription();
+			taskDescription = taskDescription.toLowerCase();
 			
 		    RELEVANCE relevance;
 		    relevance = compareTasks(taskDescription, keywords);	
@@ -1193,8 +1316,7 @@ public class SearchCommand extends Command {
 			} else {
 				break;
 			}
-		}
-		
+		}	
 		if (number >= keyword) {
 			r = RELEVANCE.LOW;
 		}
@@ -1210,9 +1332,8 @@ public class SearchCommand extends Command {
 					number++;
 				}
 			}
-		}
-		
-		if ((number >= keyword) && (r==RELEVANCE.LOW)) {
+		}	
+		if ((number >= keyword) && (r == RELEVANCE.LOW) ) {
 			r = RELEVANCE.HIGH;
 		} 
 			
@@ -1245,20 +1366,20 @@ public class SearchCommand extends Command {
 	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\SearchCommand.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\SearchCommand.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\UndoCommand.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\UndoCommand.java
 	 */
 
 package whatsupnext.logic;
 
 import whatsupnext.storage.Storage;
-import whatsupnext.structure.Task;
+import whatsupnext.structure.util.Task;
 
 public class UndoCommand extends Command{
 
@@ -1284,14 +1405,14 @@ public class UndoCommand extends Command{
 
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\UndoCommand.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\UndoCommand.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\UpdateCommand.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\UpdateCommand.java
 	 */
 
 package whatsupnext.logic;
@@ -1299,8 +1420,8 @@ package whatsupnext.logic;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.Types.UPDATETYPE;
+import whatsupnext.structure.enums.Types.UPDATETYPE;
+import whatsupnext.structure.util.Task;
 
 public class UpdateCommand extends Command{
 
@@ -1313,24 +1434,27 @@ public class UpdateCommand extends Command{
 		updateType = task.getUpdateType();
 	}
 
-	public String executeCommand() {	
-		switch (updateType) {
-			case DESCRIPTION:
-				updateInfo();
-				MESSAGE_UPDATED = "Successfully updated the description of task " + taskID + ".";
+	public String executeCommand() {
+		int index = LogicUtilities.getTaskIndexInArray(taskID);
+		
+		if (index < 0) {
+			MESSAGE_UPDATED = "Task " + taskID + " doesn't exist.";
+		} else {
+			switch (updateType) {
+			case DESCRIPTION:				
+				MESSAGE_UPDATED = updateInfo(index);
 				break;
-			case DEADLINE:
-				updateDeadline();
-				MESSAGE_UPDATED = "Successfully updated the deadline of task " + taskID + ".";
+			case DEADLINE:				
+				MESSAGE_UPDATED = updateDeadline(index);;
 				break;
-			case TIMEFRAME:
-				updateTimeFrame();
-				MESSAGE_UPDATED = "Successfully updated the time frame of task " + taskID + ".";
+			case TIMEFRAME:			
+				MESSAGE_UPDATED = updateTimeFrame(index);
 				break;
 			default:
 				break;
+		    }
 		}
-		
+
 		LogicUtilities.sortTasks(list);
 		
 		String feedbackUpdate;
@@ -1347,34 +1471,37 @@ public class UpdateCommand extends Command{
 	/*
 	 * Three types of UPDATE functions.
 	 */
-	private void updateInfo() {
-		int index = LogicUtilities.getTaskIndexInArray(taskID);
+	private String updateInfo(int index) {
 		Task task = list.get(index);
 		task.setDescription(description);
+		
+		return "Successfully updated the description of task " + taskID + ".";
 	}
 	
-	private void updateDeadline() {
-		int index = LogicUtilities.getTaskIndexInArray(taskID);	
+	private String updateDeadline(int index) {
 		Task task = list.get(index);
 		task.setEndTime(endTime);
+		
+		return "Successfully updated the deadline of task " + taskID + ".";
 	}
 	
-	private void updateTimeFrame() {
-		int index = LogicUtilities.getTaskIndexInArray(taskID);		
+	private String updateTimeFrame(int index) {	
 		Task task = list.get(index);
 		task.setStartTime(startTime);
 		task.setEndTime(endTime);
+		
+		return "Successfully updated the time frame of task " + taskID + ".";
 	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\UpdateCommand.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\UpdateCommand.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\ViewCommand.java
+	 * origin: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\ViewCommand.java
 	 */
 
 package whatsupnext.logic;
@@ -1383,9 +1510,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-import whatsupnext.structure.Task;
-import whatsupnext.structure.TaskComparators.TaskDefaultComparator;
-import whatsupnext.structure.Types.VIEWTYPE;
+import whatsupnext.structure.enums.Types.VIEWTYPE;
+import whatsupnext.structure.util.Task;
+import whatsupnext.structure.util.TaskComparators.TaskDefaultComparator;
 
 public class ViewCommand extends Command {
 
@@ -1541,7 +1668,7 @@ public class ViewCommand extends Command {
 	}
 }
 
-	// End of segment: C:\Users\Anand Sundaram\Documents\GitHub\main\src\whatsupnext\logic\ViewCommand.java
+	// End of segment: C:\Users\KJX\git\cs2103aug2014-f09-1j\src\whatsupnext\logic\ViewCommand.java
 
 
 

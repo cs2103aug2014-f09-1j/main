@@ -20,7 +20,7 @@ import whatsupnext.ui.GUIOneWindow;
 public class ResetButtonWidget {
 
 	JPanel widgetPanel;
-	JButton resetButton;
+	JButton buttonReset;
 	GUIAbstract linkedGui;
 	
 	
@@ -36,7 +36,7 @@ public class ResetButtonWidget {
 	
 	private void setComponentNames() {
 		widgetPanel.setName("resetButtonWidgetPanel");
-		resetButton.setName("resetButton");
+		buttonReset.setName("buttonReset");
 	}
 
 	private void initializeResetButtonPanel() {
@@ -53,10 +53,10 @@ public class ResetButtonWidget {
 
 	private void initializeResetButton() {
 		Image img = Toolkit.getDefaultToolkit().getImage(GUIOneWindow.class.getResource("/whatsupnext/ui/resetIcon.png"));
-		resetButton = new JButton(new ImageIcon(img));
-		resetButton.setToolTipText("Reset to default size");
-		resetButton.setBackground(new Color(255, 117, 56));
-		resetButton.addActionListener(new ActionListener() {
+		buttonReset = new JButton(new ImageIcon(img));
+		buttonReset.setToolTipText("Reset to default size");
+		buttonReset.setBackground(new Color(255, 117, 56));
+		buttonReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clickReset();
 			}
@@ -69,7 +69,7 @@ public class ResetButtonWidget {
 		gbc_resetButton.gridx = 0;
 		gbc_resetButton.gridy = 0;
 		
-		widgetPanel.add(resetButton, gbc_resetButton);
+		widgetPanel.add(buttonReset, gbc_resetButton);
 	}
 	
 	private void clickReset() {

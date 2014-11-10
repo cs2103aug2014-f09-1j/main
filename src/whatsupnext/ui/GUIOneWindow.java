@@ -111,7 +111,7 @@ public class GUIOneWindow extends GUIAbstract{
 	private void initGUIComponents() {
 		initializeApplicationFrames();
 		initializeWidgets();
-		initializeWindowPanels();
+		initializeWidgetPanels();
 	}
 	
 	/**
@@ -161,7 +161,7 @@ public class GUIOneWindow extends GUIAbstract{
 	}
 	
 
-	private void initializeWindowPanels() {
+	private void initializeWidgetPanels() {
 		initializeMainPanel();
 		initializeFloatingPanel();
 		initializeUpcomingPanel();

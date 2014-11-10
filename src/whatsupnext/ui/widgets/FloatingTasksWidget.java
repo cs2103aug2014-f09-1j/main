@@ -140,7 +140,7 @@ public class FloatingTasksWidget implements TasksWidget {
 		return task;
 	}
 
-	
+	//@author A0092165E
 	/**
 	 * This function displays feedback with customized coloring
 	 * @param feedback

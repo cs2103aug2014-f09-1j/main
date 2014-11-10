@@ -185,21 +185,30 @@ public class Storage {
 		// A copy is created since using the same object reference will make the local  
 		// version vulnerable to changes made to the ArrayList object in Logic.
 		
-		ArrayList<Task> tasksCopy = new ArrayList<Task>();
-		for (int x = 0; x < tasks.size(); x++) {
-			Task taskTemp = new Task();
-			Task taskCopy = tasks.get(x);
-			
-			taskTemp.setTaskID(taskCopy.getTaskID());
-			taskTemp.setDescription(taskCopy.getDescription());
-			taskTemp.setStartTime(taskCopy.getStartTime());
-			taskTemp.setEndTime(taskCopy.getEndTime());
-			taskTemp.setDone(taskCopy.getDone());			
-			
-			tasksCopy.add(taskTemp);
-		}
+		ArrayList<Task> tasksCopy = createTaskArrayCopy(tasks);
 		arrayOfVersions.add(tasksCopy);
 	}	
+	
+	private ArrayList<Task> createTaskArrayCopy(ArrayList<Task> tasks) {
+		ArrayList<Task> tasksCopy = new ArrayList<Task>();
+		for (int x = 0; x < tasks.size(); x++) {
+			Task taskToBeCopied = tasks.get(x);
+			tasksCopy.add(createTaskCopy(taskToBeCopied));
+		}
+		return tasksCopy;
+	}
+	
+	private Task createTaskCopy(Task task) {
+		Task taskCopy = new Task();
+		
+		taskCopy.setTaskID(task.getTaskID());
+		taskCopy.setDescription(task.getDescription());
+		taskCopy.setStartTime(task.getStartTime());
+		taskCopy.setEndTime(task.getEndTime());
+		taskCopy.setDone(task.getDone());	
+		
+		return taskCopy;
+	}
 	
 	/**
 	 * Deletes the old branch of versions after changes have been made

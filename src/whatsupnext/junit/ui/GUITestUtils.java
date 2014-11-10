@@ -1,5 +1,5 @@
 //@author A0126730M-reused
-package whatsupnext.junit;
+package whatsupnext.junit.ui;
 
 import java.awt.*;
 

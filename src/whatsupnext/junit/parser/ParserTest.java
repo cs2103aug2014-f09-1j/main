@@ -1,5 +1,5 @@
 //@author A0111773L
-package whatsupnext.junit;
+package whatsupnext.junit.parser;
 import static org.junit.Assert.*;
 
 import java.util.Calendar;

@@ -1,5 +1,5 @@
 //@author A0092165E
-package whatsupnext.junit;
+package whatsupnext.junit.parser;
 
 import static org.junit.Assert.*;
 

@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import whatsupnext.logic.Logic;
 import whatsupnext.storage.Storage;
-import whatsupnext.ui.GUIMultipleWindows;
+import whatsupnext.ui.GUIOneWindow;
 import whatsupnext.structure.enums.OPCODE;
 import whatsupnext.structure.enums.Types.DELETETYPE;
 import whatsupnext.structure.util.Task;
@@ -31,7 +31,7 @@ import whatsupnext.structure.util.Task;
 public class GUIVisualTest {
 	private WhatsUpNextGUIStub gui;
 	
-	private class WhatsUpNextGUIStub extends GUIMultipleWindows {
+	private class WhatsUpNextGUIStub extends GUIOneWindow {
 		private Logic logic;
 		
 		public WhatsUpNextGUIStub(String fileName) {
@@ -73,11 +73,11 @@ public class GUIVisualTest {
 		assertTrue(frameMain.isResizable());
 		
 		Dimension prefSize = frameMain.getPreferredSize();
-		assertEquals(530, prefSize.width);
-		assertEquals(360, prefSize.height);
+		assertEquals(780, prefSize.width);
+		assertEquals(442, prefSize.height);
 		Dimension minSize = frameMain.getMinimumSize();
-		assertEquals(530, minSize.width);
-		assertEquals(360, minSize.height);
+		assertEquals(740, minSize.width);
+		assertEquals(332, minSize.height);
 		
 		assertEquals("Cambria", frameMain.getFont().getName());
 		assertTrue(frameMain.getFont().isBold());
@@ -106,12 +106,12 @@ public class GUIVisualTest {
 	
 	@Test
 	public void UpcomingTasksTextDisplayTest() {
-		JScrollPane textDisplayUpcomingScrollPane = (JScrollPane)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "textDisplayUpcomingScrollPane");
+		JScrollPane textDisplayUpcomingScrollPane = (JScrollPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcomingScrollPane");
 		assertNotNull("Can't acess the upcoming task text display scrolling pane JScrollPane", textDisplayUpcomingScrollPane);
 		
 		assertEquals(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, textDisplayUpcomingScrollPane.getVerticalScrollBarPolicy());
 		
-		JTextPane textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "textDisplayUpcoming");
+		JTextPane textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
 		assertNotNull("Can't acess the upcoming task text area JTextArea", textDisplayUpcoming);
 		
 		assertEquals("Courier New", textDisplayUpcoming.getFont().getName());
@@ -123,7 +123,7 @@ public class GUIVisualTest {
 	
 	@Test
 	public void UpcomingTasksButtonTest() {
-		JButton buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "buttonUpcoming");
+		JButton buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonUpcoming");
 		assertNotNull("Can't acess the upcoming task button JButton", buttonUpcoming);
 		
 		assertEquals("Cambria", buttonUpcoming.getFont().getName());

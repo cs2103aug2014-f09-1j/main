@@ -1,3 +1,4 @@
+//@author A0126730M
 package whatsupnext.ui;
 
 import java.awt.EventQueue;
@@ -25,8 +26,6 @@ public class WhatsUpNextMain {
 		isPerPixelTranslucencySupported = 
 				gd.isWindowTranslucencySupported(WindowTranslucency.PERPIXEL_TRANSLUCENT);
 
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {
@@ -35,14 +34,13 @@ public class WhatsUpNextMain {
 		        }
 		    }
 		} catch (Exception e) {
-		    // If Nimbus is not available, you can set the GUI to another look and feel.
+			JFrame.setDefaultLookAndFeelDecorated(true);
 		}
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-//					GUIMultipleWindows gui = new GUIMultipleWindows();
-					GUIOneWindow gui = new GUIOneWindow();
+					GUIAbstract gui = new GUIOneWindow();
 					gui.showWindows();
 					
 				} catch (Exception e) {

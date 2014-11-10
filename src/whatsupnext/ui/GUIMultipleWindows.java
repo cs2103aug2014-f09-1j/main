@@ -1,4 +1,13 @@
-//@author A0126730M
+//@author A0126730M-unused
+
+/*
+ * We decided after V0.4 that while multiple windows was a good feature,
+ * it caused other problems. With users having more freedom in moving and
+ * sizing windows, there was a whole new set of problems that arose such as
+ * coming up with assumptions as to how users might want the UI to behave
+ * whether that would be simultaneous movement or window snapping.
+ * Thus, in the end, we decided to switch to a one window display.
+ */
 package whatsupnext.ui;
 
 import java.awt.Dimension;
@@ -49,7 +58,6 @@ public class GUIMultipleWindows extends GUIAbstract{
 	private UpcomingTasksWidget upcomingWidget;
 	
 	private boolean movingAllFramesToFront = false;
-	private static Logic logic;
 
 	
 	public GUIMultipleWindows() {

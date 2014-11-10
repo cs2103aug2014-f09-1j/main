@@ -28,8 +28,7 @@ import whatsupnext.parser.extractor.ParseDate;
 import whatsupnext.structure.enums.OPCODE;
 import whatsupnext.structure.enums.Types.VIEWTYPE;
 import whatsupnext.structure.util.Task;
-import whatsupnext.ui.GUIMultipleWindows;
-import whatsupnext.ui.GUIOneWindow;
+import whatsupnext.ui.GUIAbstract;
 
 public class UpcomingTasksWidget implements TasksWidget{
 
@@ -180,11 +179,7 @@ public class UpcomingTasksWidget implements TasksWidget{
 		
 		String feedback;
 		try {
-			if (GUIMultipleWindows.getLogic() != null) {
-				feedback = GUIMultipleWindows.getLogic().executeTask(task);
-			} else {
-				feedback = GUIOneWindow.getLogic().executeTask(task);
-			}
+			feedback = GUIAbstract.getLogic().executeTask(task);
 		} catch (Exception e) {
 			feedback = e.getMessage();
 		}

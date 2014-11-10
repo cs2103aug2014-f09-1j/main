@@ -1,3 +1,4 @@
+//@author A0126730M
 package whatsupnext.ui;
 
 import java.awt.Color;
@@ -44,8 +45,6 @@ public class GUIOneWindow extends GUIAbstract{
 	private UpcomingTasksWidget upcomingWidget;
 	private ResetButtonWidget resetWidget;
 	
-	private static Logic logic;
-
 	
 	public GUIOneWindow() {
 		logic = new Logic();

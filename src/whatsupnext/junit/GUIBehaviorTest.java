@@ -17,7 +17,7 @@ import org.junit.Test;
 import whatsupnext.logic.Logic;
 import whatsupnext.logic.LogicUtilities;
 import whatsupnext.storage.Storage;
-import whatsupnext.ui.GUIMultipleWindows;
+import whatsupnext.ui.GUIOneWindow;
 import whatsupnext.structure.enums.OPCODE;
 import whatsupnext.structure.enums.Types.DELETETYPE;
 import whatsupnext.structure.util.Task;
@@ -34,7 +34,7 @@ public class GUIBehaviorTest {
 
 	private String currentYear;
 
-	private class WhatsUpNextGUIStub extends GUIMultipleWindows {
+	private class WhatsUpNextGUIStub extends GUIOneWindow {
 		private Logic logic;
 
 		public WhatsUpNextGUIStub(String fileName) {
@@ -117,15 +117,15 @@ public class GUIBehaviorTest {
 	@Before
 	public void initializeWidgets() {
 		textDisplayMain = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayMain");
-		textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "textDisplayUpcoming");
-		textDisplayFloating = (JTextPane)GUITestUtils.getChildNamed(gui.getFloatingFrame(), "textDisplayFloating");
+		textDisplayUpcoming = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayUpcoming");
+		textDisplayFloating = (JTextPane)GUITestUtils.getChildNamed(gui.getMainFrame(), "textDisplayFloating");
 		assertNotNull("Can't acess the main text display JTextPane", textDisplayMain);
 		assertNotNull("Can't acess the upcoming task text area JTextPane", textDisplayUpcoming);
 		assertNotNull("Can't acess the floating task text area JTextPane", textDisplayFloating);
 
 		buttonEnter = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonEnter");
-		buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getUpcomingFrame(), "buttonUpcoming");
-		buttonFloating = (JButton)GUITestUtils.getChildNamed(gui.getFloatingFrame(), "buttonFloating");
+		buttonUpcoming = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonUpcoming");
+		buttonFloating = (JButton)GUITestUtils.getChildNamed(gui.getMainFrame(), "buttonFloating");
 		assertNotNull("Can't acess the main enter button JButton", buttonEnter);
 		assertNotNull("Can't acess the upcoming task button JButton", buttonUpcoming);
 		assertNotNull("Can't acess the floating task button JButton", buttonFloating);

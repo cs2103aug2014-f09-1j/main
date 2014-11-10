@@ -26,8 +26,7 @@ import javax.swing.JTextField;
 import whatsupnext.parser.api.Parser;
 import whatsupnext.structure.enums.OPCODE;
 import whatsupnext.structure.util.Task;
-import whatsupnext.ui.GUIMultipleWindows;
-import whatsupnext.ui.GUIOneWindow;
+import whatsupnext.ui.GUIAbstract;
 
 public class CommandLineInterfaceWidget {
 
@@ -173,11 +172,7 @@ public class CommandLineInterfaceWidget {
 					if (currentTask.getOpCode() == OPCODE.HELP) {
 						feedback = currentTask.getHelpMessage();
 					} else {
-						if (GUIMultipleWindows.getLogic() != null) {
-							feedback = GUIMultipleWindows.getLogic().executeTask(currentTask);
-						} else {
-							feedback = GUIOneWindow.getLogic().executeTask(currentTask);
-						}
+						feedback = GUIAbstract.getLogic().executeTask(currentTask);
 					}
 				} catch (Exception e) {
 					feedback = e.getMessage();
